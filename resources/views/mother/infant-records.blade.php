@@ -101,6 +101,9 @@ $years = (int) $birthDate->diffInYears(now());
 
     $currentWeight = $latestGrowth->weight ?? $selectedInfant->birth_weight;
     $currentHeight = $latestGrowth->height ?? $selectedInfant->birth_length;
+    $currentHeadCircumference =
+    $latestGrowth->head_circumference
+    ?? $selectedInfant->head_circumference;
 @endphp
 
                 {{-- ====================================== --}}
@@ -207,7 +210,18 @@ $years = (int) $birthDate->diffInYears(now());
                                     </svg>
                                 </div>
                                 <p class="text-[11px] sm:text-xs text-slate-400">Head circumference</p>
-                                <p class="text-[13px] sm:text-sm font-semibold text-slate-400 mt-1">Not recorded</p>
+                               @if($selectedInfant && $selectedInfant->head_circumference)
+    <p class="text-[18px] sm:text-xl font-bold text-slate-900">
+        {{ $selectedInfant->head_circumference }}
+        <span class="text-[12px] sm:text-sm font-medium text-slate-400">
+            cm
+        </span>
+    </p>
+@else
+    <p class="text-[13px] sm:text-sm font-semibold text-slate-400 mt-1">
+        Not recorded
+    </p>
+@endif
                             </div>
 
                             {{-- Vaccinations --}}
