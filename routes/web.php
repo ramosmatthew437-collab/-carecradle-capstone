@@ -30,6 +30,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+    
+
 Route::middleware(['auth'])->group(function () {
 
     /*
@@ -87,6 +89,9 @@ Route::middleware(['auth'])->group(function () {
     */
 
     Route::middleware(['role:Midwife'])->group(function () {
+
+
+  
 
         /*
         |--------------------------------------------------------------------------
