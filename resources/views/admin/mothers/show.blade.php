@@ -13,41 +13,47 @@
             {{-- STATISTICS SUMMARY --}}
             {{-- ====================================== --}}
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
 
-                <div class="flex items-center gap-4 rounded-2xl border border-pink-100 bg-white p-5 shadow-sm">
-                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 6.75h18M3 12h18M3 17.25h18"/>
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm text-gray-500">Prenatal Checkups</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $mother->prenatalCheckups->count() }}</p>
+                <div class="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                    <div class="flex items-center gap-4">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 6.75h18M3 12h18M3 17.25h18"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-500">Prenatal Checkups</p>
+                            <p class="mt-0.5 text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">{{ $mother->prenatalCheckups->count() }}</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4 rounded-2xl border border-pink-100 bg-white p-5 shadow-sm">
-                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm text-gray-500">Appointments</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $mother->appointments->count() }}</p>
+                <div class="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                    <div class="flex items-center gap-4">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-500">Appointments</p>
+                            <p class="mt-0.5 text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">{{ $mother->appointments->count() }}</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4 rounded-2xl border border-pink-100 bg-white p-5 shadow-sm">
-                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm text-gray-500">Registered Infants</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $mother->infants->count() }}</p>
+                <div class="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                    <div class="flex items-center gap-4">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-500">Registered Infants</p>
+                            <p class="mt-0.5 text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">{{ $mother->infants->count() }}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -59,8 +65,12 @@
 
             <div class="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm">
 
-                <div class="bg-gradient-to-r from-pink-500 to-pink-600 px-5 py-6 sm:px-8 sm:py-8">
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div class="relative overflow-hidden bg-gradient-to-r from-pink-500 to-pink-600 px-5 py-6 sm:px-8 sm:py-8">
+
+                    <div class="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10 blur-2xl"></div>
+                    <div class="pointer-events-none absolute -bottom-10 right-20 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+
+                    <div class="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                         <div class="flex items-center gap-4">
                             <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 sm:h-16 sm:w-16">
@@ -70,20 +80,23 @@
                             </div>
 
                             <div class="min-w-0">
-                                <p class="text-xs font-medium uppercase tracking-widest text-pink-100">
+                                <p class="text-xs font-semibold uppercase tracking-widest text-pink-100">
                                     Mother Profile
                                 </p>
                                 <h1 class="mt-1 truncate text-xl font-bold text-white sm:text-2xl">
                                     {{ $mother->first_name }} {{ $mother->last_name }}
                                 </h1>
+                                <p class="mt-1 font-mono text-xs text-pink-100/90">
+                                    {{ $mother->mother_code }}
+                                </p>
                             </div>
                         </div>
 
                         @php
                             $statusClasses = match($mother->status) {
                                 'Pregnant' => 'bg-blue-100 text-blue-700',
-                                'Delivered' => 'bg-green-100 text-green-700',
-                                'Referred' => 'bg-yellow-100 text-yellow-700',
+                                'Delivered' => 'bg-emerald-100 text-emerald-700',
+                                'Referred' => 'bg-amber-100 text-amber-700',
                                 default => 'bg-gray-100 text-gray-700',
                             };
                         @endphp
@@ -135,9 +148,13 @@
             {{-- ADDITIONAL PERSONAL & PREGNANCY DETAILS --}}
             {{-- ====================================== --}}
 
-            <div class="rounded-2xl border border-pink-100 bg-white p-5 shadow-sm sm:p-8">
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
 
-                <h2 class="text-base font-bold text-gray-900">Personal &amp; Pregnancy Details</h2>
+                <div class="flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-pink-500"></span>
+                    <p class="text-xs font-semibold uppercase tracking-widest text-pink-600">Patient Record</p>
+                </div>
+                <h2 class="mt-1 text-base sm:text-lg font-bold text-gray-900">Personal &amp; Pregnancy Details</h2>
                 <p class="mt-0.5 text-sm text-gray-500">Additional information on file for this mother.</p>
 
                 <dl class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -200,7 +217,7 @@
                         </dd>
                     </div>
 
-                    <div class="rounded-xl bg-pink-50 p-4 sm:col-span-2">
+                    <div class="rounded-xl border border-pink-100 bg-pink-50 p-4 sm:col-span-2">
                         <dt class="text-xs font-medium text-pink-600">Expected Delivery Date</dt>
                         <dd class="mt-1 text-sm font-semibold text-pink-800">
                             {{ \Carbon\Carbon::parse($mother->expected_delivery_date)->format('F d, Y') }}
@@ -222,7 +239,7 @@
             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
 
                 <a href="{{ route('prenatal-checkups.create', $mother->id) }}"
-                   class="flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:w-auto sm:justify-start">
+                   class="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 active:scale-[0.98]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
                     </svg>
@@ -230,7 +247,7 @@
                 </a>
 
                 <a href="{{ route('appointments.create', $mother->id) }}"
-                   class="flex w-full items-center justify-center gap-2 rounded-xl border border-pink-200 bg-white px-5 py-3.5 text-sm font-semibold text-pink-700 shadow-sm transition hover:bg-pink-50 sm:w-auto sm:justify-start">
+                   class="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-pink-200 bg-white px-5 text-sm font-semibold text-pink-700 shadow-sm transition hover:bg-pink-50 active:scale-[0.98]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
                     </svg>
@@ -243,11 +260,15 @@
             {{-- 2. PRENATAL CHECKUPS --}}
             {{-- ====================================== --}}
 
-            <div class="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm">
+            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
-                <div class="flex flex-col gap-2 border-b border-pink-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+                <div class="flex flex-col gap-2 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
                     <div>
-                        <h2 class="text-lg font-bold text-gray-900">Prenatal Checkups</h2>
+                        <div class="flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-pink-500"></span>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-pink-600">Care History</p>
+                        </div>
+                        <h2 class="mt-1 text-base sm:text-lg font-bold text-gray-900">Prenatal Checkups</h2>
                         <p class="mt-0.5 text-sm text-gray-500">Complete history of prenatal visits.</p>
                     </div>
                     <span class="w-fit rounded-lg bg-pink-50 px-3 py-1.5 text-xs font-semibold text-pink-700">
@@ -281,7 +302,7 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-center">
-                                            <span class="inline-flex rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700">
+                                            <span class="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
                                                 {{ $visit->systolic_bp }}/{{ $visit->diastolic_bp }}
                                             </span>
                                         </td>
@@ -301,7 +322,7 @@
                     </div>
 
                     {{-- Mobile cards --}}
-                    <div class="divide-y divide-pink-50 md:hidden">
+                    <div class="divide-y divide-gray-100 md:hidden">
                         @foreach($mother->prenatalCheckups as $visit)
                             <div class="p-5">
                                 <div class="flex items-start justify-between gap-3">
@@ -316,7 +337,7 @@
                                 <div class="mt-3 grid grid-cols-2 gap-3">
                                     <div class="rounded-xl bg-gray-50 p-3">
                                         <p class="text-xs text-gray-500">Blood Pressure</p>
-                                        <p class="mt-1 text-sm font-semibold text-yellow-700">
+                                        <p class="mt-1 text-sm font-semibold text-amber-700">
                                             {{ $visit->systolic_bp }}/{{ $visit->diastolic_bp }}
                                         </p>
                                     </div>
@@ -329,7 +350,7 @@
                                 </div>
 
                                 <a href="{{ route('prenatal-checkups.show',$visit->id) }}"
-                                   class="mt-4 flex w-full items-center justify-center rounded-xl border border-gray-200 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-pink-300 hover:bg-pink-50 hover:text-pink-700">
+                                   class="mt-4 flex h-11 w-full items-center justify-center rounded-xl border border-gray-200 text-sm font-semibold text-gray-700 transition hover:border-pink-300 hover:bg-pink-50 hover:text-pink-700">
                                     View Details
                                 </a>
                             </div>
@@ -337,21 +358,23 @@
                     </div>
 
                 @else
-                    <div class="flex flex-col items-center justify-center px-6 py-14 text-center">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.5v9A2.25 2.25 0 0117.25 18.75H6.75A2.25 2.25 0 014.5 16.5v-9A2.25 2.25 0 016.75 5.25h10.5A2.25 2.25 0 0119.5 7.5ZM9 12h6M12 9v6"/>
-                            </svg>
+                    <div class="px-4 py-8 sm:px-6 sm:py-10">
+                        <div class="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 px-6 py-12 text-center">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.5v9A2.25 2.25 0 0117.25 18.75H6.75A2.25 2.25 0 014.5 16.5v-9A2.25 2.25 0 016.75 5.25h10.5A2.25 2.25 0 0119.5 7.5ZM9 12h6M12 9v6"/>
+                                </svg>
+                            </div>
+                            <h3 class="mt-4 text-base font-bold text-gray-900">No prenatal records found</h3>
+                            <p class="mt-1 max-w-sm text-sm text-gray-500">No prenatal visits have been recorded for this mother yet.</p>
+                            <a href="{{ route('prenatal-checkups.create',$mother->id) }}"
+                               class="mt-6 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:w-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                                </svg>
+                                Add First Prenatal Visit
+                            </a>
                         </div>
-                        <h3 class="mt-4 text-base font-bold text-gray-900">No Prenatal Records Found</h3>
-                        <p class="mt-1 max-w-sm text-sm text-gray-500">No prenatal visits have been recorded for this mother yet.</p>
-                        <a href="{{ route('prenatal-checkups.create',$mother->id) }}"
-                           class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:w-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                            </svg>
-                            Add First Prenatal Visit
-                        </a>
                     </div>
                 @endif
             </div>
@@ -360,11 +383,15 @@
             {{-- 3. APPOINTMENTS --}}
             {{-- ====================================== --}}
 
-            <div class="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm">
+            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
-                <div class="flex flex-col gap-2 border-b border-pink-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+                <div class="flex flex-col gap-2 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
                     <div>
-                        <h2 class="text-lg font-bold text-gray-900">Appointments</h2>
+                        <div class="flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-amber-600">Scheduling</p>
+                        </div>
+                        <h2 class="mt-1 text-base sm:text-lg font-bold text-gray-900">Appointments</h2>
                         <p class="mt-0.5 text-sm text-gray-500">Upcoming and completed appointments.</p>
                     </div>
                     <span class="w-fit rounded-lg bg-pink-50 px-3 py-1.5 text-xs font-semibold text-pink-700">
@@ -376,8 +403,8 @@
 
                     @php
                         $apptStatusClasses = fn($status) => match($status) {
-                            'Scheduled' => 'bg-yellow-100 text-yellow-700',
-                            'Completed' => 'bg-green-100 text-green-700',
+                            'Scheduled' => 'bg-amber-100 text-amber-700',
+                            'Completed' => 'bg-emerald-100 text-emerald-700',
                             'Cancelled' => 'bg-red-100 text-red-700',
                             default => 'bg-gray-100 text-gray-700',
                         };
@@ -385,11 +412,11 @@
 
                     <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2 sm:p-8">
                         @foreach($mother->appointments as $appointment)
-                            <div class="rounded-2xl border border-gray-200 p-5 transition hover:border-pink-200 hover:shadow-md">
+                            <div class="flex flex-col rounded-2xl border border-gray-200 p-5 transition hover:border-pink-200 hover:shadow-md">
 
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="flex items-center gap-3">
-                                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
+                                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
                                             </svg>
@@ -409,13 +436,13 @@
                                     </span>
                                 </div>
 
-                                <div class="mt-4 flex items-center justify-between gap-3">
+                                <div class="mt-4 flex flex-1 items-end justify-between gap-3">
                                     <span class="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
                                         {{ $appointment->appointment_type }}
                                     </span>
 
                                     <a href="{{ route('appointments.show', $appointment->id) }}"
-                                       class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:border-pink-300 hover:bg-pink-50 hover:text-pink-700">
+                                       class="inline-flex h-9 items-center gap-1.5 rounded-lg border border-gray-200 px-3 text-xs font-semibold text-gray-700 transition hover:border-pink-300 hover:bg-pink-50 hover:text-pink-700">
                                         View
                                     </a>
                                 </div>
@@ -425,21 +452,23 @@
                     </div>
 
                 @else
-                    <div class="flex flex-col items-center justify-center px-6 py-14 text-center">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
-                            </svg>
+                    <div class="px-4 py-8 sm:px-6 sm:py-10">
+                        <div class="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 px-6 py-12 text-center">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
+                                </svg>
+                            </div>
+                            <h3 class="mt-4 text-base font-bold text-gray-900">No appointments found</h3>
+                            <p class="mt-1 max-w-sm text-sm text-gray-500">There are currently no scheduled appointments for this mother.</p>
+                            <a href="{{ route('appointments.create',$mother->id) }}"
+                               class="mt-6 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:w-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                                </svg>
+                                Schedule Appointment
+                            </a>
                         </div>
-                        <h3 class="mt-4 text-base font-bold text-gray-900">No Appointments Found</h3>
-                        <p class="mt-1 max-w-sm text-sm text-gray-500">There are currently no scheduled appointments for this mother.</p>
-                        <a href="{{ route('appointments.create',$mother->id) }}"
-                           class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:w-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                            </svg>
-                            Schedule Appointment
-                        </a>
                     </div>
                 @endif
             </div>
@@ -448,11 +477,15 @@
             {{-- 4. INFANT RECORDS --}}
             {{-- ====================================== --}}
 
-            <div class="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm">
+            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
-                <div class="flex flex-col gap-3 border-b border-pink-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+                <div class="flex flex-col gap-3 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
                     <div>
-                        <h2 class="text-lg font-bold text-gray-900">Infant Records</h2>
+                        <div class="flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-blue-600">Newborn Records</p>
+                        </div>
+                        <h2 class="mt-1 text-base sm:text-lg font-bold text-gray-900">Infant Records</h2>
                         <p class="mt-0.5 text-sm text-gray-500">Registered infants associated with this mother.</p>
                     </div>
 
@@ -461,7 +494,7 @@
                             {{ $mother->infants->count() }} {{ Str::plural('infant', $mother->infants->count()) }}
                         </span>
                         <a href="{{ route('infants.create', $mother->id) }}"
-                           class="inline-flex items-center gap-1.5 rounded-lg bg-pink-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-pink-700">
+                           class="inline-flex h-9 items-center gap-1.5 rounded-lg bg-pink-600 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-pink-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
                             </svg>
@@ -474,10 +507,10 @@
 
                     <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2 sm:p-8">
                         @foreach($mother->infants as $infant)
-                            <div class="rounded-2xl border border-gray-200 p-5 transition hover:border-pink-200 hover:shadow-md">
+                            <div class="flex flex-col rounded-2xl border border-gray-200 p-5 transition hover:border-pink-200 hover:shadow-md">
 
                                 <div class="flex items-center gap-3">
-                                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
+                                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
                                         </svg>
@@ -504,13 +537,13 @@
                                 </div>
 
                                 <div class="mt-3">
-                                    <span class="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                                    <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
                                         {{ $infant->birth_status }}
                                     </span>
                                 </div>
 
                                 <a href="{{ route('infants.show', $infant->id) }}"
-                                   class="mt-4 flex w-full items-center justify-center rounded-xl border border-gray-200 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-pink-300 hover:bg-pink-50 hover:text-pink-700">
+                                   class="mt-4 flex h-11 w-full items-center justify-center rounded-xl border border-gray-200 text-sm font-semibold text-gray-700 transition hover:border-pink-300 hover:bg-pink-50 hover:text-pink-700">
                                     View Details
                                 </a>
 
@@ -519,21 +552,23 @@
                     </div>
 
                 @else
-                    <div class="flex flex-col items-center justify-center px-6 py-14 text-center">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
-                            </svg>
+                    <div class="px-4 py-8 sm:px-6 sm:py-10">
+                        <div class="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 px-6 py-12 text-center">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
+                                </svg>
+                            </div>
+                            <h3 class="mt-4 text-base font-bold text-gray-900">No infant records found</h3>
+                            <p class="mt-1 max-w-sm text-sm text-gray-500">There are currently no registered infant records associated with this mother.</p>
+                            <a href="{{ route('infants.create', $mother->id) }}"
+                               class="mt-6 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:w-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                                </svg>
+                                Register First Infant
+                            </a>
                         </div>
-                        <h3 class="mt-4 text-base font-bold text-gray-900">No Infant Records Found</h3>
-                        <p class="mt-1 max-w-sm text-sm text-gray-500">There are currently no registered infant records associated with this mother.</p>
-                        <a href="{{ route('infants.create', $mother->id) }}"
-                           class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:w-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                            </svg>
-                            Register First Infant
-                        </a>
                     </div>
                 @endif
             </div>
