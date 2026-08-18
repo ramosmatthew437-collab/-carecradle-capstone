@@ -136,65 +136,91 @@
                 <h2 class="text-[15px] sm:text-xl font-bold text-slate-900">Quick actions</h2>
                 <p class="text-[12px] sm:text-sm text-slate-500 mb-3 sm:mb-4">Frequently used actions for maternal healthcare management</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
 
+                    {{-- Register Mother --}}
                     <a href="{{ route('mothers.create') }}"
-                       class="flex items-center justify-between md:flex-col md:items-start rounded-2xl bg-white border border-slate-100 p-4 sm:p-5 shadow-sm transition hover:shadow-md text-left">
-                        <div class="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
-                            <div class="h-11 w-11 sm:h-14 sm:w-14 flex-shrink-0 rounded-xl sm:rounded-2xl bg-pink-100 flex items-center justify-center text-pink-600 md:mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-5 sm:p-7 shadow-sm transition duration-200 hover:shadow-lg hover:border-pink-200 hover:-translate-y-0.5">
+
+                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-pink-50 transition group-hover:bg-pink-100"></div>
+
+                        <div class="relative">
+                            <div class="h-12 w-12 sm:h-16 sm:w-16 rounded-2xl bg-pink-100 flex items-center justify-center text-pink-600 mb-4 sm:mb-6 transition group-hover:bg-pink-600 group-hover:text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.742-.479 3 3 0 00-4.682-2.72m.94 3.198v.75A2.25 2.25 0 0115.75 21H8.25A2.25 2.25 0 016 18.75V18m12-6a3 3 0 11-6 0 3 3 0 016 0Zm-9 0a3 3 0 11-6 0 3 3 0 016 0Zm9 0v.01M6 12v.01"/>
                                 </svg>
                             </div>
-                            <div>
-                                <p class="text-[13px] sm:text-lg font-semibold text-slate-900">Register mother</p>
-                                <p class="text-[11px] sm:text-sm text-slate-400 sm:mt-1">Enroll a new maternal record</p>
-                            </div>
+
+                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">Register mother</p>
+                            <p class="mt-2 text-[12px] sm:text-sm leading-relaxed text-slate-500">
+                                Enroll a new maternal record into the system.
+                            </p>
+
+                            <p class="mt-4 sm:mt-6 flex items-center gap-1.5 text-[12px] sm:text-sm font-semibold text-pink-600">
+                                Get started
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </p>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-slate-300 md:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                        </svg>
                     </a>
 
+                    {{-- Add Prenatal Visit --}}
                     <a href="{{ route('mothers.index') }}"
-                       class="flex items-center justify-between md:flex-col md:items-start rounded-2xl bg-white border border-slate-100 p-4 sm:p-5 shadow-sm transition hover:shadow-md text-left">
-                        <div class="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
-                            <div class="h-11 w-11 sm:h-14 sm:w-14 flex-shrink-0 rounded-xl sm:rounded-2xl bg-green-100 flex items-center justify-center text-green-600 md:mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-5 sm:p-7 shadow-sm transition duration-200 hover:shadow-lg hover:border-emerald-200 hover:-translate-y-0.5">
+
+                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-emerald-50 transition group-hover:bg-emerald-100"></div>
+
+                        <div class="relative">
+                            <div class="h-12 w-12 sm:h-16 sm:w-16 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4 sm:mb-6 transition group-hover:bg-emerald-600 group-hover:text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"/>
                                 </svg>
                             </div>
-                            <div>
-                                <p class="text-[13px] sm:text-lg font-semibold text-slate-900">Add prenatal visit</p>
-                                <p class="text-[11px] sm:text-sm text-slate-400 sm:mt-1">Record a checkup or assessment</p>
-                            </div>
+
+                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">Add prenatal visit</p>
+                            <p class="mt-2 text-[12px] sm:text-sm leading-relaxed text-slate-500">
+                                Record a checkup or prenatal assessment.
+                            </p>
+
+                            <p class="mt-4 sm:mt-6 flex items-center gap-1.5 text-[12px] sm:text-sm font-semibold text-emerald-600">
+                                Get started
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </p>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-slate-300 md:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                        </svg>
                     </a>
 
+                    {{-- Schedule Appointment --}}
                     <a href="{{ route('mothers.index') }}"
-                       class="flex items-center justify-between md:flex-col md:items-start rounded-2xl bg-white border border-slate-100 p-4 sm:p-5 shadow-sm transition hover:shadow-md text-left">
-                        <div class="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
-                            <div class="h-11 w-11 sm:h-14 sm:w-14 flex-shrink-0 rounded-xl sm:rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 md:mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-5 sm:p-7 shadow-sm transition duration-200 hover:shadow-lg hover:border-blue-200 hover:-translate-y-0.5">
+
+                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-blue-50 transition group-hover:bg-blue-100"></div>
+
+                        <div class="relative">
+                            <div class="h-12 w-12 sm:h-16 sm:w-16 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 mb-4 sm:mb-6 transition group-hover:bg-blue-600 group-hover:text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
                                 </svg>
                             </div>
-                            <div>
-                                <p class="text-[13px] sm:text-lg font-semibold text-slate-900">Schedule appointment</p>
-                                <p class="text-[11px] sm:text-sm text-slate-400 sm:mt-1">Arrange a follow-up visit</p>
-                            </div>
+
+                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">Schedule appointment</p>
+                            <p class="mt-2 text-[12px] sm:text-sm leading-relaxed text-slate-500">
+                                Arrange a follow-up visit for a mother.
+                            </p>
+
+                            <p class="mt-4 sm:mt-6 flex items-center gap-1.5 text-[12px] sm:text-sm font-semibold text-blue-600">
+                                Get started
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </p>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-slate-300 md:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                        </svg>
                     </a>
 
                 </div>
             </div>
-
             {{-- ====================================== --}}
             {{-- TODAY'S APPOINTMENTS + UPCOMING VACCINATIONS --}}
             {{-- Same $todayAppointments / $upcomingVaccinations, --}}
