@@ -257,16 +257,16 @@
                                             name="appointment_type"
                                             class="w-full rounded-xl border border-gray-300 bg-white py-3 pl-12 pr-4 text-sm text-gray-700 shadow-sm transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100">
 
-                                            @foreach(['Prenatal Checkup','Vaccination','Postpartum Checkup'] as $type)
+                                            @foreach(['Prenatal Checkup','Vaccination','Postpartum','Infant Checkup'] as $type)
 
-                                                <option value="{{ $type }}"
-                                                    {{ old('appointment_type', $appointment->appointment_type) == $type ? 'selected' : '' }}>
+    <option value="{{ $type }}"
+        {{ old('appointment_type', $appointment->appointment_type) == $type ? 'selected' : '' }}>
 
-                                                    {{ $type }}
+        {{ $type == 'Postpartum' ? 'Postpartum Checkup' : $type }}
 
-                                                </option>
+    </option>
 
-                                            @endforeach
+@endforeach
 
                                         </select>
                                     </div>
