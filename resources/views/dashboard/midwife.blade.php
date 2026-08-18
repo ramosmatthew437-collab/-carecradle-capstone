@@ -129,18 +129,18 @@
 
             {{-- ====================================== --}}
             {{-- QUICK ACTIONS --}}
-            {{-- Same mothers.create / mothers.index routes --}}
+            {{-- mothers.index / sms-notifications.index routes --}}
             {{-- ====================================== --}}
 
             <div>
                 <h2 class="text-[15px] sm:text-xl font-bold text-slate-900">Quick actions</h2>
-                <p class="text-[12px] sm:text-sm text-slate-500 mb-3 sm:mb-4">Frequently used actions for maternal healthcare management</p>
+                <p class="text-[12px] sm:text-sm text-slate-500 mb-3 sm:mb-4">Jump into the core CareCradle modules</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-3xl mx-auto">
 
-                    {{-- Register Mother --}}
-                    <a href="{{ route('mothers.create') }}"
-                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-5 sm:p-7 shadow-sm transition duration-200 hover:shadow-lg hover:border-pink-200 hover:-translate-y-0.5">
+                    {{-- Mother Management --}}
+                    <a href="{{ route('mothers.index') }}"
+                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-6 sm:p-8 shadow-sm transition duration-200 hover:shadow-lg hover:border-pink-200 hover:-translate-y-0.5">
 
                         <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-pink-50 transition group-hover:bg-pink-100"></div>
 
@@ -151,13 +151,13 @@
                                 </svg>
                             </div>
 
-                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">Register mother</p>
+                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">Mother management</p>
                             <p class="mt-2 text-[12px] sm:text-sm leading-relaxed text-slate-500">
-                                Enroll a new maternal record into the system.
+                                Manage maternal records, prenatal visits, appointments, infant registration, and growth monitoring in one centralized module.
                             </p>
 
                             <p class="mt-4 sm:mt-6 flex items-center gap-1.5 text-[12px] sm:text-sm font-semibold text-pink-600">
-                                Get started
+                                Open module
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                 </svg>
@@ -165,53 +165,26 @@
                         </div>
                     </a>
 
-                    {{-- Add Prenatal Visit --}}
-                    <a href="{{ route('mothers.index') }}"
-                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-5 sm:p-7 shadow-sm transition duration-200 hover:shadow-lg hover:border-emerald-200 hover:-translate-y-0.5">
+                    {{-- SMS Notifications --}}
+                    <a href="{{ route('sms-notifications.index') }}"
+                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-6 sm:p-8 shadow-sm transition duration-200 hover:shadow-lg hover:border-amber-200 hover:-translate-y-0.5">
 
-                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-emerald-50 transition group-hover:bg-emerald-100"></div>
+                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-amber-50 transition group-hover:bg-amber-100"></div>
 
                         <div class="relative">
-                            <div class="h-12 w-12 sm:h-16 sm:w-16 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4 sm:mb-6 transition group-hover:bg-emerald-600 group-hover:text-white">
+                            <div class="h-12 w-12 sm:h-16 sm:w-16 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 mb-4 sm:mb-6 transition group-hover:bg-amber-500 group-hover:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
                                 </svg>
                             </div>
 
-                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">Add prenatal visit</p>
+                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">SMS notifications</p>
                             <p class="mt-2 text-[12px] sm:text-sm leading-relaxed text-slate-500">
-                                Record a checkup or prenatal assessment.
+                                View appointment reminders, monitor notification status, and send healthcare SMS alerts to mothers.
                             </p>
 
-                            <p class="mt-4 sm:mt-6 flex items-center gap-1.5 text-[12px] sm:text-sm font-semibold text-emerald-600">
-                                Get started
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </p>
-                        </div>
-                    </a>
-
-                    {{-- Schedule Appointment --}}
-                    <a href="{{ route('mothers.index') }}"
-                       class="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 p-5 sm:p-7 shadow-sm transition duration-200 hover:shadow-lg hover:border-blue-200 hover:-translate-y-0.5">
-
-                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-blue-50 transition group-hover:bg-blue-100"></div>
-
-                        <div class="relative">
-                            <div class="h-12 w-12 sm:h-16 sm:w-16 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 mb-4 sm:mb-6 transition group-hover:bg-blue-600 group-hover:text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
-                                </svg>
-                            </div>
-
-                            <p class="text-[15px] sm:text-xl font-bold text-slate-900">Schedule appointment</p>
-                            <p class="mt-2 text-[12px] sm:text-sm leading-relaxed text-slate-500">
-                                Arrange a follow-up visit for a mother.
-                            </p>
-
-                            <p class="mt-4 sm:mt-6 flex items-center gap-1.5 text-[12px] sm:text-sm font-semibold text-blue-600">
-                                Get started
+                            <p class="mt-4 sm:mt-6 flex items-center gap-1.5 text-[12px] sm:text-sm font-semibold text-amber-600">
+                                Open module
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                 </svg>

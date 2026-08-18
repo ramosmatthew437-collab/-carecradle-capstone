@@ -268,12 +268,7 @@
                             </p>
                         </div>
 
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Blood Type</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900">
-                                {{ $infant->blood_type ?? '-' }}
-                            </p>
-                        </div>
+                        
 
                         <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
                             <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Mother Name</p>
