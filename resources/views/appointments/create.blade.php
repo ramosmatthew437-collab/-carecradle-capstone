@@ -143,10 +143,9 @@
                                         Vaccination
                                     </option>
 
-                                    <option value="Postpartum"
-    {{ $appointment->appointment_type == 'Postpartum' ? 'selected' : '' }}>
-    Postpartum Checkup
-</option>
+                                    <option value="Postpartum">
+                                        Postpartum Checkup
+                                    </option>
 
                                 </select>
                             </div>
