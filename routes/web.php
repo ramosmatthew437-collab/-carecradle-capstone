@@ -18,6 +18,8 @@ use App\Http\Controllers\Mother\MotherPrenatalController;
 use App\Http\Controllers\Mother\MotherInfantController;
 use App\Http\Controllers\Mother\MotherGrowthMonitoringController;
 use App\Http\Controllers\Mother\MotherVaccinationController;
+use App\Http\Controllers\HealthTipController;
+use App\Http\Controllers\MidwifeHealthTipController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,6 +92,12 @@ Route::middleware(['auth'])->group(function () {
     */
 
     Route::middleware(['role:Midwife'])->group(function () {
+
+
+    Route::resource('midwife/health-tips', MidwifeHealthTipController::class)
+    ->names('midwife.health-tips');
+
+    
 
   Route::get('/test-midwife', function () {
     return view('test-midwife');
@@ -270,6 +278,15 @@ Route::middleware(['auth'])->group(function () {
             [VaccinationController::class, 'destroy'])
             ->name('vaccinations.destroy');
 
+
+            /*
+    |--------------------------------------------------------------------------
+    |Health Tips
+    |--------------------------------------------------------------------------
+    */
+
+      
+
     });
 
     /*
@@ -315,6 +332,19 @@ Route::get(
     '/mother/vaccinations',
     [MotherVaccinationController::class, 'index']
 )->name('mother.vaccinations');
+
+Route::get(
+    '/mother/health-tips',
+    [HealthTipController::class, 'index']
+)->name('mother.health-tips');
+
+Route::get(
+    '/mother/health-tips/{healthTip}',
+    [HealthTipController::class, 'show']
+)->name('mother.health-tips.show');
+      
+    
+
 });
 
 });
