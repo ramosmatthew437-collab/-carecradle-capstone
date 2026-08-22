@@ -129,25 +129,25 @@
                                     </svg>
                                 </div>
 
-                                <<select
-    name="appointment_type"
-    class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-sm text-gray-900 shadow-sm transition focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-100">
+                                <select
+                                    name="appointment_type"
+                                    class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-sm text-gray-900 shadow-sm transition focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-100">
 
-    <option value="">Select appointment type</option>
+                                    <option value="">Select appointment type</option>
 
-    <option value="Prenatal Checkup">
-        Prenatal Checkup
-    </option>
+                                    <option value="Prenatal Checkup">
+                                        Prenatal Checkup
+                                    </option>
 
-    <option value="Vaccination">
-        Vaccination
-    </option>
+                                    <option value="Vaccination">
+                                        Vaccination
+                                    </option>
 
-    <option value="Postpartum Checkup">
-        Postpartum Checkup
-    </option>
+                                    <option value="Postpartum Checkup">
+                                        Postpartum Checkup
+                                    </option>
 
-</select>
+                                </select>
                             </div>
 
                             @error('appointment_type')
