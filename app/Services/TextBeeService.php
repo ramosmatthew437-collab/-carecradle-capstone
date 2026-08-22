@@ -102,13 +102,20 @@ class TextBeeService
                 'error' => 'Unable to connect to TextBee.',
                 'details' => $e->getMessage(),
             ];
-        } catch (\Throwable $e) {
-            return [
-                'success' => false,
-                'error' => 'Unexpected error while sending SMS.',
-                'details' => $e->getMessage(),
-            ];
         }
+        catch (\Throwable $e) {
+
+    \Log::error('TEXTBEE EXCEPTION', [
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+    ]);
+
+    return [
+        'success' => false,
+        'error' => $e->getMessage(),
+    ];
+}
 
         $responseData = $response->json();
 
