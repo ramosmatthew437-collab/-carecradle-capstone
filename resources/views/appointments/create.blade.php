@@ -143,9 +143,9 @@
                                         Vaccination
                                     </option>
 
-                                    <option value="Postpartum Checkup">
-                                        Postpartum Checkup
-                                    </option>
+                                    <option value="Postpartum">
+    Postpartum Checkup
+</option>
 
                                 </select>
                             </div>
