@@ -15,10 +15,12 @@ class TextBeeService
     {
         $this->apiKey = (string) config('services.textbee.api_key');
         $this->deviceId = (string) config('services.textbee.device_id');
-        $this->baseUrl = rtrim(
-            (string) config('services.textbee.base_url', 'https://api.textbee.dev'),
-            '/'
-        );
+       $this->baseUrl = trim(
+    rtrim(
+        (string) config('services.textbee.base_url', 'https://api.textbee.dev'),
+        '/'
+    )
+);
     }
 
     /**
