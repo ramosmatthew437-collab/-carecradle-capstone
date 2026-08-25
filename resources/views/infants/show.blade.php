@@ -373,6 +373,25 @@
                         </div>
 
                     @endif
+                    @if($infant->growthMonitorings->count() > 1)
+
+<div class="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+    
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">
+            Growth Trend Chart
+        </h3>
+
+        <p class="text-sm text-gray-500">
+             Infant growth trends showing weight and height progression over time.
+        </p>
+    </div>
+
+    <canvas id="growthChart" height="100"></canvas>
+
+</div>
+
+@endif
 
                     @if ($infant->growthMonitorings->isEmpty())
 
@@ -441,7 +460,12 @@
 
                         </div>
 
+                        
+
                     @endif
+                    
+
+                    
 
                 </div>
 
@@ -635,5 +659,104 @@
         </div>
 
     </div>
+
+   @if($infant->growthMonitorings->count() > 1)
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const ctx = document.getElementById('growthChart');
+
+    if (!ctx) return;
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                @foreach($infant->growthMonitorings->sortBy('date_measured') as $growth)
+                    "{{ \Carbon\Carbon::parse($growth->date_measured)->format('M d, Y') }}",
+                @endforeach
+            ],
+
+            datasets: [
+                {
+                    label: 'Weight (kg)',
+                    data: [
+                        @foreach($infant->growthMonitorings->sortBy('date_measured') as $growth)
+                            {{ $growth->weight }},
+                        @endforeach
+                    ],
+                    yAxisID: 'y',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: false
+                },
+
+                {
+                    label: 'Height (cm)',
+                    data: [
+                        @foreach($infant->growthMonitorings->sortBy('date_measured') as $growth)
+                            {{ $growth->height }},
+                        @endforeach
+                    ],
+                    yAxisID: 'y1',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: false
+                }
+            ]
+        },
+
+        options: {
+            responsive: true,
+
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+
+            scales: {
+                y: {
+                    type: 'linear',
+                    position: 'left',
+
+                    title: {
+                        display: true,
+                        text: 'Weight (kg)'
+                    }
+                },
+
+                y1: {
+                    type: 'linear',
+                    position: 'right',
+
+                    grid: {
+                        drawOnChartArea: false
+                    },
+
+                    title: {
+                        display: true,
+                        text: 'Height (cm)'
+                    }
+                },
+
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Measurement Date'
+                    }
+                }
+            }
+        }
+    });
+
+});
+</script>
+
+@endif
 
 </x-app-layout>

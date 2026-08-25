@@ -1,4 +1,4 @@
-<nav x-data="{ open: false, motherDrawerOpen: false, midwifeDrawerOpen: false, adminDrawerOpen: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false, motherDrawerOpen: false, midwifeDrawerOpen: false, adminDrawerOpen: false }" class="bg-white border-b border-pink-100">
 
     @php
         $user = Auth::user();
@@ -22,7 +22,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ $user->isMother() ? route('mother.dashboard') : route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <x-application-logo size="sm" />
                     </a>
                 </div>
 
@@ -34,7 +34,7 @@
 
                         <button
                             @click="adminDrawerOpen = true"
-                            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none transition dark:border-gray-600 dark:text-gray-300">
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
 
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
@@ -51,7 +51,7 @@
 
                         <button
                             @click="midwifeDrawerOpen = true"
-                            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none transition dark:border-gray-600 dark:text-gray-300">
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
 
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
@@ -68,7 +68,7 @@
 
                         <button
                             @click="motherDrawerOpen = true"
-                            class="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none transition dark:border-gray-600 dark:text-gray-300">
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
 
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
@@ -91,7 +91,7 @@
 
                     <x-slot name="trigger">
 
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition">
+                        <button class="inline-flex items-center gap-1 px-3 py-2 border border-transparent text-sm font-semibold rounded-xl text-slate-600 bg-white hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
 
                             <div>{{ $user->name }}</div>
 
@@ -135,7 +135,7 @@
 
                 <button
                     @click="{{ $hamburgerClick }}"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:bg-gray-100 focus:outline-none">
+                    class="inline-flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-pink-50 hover:text-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
 
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
 
@@ -212,7 +212,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="adminDrawerOpen = false"
-            class="fixed inset-0 z-40 bg-gray-900/50"
+            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px]"
             style="display: none;">
         </div>
 
@@ -226,15 +226,17 @@
             x-transition:leave-start="translate-x-0"
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="adminDrawerOpen = false"
-            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-xl"
+            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
             style="display: none;">
 
             <!-- Drawer Header -->
-            <div class="flex items-center justify-between bg-gradient-to-r from-pink-600 to-pink-700 px-5 py-5 text-white">
+            <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
 
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
-                        <x-application-logo class="block h-6 w-6 fill-current text-white" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75a3.75 3.75 0 00-3.75 3.75v3.75A5.25 5.25 0 0012 21a5.25 5.25 0 003.75-9.75V7.5A3.75 3.75 0 0012 3.75Z"/>
+                        </svg>
                     </div>
                     <div>
                         <p class="text-base font-bold leading-tight">CareCradle</p>
@@ -244,7 +246,7 @@
 
                 <button
                     @click="adminDrawerOpen = false"
-                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none"
+                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition"
                     aria-label="Close menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -260,13 +262,13 @@
 
                     <a href="{{ route($link['route']) }}"
                        @click="adminDrawerOpen = false"
-                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
                               {{ $link['active']
                                     ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700'
-                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-gray-400' }}"
+                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}" />
                         </svg>
@@ -280,15 +282,15 @@
             </nav>
 
             <!-- Divider -->
-            <div class="border-t border-gray-100"></div>
+            <div class="border-t border-slate-100"></div>
 
             <!-- Account Actions -->
             <div class="space-y-1 px-3 py-4">
 
                 <a href="{{ route('profile.edit') }}"
                    @click="adminDrawerOpen = false"
-                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
                     Profile
@@ -299,8 +301,8 @@
 
                     <button
                         type="submit"
-                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium text-gray-600 transition hover:bg-red-50 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out
@@ -316,7 +318,6 @@
 
     {{-- ====================================== --}}
     {{-- MIDWIFE PORTAL — LEFT SLIDE-OUT DRAWER --}}
-    {{-- Unchanged from the existing working implementation. --}}
     {{-- ====================================== --}}
 
     @if($user->isMidwife())
@@ -360,7 +361,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="midwifeDrawerOpen = false"
-            class="fixed inset-0 z-40 bg-gray-900/50"
+            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px]"
             style="display: none;">
         </div>
 
@@ -374,15 +375,17 @@
             x-transition:leave-start="translate-x-0"
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="midwifeDrawerOpen = false"
-            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-xl"
+            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
             style="display: none;">
 
             <!-- Drawer Header -->
-            <div class="flex items-center justify-between bg-gradient-to-r from-pink-600 to-pink-700 px-5 py-5 text-white">
+            <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
 
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
-                        <x-application-logo class="block h-6 w-6 fill-current text-white" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75a3.75 3.75 0 00-3.75 3.75v3.75A5.25 5.25 0 0012 21a5.25 5.25 0 003.75-9.75V7.5A3.75 3.75 0 0012 3.75Z"/>
+                        </svg>
                     </div>
                     <div>
                         <p class="text-base font-bold leading-tight">CareCradle</p>
@@ -392,7 +395,7 @@
 
                 <button
                     @click="midwifeDrawerOpen = false"
-                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none"
+                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition"
                     aria-label="Close menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -408,13 +411,13 @@
 
                     <a href="{{ route($link['route']) }}"
                        @click="midwifeDrawerOpen = false"
-                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
                               {{ $link['active']
                                     ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700'
-                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-gray-400' }}"
+                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}" />
                         </svg>
@@ -428,15 +431,15 @@
             </nav>
 
             <!-- Divider -->
-            <div class="border-t border-gray-100"></div>
+            <div class="border-t border-slate-100"></div>
 
             <!-- Account Actions -->
             <div class="space-y-1 px-3 py-4">
 
                 <a href="{{ route('profile.edit') }}"
                    @click="midwifeDrawerOpen = false"
-                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
                     Profile
@@ -447,8 +450,8 @@
 
                     <button
                         type="submit"
-                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium text-gray-600 transition hover:bg-red-50 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out
@@ -464,7 +467,6 @@
 
     {{-- ====================================== --}}
     {{-- MOTHER PORTAL — LEFT SLIDE-OUT DRAWER --}}
-    {{-- Unchanged from the existing working implementation. --}}
     {{-- ====================================== --}}
 
     @if($user->isMother())
@@ -521,7 +523,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="motherDrawerOpen = false"
-            class="fixed inset-0 z-40 bg-gray-900/50"
+            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px]"
             style="display: none;">
         </div>
 
@@ -535,15 +537,17 @@
             x-transition:leave-start="translate-x-0"
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="motherDrawerOpen = false"
-            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-xl"
+            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
             style="display: none;">
 
             <!-- Drawer Header -->
-            <div class="flex items-center justify-between bg-gradient-to-r from-pink-600 to-pink-700 px-5 py-5 text-white">
+            <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
 
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
-                        <x-application-logo class="block h-6 w-6 fill-current text-white" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75a3.75 3.75 0 00-3.75 3.75v3.75A5.25 5.25 0 0012 21a5.25 5.25 0 003.75-9.75V7.5A3.75 3.75 0 0012 3.75Z"/>
+                        </svg>
                     </div>
                     <div>
                         <p class="text-base font-bold leading-tight">CareCradle</p>
@@ -553,7 +557,7 @@
 
                 <button
                     @click="motherDrawerOpen = false"
-                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none"
+                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition"
                     aria-label="Close menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -569,13 +573,13 @@
 
                     <a href="{{ route($link['route']) }}"
                        @click="motherDrawerOpen = false"
-                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
                               {{ $link['active']
                                     ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700'
-                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-gray-400' }}"
+                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}" />
                             @isset($link['icon2'])
@@ -592,15 +596,15 @@
             </nav>
 
             <!-- Divider -->
-            <div class="border-t border-gray-100"></div>
+            <div class="border-t border-slate-100"></div>
 
             <!-- Account Actions -->
             <div class="space-y-1 px-3 py-4">
 
                 <a href="{{ route('profile.edit') }}"
                    @click="motherDrawerOpen = false"
-                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
                     Profile
@@ -611,8 +615,8 @@
 
                     <button
                         type="submit"
-                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium text-gray-600 transition hover:bg-red-50 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out

@@ -7,12 +7,13 @@
 
     <title>{{ isset($title) ? $title . ' - CareCradle' : 'CareCradle' }}</title>
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-slate-50">
+<body class="font-sans antialiased bg-[#FFF8FA]" style="font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;">
 
     <div x-data="{ sidebarOpen: false }" class="min-h-screen">
 
@@ -26,18 +27,18 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="sidebarOpen = false"
-            class="fixed inset-0 z-40 bg-slate-900/50 lg:hidden"
+            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px] lg:hidden"
             aria-hidden="true"
         ></div>
 
         <aside
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-            class="fixed inset-y-0 left-0 z-50 flex w-72 transform flex-col bg-white border-r border-pink-100 transition-transform duration-200 ease-in-out lg:translate-x-0"
+            class="fixed inset-y-0 left-0 z-50 flex w-72 transform flex-col bg-white border-r border-pink-100 shadow-sm shadow-pink-100/40 transition-transform duration-200 ease-in-out lg:translate-x-0"
             @click.outside="sidebarOpen = false"
         >
             <div class="flex h-16 shrink-0 items-center justify-between border-b border-pink-100 px-6">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
-                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-pink-600 text-white shadow-sm">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-sm shadow-pink-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15.75 9.75M21 12A9 9 0 1112 3a9 9 0 019 9Z"/>
                         </svg>
@@ -51,7 +52,7 @@
                 <button
                     type="button"
                     @click="sidebarOpen = false"
-                    class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 lg:hidden"
+                    class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition lg:hidden"
                     aria-label="Close sidebar"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -65,7 +66,7 @@
                 
                     href="{{ route('dashboard') }}"
                     @if(request()->routeIs('dashboard')) aria-current="page" @endif
-                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('dashboard') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                    class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('dashboard') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 {{ request()->routeIs('dashboard') ? 'text-pink-600' : 'text-slate-400 group-hover:text-slate-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12 12 4.5l8.25 7.5M5.25 10.5V19.5A1.5 1.5 0 006.75 21H9.75V15.75A1.5 1.5 0 0111.25 14.25h1.5a1.5 1.5 0 011.5 1.5V21h3a1.5 1.5 0 001.5-1.5V10.5"/>
@@ -76,7 +77,7 @@
                 
                     href="{{ route('mothers.index') }}"
                     @if(request()->routeIs('mothers.*')) aria-current="page" @endif
-                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('mothers.*') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                    class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('mothers.*') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 {{ request()->routeIs('mothers.*') ? 'text-pink-600' : 'text-slate-400 group-hover:text-slate-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
@@ -87,7 +88,7 @@
                 
                     href="{{ route('sms-notifications.index') }}"
                     @if(request()->routeIs('sms-notifications.*')) aria-current="page" @endif
-                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('sms-notifications.*') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                    class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('sms-notifications.*') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 {{ request()->routeIs('sms-notifications.*') ? 'text-pink-600' : 'text-slate-400 group-hover:text-slate-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3.75h6m-8.25 6L12 15.75h5.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6v9.75c0 .655.26 1.164.673 1.5H4.5v2.25Z"/>
@@ -100,7 +101,7 @@
                 
                     href="{{ route('profile.edit') }}"
                     @if(request()->routeIs('profile.*')) aria-current="page" @endif
-                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('profile.*') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                    class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('profile.*') ? 'bg-pink-50 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 {{ request()->routeIs('profile.*') ? 'text-pink-600' : 'text-slate-400 group-hover:text-slate-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0"/>
@@ -125,7 +126,7 @@
                     @csrf
                     <button
                         type="submit"
-                        class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-red-50 hover:text-red-600"
+                        class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0110.5 3h6a2.25 2.25 0 012.25 2.25v13.5A2.25 2.25 0 0116.5 21h-6a2.25 2.25 0 01-2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"/>
@@ -144,7 +145,7 @@
                 <button
                     type="button"
                     @click="sidebarOpen = true"
-                    class="-ml-1 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 lg:hidden"
+                    class="-ml-1 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition lg:hidden"
                     aria-label="Open sidebar"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
