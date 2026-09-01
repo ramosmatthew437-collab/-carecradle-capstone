@@ -1,5 +1,6 @@
 <x-app-layout>
 
+
     <x-slot name="header">
         <h2 class="text-lg sm:text-xl font-semibold leading-tight text-gray-800">
             Growth Record Details
@@ -343,6 +344,31 @@
             </div>
 
             {{-- ====================================== --}}
+            {{-- Section 3B : Growth Trend Chart --}}
+            {{-- ====================================== --}}
+
+            @if($growthMonitoring->infant->growthMonitorings->count() > 1)
+
+            <div class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+
+                <div class="mb-4">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900">
+                        Growth Trend Chart
+                    </h3>
+                    <p class="text-xs sm:text-sm text-gray-500">
+                        Weight and height progression across all recorded measurements for this infant.
+                    </p>
+                </div>
+
+                <div class="relative h-64 sm:h-80 w-full">
+                    <canvas id="growthChart"></canvas>
+                </div>
+
+            </div>
+
+            @endif
+
+            {{-- ====================================== --}}
             {{-- Section 4 : Medical Notes --}}
             {{-- ====================================== --}}
 
@@ -381,64 +407,234 @@
 
             </div>
 
-            {{-- ====================================== --}}
-            {{-- Section 5 : Action Buttons --}}
-            {{-- ====================================== --}}
+        {{-- ====================================== --}}
+{{-- Section 5 : Action Buttons --}}
+{{-- ====================================== --}}
 
-            <div class="rounded-2xl border border-pink-200 bg-pink-50 p-5 sm:p-6">
+@if(!request()->routeIs('mother.growth-monitoring.show'))
 
-                <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+<div class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
 
-                    <div>
-                        <h3 class="text-base sm:text-lg font-semibold text-pink-700">Growth Record Management</h3>
-                        <p class="mt-1 text-xs sm:text-sm text-pink-600">
-                            Review this growth monitoring record carefully. You may return to the infant
-                            profile, edit the measurements, or permanently delete this record if necessary.
-                        </p>
-                    </div>
+    <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
-                    <div class="flex flex-col gap-3 sm:flex-row">
+        <div>
+            <h3 class="text-xl font-bold text-slate-800">
+                Record Management
+            </h3>
 
-                        <a
-                            href="{{ route('infants.show', $growthMonitoring->infant) }}"
-                            class="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-5 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 active:scale-[0.98]">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
-                            </svg>
-                            Back to Infant
-                        </a>
+            <p class="mt-1 text-sm text-slate-500">
+                Manage this growth monitoring record and return to the linked infant profile.
+            </p>
+        </div>
 
-                        <a
-                            href="{{ route('growth-monitorings.edit', $growthMonitoring) }}"
-                            class="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600 active:scale-[0.98]">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487a2.625 2.625 0 113.712 3.713L7.5 21H3v-4.5L16.862 4.487Z"/>
-                            </svg>
-                            Edit Record
-                        </a>
+        <div class="flex flex-wrap gap-3">
 
-                        <form action="{{ route('growth-monitorings.destroy', $growthMonitoring) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
+            {{-- Back to Infant --}}
+            <a
+                href="{{ route('infants.show', $growthMonitoring->infant) }}"
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">
 
-                            <button
-                                onclick="return confirm('Delete this growth record?')"
-                                class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 active:scale-[0.98]">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 7.5h12m-9.75 0v10.125a1.125 1.125 0 001.125 1.125h5.25a1.125 1.125 0 001.125-1.125V7.5M9.75 7.5V6.375A1.125 1.125 0 0110.875 5.25h2.25a1.125 1.125 0 011.125 1.125V7.5"/>
-                                </svg>
-                                Delete
-                            </button>
-                        </form>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="h-4 w-4">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15 19l-7-7 7-7" />
+                </svg>
 
-                    </div>
+                Back to Infant
+            </a>
 
-                </div>
+            {{-- Edit Record --}}
+            <a
+                href="{{ route('growth-monitorings.edit', $growthMonitoring) }}"
+                class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600">
 
-            </div>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="h-4 w-4">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M16.862 4.487a2.625 2.625 0 113.712 3.713L7.5 21H3v-4.5L16.862 4.487Z" />
+                </svg>
+
+                Edit Record
+            </a>
+
+            {{-- Delete Record --}}
+            <form
+                action="{{ route('growth-monitorings.destroy', $growthMonitoring) }}"
+                method="POST">
+
+                @csrf
+                @method('DELETE')
+
+                <button
+                    type="submit"
+                    onclick="return confirm('Delete this growth record?')"
+                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="2"
+                         stroke="currentColor"
+                         class="h-4 w-4">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M6 7.5h12M9.75 7.5V6.375A1.125 1.125 0 0110.875 5.25h2.25A1.125 1.125 0 0114.25 6.375V7.5m-7.5 0h9l-.75 11.25A1.125 1.125 0 0113.878 19.5h-3.756A1.125 1.125 0 019 18.75L8.25 7.5" />
+                    </svg>
+
+                    Delete
+                </button>
+
+            </form>
 
         </div>
 
     </div>
+
+</div>
+
+@endif
+
+        </div>
+
+    </div>
+
+    @if($growthMonitoring->infant->growthMonitorings->count() > 1)
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const ctx = document.getElementById('growthChart');
+
+        if (!ctx) return;
+
+        const isMobile = window.matchMedia('(max-width: 639px)').matches;
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [
+                    @foreach($growthMonitoring->infant->growthMonitorings->sortBy('date_measured') as $record)
+                        "{{ \Carbon\Carbon::parse($record->date_measured)->format('M d, Y') }}",
+                    @endforeach
+                ],
+                datasets: [
+                    {
+                        label: 'Weight (kg)',
+                        data: [
+                            @foreach($growthMonitoring->infant->growthMonitorings->sortBy('date_measured') as $record)
+                                {{ $record->weight }},
+                            @endforeach
+                        ],
+                        yAxisID: 'y',
+                        borderColor: '#ec4899',
+                        backgroundColor: '#ec4899',
+                        borderWidth: 2.5,
+                        pointRadius: isMobile ? 2 : 3,
+                        tension: 0.4,
+                        fill: false
+                    },
+                    {
+                        label: 'Height (cm)',
+                        data: [
+                            @foreach($growthMonitoring->infant->growthMonitorings->sortBy('date_measured') as $record)
+                                {{ $record->height }},
+                            @endforeach
+                        ],
+                        yAxisID: 'y1',
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b981',
+                        borderWidth: 2.5,
+                        pointRadius: isMobile ? 2 : 3,
+                        tension: 0.4,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 12,
+                            font: {
+                                size: isMobile ? 11 : 13
+                            }
+                        }
+                    },
+                    tooltip: {
+                        titleFont: { size: isMobile ? 11 : 13 },
+                        bodyFont: { size: isMobile ? 11 : 13 }
+                    }
+                },
+
+                scales: {
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            font: { size: isMobile ? 10 : 12 }
+                        },
+                        title: {
+                            display: !isMobile,
+                            text: 'Weight (kg)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        ticks: {
+                            font: { size: isMobile ? 10 : 12 }
+                        },
+                        title: {
+                            display: !isMobile,
+                            text: 'Height (cm)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: isMobile ? 9 : 11 },
+                            maxRotation: isMobile ? 60 : 0,
+                            minRotation: isMobile ? 60 : 0,
+                            autoSkip: true,
+                            maxTicksLimit: isMobile ? 5 : 10
+                        },
+                        title: {
+                            display: !isMobile,
+                            text: 'Measurement Date'
+                        }
+                    }
+                }
+            }
+        });
+
+    });
+    </script>
+
+    @endif
 
 </x-app-layout>

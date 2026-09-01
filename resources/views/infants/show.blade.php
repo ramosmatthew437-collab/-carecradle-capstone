@@ -373,9 +373,9 @@
                         </div>
 
                     @endif
-                  @if($infant->growthMonitorings->count() > 1)
+                 @if($infant->growthMonitorings->count() > 1)
 
-<div class="mt-6 rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm">
+<div id="growth-chart" class="mt-6 rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm">
 
     <div class="mb-4">
         <h3 class="text-lg font-semibold text-gray-900">
@@ -383,7 +383,7 @@
         </h3>
 
         <p class="text-sm text-gray-500">
-             Infant growth trends showing weight and height progression over time.
+            Infant growth trends showing weight and height progression over time.
         </p>
     </div>
 

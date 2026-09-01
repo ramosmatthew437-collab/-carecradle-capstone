@@ -37,43 +37,45 @@
 
             @if($infants->count())
 
-                <div class="mt-5 rounded-2xl bg-white border border-pink-100 p-4 sm:p-5 shadow-sm shadow-pink-100/50">
-
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="h-7 w-7 rounded-lg bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-                            </svg>
-                        </div>
-                        <p class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-pink-500">
-                            {{ $infants->count() > 1 ? 'Select infant' : 'Your infant' }}
-                        </p>
-                    </div>
+                <div class="mt-5 rounded-2xl bg-white border border-pink-100 shadow-sm shadow-pink-100/50 overflow-hidden">
 
                     <form method="GET">
 
-                        <div class="relative">
+                        <div class="relative flex items-center gap-3 px-4 py-3.5">
 
-                            <select
-                                name="infant"
-                                onchange="this.form.submit()"
-                                {{ $infants->count() <= 1 ? 'disabled' : '' }}
-                                class="w-full appearance-none rounded-xl border-2 border-slate-100 bg-slate-50 pl-4 pr-11 py-3.5 sm:py-4 text-[15px] sm:text-base font-bold text-slate-900 focus:border-pink-300 focus:bg-white focus:ring-4 focus:ring-pink-100 transition disabled:opacity-100 disabled:text-slate-900">
+                            <div class="h-9 w-9 flex-shrink-0 rounded-full bg-pink-50 flex items-center justify-center text-pink-500">
+                                <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                                </svg>
+                            </div>
 
-                                @foreach($infants as $infant)
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[10px] font-semibold uppercase tracking-wider text-pink-500 leading-none mb-1">
+                                    {{ $infants->count() > 1 ? 'Select infant' : 'Your infant' }}
+                                </p>
 
-                                    <option
-                                        value="{{ $infant->id }}"
-                                        {{ $selectedInfant && $selectedInfant->id == $infant->id ? 'selected' : '' }}>
+                               <select
+    name="infant"
+    onchange="this.form.submit()"
+    {{ $infants->count() <= 1 ? 'disabled' : '' }}
+    style="-webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; background-image: none !important;"
+    class="w-full appearance-none bg-transparent border-0 outline-none ring-0 pr-6 text-[15px] font-bold text-slate-900 focus:outline-none focus:ring-0 disabled:opacity-100 [&::-ms-expand]:hidden">
 
-                                        {{ $infant->first_name }}
-                                        {{ $infant->last_name }}
+    @foreach($infants as $infant)
 
-                                    </option>
+        <option
+            value="{{ $infant->id }}"
+            {{ $selectedInfant && $selectedInfant->id == $infant->id ? 'selected' : '' }}>
 
-                                @endforeach
+            {{ $infant->first_name }}
+            {{ $infant->last_name }}
 
-                            </select>
+        </option>
+
+    @endforeach
+
+</select>
+                            </div>
 
                             @if($infants->count() > 1)
                                 <svg class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -461,7 +463,7 @@ $years = (int) $birthDate->diffInYears(now());
                 {{-- ====================================== --}}
                 {{-- GROWTH MONITORING --}}
                 {{-- Same $growthRecords loop as the original table --}}
-                {{-- "View growth chart" is a placeholder anchor for now --}}
+                {{-- "View growth chart" links to the most recent growth record --}}
                 {{-- ====================================== --}}
 
                 <div class="mt-6" id="growth-chart">
@@ -471,13 +473,20 @@ $years = (int) $birthDate->diffInYears(now());
                             Growth monitoring
                         </h3>
 
-                        <a href="#growth-chart"
-                           class="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-white px-3 py-1.5 text-[12px] sm:text-[13px] font-semibold text-pink-600 transition hover:bg-pink-50">
-                            View growth chart
-                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </a>
+                        @php
+                            $latestGrowth = $growthRecords->first();
+                        @endphp
+
+                        @if($latestGrowth)
+                            <a href="{{ route('mother.growth-monitoring.show', $latestGrowth) }}"
+                               class="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-white px-3 py-1.5 text-[12px] sm:text-[13px] font-semibold text-pink-600 transition hover:bg-pink-50">
+                                View growth chart
+                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        @endif
+
                     </div>
 
                     @if($growthRecords->count())

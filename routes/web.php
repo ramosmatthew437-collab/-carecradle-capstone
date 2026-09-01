@@ -342,8 +342,11 @@ Route::get(
     '/mother/health-tips/{healthTip}',
     [HealthTipController::class, 'show']
 )->name('mother.health-tips.show');
-      
-    
+
+Route::get(
+    '/mother/growth-monitoring/{growthMonitoring}',
+    [MotherGrowthMonitoringController::class, 'show']
+)->name('mother.growth-monitoring.show');
 
 });
 

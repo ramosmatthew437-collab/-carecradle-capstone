@@ -22,5 +22,19 @@ class MotherGrowthMonitoringController extends Controller
             'mother',
             'growthRecords'
         ));
+    }public function show(GrowthMonitoring $growthMonitoring)
+{
+    $mother = Auth::user()->mother;
+
+    if ($growthMonitoring->infant->mother_id !== $mother->id) {
+        abort(403);
     }
+
+    $growthMonitoring->load('infant');
+
+    return view(
+        'growth-monitorings.show',
+        compact('growthMonitoring')
+    );
+}
 }
