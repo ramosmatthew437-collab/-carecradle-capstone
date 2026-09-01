@@ -373,10 +373,10 @@
                         </div>
 
                     @endif
-                    @if($infant->growthMonitorings->count() > 1)
+                  @if($infant->growthMonitorings->count() > 1)
 
-<div class="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-    
+<div class="mt-6 rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm">
+
     <div class="mb-4">
         <h3 class="text-lg font-semibold text-gray-900">
             Growth Trend Chart
@@ -387,7 +387,9 @@
         </p>
     </div>
 
-    <canvas id="growthChart" height="100"></canvas>
+    <div class="relative h-64 sm:h-80 w-full">
+        <canvas id="growthChart"></canvas>
+    </div>
 
 </div>
 
@@ -671,6 +673,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!ctx) return;
 
+    const isMobile = window.matchMedia('(max-width: 639px)').matches;
+
     new Chart(ctx, {
         type: 'line',
         data: {
@@ -689,7 +693,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         @endforeach
                     ],
                     yAxisID: 'y',
-                    borderWidth: 3,
+                    borderColor: '#0891b2',
+                    backgroundColor: '#0891b2',
+                    borderWidth: 2.5,
+                    pointRadius: isMobile ? 2 : 3,
                     tension: 0.4,
                     fill: false
                 },
@@ -702,7 +709,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         @endforeach
                     ],
                     yAxisID: 'y1',
-                    borderWidth: 3,
+                    borderColor: '#10b981',
+                    backgroundColor: '#10b981',
+                    borderWidth: 2.5,
+                    pointRadius: isMobile ? 2 : 3,
                     tension: 0.4,
                     fill: false
                 }
@@ -711,11 +721,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
 
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top'
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 12,
+                        padding: 12,
+                        font: {
+                            size: isMobile ? 11 : 13
+                        }
+                    }
+                },
+                tooltip: {
+                    titleFont: { size: isMobile ? 11 : 13 },
+                    bodyFont: { size: isMobile ? 11 : 13 }
                 }
             },
 
@@ -723,9 +750,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 y: {
                     type: 'linear',
                     position: 'left',
-
+                    ticks: {
+                        font: { size: isMobile ? 10 : 12 }
+                    },
                     title: {
-                        display: true,
+                        display: !isMobile,
                         text: 'Weight (kg)'
                     }
                 },
@@ -733,20 +762,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 y1: {
                     type: 'linear',
                     position: 'right',
-
                     grid: {
                         drawOnChartArea: false
                     },
-
+                    ticks: {
+                        font: { size: isMobile ? 10 : 12 }
+                    },
                     title: {
-                        display: true,
+                        display: !isMobile,
                         text: 'Height (cm)'
                     }
                 },
 
                 x: {
+                    ticks: {
+                        font: { size: isMobile ? 9 : 11 },
+                        maxRotation: isMobile ? 60 : 0,
+                        minRotation: isMobile ? 60 : 0,
+                        autoSkip: true,
+                        maxTicksLimit: isMobile ? 5 : 10
+                    },
                     title: {
-                        display: true,
+                        display: !isMobile,
                         text: 'Measurement Date'
                     }
                 }

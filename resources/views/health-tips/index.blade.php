@@ -178,6 +178,7 @@
                                         <span class="inline-flex w-fit items-center rounded-full {{ $categoryClasses }} px-2.5 py-1 text-[11px] font-semibold">
                                             {{ $tip->category }}
                                         </span>
+                                         
                                     @endif
 
                                     <h3 class="mt-2.5 text-base font-bold text-gray-900">
