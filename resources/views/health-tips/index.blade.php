@@ -161,16 +161,32 @@
                             @endphp
 
                             <div class="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                                <div class="relative flex h-40 items-center justify-center bg-gradient-to-br from-pink-50 to-teal-50">
+    @if(!empty($tip->image))
+        <img
+            src="{{ asset('storage/' . $tip->image) }}"
+            alt="{{ $tip->title ?? 'Health tip' }}"
+            class="h-full w-full object-cover"
+        >
 
-                                <div class="flex h-40 items-center justify-center bg-gradient-to-br from-pink-50 to-teal-50">
-                                    @if(!empty($tip->image))
-                                        <img src="{{ asset('storage/' . $tip->image) }}" alt="{{ $tip->title ?? 'Health tip' }}" class="h-full w-full object-cover">
-                                    @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0Zm-9-3.75h.008v.008H12V8.25Z"/>
-                                        </svg>
-                                    @endif
-                                </div>
+        {{-- DEBUG --}}
+        <div class="absolute bottom-0 left-0 bg-white/90 px-2 py-1 text-[10px] text-red-600">
+            {{ $tip->image }}
+        </div>
+
+    @else
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="h-10 w-10 text-pink-300"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="1.5">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0Zm-9-3.75h.008v.008H12V8.25Z"/>
+        </svg>
+    @endif
+</div>
 
                                 <div class="flex flex-1 flex-col p-4 sm:p-5">
 
