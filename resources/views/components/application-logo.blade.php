@@ -20,7 +20,7 @@ $current = $sizes[$size] ?? $sizes['default'];
 @endphp
 
 <div class="flex items-center gap-2.5">
-    <img src="{{ asset('images/carecradle-logo.png') }}"
+    <img src="{{ asset('images/system.logo.png') }}"
          alt="CareCradle Logo"
          class="{{ $current['wrap'] }} shrink-0 object-contain">
 
