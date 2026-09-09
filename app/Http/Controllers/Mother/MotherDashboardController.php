@@ -59,7 +59,11 @@ $nextVaccination = Vaccination::whereHas('infant', function ($query) use ($mothe
     ->orderBy('next_due_date')
     ->first();
 
-    dd($nextVaccination);
+    dd([
+    'vaccine' => $nextVaccination->vaccine_name,
+    'given_date' => $nextVaccination->date_given,
+    'next_due_date' => $nextVaccination->next_due_date,
+]);
 
     return view('mother.dashboard', compact(
     'mother',
