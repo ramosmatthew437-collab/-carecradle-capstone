@@ -50,6 +50,7 @@ $infant = Infant::where('mother_id', $mother->id)
     ->latest('birth_date')
     ->first();
 
+    
 $nextVaccination = Vaccination::whereHas('infant', function ($query) use ($mother) {
         $query->where('mother_id', $mother->id);
     })
@@ -57,6 +58,8 @@ $nextVaccination = Vaccination::whereHas('infant', function ($query) use ($mothe
     ->whereDate('next_due_date', '>=', today())
     ->orderBy('next_due_date')
     ->first();
+
+    dd($nextVaccination);
 
     return view('mother.dashboard', compact(
     'mother',
