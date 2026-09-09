@@ -348,6 +348,7 @@ Route::get(
     [MotherGrowthMonitoringController::class, 'show']
 )->name('mother.growth-monitoring.show');
 
+
 });
 
 });

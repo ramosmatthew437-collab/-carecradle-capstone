@@ -10,6 +10,51 @@
     @php
         $heightInMeters = $growthMonitoring->height ? $growthMonitoring->height / 100 : null;
         $bmi = ($growthMonitoring->weight && $heightInMeters) ? $growthMonitoring->weight / ($heightInMeters ** 2) : null;
+
+        $genderKey = strtolower($growthMonitoring->infant->sex ?? '');
+
+        $genderTheme = match($genderKey) {
+            'female' => [
+                'heroFrom'  => 'from-pink-50',
+                'heroBorder'=> 'border-pink-100',
+                'iconBg'    => 'bg-pink-100',
+                'iconText'  => 'text-pink-600',
+                'badgeBg'   => 'bg-pink-100',
+                'badgeText' => 'text-pink-700',
+            ],
+            'male' => [
+                'heroFrom'  => 'from-sky-50',
+                'heroBorder'=> 'border-sky-100',
+                'iconBg'    => 'bg-sky-100',
+                'iconText'  => 'text-sky-600',
+                'badgeBg'   => 'bg-sky-100',
+                'badgeText' => 'text-sky-700',
+            ],
+            default => [
+                'heroFrom'  => 'from-slate-50',
+                'heroBorder'=> 'border-slate-200',
+                'iconBg'    => 'bg-slate-100',
+                'iconText'  => 'text-slate-600',
+                'badgeBg'   => 'bg-slate-100',
+                'badgeText' => 'text-slate-700',
+            ],
+        };
+
+        $ageMonthsRaw = (float) $growthMonitoring->age_in_months;
+
+        if ($ageMonthsRaw < 1) {
+            $ageDays = (int) round($ageMonthsRaw * 30);
+            $ageLabel = $ageDays . ' ' . Str::plural('day', $ageDays) . ' old';
+        } elseif ($ageMonthsRaw < 24) {
+            $ageWholeMonths = (int) round($ageMonthsRaw);
+            $ageLabel = $ageWholeMonths . ' ' . Str::plural('month', $ageWholeMonths) . ' old';
+        } else {
+            $ageYears = (int) floor($ageMonthsRaw / 12);
+            $ageRemainderMonths = (int) round($ageMonthsRaw - ($ageYears * 12));
+            $ageLabel = $ageYears . ' ' . Str::plural('year', $ageYears)
+                . ($ageRemainderMonths > 0 ? ' ' . $ageRemainderMonths . ' ' . Str::plural('month', $ageRemainderMonths) : '')
+                . ' old';
+        }
     @endphp
 
     <div class="py-4 sm:py-8">
@@ -19,17 +64,31 @@
             {{-- Section 1 : Hero Header --}}
             {{-- ====================================== --}}
 
-            <div class="relative overflow-hidden rounded-2xl border border-pink-100 bg-gradient-to-r from-pink-50 via-white to-white shadow-sm">
+            <div class="relative overflow-hidden rounded-2xl border {{ $genderTheme['heroBorder'] }} bg-gradient-to-r {{ $genderTheme['heroFrom'] }} via-white to-white shadow-sm">
 
                 <div class="p-5 sm:p-8">
+
+                    @if(request()->routeIs('mother.growth-monitoring.show'))
+                        <div class="mb-5">
+                            <button
+                                type="button"
+                                onclick="history.back()"
+                                aria-label="Go back"
+                                class="h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 rounded-full bg-white border border-pink-100 flex items-center justify-center text-gray-500 shadow-sm transition hover:bg-pink-50 hover:text-pink-600 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
 
                     <div class="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
 
                         {{-- Left Content --}}
                         <div class="flex items-start gap-4 sm:gap-5">
 
-                            <div class="flex h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 sm:h-8 sm:w-8">
+                            <div class="flex h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-2xl {{ $genderTheme['iconBg'] }} {{ $genderTheme['iconText'] }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 sm:h-8 sm:w-8" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7.5 15l3-3 2.5 2.5L17 9"/>
                                 </svg>
                             </div>
@@ -46,14 +105,19 @@
 
                                 <div class="mt-3 flex flex-wrap items-center gap-2">
                                     <span class="inline-flex items-center gap-1.5 rounded-full bg-pink-100 px-3 py-1 text-xs sm:text-sm font-semibold text-pink-700">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75V4.5m7.5 2.25V4.5M3.75 9.75h16.5M5.25 21h13.5A2.25 2.25 0 0021 18.75V8.25A2.25 2.25 0 0018.75 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21Z"/>
                                         </svg>
                                         {{ \Carbon\Carbon::parse($growthMonitoring->date_measured)->format('F d, Y') }}
                                     </span>
                                     <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs sm:text-sm font-semibold text-gray-700">
-                                        {{ $growthMonitoring->age_in_months }} month(s) old
+                                        {{ $ageLabel }}
                                     </span>
+                                    @if($growthMonitoring->infant->sex)
+                                        <span class="inline-flex items-center rounded-full {{ $genderTheme['badgeBg'] }} {{ $genderTheme['badgeText'] }} px-3 py-1 text-xs sm:text-sm font-semibold">
+                                            {{ $growthMonitoring->infant->sex }}
+                                        </span>
+                                    @endif
                                 </div>
 
                                 <p class="mt-4 max-w-2xl text-sm leading-6 sm:leading-7 text-gray-600">
@@ -71,7 +135,7 @@
                             <div class="mb-4 flex items-center gap-3">
 
                                 <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.5-1.632Z"/>
                                     </svg>
                                 </div>
@@ -129,7 +193,7 @@
                             <p class="mt-2 text-xl sm:text-2xl font-bold text-gray-900">{{ number_format($growthMonitoring->weight, 2) }}<span class="text-xs font-medium text-gray-500"> kg</span></p>
                         </div>
                         <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-cyan-100 text-cyan-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3"/>
                             </svg>
                         </div>
@@ -143,7 +207,7 @@
                             <p class="mt-2 text-xl sm:text-2xl font-bold text-gray-900">{{ number_format($growthMonitoring->height, 2) }}<span class="text-xs font-medium text-gray-500"> cm</span></p>
                         </div>
                         <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18"/>
                             </svg>
@@ -160,7 +224,7 @@
                             </p>
                         </div>
                         <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 11.25a3.75 3.75 0 1 0-7.5 0v.75A2.25 2.25 0 0 1 6 14.25v1.5A2.25 2.25 0 0 0 8.25 18h7.5A2.25 2.25 0 0 0 18 15.75v-1.5A2.25 2.25 0 0 1 15.75 12v-.75Z"/>
                             </svg>
                         </div>
@@ -176,7 +240,7 @@
                             </p>
                         </div>
                         <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M6.75 3.75v16.5m10.5-16.5v16.5"/>
                             </svg>
                         </div>
@@ -190,7 +254,7 @@
                             <p class="mt-2 text-base sm:text-lg font-bold text-gray-400">Not assessed</p>
                         </div>
                         <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0Z"/>
                             </svg>
                         </div>
@@ -215,7 +279,7 @@
                     <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
                         <div class="flex items-center gap-3">
                             <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M6.75 3.75v16.5m10.5-16.5v16.5"/>
                                 </svg>
                             </div>
@@ -266,7 +330,7 @@
                     <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
                         <div class="flex items-center gap-3">
                             <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.5-1.632Z"/>
                                 </svg>
                             </div>
@@ -312,7 +376,7 @@
                 <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
                     <div class="flex items-center gap-3">
                         <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0Z"/>
                             </svg>
                         </div>
@@ -326,7 +390,7 @@
                 <div class="p-5 sm:p-6">
                     <div class="flex items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
                         <div class="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 9h1.5v3.75h-1.5V9Zm0 5.25h1.5v1.5h-1.5v-1.5Zm9.75-2.25a9 9 0 11-18 0 9 9 0 0118 0Z"/>
                             </svg>
                         </div>
@@ -366,6 +430,20 @@
 
             </div>
 
+            @else
+
+            <div class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 text-center shadow-sm">
+                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full {{ $genderTheme['iconBg'] }} {{ $genderTheme['iconText'] }} mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7.5 15l3-3 2.5 2.5L17 9"/>
+                    </svg>
+                </div>
+                <h3 class="text-sm sm:text-base font-semibold text-gray-900">Not enough data yet</h3>
+                <p class="mt-1 text-xs sm:text-sm text-gray-500 max-w-sm mx-auto">
+                    At least two growth measurements are needed to show a trend chart. Once another visit is recorded, weight and height progression will appear here.
+                </p>
+            </div>
+
             @endif
 
             {{-- ====================================== --}}
@@ -377,7 +455,7 @@
                 <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
                     <div class="flex items-center gap-3">
                         <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3h6m-8.25 8.25h13.5A2.25 2.25 0 0021 17.25V6.75A2.25 2.25 0 0018.75 4.5H5.25A2.25 2.25 0 003 6.75v10.5A2.25 2.25 0 005.25 19.5Z"/>
                             </svg>
                         </div>
@@ -432,14 +510,15 @@
             {{-- Back to Infant --}}
             <a
                 href="{{ route('infants.show', $growthMonitoring->infant) }}"
-                class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                      fill="none"
                      viewBox="0 0 24 24"
                      stroke-width="2"
                      stroke="currentColor"
-                     class="h-4 w-4">
+                     class="h-4 w-4"
+                     aria-hidden="true">
                     <path stroke-linecap="round"
                           stroke-linejoin="round"
                           d="M15 19l-7-7 7-7" />
@@ -451,14 +530,15 @@
             {{-- Edit Record --}}
             <a
                 href="{{ route('growth-monitorings.edit', $growthMonitoring) }}"
-                class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600">
+                class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                      fill="none"
                      viewBox="0 0 24 24"
                      stroke-width="2"
                      stroke="currentColor"
-                     class="h-4 w-4">
+                     class="h-4 w-4"
+                     aria-hidden="true">
                     <path stroke-linecap="round"
                           stroke-linejoin="round"
                           d="M16.862 4.487a2.625 2.625 0 113.712 3.713L7.5 21H3v-4.5L16.862 4.487Z" />
@@ -478,14 +558,15 @@
                 <button
                     type="submit"
                     onclick="return confirm('Delete this growth record?')"
-                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">
+                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
 
                     <svg xmlns="http://www.w3.org/2000/svg"
                          fill="none"
                          viewBox="0 0 24 24"
                          stroke-width="2"
                          stroke="currentColor"
-                         class="h-4 w-4">
+                         class="h-4 w-4"
+                         aria-hidden="true">
                         <path stroke-linecap="round"
                               stroke-linejoin="round"
                               d="M6 7.5h12M9.75 7.5V6.375A1.125 1.125 0 0110.875 5.25h2.25A1.125 1.125 0 0114.25 6.375V7.5m-7.5 0h9l-.75 11.25A1.125 1.125 0 0113.878 19.5h-3.756A1.125 1.125 0 019 18.75L8.25 7.5" />

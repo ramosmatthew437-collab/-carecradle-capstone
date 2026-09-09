@@ -19,9 +19,10 @@
     <button
         type="button"
         onclick="history.back()"
-        class="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 rounded-full bg-white border border-pink-100 flex items-center justify-center text-slate-500 hover:bg-pink-50 transition">
+        aria-label="Go back"
+        class="h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 rounded-full bg-white border border-pink-100 flex items-center justify-center text-slate-500 shadow-sm transition hover:bg-pink-50 hover:text-pink-600 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-300">
 
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
         </svg>
 
@@ -73,11 +74,11 @@
 
                 <div class="mt-5 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 p-5 sm:p-6 text-white shadow-md shadow-pink-200 relative overflow-hidden">
 
-                    <div class="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/10"></div>
-                    <div class="absolute -right-2 bottom-3 h-16 w-16 rounded-full bg-white/10"></div>
+                    <div class="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/10" aria-hidden="true"></div>
+                    <div class="absolute -right-2 bottom-3 h-16 w-16 rounded-full bg-white/10" aria-hidden="true"></div>
 
                     <div class="relative flex items-center gap-2">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"/>
                         </svg>
                         <p class="text-[11px] font-semibold uppercase tracking-wider text-pink-50">Latest visit</p>
@@ -86,10 +87,6 @@
                     <h2 class="relative mt-2 text-lg sm:text-xl font-bold">
                         {{ \Carbon\Carbon::parse($latestVisit->visit_date)->format('F d, Y') }}
                     </h2>
-
-                    <p class="relative mt-0.5 text-[13px] sm:text-sm text-pink-50">
-                        Week {{ $latestVisit->gestational_age_weeks }}
-                    </p>
 
                     {{-- Key metrics: gestational age prioritized alongside weight & BP --}}
                     <div class="relative mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -121,20 +118,11 @@
                         {{ $latestStatus['label'] }}
                     </div>
 
-                    <div class="relative mt-4 flex items-center justify-between rounded-xl bg-white/10 px-3 py-2.5 sm:px-4 sm:py-3">
-                        <div>
-                            <p class="text-[10px] sm:text-[11px] text-pink-50">Next visit</p>
-                            <p class="text-[13px] sm:text-sm font-semibold">
-                                {{ \Carbon\Carbon::parse($latestVisit->next_visit_date)->format('F d, Y') }}
-                            </p>
-                        </div>
-                        {{-- Decorative for now — will open the full prenatal visit record later --}}
-                        <button type="button" class="tap-scale inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 sm:px-4 sm:py-2 text-[12px] sm:text-[13px] font-semibold text-pink-600">
-                            Details
-                            <svg class="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </button>
+                    <div class="relative mt-4 rounded-xl bg-white/10 px-3 py-2.5 sm:px-4 sm:py-3">
+                        <p class="text-[10px] sm:text-[11px] text-pink-50">Next visit</p>
+                        <p class="text-[13px] sm:text-sm font-semibold">
+                            {{ \Carbon\Carbon::parse($latestVisit->next_visit_date)->format('F d, Y') }}
+                        </p>
                     </div>
 
                 </div>
@@ -230,8 +218,10 @@
 
                 <div class="mt-6 rounded-2xl bg-white border border-pink-100 p-10 sm:p-12 text-center shadow-sm">
 
-                    <div class="text-5xl sm:text-6xl">
-                        🤰
+                    <div class="mx-auto flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-pink-50 text-pink-500">
+                        <svg class="h-8 w-8 sm:h-9 sm:w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"/>
+                        </svg>
                     </div>
 
                     <h3 class="mt-4 text-lg sm:text-xl font-bold text-slate-900">

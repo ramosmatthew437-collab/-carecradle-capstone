@@ -8,6 +8,7 @@ use App\Models\Appointment;
 use App\Models\PrenatalCheckup;
 use App\Models\Infant;
 use App\Models\SmsNotification;
+use App\Models\Vaccination;
 
 class MotherDashboardController extends Controller
 {
@@ -29,13 +30,45 @@ class MotherDashboardController extends Controller
 
     $smsCount = \App\Models\SmsNotification::where('mother_id', $mother->id)->count();
 
+    $pregnancyWeek = null;
+$trimester = null;
+
+if ($mother->last_menstrual_period) {
+    $weeksSinceLmp = (int) \Carbon\Carbon::parse($mother->last_menstrual_period)->diffInWeeks(now());
+
+    if ($weeksSinceLmp >= 1 && $weeksSinceLmp <= 42) {
+        $pregnancyWeek = $weeksSinceLmp;
+        $trimester = match(true) {
+            $pregnancyWeek <= 13 => '1st',
+            $pregnancyWeek <= 27 => '2nd',
+            default => '3rd',
+        };
+    }
+}
+
+$infant = Infant::where('mother_id', $mother->id)
+    ->latest('birth_date')
+    ->first();
+
+$nextVaccination = Vaccination::whereHas('infant', function ($query) use ($mother) {
+        $query->where('mother_id', $mother->id);
+    })
+    ->whereNotNull('next_due_date')
+    ->whereDate('next_due_date', '>=', today())
+    ->orderBy('next_due_date')
+    ->first();
+
     return view('mother.dashboard', compact(
-        'mother',
-        'nextAppointment',
-        'appointmentCount',
-        'prenatalCount',
-        'infantCount',
-        'smsCount'
-    ));
+    'mother',
+    'nextAppointment',
+    'appointmentCount',
+    'prenatalCount',
+    'infantCount',
+    'smsCount',
+    'pregnancyWeek',
+    'trimester',
+    'infant',
+    'nextVaccination'
+));
 }
 }
