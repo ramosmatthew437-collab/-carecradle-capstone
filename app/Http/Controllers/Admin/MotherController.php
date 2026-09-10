@@ -17,14 +17,19 @@ class MotherController extends Controller
     /**
      * Display a listing of mothers.
      */
-    public function index()
+        public function index()
     {
         $search = request('search');
+        $status = request('status');
 
-    // Dashboard Statistics (Always Total Records)
+    // Dashboard Statistics (Always Total Records — unaffected by filters)
 $totalMothers = Mother::count();
 
 $pregnantMothers = Mother::where('status', 'Pregnant')->count();
+
+$deliveredMothers = Mother::where('status', 'Delivered')->count();
+
+$referredMothers = Mother::where('status', 'Referred')->count();
 
 $totalInfants = Infant::count();
 
@@ -32,7 +37,7 @@ $upcomingAppointments = Appointment::where('status', 'Scheduled')
     ->whereDate('appointment_date', '>=', today())
     ->count();
 
-    // Search Results
+    // Search + Status Filter Results
     $mothers = Mother::query()
 
         ->when($search, function ($query) use ($search) {
@@ -47,13 +52,22 @@ $upcomingAppointments = Appointment::where('status', 'Scheduled')
 
         })
 
+        ->when($status && $status !== 'All', function ($query) use ($status) {
+
+            $query->where('status', $status);
+
+        })
+
         ->latest()
         ->get();
 return view('admin.mothers.index', compact(
     'mothers',
     'search',
+    'status',
     'totalMothers',
     'pregnantMothers',
+    'deliveredMothers',
+    'referredMothers',
     'totalInfants',
     'upcomingAppointments'
 ));

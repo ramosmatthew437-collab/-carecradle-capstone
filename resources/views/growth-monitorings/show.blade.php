@@ -55,6 +55,19 @@
                 . ($ageRemainderMonths > 0 ? ' ' . $ageRemainderMonths . ' ' . Str::plural('month', $ageRemainderMonths) : '')
                 . ' old';
         }
+
+        // Comparison against the immediately previous growth record —
+        // "previous" meaning the next-most-recent record chronologically
+        // before this one, using the infant->growthMonitorings relationship's
+        // existing orderByDesc('date_measured'). No new query, no schema change.
+        $allGrowthRecords = $growthMonitoring->infant->growthMonitorings->values();
+        $currentIndex = $allGrowthRecords->search(function ($record) use ($growthMonitoring) {
+            return $record->id === $growthMonitoring->id;
+        });
+        $previousGrowth = ($currentIndex !== false) ? $allGrowthRecords->get($currentIndex + 1) : null;
+
+        $weightDelta = $previousGrowth ? $growthMonitoring->weight - $previousGrowth->weight : null;
+        $heightDelta = $previousGrowth ? $growthMonitoring->height - $previousGrowth->height : null;
     @endphp
 
     <div class="py-4 sm:py-8">
@@ -129,7 +142,8 @@
 
                         </div>
 
-                        {{-- Infant Information Card --}}
+                        {{-- Infant Information Card — Weight/Height removed, --}}
+                        {{-- now shown only once, in Growth Metrics Overview below --}}
                         <div class="w-full rounded-2xl border border-pink-200 bg-white p-5 sm:p-6 shadow-sm lg:max-w-sm">
 
                             <div class="mb-4 flex items-center gap-3">
@@ -160,16 +174,6 @@
                                     </span>
                                 </div>
 
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-500">Weight</span>
-                                    <span class="font-semibold text-gray-900">{{ number_format($growthMonitoring->weight, 2) }} kg</span>
-                                </div>
-
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-500">Height</span>
-                                    <span class="font-semibold text-gray-900">{{ number_format($growthMonitoring->height, 2) }} cm</span>
-                                </div>
-
                             </div>
 
                         </div>
@@ -181,7 +185,46 @@
             </div>
 
             {{-- ====================================== --}}
+            {{-- Section 1B : Medical Notes --}}
+            {{-- Promoted directly below the hero. Minimal, low-weight when --}}
+            {{-- empty; visually prominent only when a remark actually exists — --}}
+            {{-- same pattern already used on the Infant Profile page, applied --}}
+            {{-- here for consistency across the app. Same $growthMonitoring-> --}}
+            {{-- remarks field, relocated only, no data change. --}}
+            {{-- ====================================== --}}
+
+            @if($growthMonitoring->remarks)
+                <div class="overflow-hidden rounded-2xl border-2 border-pink-200 bg-white shadow-sm">
+                    <div class="border-b border-pink-100 bg-pink-50 px-5 py-4 sm:px-6">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-pink-100 text-pink-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3h6m-8.25 8.25h13.5A2.25 2.25 0 0021 17.25V6.75A2.25 2.25 0 0018.75 4.5H5.25A2.25 2.25 0 003 6.75v10.5A2.25 2.25 0 005.25 19.5Z"/>
+                                </svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-pink-600">Medical Notes</p>
+                                <p class="text-xs text-gray-500">Provider observations recorded during this visit.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-5 py-5 sm:px-6 sm:py-6">
+                        <p class="whitespace-pre-line text-sm sm:text-base leading-7 text-gray-700">
+                            {{ $growthMonitoring->remarks }}
+                        </p>
+                    </div>
+                </div>
+            @else
+                <p class="px-1 text-xs text-gray-400">No medical notes recorded for this visit.</p>
+            @endif
+
+            {{-- ====================================== --}}
             {{-- Section 2 : Growth Metrics Overview --}}
+            {{-- Canonical location for Weight, Height, Head Circumference. --}}
+            {{-- 5th tile now shows Measurement Date instead of the removed --}}
+            {{-- "Not assessed" status (that message still lives, once, in --}}
+            {{-- the Assessment card below). Weight/Height tiles include a --}}
+            {{-- comparison against the immediately previous growth record. --}}
             {{-- ====================================== --}}
 
             <div class="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-5">
@@ -191,6 +234,13 @@
                         <div class="min-w-0">
                             <p class="text-xs sm:text-sm font-medium text-gray-500">Weight</p>
                             <p class="mt-2 text-xl sm:text-2xl font-bold text-gray-900">{{ number_format($growthMonitoring->weight, 2) }}<span class="text-xs font-medium text-gray-500"> kg</span></p>
+                            @if(!is_null($weightDelta))
+                                <p class="mt-1 text-xs font-medium {{ $weightDelta >= 0 ? 'text-emerald-600' : 'text-red-600' }}">
+                                    {{ $weightDelta >= 0 ? '+' : '' }}{{ number_format($weightDelta, 2) }} kg vs. last visit
+                                </p>
+                            @else
+                                <p class="mt-1 text-xs text-gray-400">First recorded visit</p>
+                            @endif
                         </div>
                         <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-cyan-100 text-cyan-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -205,6 +255,13 @@
                         <div class="min-w-0">
                             <p class="text-xs sm:text-sm font-medium text-gray-500">Height</p>
                             <p class="mt-2 text-xl sm:text-2xl font-bold text-gray-900">{{ number_format($growthMonitoring->height, 2) }}<span class="text-xs font-medium text-gray-500"> cm</span></p>
+                            @if(!is_null($heightDelta))
+                                <p class="mt-1 text-xs font-medium {{ $heightDelta >= 0 ? 'text-emerald-600' : 'text-red-600' }}">
+                                    {{ $heightDelta >= 0 ? '+' : '' }}{{ number_format($heightDelta, 2) }} cm vs. last visit
+                                </p>
+                            @else
+                                <p class="mt-1 text-xs text-gray-400">First recorded visit</p>
+                            @endif
                         </div>
                         <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -250,12 +307,14 @@
                 <div class="col-span-2 lg:col-span-1 rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
                     <div class="flex items-start justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-500">Growth Status</p>
-                            <p class="mt-2 text-base sm:text-lg font-bold text-gray-400">Not assessed</p>
+                            <p class="text-xs sm:text-sm font-medium text-gray-500">Measurement Date</p>
+                            <p class="mt-2 text-base sm:text-lg font-bold text-gray-900">
+                                {{ \Carbon\Carbon::parse($growthMonitoring->date_measured)->format('M d, Y') }}
+                            </p>
                         </div>
-                        <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
+                        <div class="flex h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0Z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75V4.5m7.5 2.25V4.5M3.75 9.75h16.5M5.25 21h13.5A2.25 2.25 0 0021 18.75V8.25A2.25 2.25 0 0018.75 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21Z"/>
                             </svg>
                         </div>
                     </div>
@@ -268,109 +327,11 @@
             </p>
 
             {{-- ====================================== --}}
-            {{-- Section 3 : Growth Record Information --}}
+            {{-- Assessment --}}
+            {{-- The single home for the "not yet classified" message — --}}
+            {{-- no longer duplicated with a separate Metrics Overview tile. --}}
             {{-- ====================================== --}}
 
-            <div class="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-3">
-
-                {{-- Card A : Measurement Details --}}
-                <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm lg:col-span-2">
-
-                    <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M6.75 3.75v16.5m10.5-16.5v16.5"/>
-                                </svg>
-                            </div>
-                            <div class="min-w-0">
-                                <h2 class="text-base sm:text-lg font-semibold text-gray-900">Measurement Details</h2>
-                                <p class="mt-0.5 text-xs sm:text-sm text-gray-500">Anthropometric measurements recorded at this visit.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-5 sm:p-6">
-
-                        <div class="grid grid-cols-1 gap-4 sm:gap-5 sm:grid-cols-2">
-
-                            <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Weight</p>
-                                <p class="mt-2 text-base sm:text-lg font-semibold text-gray-900">{{ number_format($growthMonitoring->weight, 2) }} kg</p>
-                            </div>
-
-                            <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Height</p>
-                                <p class="mt-2 text-base sm:text-lg font-semibold text-gray-900">{{ number_format($growthMonitoring->height, 2) }} cm</p>
-                            </div>
-
-                            <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Head Circumference</p>
-                                <p class="mt-2 text-base sm:text-lg font-semibold text-gray-900">
-                                    {{ $growthMonitoring->head_circumference ? number_format($growthMonitoring->head_circumference, 2).' cm' : '-' }}
-                                </p>
-                            </div>
-
-                            <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Measurement Date</p>
-                                <p class="mt-2 text-base sm:text-lg font-semibold text-gray-900">
-                                    {{ \Carbon\Carbon::parse($growthMonitoring->date_measured)->format('F d, Y') }}
-                                </p>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                {{-- Card C : Patient Information --}}
-                <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                    <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.5-1.632Z"/>
-                                </svg>
-                            </div>
-                            <div class="min-w-0">
-                                <h2 class="text-base sm:text-lg font-semibold text-gray-900">Patient Information</h2>
-                                <p class="mt-0.5 text-xs sm:text-sm text-gray-500">Linked infant and maternal record.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-5 sm:p-6 space-y-4">
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Infant Name</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900 break-words">
-                                {{ $growthMonitoring->infant->first_name }} {{ $growthMonitoring->infant->last_name }}
-                            </p>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Mother Name</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900 break-words">
-                                {{ $growthMonitoring->infant->mother->first_name }} {{ $growthMonitoring->infant->mother->last_name }}
-                            </p>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Mother Code</p>
-                            <p class="mt-2 font-mono text-sm sm:text-base font-semibold text-pink-700">
-                                {{ $growthMonitoring->infant->mother->mother_code }}
-                            </p>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {{-- Card B : Assessment --}}
             <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
                 <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
@@ -445,45 +406,6 @@
             </div>
 
             @endif
-
-            {{-- ====================================== --}}
-            {{-- Section 4 : Medical Notes --}}
-            {{-- ====================================== --}}
-
-            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
-                    <div class="flex items-center gap-3">
-                        <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3h6m-8.25 8.25h13.5A2.25 2.25 0 0021 17.25V6.75A2.25 2.25 0 0018.75 4.5H5.25A2.25 2.25 0 003 6.75v10.5A2.25 2.25 0 005.25 19.5Z"/>
-                            </svg>
-                        </div>
-                        <div class="min-w-0">
-                            <h2 class="text-base sm:text-lg font-semibold text-gray-900">Medical Notes</h2>
-                            <p class="mt-0.5 text-xs sm:text-sm text-gray-500">
-                                Healthcare provider observations and remarks recorded during this visit.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-5 sm:p-8">
-
-                    <div class="overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
-                        <div class="border-b border-gray-200 px-5 py-4 sm:px-6">
-                            <h3 class="text-xs sm:text-sm font-semibold uppercase tracking-wide text-pink-600">Remarks</h3>
-                        </div>
-                        <div class="px-5 py-5 sm:px-6 sm:py-6">
-                            <p class="whitespace-pre-line text-sm sm:text-base leading-7 text-gray-700">
-                                {{ $growthMonitoring->remarks ?: '-' }}
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
 
         {{-- ====================================== --}}
 {{-- Section 5 : Action Buttons --}}
