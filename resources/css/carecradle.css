@@ -10477,6 +10477,22 @@
 
 
 
+/* =====================================================
+   CARECRADLE — MIDWIFE MOBILE NAVIGATION VISIBILITY
+   Keep the desktop sidebar; show top navigation on mobile
+   ===================================================== */
+
+.cc-midwife-mobile-nav {
+    display: none !important;
+}
+
+@media (max-width: 1023px) {
+    .cc-midwife-mobile-nav {
+        display: block !important;
+    }
+}
+
+
 
 
 
