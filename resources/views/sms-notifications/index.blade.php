@@ -1,525 +1,859 @@
 <x-app-layout>
 
-    <div class="py-6 sm:py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+    <div class="sms-page">
 
-            {{-- ====================================== --}}
-            {{-- FLASH MESSAGES --}}
-            {{-- ====================================== --}}
+        <div class="sms-container">
 
-            @if(session('success'))
-                <div class="overflow-hidden rounded-2xl border border-emerald-200 bg-white shadow-sm">
-                    <div class="flex items-start gap-4 border-l-4 border-emerald-500 px-5 py-4 sm:px-6 sm:py-5">
-                        <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
-                            </svg>
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <h3 class="text-xs sm:text-sm font-semibold uppercase tracking-wide text-emerald-700">Success</h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-700">{{ session('success') }}</p>
-                        </div>
+            {{-- Flash Messages --}}
+
+            @if (session('success'))
+
+                <div class="sms-alert sms-alert-success">
+
+                    <div class="sms-alert-icon">
+
+                        ✓
+
                     </div>
+
+                    <div class="sms-alert-content">
+
+                        <strong>Success</strong>
+
+                        <span>{{ session('success') }}</span>
+
+                    </div>
+
                 </div>
+
             @endif
 
-            @if(session('error'))
-                <div class="overflow-hidden rounded-2xl border border-red-200 bg-white shadow-sm">
-                    <div class="flex items-start gap-4 border-l-4 border-red-500 px-5 py-4 sm:px-6 sm:py-5">
-                        <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
-                            </svg>
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <h3 class="text-xs sm:text-sm font-semibold uppercase tracking-wide text-red-700">Error</h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-700">{{ session('error') }}</p>
-                        </div>
+            @if (session('error'))
+
+                <div class="sms-alert sms-alert-error">
+
+                    <div class="sms-alert-icon">
+
+                        !
+
                     </div>
+
+                    <div class="sms-alert-content">
+
+                        <strong>Something went wrong</strong>
+
+                        <span>{{ session('error') }}</span>
+
+                    </div>
+
                 </div>
+
             @endif
 
-            {{-- ====================================== --}}
-            {{-- SECTION 1 : HERO HEADER --}}
-            {{-- ====================================== --}}
+            {{-- Hero --}}
 
-            <div class="relative overflow-hidden rounded-2xl border border-pink-100 bg-gradient-to-br from-pink-50 via-white to-white p-5 sm:p-8 shadow-sm">
+            <section class="sms-hero">
 
-                <div class="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-pink-100/60 blur-2xl"></div>
-                <div class="pointer-events-none absolute -bottom-12 right-24 h-32 w-32 rounded-full bg-pink-50 blur-2xl"></div>
+                <div class="sms-hero-content">
 
-                <div class="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="sms-hero-eyebrow">
 
-                    <div class="flex items-start gap-4">
+                        Communication Center
 
-                        <div class="flex h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-pink-600 text-white shadow-md shadow-pink-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5H4.5a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 4.5 4.5h15A2.25 2.25 0 0 1 21.75 6.75Z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 7.5 8.291 5.527a1.25 1.25 0 0 0 1.418 0L21 7.5"/>
-                            </svg>
-                        </div>
+                    </div>
 
-                        <div class="min-w-0">
-                            <p class="text-xs sm:text-sm font-semibold uppercase tracking-widest text-pink-600">
-                                Communication Center
-                            </p>
-                            <h1 class="mt-1 text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-                                SMS Notification History
-                            </h1>
-                            <p class="mt-3 max-w-2xl text-sm leading-6 text-gray-500">
-                                View and monitor all SMS reminders generated by CareCradle for maternal appointments.
-                                Track delivery status, notification history, and communication records from one
-                                centralized dashboard.
-                            </p>
-                        </div>
+                    <h1>SMS Notification History</h1>
+
+                    <p>
+
+                        Monitor, review, and manage SMS notifications sent to mothers
+
+                        through CareCradle.
+
+                    </p>
+
+                </div>
+
+                <div class="sms-hero-icon">
+
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                        <path stroke-linecap="round" stroke-linejoin="round"
+
+                              d="M8 10h8M8 14h5m-8 6 3.2-3.2A8 8 0 1 1 20 12a8 8 0 0 1-8 8H5Z"/>
+
+                    </svg>
+
+                </div>
+
+            </section>
+
+            {{-- Statistics --}}
+
+            <section class="sms-stats">
+
+                <div class="sms-stat-card">
+
+                    <div class="sms-stat-icon sms-stat-icon-pink">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <path stroke-linecap="round" stroke-linejoin="round"
+
+                                  d="M8 10h8M8 14h5m-8 6 3.2-3.2A8 8 0 1 1 20 12a8 8 0 0 1-8 8H5Z"/>
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <span class="sms-stat-label">Total</span>
+
+                        <strong>{{ $totalNotifications }}</strong>
 
                     </div>
 
                 </div>
 
-            </div>
+                <div class="sms-stat-card">
 
-            {{-- ====================================== --}}
-            {{-- SECTION 2 : SUMMARY STATISTICS --}}
-            {{-- ====================================== --}}
+                    <div class="sms-stat-icon sms-stat-icon-orange">
 
-            @php
-                $totalNotifications = $notifications->count();
-                $pendingNotifications = $notifications->where('status', 'Pending')->count();
-                $sentNotifications = $notifications->where('status', 'Sent')->count();
-                $failedNotifications = $notifications->where('status', 'Failed')->count();
-            @endphp
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
+                            <circle cx="12" cy="12" r="8"/>
 
-                {{-- Total Notifications --}}
-                <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm transition hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Total Notifications</p>
-                            <h3 class="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">{{ $totalNotifications }}</h3>
-                            <p class="mt-1 text-sm text-gray-500">SMS records</p>
-                        </div>
-                        <div class="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5H4.5a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 4.5 4.5h15A2.25 2.25 0 0 1 21.75 6.75Z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 7.5 8.291 5.527a1.25 1.25 0 0 0 1.418 0L21 7.5"/>
-                            </svg>
-                        </div>
+                            <path stroke-linecap="round" d="M12 8v4l2.5 1.5"/>
+
+                        </svg>
+
                     </div>
-                </div>
 
-                {{-- Pending --}}
-                <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm transition hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Pending</p>
-                            <h3 class="mt-2 text-2xl sm:text-3xl font-bold text-amber-600">{{ $pendingNotifications }}</h3>
-                            <p class="mt-1 text-sm text-gray-500">Awaiting delivery</p>
-                        </div>
-                        <div class="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+                    <div>
 
-                {{-- Sent --}}
-                <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm transition hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Sent</p>
-                            <h3 class="mt-2 text-2xl sm:text-3xl font-bold text-emerald-600">{{ $sentNotifications }}</h3>
-                            <p class="mt-1 text-sm text-gray-500">Sent / queued by SMS gateway</p>
-                        </div>
-                        <div class="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+                        <span class="sms-stat-label">Pending</span>
 
-                {{-- Failed --}}
-                <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm transition hover:shadow-md">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Failed</p>
-                            <h3 class="mt-2 text-2xl sm:text-3xl font-bold text-red-600">{{ $failedNotifications }}</h3>
-                            <p class="mt-1 text-sm text-gray-500">Delivery unsuccessful</p>
-                        </div>
-                        <div class="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-red-100 text-red-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+                        <strong>
 
-            </div>
+                            {{ $pendingNotifications }}
 
-            {{-- ====================================== --}}
-            {{-- SECTION 3 : SEARCH BAR --}}
-            {{-- ====================================== --}}
+                        </strong>
 
-            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                <div class="border-b border-gray-200 bg-gray-50 px-5 py-4 sm:px-6 sm:py-5">
-                    <div class="flex items-center gap-3">
-                        <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m1.35-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/>
-                            </svg>
-                        </div>
-                        <div class="min-w-0">
-                            <h2 class="text-base sm:text-lg font-semibold text-gray-900">Search SMS Notifications</h2>
-                            <p class="mt-1 text-sm text-gray-500">
-                                Search by recipient number, mother's name, notification type, or delivery status.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-5 sm:p-6">
-
-                    <form method="GET" action="{{ route('sms-notifications.index') }}">
-
-                        <div class="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center">
-
-                            <div class="relative flex-1">
-                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m1.35-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/>
-                                    </svg>
-                                </div>
-
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    placeholder="Search recipient, mother name, type, or status..."
-                                    class="w-full rounded-2xl border border-gray-300 bg-gray-50 py-3 pl-12 pr-4 text-sm text-gray-700 placeholder:text-gray-400 transition duration-200 focus:border-pink-600 focus:bg-white focus:outline-none focus:ring-4 focus:ring-pink-100">
-                            </div>
-
-                            <div class="flex flex-col gap-3 sm:flex-row">
-
-                                <button
-                                    type="submit"
-                                    class="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-pink-600 px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 active:scale-[0.98]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m1.35-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/>
-                                    </svg>
-                                    Search
-                                </button>
-
-                                @if(request('search'))
-                                    <a
-                                        href="{{ route('sms-notifications.index') }}"
-                                        class="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-6 text-sm font-semibold text-gray-700 transition hover:bg-gray-50">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0 1 12.89-5.303M19.5 4.5v6h-6"/>
-                                        </svg>
-                                        Reset
-                                    </a>
-                                @endif
-
-                            </div>
-
-                        </div>
-
-                    </form>
-
-                    <div class="mt-5 flex flex-wrap gap-2">
-                        <span class="rounded-full bg-pink-50 px-3 py-1 text-xs font-medium text-pink-700">Recipient Number</span>
-                        <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">Mother Name</span>
-                        <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">Notification Type</span>
-                        <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">Delivery Status</span>
                     </div>
 
                 </div>
 
-            </div>
+                <div class="sms-stat-card">
 
-            {{-- ====================================== --}}
-            {{-- SECTION 4 : SMS NOTIFICATIONS TABLE --}}
-            {{-- ====================================== --}}
+                    <div class="sms-stat-icon sms-stat-icon-rose">
 
-            @if($notifications->count())
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
-                <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+                            <path stroke-linecap="round" stroke-linejoin="round"
 
-                    <div class="border-b border-gray-200 bg-gray-50 px-5 py-4 sm:px-6 sm:py-5">
-                        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <div>
-                                <h2 class="text-base sm:text-lg font-semibold text-gray-900">SMS Notification Records</h2>
-                                <p class="mt-1 text-xs sm:text-sm text-gray-500">Complete history of SMS reminders generated by CareCradle.</p>
-                            </div>
-                            <span class="w-fit inline-flex items-center rounded-full bg-pink-100 px-3 py-1 text-xs sm:text-sm font-semibold text-pink-700">
-                                {{ $notifications->count() }} Record(s)
-                            </span>
-                        </div>
+                                  d="m5 12 4 4L19 6"/>
+
+                        </svg>
+
                     </div>
 
-                    {{-- Desktop table --}}
-                    <div class="hidden lg:block overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                    <div>
+
+                        <span class="sms-stat-label">Sent</span>
+
+                        <strong>
+
+                            {{ $sentNotifications }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="sms-stat-card">
+
+                    <div class="sms-stat-icon sms-stat-icon-red">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                            <circle cx="12" cy="12" r="8"/>
+
+                            <path stroke-linecap="round" d="m9 9 6 6m0-6-6 6"/>
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <span class="sms-stat-label">Failed</span>
+
+                        <strong>
+
+                            {{ $failedNotifications }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            {{-- Search --}}
+
+            <section class="sms-card sms-search-card">
+
+                <div class="sms-search-heading">
+
+                    <div>
+
+                        <span class="sms-section-eyebrow">Notification Records</span>
+
+                        <h2>Search Notifications</h2>
+
+                    </div>
+
+                </div>
+
+                <form method="GET" action="{{ route('sms-notifications.index') }}" class="sms-search-form">
+                    @if (($status ?? 'All') !== 'All')
+                        <input type="hidden" name="status" value="{{ $status }}">
+                    @endif
+
+                    <div class="sms-search-input-wrap">
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+                            <circle cx="11" cy="11" r="7"/>
+
+                            <path stroke-linecap="round" d="m20 20-4-4"/>
+
+                        </svg>
+
+                        <input
+
+                            type="text"
+
+                            name="search"
+
+                            value="{{ $search ?? request('search', '') }}"
+
+                            placeholder="Search by mother, phone number, or notification type..."
+
+                            class="sms-search-input"
+
+                        >
+
+                    </div>
+
+                    <button type="submit" class="sms-search-btn">
+
+                        Search
+
+                    </button>
+
+                    @if(request('search'))
+
+                        <a href="{{ route('sms-notifications.index', ($status ?? 'All') !== 'All' ? ['status' => $status] : []) }}" class="sms-clear-btn">
+
+                            Clear
+
+                        </a>
+
+                    @endif
+
+                </form>
+
+                <div class="sms-search-tags">
+
+                    <span>Search by:</span>
+
+                    <span>Mother name</span>
+
+                    <span>Phone number</span>
+
+                    <span>Notification type</span>
+
+                </div>
+
+            </section>
+
+            {{-- Notification Records --}}
+
+            <section class="sms-card sms-records-card">
+
+                <div class="sms-records-header">
+
+                    <div>
+
+                        <span class="sms-section-eyebrow">Communication Logs</span>
+
+                        <h2>Notification Records</h2>
+
+                    </div>
+
+                    <span class="sms-record-count">
+
+                        {{ $notifications->total() }}
+
+                        {{ Str::plural('record', $notifications->total()) }}
+
+                    </span>
+
+                </div>
+
+    {{-- ========================================= --}}
+
+    {{-- STATUS FILTERS --}}
+
+    {{-- ========================================= --}}
+
+    <div class="sms-filter-bar">
+
+        <span class="sms-filter-label">Filter by status</span>
+
+        <div class="sms-filter-options">
+
+            @foreach (['All', 'Pending', 'Sent', 'Failed'] as $filterStatus)
+
+                @php
+
+                    $filterCount = match ($filterStatus) {
+
+                        'Pending' => $pendingNotifications,
+
+                        'Sent' => $sentNotifications,
+
+                        'Failed' => $failedNotifications,
+
+                        default => $totalNotifications,
+
+                    };
+
+                    $filterUrl = route('sms-notifications.index', array_filter([
+
+                        'search' => $search,
+
+                        'status' => $filterStatus === 'All' ? null : $filterStatus,
+
+                    ], fn ($value) => $value !== null && $value !== ''));
+
+                @endphp
+
+                <a
+
+                    href="{{ $filterUrl }}"
+
+                    class="sms-filter-link sms-filter-{{ strtolower($filterStatus) }} {{ $status === $filterStatus ? 'is-active' : '' }}"
+
+                    @if ($status === $filterStatus) aria-current="page" @endif
+
+                >
+
+                    <span>{{ $filterStatus }}</span>
+
+                    <span class="sms-filter-count">{{ $filterCount }}</span>
+
+                </a>
+
+            @endforeach
+
+        </div>
+
+    </div>
+
+
+                @if($notifications->count())
+
+                    {{-- Desktop / Tablet Table --}}
+
+                    <div class="sms-table-wrapper">
+
+                        <table class="sms-table">
+
+                            <thead>
+
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Recipient</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Mother</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Notification Type</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 min-w-[260px]">Failure Reason</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Sent Date &amp; Time</th>
-                                    <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+
+                                    <th>Recipient</th>
+
+                                    <th>Notification</th>
+
+                                    <th>Status</th>
+
+                                    <th>Sent / Created</th>
+
+                                    <th class="sms-actions-header">Actions</th>
+
                                 </tr>
+
                             </thead>
-                            <tbody class="divide-y divide-gray-100 bg-white">
+
+                            <tbody>
+
                                 @foreach($notifications as $notification)
 
                                     @php
-                                        $statusClasses = match($notification->status) {
-                                            'Pending' => 'bg-amber-100 text-amber-700 border border-amber-200',
-                                            'Sent' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
-                                            'Failed' => 'bg-red-100 text-red-700 border border-red-200',
-                                            default => 'bg-gray-100 text-gray-700 border border-gray-200',
+
+                                        $status = strtolower($notification->status ?? 'pending');
+
+                                        $statusClass = match($status) {
+
+                                            'sent' => 'sms-status-sent',
+
+                                            'failed' => 'sms-status-failed',
+
+                                            default => 'sms-status-pending',
+
                                         };
-                                        $statusDot = match($notification->status) {
-                                            'Pending' => 'bg-amber-500',
-                                            'Sent' => 'bg-emerald-500',
-                                            'Failed' => 'bg-red-500',
-                                            default => 'bg-gray-400',
-                                        };
+
                                     @endphp
 
-                                    <tr class="transition duration-200 hover:bg-gray-50">
+                                    <tr>
 
-                                        <td class="px-6 py-5 align-top whitespace-nowrap">
-                                            <p class="font-semibold text-gray-900">{{ $notification->recipient_number }}</p>
-                                            <p class="text-sm text-gray-500">Mobile Number</p>
+                                        {{-- Recipient --}}
+
+                                        <td>
+
+                                            <div class="sms-recipient">
+
+                                                <div class="sms-avatar">
+
+                                                    {{ strtoupper(substr($notification->mother->first_name ?? 'M', 0, 1)) }}
+
+                                                </div>
+
+                                                <div class="sms-recipient-info">
+
+                                                    <strong>
+
+                                                        {{ $notification->mother->first_name ?? 'Unknown' }}
+
+                                                        {{ $notification->mother->last_name ?? '' }}
+
+                                                    </strong>
+
+                                                    <span>
+
+                                                        {{ $notification->recipient_number }}
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
                                         </td>
 
-                                        <td class="px-6 py-5 align-top whitespace-nowrap">
-                                            <p class="font-semibold text-gray-900">{{ $notification->mother->first_name }} {{ $notification->mother->last_name }}</p>
-                                            <p class="text-sm text-gray-500">Mother Record</p>
-                                        </td>
+                                        {{-- Notification Type --}}
 
-                                        <td class="px-6 py-5 align-top whitespace-nowrap">
-                                            <span class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
-                                                {{ $notification->notification_type }}
-                                            </span>
-                                        </td>
+                                        <td>
 
-                                        <td class="px-6 py-5 align-top whitespace-nowrap">
-                                            <span class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold {{ $statusClasses }}">
-                                                <span class="h-2 w-2 rounded-full {{ $statusDot }}"></span>
-                                                {{ $notification->status }}
-                                            </span>
-                                        </td>
+                                            <div class="sms-type">
 
-                                        <td class="px-6 py-5 align-top">
-                                            @if($notification->status === 'Failed')
-                                                <p class="max-w-sm text-sm font-medium leading-6 text-red-600 break-words">
-                                                    {{ $notification->error_message ?? '—' }}
-                                                </p>
-                                            @else
-                                                <span class="text-gray-400">—</span>
-                                            @endif
-                                        </td>
+                                                <strong>
 
-                                        <td class="px-6 py-5 align-top whitespace-nowrap">
-                                            @if($notification->sent_at)
-                                                <p class="font-medium text-gray-900">{{ \Carbon\Carbon::parse($notification->sent_at)->format('M d, Y') }}</p>
-                                                <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($notification->sent_at)->format('g:i A') }}</p>
-                                            @else
-                                                <span class="italic text-gray-400">—</span>
-                                            @endif
-                                        </td>
+                                                    {{ $notification->notification_type }}
 
-                                        <td class="px-6 py-5 align-top text-center whitespace-nowrap">
-                                            <div class="flex justify-center gap-2">
+                                                </strong>
 
-                                                <a href="{{ route('sms-notifications.show', $notification->id) }}"
-                                                   class="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12S5.25 5.25 12 5.25 21.75 12 21.75 12 18.75 18.75 12 18.75 2.25 12 2.25 12Z"/>
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15.75A3.75 3.75 0 1 0 12 8.25a3.75 3.75 0 0 0 0 7.5Z"/>
-                                                    </svg>
-                                                    View
-                                                </a>
+                                                @if($notification->error_message)
 
-                                                @if($notification->status == 'Pending')
-                                                    <form method="POST" action="{{ route('sms-notifications.send', $notification) }}">
-                                                        @csrf
-                                                        <button type="submit"
-                                                                class="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">
-                                                            Send
-                                                        </button>
-                                                    </form>
+                                                    <span class="sms-error-preview">
+
+                                                        {{ Str::limit($notification->error_message, 50) }}
+
+                                                    </span>
+
                                                 @endif
 
                                             </div>
+
+                                        </td>
+
+                                        {{-- Status --}}
+
+                                        <td>
+
+                                            <span class="sms-status {{ $statusClass }}">
+
+                                                <span class="sms-status-dot"></span>
+
+                                                {{ $notification->status }}
+
+                                            </span>
+
+                                        </td>
+
+                                        {{-- Date --}}
+
+                                        <td>
+
+                                            <div class="sms-date">
+
+                                                @if($notification->sent_at)
+
+                                                    <strong>
+
+                                                        {{ \Carbon\Carbon::parse($notification->sent_at)->format('M d, Y') }}
+
+                                                    </strong>
+
+                                                    <span>
+
+                                                        {{ \Carbon\Carbon::parse($notification->sent_at)->format('h:i A') }}
+
+                                                    </span>
+
+                                                @else
+
+                                                    <strong>Not sent</strong>
+
+                                                    <span>
+
+                                                        {{ $notification->created_at?->format('M d, Y h:i A') }}
+
+                                                    </span>
+
+                                                @endif
+
+                                            </div>
+
+                                        </td>
+
+                                        {{-- Actions --}}
+
+                                        <td>
+
+                                            <div class="sms-actions">
+
+                                                <a
+
+                                                    href="{{ route('sms-notifications.show', $notification->id) }}"
+
+                                                    class="sms-view-btn"
+
+                                                >
+
+                                                    <span>View details</span>
+
+                                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h11m-4-4 4 4-4 4"/>
+
+                                                    </svg>
+
+                                                </a>
+
+                                                @if($notification->status === 'Pending')
+
+                                                    <form
+
+                                                        action="{{ route('sms-notifications.send', $notification) }}"
+
+                                                        method="POST"
+
+                                                        class="sms-send-form"
+
+                                                    >
+
+                                                        @csrf
+
+                                                        <button type="submit" class="sms-send-btn">
+
+                                                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+
+                                                                      d="m3 10 13-6-4 12-3-5-6-1Z"/>
+
+                                                                <path stroke-linecap="round" d="M9 11 16 4"/>
+
+                                                            </svg>
+
+                                                            <span>Send</span>
+
+                                                        </button>
+
+                                                    </form>
+
+                                                @endif
+
+                                            </div>
+
                                         </td>
 
                                     </tr>
 
                                 @endforeach
+
                             </tbody>
+
                         </table>
+
                     </div>
 
-                    {{-- Mobile / tablet cards --}}
-                    <div class="lg:hidden divide-y divide-gray-100">
+                    {{-- Mobile Cards --}}
+
+                    <div class="sms-mobile-list">
+
                         @foreach($notifications as $notification)
 
                             @php
-                                $statusClasses = match($notification->status) {
-                                    'Pending' => 'bg-amber-100 text-amber-700',
-                                    'Sent' => 'bg-emerald-100 text-emerald-700',
-                                    'Failed' => 'bg-red-100 text-red-700',
-                                    default => 'bg-gray-100 text-gray-700',
+
+                                $status = strtolower($notification->status ?? 'pending');
+
+                                $statusClass = match($status) {
+
+                                    'sent' => 'sms-status-sent',
+
+                                    'failed' => 'sms-status-failed',
+
+                                    default => 'sms-status-pending',
+
                                 };
-                                $statusDot = match($notification->status) {
-                                    'Pending' => 'bg-amber-500',
-                                    'Sent' => 'bg-emerald-500',
-                                    'Failed' => 'bg-red-500',
-                                    default => 'bg-gray-400',
-                                };
+
                             @endphp
 
-                            <div class="p-4 sm:p-5">
+                            <article class="sms-mobile-card">
 
-                                <div class="flex items-start justify-between gap-3">
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-gray-900 truncate">{{ $notification->mother->first_name }} {{ $notification->mother->last_name }}</p>
-                                        <p class="text-sm text-gray-500 truncate">{{ $notification->recipient_number }}</p>
+                                <div class="sms-mobile-top">
+
+                                    <div class="sms-recipient">
+
+                                        <div class="sms-avatar">
+
+                                            {{ strtoupper(substr($notification->mother->first_name ?? 'M', 0, 1)) }}
+
+                                        </div>
+
+                                        <div class="sms-recipient-info">
+
+                                            <strong>
+
+                                                {{ $notification->mother->first_name ?? 'Unknown' }}
+
+                                                {{ $notification->mother->last_name ?? '' }}
+
+                                            </strong>
+
+                                            <span>
+
+                                                {{ $notification->recipient_number }}
+
+                                            </span>
+
+                                        </div>
+
                                     </div>
-                                    <span class="flex-shrink-0 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClasses }}">
-                                        <span class="h-1.5 w-1.5 rounded-full {{ $statusDot }}"></span>
+
+                                    <span class="sms-status {{ $statusClass }}">
+
+                                        <span class="sms-status-dot"></span>
+
                                         {{ $notification->status }}
+
                                     </span>
+
                                 </div>
 
-                                <div class="mt-3 flex flex-wrap items-center gap-2">
-                                    <span class="inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
-                                        {{ $notification->notification_type }}
-                                    </span>
-                                    <span class="text-xs text-gray-400">
-                                        @if($notification->sent_at)
-                                            {{ \Carbon\Carbon::parse($notification->sent_at)->format('M d, Y g:i A') }}
-                                        @else
-                                            Not yet sent
-                                        @endif
-                                    </span>
-                                </div>
+                                <div class="sms-mobile-details">
 
-                                @if($notification->status === 'Failed')
-                                    <div class="mt-3 rounded-xl bg-red-50 p-3">
-                                        <p class="text-xs font-semibold uppercase tracking-wide text-red-600">Failure Reason</p>
-                                        <p class="mt-1 text-sm leading-6 text-red-700 break-words">
-                                            {{ $notification->error_message ?? '—' }}
-                                        </p>
+                                    <div class="sms-mobile-detail">
+
+                                        <span>Notification</span>
+
+                                        <strong>{{ $notification->notification_type }}</strong>
+
                                     </div>
-                                @endif
 
-                                <div class="mt-4 flex items-center gap-2">
-                                    <a href="{{ route('sms-notifications.show', $notification->id) }}"
-                                       class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700">
-                                        View
+                                    <div class="sms-mobile-detail">
+
+                                        <span>Date</span>
+
+                                        <strong>
+
+                                            @if($notification->sent_at)
+
+                                                {{ \Carbon\Carbon::parse($notification->sent_at)->format('M d, Y h:i A') }}
+
+                                            @else
+
+                                                Not sent
+
+                                            @endif
+
+                                        </strong>
+
+                                    </div>
+
+                                    @if($notification->error_message)
+
+                                        <div class="sms-mobile-error">
+
+                                            <span>Error</span>
+
+                                            {{ $notification->error_message }}
+
+                                        </div>
+
+                                    @endif
+
+                                </div>
+
+                                {{-- Mobile Actions --}}
+
+                                <div class="sms-mobile-actions">
+
+                                    <a
+
+                                        href="{{ route('sms-notifications.show', $notification->id) }}"
+
+                                        class="sms-view-btn"
+
+                                    >
+
+                                        <span>View details</span>
+
+                                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h11m-4-4 4 4-4 4"/>
+
+                                        </svg>
+
                                     </a>
 
-                                    @if($notification->status == 'Pending')
-                                        <form method="POST" action="{{ route('sms-notifications.send', $notification) }}" class="flex-1">
+                                    @if($notification->status === 'Pending')
+
+                                        <form
+
+                                            action="{{ route('sms-notifications.send', $notification) }}"
+
+                                            method="POST"
+
+                                            class="sms-send-form"
+
+                                        >
+
                                             @csrf
-                                            <button type="submit"
-                                                    class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700">
-                                                Send
+
+                                            <button type="submit" class="sms-send-btn">
+
+                                                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+
+                                                          d="m3 10 13-6-4 12-3-5-6-1Z"/>
+
+                                                    <path stroke-linecap="round" d="M9 11 16 4"/>
+
+                                                </svg>
+
+                                                <span>Send</span>
+
                                             </button>
+
                                         </form>
+
                                     @endif
+
                                 </div>
 
-                            </div>
+                            </article>
+
                         @endforeach
+
                     </div>
 
-                    {{-- Preserve Existing Pagination --}}
-                    <div class="border-t border-gray-200 bg-white px-5 py-5 sm:px-6">
-                        {{ $notifications->links() }}
-                    </div>
+                    {{-- Pagination --}}
 
-                </div>
+                    @if($notifications->hasPages())
 
-            @else
+                        <div class="sms-pagination">
 
-                {{-- ====================================== --}}
-                {{-- SECTION 5 : EMPTY STATE --}}
-                {{-- ====================================== --}}
+                            {{ $notifications->links() }}
 
-                <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                    <div class="flex flex-col items-center justify-center px-6 py-16 sm:px-8 sm:py-20 text-center">
-
-                        <div class="flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-3xl bg-pink-100 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-12 sm:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5H4.5a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 4.5 4.5h15A2.25 2.25 0 0 1 21.75 6.75Z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 7.5 8.291 5.527a1.25 1.25 0 0 0 1.418 0L21 7.5"/>
-                            </svg>
                         </div>
 
-                        <h2 class="mt-6 sm:mt-8 text-xl sm:text-2xl font-bold text-gray-900">No SMS Notifications Found</h2>
+                    @endif
 
-                        <p class="mt-3 max-w-2xl text-sm sm:text-base text-gray-500 leading-7">
-                            There are currently no SMS notification records available in the system.
-                            SMS reminders will automatically appear here once appointments are created
-                            and notification messages are generated by the CareCradle Maternal &amp; Infant
-                            Health Monitoring System.
+                @else
+
+                    {{-- Empty State --}}
+
+                    <div class="sms-empty">
+
+                        <div class="sms-empty-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+
+                                <path stroke-linecap="round" stroke-linejoin="round"
+
+                                      d="M8 10h8M8 14h5m-8 6 3.2-3.2A8 8 0 1 1 20 12a8 8 0 0 1-8 8H5Z"/>
+
+                            </svg>
+
+                        </div>
+
+                        <h3>No SMS notifications found</h3>
+
+                        <p>
+
+                            There are no notification records matching your current search.
+
                         </p>
 
-                        <div class="mt-8 sm:mt-10 grid w-full max-w-3xl gap-4 md:grid-cols-3">
+                        <div class="sms-empty-features">
 
-                            <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5">
-                                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-pink-100 text-pink-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                    </svg>
+                            <div class="sms-empty-feature">
+
+                                <div class="sms-empty-feature-icon">
+
+                                    ✓
+
                                 </div>
-                                <h3 class="mt-4 font-semibold text-gray-900">Schedule Appointments</h3>
-                                <p class="mt-2 text-sm text-gray-500">SMS reminders are generated from scheduled maternal appointments.</p>
+
+                                <span>Track SMS delivery</span>
+
                             </div>
 
-                            <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5">
-                                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5H4.5a2.25 2.25 0 0 1-2.25-2.25V6.75A2.25 2.25 0 0 1 4.5 4.5h15A2.25 2.25 0 0 1 21.75 6.75Z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m3 7.5 8.291 5.527a1.25 1.25 0 0 0 1.418 0L21 7.5"/>
-                                    </svg>
+                            <div class="sms-empty-feature">
+
+                                <div class="sms-empty-feature-icon">
+
+                                    ✓
+
                                 </div>
-                                <h3 class="mt-4 font-semibold text-gray-900">Automatic SMS</h3>
-                                <p class="mt-2 text-sm text-gray-500">CareCradle automatically prepares reminder messages for patients.</p>
+
+                                <span>Review notification history</span>
+
                             </div>
 
-                            <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5">
-                                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
-                                    </svg>
+                            <div class="sms-empty-feature">
+
+                                <div class="sms-empty-feature-icon">
+
+                                    ✓
+
                                 </div>
-                                <h3 class="mt-4 font-semibold text-gray-900">Delivery Monitoring</h3>
-                                <p class="mt-2 text-sm text-gray-500">Sent, pending, and failed notifications will appear here.</p>
+
+                                <span>Manage pending messages</span>
+
                             </div>
 
                         </div>
 
                     </div>
 
-                </div>
+                @endif
 
-            @endif
+            </section>
 
         </div>
+
     </div>
 
 </x-app-layout>

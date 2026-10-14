@@ -1,238 +1,473 @@
 <x-app-layout>
 
-    {{-- Google Font: Inter — matches the CareCradle design system --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <div class="pnt-wrap">
 
-    <div class="py-6 sm:py-8" style="font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;">
+        <div class="pnt-container">
 
-        <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- =====================================================
+                 PAGE HEADER
+                 ===================================================== --}}
+            <div class="pnt-page-head">
 
-            {{-- ====================================== --}}
-            {{-- PAGE HEADER --}}
-            {{-- ====================================== --}}
+                <button
+                    type="button"
+                    onclick="history.back()"
+                    aria-label="Go back"
+                    class="pnt-back-btn"
+                >
+                    <svg
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 19l-7-7 7-7"
+                        />
+                    </svg>
+                </button>
 
-            <div class="flex items-center gap-3">
+                <div class="pnt-page-copy">
 
-    <!-- Back Button -->
-    <button
-        type="button"
-        onclick="history.back()"
-        aria-label="Go back"
-        class="h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 rounded-full bg-white border border-pink-100 flex items-center justify-center text-slate-500 shadow-sm transition hover:bg-pink-50 hover:text-pink-600 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-300">
+                    <span>Maternal Care</span>
 
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-        </svg>
+                    <h1>Prenatal Records</h1>
 
-    </button>
+                    <p>
+                        Checkup history &amp; monitoring
+                    </p>
 
-    <div>
-        <h1 class="text-[19px] sm:text-2xl font-bold text-slate-900 leading-tight">
-            Prenatal records
-        </h1>
-        <p class="text-[12px] sm:text-sm text-slate-500">
-            Checkup history & monitoring
-        </p>
-    </div>
+                </div>
 
-</div>
+            </div>
+
 
             @if($prenatalRecords->count())
 
                 @php
-                    // Non-diagnostic status cue, presentation-layer only —
-                    // derived from existing systolic_bp / diastolic_bp / fetal_heart_rate
-                    // values already present on each record. No new columns, no schema changes.
-                    $prenatalStatus = function ($systolic, $diastolic, $fhr) {
-                        $needsFollowUp = $systolic >= 140 || $diastolic >= 90 || $fhr < 110 || $fhr > 170;
-                        $monitor = $systolic >= 130 || $diastolic >= 85 || $fhr < 120 || $fhr > 160;
+
+                    /*
+                     * Presentation-only status styling.
+                     * Existing record values are not changed.
+                     */
+                    $prenatalStatus = function (
+                        $systolic,
+                        $diastolic,
+                        $fhr
+                    ) {
+
+                        $needsFollowUp =
+                            $systolic >= 140 ||
+                            $diastolic >= 90 ||
+                            $fhr < 110 ||
+                            $fhr > 170;
+
+                        $monitor =
+                            $systolic >= 130 ||
+                            $diastolic >= 85 ||
+                            $fhr < 120 ||
+                            $fhr > 160;
+
 
                         if ($needsFollowUp) {
-                            return ['label' => 'Needs follow-up', 'dot' => 'bg-rose-500', 'bg' => 'bg-rose-50', 'text' => 'text-rose-600'];
+
+                            return [
+                                'label' => 'Needs follow-up',
+                                'dot'   => 'pnt-dot-rose',
+                                'bg'    => 'pnt-status-rose',
+                                'text'  => 'pnt-text-rose',
+                            ];
+
                         }
+
 
                         if ($monitor) {
-                            return ['label' => 'Monitor', 'dot' => 'bg-amber-500', 'bg' => 'bg-amber-50', 'text' => 'text-amber-700'];
+
+                            return [
+                                'label' => 'Monitor',
+                                'dot'   => 'pnt-dot-amber',
+                                'bg'    => 'pnt-status-amber',
+                                'text'  => 'pnt-text-amber',
+                            ];
+
                         }
 
-                        return ['label' => 'Normal', 'dot' => 'bg-emerald-500', 'bg' => 'bg-emerald-50', 'text' => 'text-emerald-700'];
+
+                        return [
+                            'label' => 'Normal',
+                            'dot'   => 'pnt-dot-green',
+                            'bg'    => 'pnt-status-green',
+                            'text'  => 'pnt-text-green',
+                        ];
+
                     };
 
-                    // "Latest visit" is the first record on the current page.
-                    // Assumes the controller orders $prenatalRecords by visit_date descending
-                    // (as the original table view implied). Not modifying the query/controller here.
+
+                    /*
+                     * Latest visit is the first record on the current page.
+                     * This preserves the original page behavior.
+                     */
                     $latestVisit = $prenatalRecords->first();
+
                     $earlierVisits = $prenatalRecords->skip(1);
-                    $latestStatus = $prenatalStatus($latestVisit->systolic_bp, $latestVisit->diastolic_bp, $latestVisit->fetal_heart_rate);
+
+                    $latestStatus = $prenatalStatus(
+                        $latestVisit->systolic_bp,
+                        $latestVisit->diastolic_bp,
+                        $latestVisit->fetal_heart_rate
+                    );
+
                 @endphp
 
-                {{-- ====================================== --}}
-                {{-- LATEST VISIT (hero) --}}
-                {{-- ====================================== --}}
 
-                <div class="mt-5 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 p-5 sm:p-6 text-white shadow-md shadow-pink-200 relative overflow-hidden">
+                {{-- =====================================================
+                     LATEST VISIT HERO
+                     ===================================================== --}}
+                <section class="pnt-hero">
 
-                    <div class="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/10" aria-hidden="true"></div>
-                    <div class="absolute -right-2 bottom-3 h-16 w-16 rounded-full bg-white/10" aria-hidden="true"></div>
+                    <div class="pnt-hero-shape pnt-hero-shape-a"></div>
+                    <div class="pnt-hero-shape pnt-hero-shape-b"></div>
 
-                    <div class="relative flex items-center gap-2">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"/>
-                        </svg>
-                        <p class="text-[11px] font-semibold uppercase tracking-wider text-pink-50">Latest visit</p>
-                    </div>
+                    <div class="pnt-hero-inner">
 
-                    <h2 class="relative mt-2 text-lg sm:text-xl font-bold">
-                        {{ \Carbon\Carbon::parse($latestVisit->visit_date)->format('F d, Y') }}
-                    </h2>
+                        <div class="pnt-hero-top">
 
-                    {{-- Key metrics: gestational age prioritized alongside weight & BP --}}
-                    <div class="relative mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <div class="pnt-hero-label">
 
-                        <div class="rounded-xl bg-white/15 px-2 py-2.5 text-center">
-                            <p class="text-[10px] sm:text-[11px] text-pink-50">Gestational age</p>
-                            <p class="text-[14px] sm:text-base font-bold">{{ $latestVisit->gestational_age_weeks }} wks</p>
+                                <svg
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"
+                                    />
+                                </svg>
+
+                                Latest Visit
+
+                            </div>
+
+
+                            <span class="pnt-status-hero">
+
+                                <span class="{{ $latestStatus['dot'] }}"></span>
+
+                                {{ $latestStatus['label'] }}
+
+                            </span>
+
                         </div>
 
-                        <div class="rounded-xl bg-white/15 px-2 py-2.5 text-center">
-                            <p class="text-[10px] sm:text-[11px] text-pink-50">Weight</p>
-                            <p class="text-[14px] sm:text-base font-bold">{{ $latestVisit->weight }} kg</p>
+
+                        <h2 class="pnt-hero-date">
+
+                            {{ \Carbon\Carbon::parse($latestVisit->visit_date)->format('F d, Y') }}
+
+                        </h2>
+
+
+                        <div class="pnt-metric-grid">
+
+                            {{-- Gestational Age --}}
+                            <div class="pnt-metric">
+
+                                <span>Gestational age</span>
+
+                                <strong>
+                                    {{ $latestVisit->gestational_age_weeks }}
+                                    <small>wks</small>
+                                </strong>
+
+                            </div>
+
+
+                            {{-- Weight --}}
+                            <div class="pnt-metric">
+
+                                <span>Weight</span>
+
+                                <strong>
+                                    {{ $latestVisit->weight }}
+                                    <small>kg</small>
+                                </strong>
+
+                            </div>
+
+
+                            {{-- Blood Pressure --}}
+                            <div class="pnt-metric">
+
+                                <span>Blood pressure</span>
+
+                                <strong>
+                                    {{ $latestVisit->systolic_bp }}/{{ $latestVisit->diastolic_bp }}
+                                </strong>
+
+                            </div>
+
+
+                            {{-- Fetal Heart Rate --}}
+                            <div class="pnt-metric">
+
+                                <span>Fetal heart rate</span>
+
+                                <strong>
+                                    {{ $latestVisit->fetal_heart_rate }}
+                                    <small>bpm</small>
+                                </strong>
+
+                            </div>
+
                         </div>
 
-                        <div class="rounded-xl bg-white/15 px-2 py-2.5 text-center">
-                            <p class="text-[10px] sm:text-[11px] text-pink-50">Blood pressure</p>
-                            <p class="text-[14px] sm:text-base font-bold">{{ $latestVisit->systolic_bp }}/{{ $latestVisit->diastolic_bp }}</p>
-                        </div>
 
-                        <div class="rounded-xl bg-white/15 px-2 py-2.5 text-center">
-                            <p class="text-[10px] sm:text-[11px] text-pink-50">Fetal heart rate</p>
-                            <p class="text-[14px] sm:text-base font-bold">{{ $latestVisit->fetal_heart_rate }} bpm</p>
-                        </div>
+                        @if($latestVisit->next_visit_date)
+
+                            <div class="pnt-next-visit">
+
+                                <div class="pnt-next-icon">
+
+                                    <svg
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
+                                        />
+                                    </svg>
+
+                                </div>
+
+                                <div>
+
+                                    <p>
+                                        Next visit
+                                    </p>
+
+                                    <strong>
+                                        {{ \Carbon\Carbon::parse($latestVisit->next_visit_date)->format('F d, Y') }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        @endif
 
                     </div>
 
-                    <div class="relative mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-[12px] sm:text-[13px] font-semibold">
-                        <span class="h-1.5 w-1.5 rounded-full {{ $latestStatus['dot'] }}"></span>
-                        {{ $latestStatus['label'] }}
-                    </div>
+                </section>
 
-                    <div class="relative mt-4 rounded-xl bg-white/10 px-3 py-2.5 sm:px-4 sm:py-3">
-                        <p class="text-[10px] sm:text-[11px] text-pink-50">Next visit</p>
-                        <p class="text-[13px] sm:text-sm font-semibold">
-                            {{ \Carbon\Carbon::parse($latestVisit->next_visit_date)->format('F d, Y') }}
-                        </p>
-                    </div>
 
-                </div>
-
-                {{-- ====================================== --}}
-                {{-- VISIT HISTORY --}}
-                {{-- Same $prenatalRecords data, remaining records after the latest --}}
-                {{-- ====================================== --}}
-
+                {{-- =====================================================
+                     VISIT HISTORY
+                     ===================================================== --}}
                 @if($earlierVisits->count())
 
-                    <div class="mt-6">
+                    <section class="pnt-section">
 
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-[14px] sm:text-base font-bold text-slate-900">Visit history</h3>
-                            <p class="text-[12px] sm:text-sm text-slate-400">
-                                {{ $earlierVisits->count() }} {{ Str::plural('earlier visit', $earlierVisits->count()) }}
-                            </p>
+                        <div class="pnt-section-head">
+
+                            <div>
+
+                                <span>Previous Checkups</span>
+
+                                <h2>
+                                    Visit History
+                                </h2>
+
+                            </div>
+
+                            <span class="pnt-count-badge">
+
+                                {{ $earlierVisits->count() }}
+                                {{ Str::plural('earlier visit', $earlierVisits->count()) }}
+
+                            </span>
+
                         </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+
+                        <div class="pnt-history-grid">
 
                             @foreach($earlierVisits as $record)
 
                                 @php
-                                    $status = $prenatalStatus($record->systolic_bp, $record->diastolic_bp, $record->fetal_heart_rate);
+
+                                    $status = $prenatalStatus(
+                                        $record->systolic_bp,
+                                        $record->diastolic_bp,
+                                        $record->fetal_heart_rate
+                                    );
+
+                                    $visitDate = \Carbon\Carbon::parse(
+                                        $record->visit_date
+                                    );
+
                                 @endphp
 
-                                <div class="rounded-2xl bg-white border border-slate-100 p-4 shadow-sm">
 
-                                    <div class="flex items-baseline justify-between mb-2">
-                                        <p class="text-[14px] sm:text-[15px] font-bold text-slate-900">
-                                            {{ \Carbon\Carbon::parse($record->visit_date)->format('F d, Y') }}
-                                        </p>
-                                        <p class="text-[11px] sm:text-xs text-slate-400">
+                                <article class="pnt-history-card">
+
+                                    <div class="pnt-history-top">
+
+                                        <div>
+
+                                            <span class="pnt-history-label">
+                                                Prenatal Visit
+                                            </span>
+
+                                            <h3>
+                                                {{ $visitDate->format('F d, Y') }}
+                                            </h3>
+
+                                        </div>
+
+
+                                        <span class="pnt-week-badge">
                                             Week {{ $record->gestational_age_weeks }}
-                                        </p>
-                                    </div>
-
-                                    <div class="grid grid-cols-4 gap-2 mb-2">
-
-                                        <div class="rounded-lg bg-slate-50 px-2 py-2 text-center">
-                                            <p class="text-[9px] sm:text-[10px] text-slate-400">Gest. age</p>
-                                            <p class="text-[12px] sm:text-[13px] font-semibold text-slate-900">{{ $record->gestational_age_weeks }} wks</p>
-                                        </div>
-
-                                        <div class="rounded-lg bg-slate-50 px-2 py-2 text-center">
-                                            <p class="text-[9px] sm:text-[10px] text-slate-400">Weight</p>
-                                            <p class="text-[12px] sm:text-[13px] font-semibold text-slate-900">{{ $record->weight }} kg</p>
-                                        </div>
-
-                                        <div class="rounded-lg bg-slate-50 px-2 py-2 text-center">
-                                            <p class="text-[9px] sm:text-[10px] text-slate-400">BP</p>
-                                            <p class="text-[12px] sm:text-[13px] font-semibold text-slate-900">{{ $record->systolic_bp }}/{{ $record->diastolic_bp }}</p>
-                                        </div>
-
-                                        <div class="rounded-lg bg-slate-50 px-2 py-2 text-center">
-                                            <p class="text-[9px] sm:text-[10px] text-slate-400">FHR</p>
-                                            <p class="text-[12px] sm:text-[13px] font-semibold text-slate-900">{{ $record->fetal_heart_rate }}</p>
-                                        </div>
+                                        </span>
 
                                     </div>
 
-                                    <div class="inline-flex items-center gap-1.5 rounded-full {{ $status['bg'] }} px-2.5 py-1 text-[11px] sm:text-xs font-semibold {{ $status['text'] }}">
-                                        <span class="h-1.5 w-1.5 rounded-full {{ $status['dot'] }}"></span>
-                                        {{ $status['label'] }}
+
+                                    <div class="pnt-record-grid">
+
+                                        {{-- Gestational Age --}}
+                                        <div class="pnt-record">
+
+                                            <span>Gest. age</span>
+
+                                            <strong>
+                                                {{ $record->gestational_age_weeks }}
+                                                <small>wks</small>
+                                            </strong>
+
+                                        </div>
+
+
+                                        {{-- Weight --}}
+                                        <div class="pnt-record">
+
+                                            <span>Weight</span>
+
+                                            <strong>
+                                                {{ $record->weight }}
+                                                <small>kg</small>
+                                            </strong>
+
+                                        </div>
+
+
+                                        {{-- Blood Pressure --}}
+                                        <div class="pnt-record">
+
+                                            <span>Blood pressure</span>
+
+                                            <strong>
+                                                {{ $record->systolic_bp }}/{{ $record->diastolic_bp }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {{-- Fetal Heart Rate --}}
+                                        <div class="pnt-record">
+
+                                            <span>Fetal heart rate</span>
+
+                                            <strong>
+                                                {{ $record->fetal_heart_rate }}
+                                                <small>bpm</small>
+                                            </strong>
+
+                                        </div>
+
                                     </div>
 
-                                </div>
+
+                                    <div class="pnt-history-footer">
+
+                                        <span class="pnt-status {{ $status['bg'] }} {{ $status['text'] }}">
+
+                                            <span class="pnt-status-dot {{ $status['dot'] }}"></span>
+
+                                            {{ $status['label'] }}
+
+                                        </span>
+
+                                    </div>
+
+                                </article>
 
                             @endforeach
 
                         </div>
 
-                    </div>
+                    </section>
 
                 @endif
 
-                {{-- ====================================== --}}
-                {{-- PAGINATION --}}
-                {{-- Same $prenatalRecords->links(), restyled --}}
-                {{-- ====================================== --}}
 
-                <div class="mt-6">
+                {{-- =====================================================
+                     PAGINATION
+                     ===================================================== --}}
+                <div class="pnt-pagination">
+
                     {{ $prenatalRecords->links() }}
+
                 </div>
+
 
             @else
 
-                {{-- ====================================== --}}
-                {{-- NO PRENATAL RECORDS — same empty state as original --}}
-                {{-- ====================================== --}}
+                {{-- =====================================================
+                     EMPTY STATE
+                     ===================================================== --}}
+                <section class="pnt-empty">
 
-                <div class="mt-6 rounded-2xl bg-white border border-pink-100 p-10 sm:p-12 text-center shadow-sm">
+                    <div class="pnt-empty-icon">
 
-                    <div class="mx-auto flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-pink-50 text-pink-500">
-                        <svg class="h-8 w-8 sm:h-9 sm:w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"/>
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M9 12h6m-3-3v6m8.25-3a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0Z"
+                            />
                         </svg>
+
                     </div>
 
-                    <h3 class="mt-4 text-lg sm:text-xl font-bold text-slate-900">
-                        No prenatal records
-                    </h3>
 
-                    <p class="mt-2 text-[13px] sm:text-sm text-slate-500">
+                    <h2>
+                        No prenatal records
+                    </h2>
+
+
+                    <p>
                         No prenatal checkup records found.
                     </p>
 
-                </div>
+                </section>
 
             @endif
 

@@ -1,0 +1,817 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --pc-pink-50: #fff7fa;
+    --pc-pink-100: #ffe8ef;
+    --pc-pink-200: #ffcbd8;
+    --pc-pink-300: #f9a8bd;
+    --pc-pink-500: #ec6f91;
+    --pc-pink-600: #db557c;
+    --pc-pink-700: #c54168;
+
+    --pc-rose-900: #6f243c;
+
+    --pc-slate-50: #f8fafc;
+    --pc-slate-100: #f1f5f9;
+    --pc-slate-200: #e2e8f0;
+    --pc-slate-400: #94a3b8;
+    --pc-slate-500: #64748b;
+    --pc-slate-600: #475569;
+    --pc-slate-700: #334155;
+    --pc-slate-800: #1e293b;
+    --pc-slate-900: #0f172a;
+
+    --pc-red-50: #fef2f2;
+    --pc-red-100: #fee2e2;
+    --pc-red-200: #fecaca;
+    --pc-red-600: #dc2626;
+    --pc-red-700: #b91c1c;
+    --pc-red-800: #991b1b;
+
+    --pc-green-100: #dcfce7;
+    --pc-green-700: #15803d;
+
+    --pc-blue-100: #dbeafe;
+    --pc-blue-700: #1d4ed8;
+
+    --pc-amber-100: #fef3c7;
+    --pc-amber-700: #b45309;
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
+.pc-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(255, 232, 239, 0.55), transparent 32rem),
+        #fff8fa;
+    padding: 28px 16px 56px;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    color: var(--pc-slate-800);
+}
+
+.pc-container {
+    width: min(100%, 960px);
+    margin: 0 auto;
+}
+
+.pc-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pc-header span {
+    color: var(--pc-pink-600);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.pc-header h2 {
+    margin: 0;
+    color: var(--pc-slate-900);
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   PATIENT HERO
+========================================================= */
+
+.pc-patient-hero {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 203, 216, 0.55);
+    border-radius: 24px;
+    background: linear-gradient(135deg, #e85f86 0%, #d94f78 52%, #c9436b 100%);
+    box-shadow: 0 12px 30px rgba(197, 65, 104, 0.12);
+}
+
+.pc-hero-decoration {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    filter: blur(22px);
+}
+
+.pc-hero-decoration-one {
+    width: 150px;
+    height: 150px;
+    top: -65px;
+    right: -30px;
+}
+
+.pc-hero-decoration-two {
+    width: 110px;
+    height: 110px;
+    right: 22%;
+    bottom: -70px;
+}
+
+.pc-patient-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px;
+}
+
+.pc-patient-main {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 16px;
+}
+
+.pc-patient-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    flex: 0 0 64px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+}
+
+.pc-patient-icon svg {
+    width: 31px;
+    height: 31px;
+    stroke-width: 1.7;
+}
+
+.pc-patient-details {
+    min-width: 0;
+}
+
+.pc-eyebrow {
+    margin: 0;
+    color: rgba(255, 239, 244, 0.9);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.pc-patient-details h1 {
+    margin: 4px 0 2px;
+    overflow: hidden;
+    color: #fff;
+    font-size: clamp(1.25rem, 3vw, 1.65rem);
+    font-weight: 800;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pc-mother-code {
+    margin: 0;
+    color: rgba(255, 239, 244, 0.82);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+}
+
+.pc-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    white-space: nowrap;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.pc-status-pregnant {
+    background: var(--pc-blue-100);
+    color: var(--pc-blue-700);
+}
+
+.pc-status-delivered {
+    background: var(--pc-green-100);
+    color: var(--pc-green-700);
+}
+
+.pc-status-referred {
+    background: var(--pc-amber-100);
+    color: var(--pc-amber-700);
+}
+
+.pc-status-default {
+    background: var(--pc-slate-100);
+    color: var(--pc-slate-700);
+}
+
+
+/* =========================================================
+   ERROR CARD
+========================================================= */
+
+.pc-error-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding: 18px 20px;
+    border: 1px solid var(--pc-red-200);
+    border-radius: 18px;
+    background: var(--pc-red-50);
+}
+
+.pc-error-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 13px;
+    background: var(--pc-red-100);
+    color: var(--pc-red-600);
+}
+
+.pc-error-icon svg {
+    width: 21px;
+    height: 21px;
+    stroke-width: 1.8;
+}
+
+.pc-error-content {
+    min-width: 0;
+}
+
+.pc-error-content h3 {
+    margin: 0;
+    color: var(--pc-red-800);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.pc-error-content ul {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pc-error-content li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--pc-red-700);
+    font-size: 0.83rem;
+    line-height: 1.5;
+}
+
+.pc-error-content li span {
+    width: 5px;
+    height: 5px;
+    flex: 0 0 5px;
+    margin-top: 7px;
+    border-radius: 50%;
+    background: var(--pc-red-600);
+}
+
+.pc-error-content li p {
+    margin: 0;
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.pc-form-card {
+    overflow: hidden;
+    border: 1px solid var(--pc-slate-200);
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045);
+}
+
+.pc-form-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 23px 28px;
+    border-bottom: 1px solid #f1f5f9;
+    background: linear-gradient(90deg, var(--pc-pink-50), #fff 62%);
+}
+
+.pc-form-header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border-radius: 15px;
+    background: var(--pc-pink-100);
+    color: var(--pc-pink-600);
+}
+
+.pc-form-header-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 1.7;
+}
+
+.pc-form-header h2 {
+    margin: 0;
+    color: var(--pc-slate-900);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.pc-form-header p {
+    margin: 4px 0 0;
+    color: var(--pc-slate-500);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+.pc-form {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.pc-section {
+    padding-bottom: 34px;
+    margin-bottom: 34px;
+    border-bottom: 1px solid var(--pc-slate-100);
+}
+
+.pc-section-last {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+
+.pc-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 22px;
+}
+
+.pc-section-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border: 1px solid var(--pc-pink-200);
+    border-radius: 12px;
+    background: var(--pc-pink-50);
+    color: var(--pc-pink-600);
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.pc-section-heading h3 {
+    margin: 0;
+    color: var(--pc-slate-900);
+    font-size: 0.93rem;
+    font-weight: 800;
+}
+
+.pc-section-heading p {
+    margin: 3px 0 0;
+    color: var(--pc-slate-500);
+    font-size: 0.76rem;
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.pc-fields {
+    display: grid;
+    gap: 20px 22px;
+}
+
+.pc-fields-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pc-fields-one {
+    grid-template-columns: 1fr;
+}
+
+.pc-field {
+    min-width: 0;
+}
+
+.pc-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--pc-slate-700);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.pc-input-wrap {
+    position: relative;
+}
+
+.pc-input-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--pc-slate-400);
+}
+
+.pc-input-icon svg {
+    width: 19px;
+    height: 19px;
+    stroke-width: 1.7;
+}
+
+.pc-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 14px 11px 47px;
+    border: 1px solid var(--pc-slate-200);
+    border-radius: 13px;
+    outline: none;
+    background: #fff;
+    color: var(--pc-slate-900);
+    font: inherit;
+    font-size: 0.83rem;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+}
+
+.pc-input:hover {
+    border-color: #cbd5e1;
+}
+
+.pc-input:focus {
+    border-color: var(--pc-pink-500);
+    box-shadow: 0 0 0 4px rgba(236, 111, 145, 0.11);
+}
+
+.pc-input::placeholder {
+    color: var(--pc-slate-400);
+}
+
+.pc-select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 40px;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #94a3b8 50%),
+        linear-gradient(135deg, #94a3b8 50%, transparent 50%);
+    background-position:
+        calc(100% - 18px) 21px,
+        calc(100% - 13px) 21px;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+}
+
+.pc-textarea {
+    display: block;
+    width: 100%;
+    min-height: 118px;
+    padding: 13px 14px;
+    border: 1px solid var(--pc-slate-200);
+    border-radius: 13px;
+    outline: none;
+    resize: vertical;
+    background: #fff;
+    color: var(--pc-slate-900);
+    font: inherit;
+    font-size: 0.83rem;
+    line-height: 1.6;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.pc-textarea:hover {
+    border-color: #cbd5e1;
+}
+
+.pc-textarea:focus {
+    border-color: var(--pc-pink-500);
+    box-shadow: 0 0 0 4px rgba(236, 111, 145, 0.11);
+}
+
+.pc-textarea::placeholder {
+    color: var(--pc-slate-400);
+}
+
+.pc-field-error {
+    margin: 7px 0 0;
+    color: var(--pc-red-600);
+    font-size: 0.74rem;
+    line-height: 1.45;
+}
+
+.pc-next-visit {
+    width: 50%;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.pc-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--pc-slate-100);
+}
+
+.pc-save-btn,
+.pc-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    gap: 9px;
+    padding: 12px 20px;
+    border-radius: 13px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.pc-save-btn {
+    border: 1px solid var(--pc-pink-600);
+    background: var(--pc-pink-600);
+    color: #fff;
+    box-shadow: 0 7px 16px rgba(219, 85, 124, 0.18);
+}
+
+.pc-save-btn:hover {
+    border-color: var(--pc-pink-700);
+    background: var(--pc-pink-700);
+    box-shadow: 0 9px 20px rgba(197, 65, 104, 0.22);
+}
+
+.pc-cancel-btn {
+    border: 1px solid var(--pc-slate-200);
+    background: #fff;
+    color: var(--pc-slate-700);
+}
+
+.pc-cancel-btn:hover {
+    border-color: #cbd5e1;
+    background: var(--pc-slate-50);
+}
+
+.pc-save-btn:active,
+.pc-cancel-btn:active {
+    transform: scale(0.985);
+}
+
+.pc-save-btn svg,
+.pc-cancel-btn svg {
+    width: 19px;
+    height: 19px;
+    flex: 0 0 19px;
+    stroke-width: 1.8;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.pc-save-btn:focus-visible,
+.pc-cancel-btn:focus-visible,
+.pc-input:focus-visible,
+.pc-textarea:focus-visible {
+    outline: 3px solid rgba(236, 111, 145, 0.25);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .pc-page {
+        padding: 20px 12px 40px;
+    }
+
+    .pc-patient-content {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 22px;
+    }
+
+    .pc-status {
+        margin-left: 80px;
+    }
+
+    .pc-form-header {
+        padding: 20px;
+    }
+
+    .pc-form {
+        padding: 22px;
+    }
+
+    .pc-fields-two {
+        grid-template-columns: 1fr;
+    }
+
+    .pc-next-visit {
+        width: 100%;
+    }
+
+    .pc-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 520px) {
+
+    .pc-page {
+        padding: 14px 10px 32px;
+    }
+
+    .pc-patient-hero,
+    .pc-form-card {
+        border-radius: 19px;
+    }
+
+    .pc-patient-content {
+        padding: 19px;
+    }
+
+    .pc-patient-main {
+        gap: 12px;
+    }
+
+    .pc-patient-icon {
+        width: 54px;
+        height: 54px;
+        flex-basis: 54px;
+        border-radius: 16px;
+    }
+
+    .pc-patient-icon svg {
+        width: 27px;
+        height: 27px;
+    }
+
+    .pc-status {
+        margin-left: 66px;
+    }
+
+    .pc-error-card {
+        padding: 15px;
+    }
+
+    .pc-error-icon {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+    }
+
+    .pc-form-header {
+        align-items: flex-start;
+        padding: 18px;
+    }
+
+    .pc-form-header-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        border-radius: 13px;
+    }
+
+    .pc-form-header-icon svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    .pc-form {
+        padding: 19px;
+    }
+
+    .pc-section {
+        padding-bottom: 27px;
+        margin-bottom: 27px;
+    }
+
+    .pc-section-heading {
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .pc-section-number {
+        width: 34px;
+        height: 34px;
+        flex-basis: 34px;
+        border-radius: 10px;
+    }
+
+    .pc-input {
+        min-height: 47px;
+    }
+
+    .pc-save-btn,
+    .pc-cancel-btn {
+        min-height: 48px;
+    }
+}
+
+
+@media (max-width: 360px) {
+
+    .pc-patient-details h1 {
+        font-size: 1.1rem;
+    }
+
+    .pc-eyebrow {
+        font-size: 0.62rem;
+    }
+
+    .pc-form-header h2 {
+        font-size: 0.95rem;
+    }
+
+    .pc-form-header p {
+        font-size: 0.72rem;
+    }
+
+    .pc-form {
+        padding: 15px;
+    }
+
+    .pc-section-heading h3 {
+        font-size: 0.86rem;
+    }
+
+    .pc-section-heading p {
+        font-size: 0.7rem;
+    }
+
+    .pc-input,
+    .pc-textarea {
+        font-size: 0.78rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .pc-input,
+    .pc-textarea,
+    .pc-save-btn,
+    .pc-cancel-btn {
+        transition: none;
+    }
+}

@@ -30,11 +30,55 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $request->validate(
+            [
+                'name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+
+                'email' => [
+                    'required',
+                    'string',
+                    'lowercase',
+                    'email',
+                    'max:255',
+                    'unique:' . User::class,
+                ],
+
+                'password' => [
+    'required',
+    'confirmed',
+    Rules\Password::defaults(),
+],
+            ],
+            [
+                'name.required' =>
+                    'Please enter your name.',
+
+                'name.max' =>
+                    'Your name must not exceed 255 characters.',
+
+                'email.required' =>
+                    'Please enter your email address.',
+
+                'email.email' =>
+                    'Please enter a valid email address.',
+
+                'email.unique' =>
+                    'This email address is already registered.',
+
+                'password.required' =>
+                    'Please enter a password.',
+
+                'password.confirmed' =>
+                    'Password confirmation does not match.',
+
+                'password.min' =>
+                    'Password must be at least 8 characters long.',
+            ]
+        );
 
         $user = User::create([
             'name' => $request->name,
@@ -46,6 +90,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(
+            route('dashboard', absolute: false)
+        );
     }
 }

@@ -1,0 +1,786 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --pvd-pink-50: #fff7f9;
+    --pvd-pink-100: #ffe9ef;
+    --pvd-pink-200: #fecdd8;
+    --pvd-pink-300: #fda4b8;
+    --pvd-pink-500: #ec6f8d;
+    --pvd-pink-600: #db5577;
+    --pvd-pink-700: #bd3f60;
+    --pvd-rose-800: #9f304e;
+
+    --pvd-slate-50: #f8fafc;
+    --pvd-slate-100: #f1f5f9;
+    --pvd-slate-200: #e2e8f0;
+    --pvd-slate-300: #cbd5e1;
+    --pvd-slate-500: #64748b;
+    --pvd-slate-600: #475569;
+    --pvd-slate-700: #334155;
+    --pvd-slate-900: #0f172a;
+
+    --pvd-red-50: #fef2f2;
+    --pvd-red-100: #fee2e2;
+    --pvd-red-200: #fecaca;
+    --pvd-red-500: #ef4444;
+    --pvd-red-600: #dc2626;
+    --pvd-red-700: #b91c1c;
+
+    --pvd-white: #ffffff;
+
+    --pvd-radius: 20px;
+    --pvd-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   Page
+========================================================= */
+
+.pvd-page {
+    min-height: 100vh;
+    padding: 34px 20px 70px;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255, 220, 230, 0.35),
+            transparent 28rem
+        ),
+        #fff8fa;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.pvd-container {
+    width: min(1080px, 100%);
+    margin: 0 auto;
+}
+
+.pvd-header span {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--pvd-pink-600);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.pvd-header h2 {
+    margin: 0;
+    color: var(--pvd-slate-900);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   Hero
+========================================================= */
+
+.pvd-hero {
+    overflow: hidden;
+    border-radius: 24px;
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(255,255,255,0.16),
+            transparent 20rem
+        ),
+        linear-gradient(
+            135deg,
+            #c94d70 0%,
+            #dc607e 52%,
+            #c7486b 100%
+        );
+    box-shadow: 0 18px 45px rgba(189, 63, 96, 0.16);
+    color: white;
+}
+
+.pvd-hero-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 42px;
+}
+
+.pvd-hero-icon {
+    display: flex;
+    flex: 0 0 66px;
+    width: 66px;
+    height: 66px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.13);
+}
+
+.pvd-hero-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.pvd-hero-copy {
+    min-width: 0;
+}
+
+.pvd-eyebrow {
+    display: block;
+    margin-bottom: 7px;
+    color: #ffe5ec;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.pvd-hero h1 {
+    margin: 0;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(2.2rem, 5vw, 3.35rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+}
+
+.pvd-hero-copy p {
+    max-width: 760px;
+    margin: 17px 0 0;
+    color: #ffeef3;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   Mother Information
+========================================================= */
+
+.pvd-mother-card {
+    margin: 0 34px 34px;
+    padding: 22px 24px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.pvd-mother-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.pvd-mother-icon {
+    display: flex;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.14);
+}
+
+.pvd-mother-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.pvd-mother-heading span,
+.pvd-mother-meta span {
+    display: block;
+    color: #ffe5ec;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.pvd-mother-heading strong {
+    display: block;
+    margin-top: 3px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.pvd-mother-meta {
+    display: flex;
+    gap: 45px;
+    margin-top: 18px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.pvd-mother-meta strong {
+    display: block;
+    margin-top: 4px;
+    color: white;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   Toolbar
+========================================================= */
+
+.pvd-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    margin-top: 22px;
+    padding: 17px;
+    border: 1px solid var(--pvd-slate-200);
+    border-radius: var(--pvd-radius);
+    background: white;
+    box-shadow: var(--pvd-shadow);
+}
+
+.pvd-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(145px, 1fr));
+    gap: 8px;
+    min-width: 0;
+    flex: 1;
+}
+
+.pvd-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+    padding: 9px 10px;
+}
+
+.pvd-summary-icon {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--pvd-pink-100);
+    color: var(--pvd-pink-600);
+}
+
+.pvd-summary-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pvd-summary-item span {
+    display: block;
+    color: var(--pvd-slate-500);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.pvd-summary-item strong {
+    display: block;
+    margin-top: 3px;
+    color: var(--pvd-slate-900);
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   Buttons
+========================================================= */
+
+.pvd-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.pvd-toolbar-actions form {
+    margin: 0;
+}
+
+.pvd-btn {
+    display: inline-flex;
+    min-height: 39px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.73rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        color 160ms ease,
+        transform 160ms ease;
+}
+
+.pvd-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pvd-btn-edit {
+    border-color: var(--pvd-pink-200);
+    background: var(--pvd-pink-50);
+    color: var(--pvd-pink-700);
+}
+
+.pvd-btn-edit:hover {
+    border-color: var(--pvd-pink-300);
+    background: var(--pvd-pink-100);
+}
+
+.pvd-btn-delete {
+    border-color: var(--pvd-red-200);
+    background: var(--pvd-red-50);
+    color: var(--pvd-red-700);
+}
+
+.pvd-btn-delete:hover {
+    border-color: #fca5a5;
+    background: var(--pvd-red-100);
+}
+
+.pvd-btn-back {
+    border-color: var(--pvd-slate-200);
+    background: white;
+    color: var(--pvd-slate-600);
+}
+
+.pvd-btn-back:hover {
+    background: var(--pvd-slate-50);
+    border-color: var(--pvd-slate-300);
+}
+
+
+/* =========================================================
+   Cards
+========================================================= */
+
+.pvd-card {
+    overflow: hidden;
+    margin-top: 22px;
+    border: 1px solid var(--pvd-slate-200);
+    border-radius: var(--pvd-radius);
+    background: white;
+    box-shadow: var(--pvd-shadow);
+}
+
+.pvd-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 22px 25px;
+    border-bottom: 1px solid var(--pvd-slate-200);
+    background: linear-gradient(180deg, #ffffff, #fffafb);
+}
+
+.pvd-section-icon {
+    display: flex;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: var(--pvd-pink-100);
+    color: var(--pvd-pink-600);
+}
+
+.pvd-section-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.pvd-card-header h2 {
+    margin: 0;
+    color: var(--pvd-slate-900);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.pvd-card-header p {
+    max-width: 760px;
+    margin: 4px 0 0;
+    color: var(--pvd-slate-500);
+    font-size: 0.78rem;
+    line-height: 1.55;
+}
+
+.pvd-card-body {
+    padding: 27px;
+}
+
+
+/* =========================================================
+   Detail Grid
+========================================================= */
+
+.pvd-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.pvd-detail-item {
+    min-height: 86px;
+    padding: 16px;
+    border: 1px solid var(--pvd-slate-200);
+    border-radius: 14px;
+    background: var(--pvd-slate-50);
+}
+
+.pvd-detail-item span,
+.pvd-lab-item span,
+.pvd-next-visit span {
+    display: block;
+    color: var(--pvd-slate-500);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.pvd-detail-item strong {
+    display: block;
+    margin-top: 8px;
+    color: var(--pvd-slate-900);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   Laboratory
+========================================================= */
+
+.pvd-lab-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.pvd-lab-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px;
+    border: 1px solid var(--pvd-pink-200);
+    border-radius: 15px;
+    background: var(--pvd-pink-50);
+}
+
+.pvd-lab-item strong {
+    display: block;
+    margin-top: 6px;
+    color: var(--pvd-rose-800);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.pvd-lab-icon {
+    display: flex;
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: white;
+    color: var(--pvd-pink-600);
+}
+
+.pvd-lab-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+
+/* =========================================================
+   Assessment
+========================================================= */
+
+.pvd-assessment-body {
+    display: grid;
+    gap: 18px;
+    padding: 27px;
+}
+
+.pvd-note-block {
+    overflow: hidden;
+    border: 1px solid var(--pvd-slate-200);
+    border-radius: 15px;
+}
+
+.pvd-note-heading {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--pvd-slate-200);
+    background: var(--pvd-slate-50);
+    color: var(--pvd-slate-700);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.pvd-note-content {
+    padding: 17px;
+}
+
+.pvd-note-content p {
+    margin: 0;
+    color: var(--pvd-slate-600);
+    font-size: 0.83rem;
+    line-height: 1.75;
+    white-space: pre-line;
+}
+
+
+/* =========================================================
+   Follow-up
+========================================================= */
+
+.pvd-followup-body {
+    padding: 27px;
+}
+
+.pvd-next-visit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid var(--pvd-pink-200);
+    border-radius: 16px;
+    background:
+        linear-gradient(
+            135deg,
+            var(--pvd-pink-50),
+            white
+        );
+}
+
+.pvd-next-visit strong {
+    display: block;
+    margin-top: 7px;
+    color: var(--pvd-rose-800);
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.45rem;
+    font-weight: 400;
+}
+
+.pvd-next-icon {
+    display: flex;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: white;
+    color: var(--pvd-pink-600);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.pvd-next-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+
+/* =========================================================
+   Accessibility
+========================================================= */
+
+.pvd-btn:focus-visible {
+    outline: 3px solid rgba(236, 111, 141, 0.25);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width: 950px) {
+    .pvd-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .pvd-toolbar-actions {
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 800px) {
+    .pvd-page {
+        padding: 25px 16px 55px;
+    }
+
+    .pvd-hero-main {
+        padding: 32px 28px;
+    }
+
+    .pvd-mother-card {
+        margin: 0 22px 22px;
+    }
+
+    .pvd-detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pvd-lab-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 620px) {
+    .pvd-page {
+        padding: 20px 12px 45px;
+    }
+
+    .pvd-hero {
+        border-radius: 20px;
+    }
+
+    .pvd-hero-main {
+        flex-direction: column;
+        gap: 17px;
+        padding: 27px 22px 23px;
+    }
+
+    .pvd-hero-icon {
+        width: 54px;
+        height: 54px;
+        flex-basis: 54px;
+        border-radius: 15px;
+    }
+
+    .pvd-hero-icon svg {
+        width: 27px;
+        height: 27px;
+    }
+
+    .pvd-hero h1 {
+        font-size: 2.3rem;
+    }
+
+    .pvd-hero-copy p {
+        margin-top: 13px;
+        font-size: 0.81rem;
+        line-height: 1.7;
+    }
+
+    .pvd-mother-card {
+        margin: 0 14px 14px;
+        padding: 18px;
+    }
+
+    .pvd-mother-meta {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .pvd-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pvd-toolbar {
+        padding: 13px;
+    }
+
+    .pvd-toolbar-actions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pvd-btn {
+        width: 100%;
+        padding: 0 9px;
+        font-size: 0.7rem;
+    }
+
+    .pvd-card-header {
+        padding: 18px;
+    }
+
+    .pvd-card-body,
+    .pvd-assessment-body,
+    .pvd-followup-body {
+        padding: 18px;
+    }
+
+    .pvd-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pvd-next-visit strong {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .pvd-page {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .pvd-hero h1 {
+        font-size: 2rem;
+    }
+
+    .pvd-section-icon {
+        width: 39px;
+        height: 39px;
+    }
+
+    .pvd-section-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .pvd-card-header {
+        gap: 11px;
+    }
+
+    .pvd-card-header h2 {
+        font-size: 0.93rem;
+    }
+
+    .pvd-card-header p {
+        font-size: 0.73rem;
+    }
+
+    .pvd-toolbar-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .pvd-btn {
+        min-height: 41px;
+    }
+
+    .pvd-lab-item {
+        padding: 15px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pvd-btn {
+        transition: none;
+    }
+}

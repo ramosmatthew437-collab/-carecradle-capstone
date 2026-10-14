@@ -1,3 +1,4 @@
+﻿
 <nav x-data="{ open: false, motherDrawerOpen: false, midwifeDrawerOpen: false, adminDrawerOpen: false }" class="bg-white border-b border-pink-100">
 
     @php
@@ -13,172 +14,116 @@
     @endphp
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
 
-        <div class="flex justify-between h-16">
-
-            <!-- Left Side -->
-            <div class="flex">
-
-                <!-- Logo -->
+            {{-- Left Side --}}
+            <div class="flex items-center">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ $user->isMother() ? route('mother.dashboard') : route('dashboard') }}">
                         <x-application-logo size="sm" />
                     </a>
                 </div>
 
-                <!-- Desktop Navigation -->
+                {{-- Desktop navigation buttons --}}
                 <div class="hidden sm:flex sm:items-center sm:ms-10 space-x-8">
 
-                    {{-- Administrator — opens the left slide-out drawer instead of showing links here --}}
-                    @if($user->isAdministrator())
-
+                    {{-- Administrator --}}
+                    @if ($user->isAdministrator())
                         <button
                             @click="adminDrawerOpen = true"
-                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
-
+                            type="button"
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
                             </svg>
-
                             Menu
-
                         </button>
-
                     @endif
 
-                    {{-- Midwife — opens the left slide-out drawer instead of showing links here --}}
-                    @if($user->isMidwife())
-
+                    {{-- Midwife: drawer button is mobile/tablet only --}}
+                    @if ($user->isMidwife())
                         <button
                             @click="midwifeDrawerOpen = true"
-                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
-
+                            type="button"
+                            class="lg:hidden inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
                             </svg>
-
                             Menu
-
                         </button>
-
                     @endif
 
-                    {{-- Mother — opens the left slide-out drawer instead of showing links here --}}
-                    @if($user->isMother())
-
+                    {{-- Mother --}}
+                    @if ($user->isMother())
                         <button
                             @click="motherDrawerOpen = true"
-                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
-
+                            type="button"
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
                             </svg>
-
                             Menu
-
                         </button>
-
                     @endif
-
                 </div>
-
             </div>
 
-            <!-- Right Side -->
+            {{-- Right Side: profile dropdown --}}
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-
                 <x-dropdown align="right" width="48">
-
                     <x-slot name="trigger">
-
                         <button class="inline-flex items-center gap-1 px-3 py-2 border border-transparent text-sm font-semibold rounded-xl text-slate-600 bg-white hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
-
                             <div>{{ $user->name }}</div>
-
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
                                 </svg>
                             </div>
-
                         </button>
-
                     </x-slot>
 
                     <x-slot name="content">
-
                         <x-dropdown-link :href="route('profile.edit')">
                             Profile
                         </x-dropdown-link>
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link
                                 :href="route('logout')"
-                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                onclick="event.preventDefault(); if (confirm('Are you sure you want to log out?')) this.closest('form').submit();"
+                            >
                                 Log Out
                             </x-dropdown-link>
-
                         </form>
-
                     </x-slot>
-
                 </x-dropdown>
-
             </div>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-
+            {{-- Mobile hamburger --}}
+            <div class="flex items-center sm:hidden">
                 <button
                     @click="{{ $hamburgerClick }}"
-                    class="inline-flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-pink-50 hover:text-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-100 transition">
-
+                    type="button"
+                    aria-label="Open navigation menu"
+                    class="inline-flex h-11 w-11 items-center justify-center rounded-xl text-slate-600 hover:bg-pink-50 hover:text-pink-600 focus:bg-pink-50 focus:text-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-100 transition duration-150 ease-in-out"
+                >
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-
-                        <path
-                            :class="{ 'hidden': open, 'inline-flex': !open }"
-                            class="inline-flex"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-
-                        <path
-                            :class="{ 'hidden': !open, 'inline-flex': open }"
-                            class="hidden"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-
+                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
-
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-    {{-- ====================================== --}}
-    {{-- Every role now uses its own slide-out drawer (Administrator, --}}
-    {{-- Midwife, Mother), so the old bottom accordion panel had no --}}
-    {{-- remaining content and has been removed. --}}
-    {{-- ====================================== --}}
-
-    {{-- ====================================== --}}
-    {{-- ADMINISTRATOR PORTAL — LEFT SLIDE-OUT DRAWER --}}
-    {{-- Works identically on mobile and desktop; triggered by the --}}
-    {{-- "Menu" button above or the mobile hamburger. --}}
-    {{-- ====================================== --}}
-
-    @if($user->isAdministrator())
-
+    {{-- ========================================= --}}
+    {{-- ADMINISTRATOR PORTAL: MOBILE DRAWER --}}
+    {{-- ========================================= --}}
+    @if ($user->isAdministrator())
         @php
             $adminNavLinks = [
                 [
@@ -199,10 +144,15 @@
                     'active' => request()->routeIs('reports.*'),
                     'icon' => 'M9 17v-2m3 2v-4m3 4V7m5 12H4.5A2.25 2.25 0 012.25 16.75V4.5A2.25 2.25 0 014.5 2.25h15A2.25 2.25 0 0121.75 4.5v12.25A2.25 2.25 0 0119.5 19Z',
                 ],
+                [
+                    'label' => 'Activity Logs',
+                    'route' => 'admin.activity-logs.index',
+                    'active' => request()->routeIs('admin.activity-logs.*'),
+                    'icon' => 'M3 3v18h18M7 14l4-4 4 4 6-7',
+                ],
             ];
         @endphp
 
-        <!-- Overlay -->
         <div
             x-show="adminDrawerOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
@@ -213,10 +163,9 @@
             x-transition:leave-end="opacity-0"
             @click="adminDrawerOpen = false"
             class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px]"
-            style="display: none;">
-        </div>
+            style="display: none;"
+        ></div>
 
-        <!-- Drawer -->
         <div
             x-show="adminDrawerOpen"
             x-transition:enter="transition ease-in-out duration-300 transform"
@@ -227,11 +176,9 @@
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="adminDrawerOpen = false"
             class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
-            style="display: none;">
-
-            <!-- Drawer Header -->
+            style="display: none;"
+        >
             <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
-
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -244,52 +191,32 @@
                     </div>
                 </div>
 
-                <button
-                    @click="adminDrawerOpen = false"
-                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition"
-                    aria-label="Close menu">
+                <button @click="adminDrawerOpen = false" type="button" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition" aria-label="Close menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
-
             </div>
 
-            <!-- Drawer Navigation -->
-            <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-
-                @foreach($adminNavLinks as $link)
-
-                    <a href="{{ route($link['route']) }}"
-                       @click="adminDrawerOpen = false"
-                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
-                              {{ $link['active']
-                                    ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700'
-                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}" />
+            <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Administrator mobile navigation">
+                @foreach ($adminNavLinks as $link)
+                    <a
+                        href="{{ route($link['route']) }}"
+                        @click="adminDrawerOpen = false"
+                        class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}"/>
                         </svg>
-
                         {{ $link['label'] }}
-
                     </a>
-
                 @endforeach
-
             </nav>
 
-            <!-- Divider -->
             <div class="border-t border-slate-100"></div>
 
-            <!-- Account Actions -->
             <div class="space-y-1 px-3 py-4">
-
-                <a href="{{ route('profile.edit') }}"
-                   @click="adminDrawerOpen = false"
-                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                <a href="{{ route('profile.edit') }}" @click="adminDrawerOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
@@ -298,30 +225,21 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
-                    <button
-                        type="submit"
-                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
+                    <button type="submit" onclick="return confirm('Are you sure you want to log out?');" class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out
                     </button>
-
                 </form>
-
             </div>
-
         </div>
-
     @endif
 
-    {{-- ====================================== --}}
-    {{-- MIDWIFE PORTAL — LEFT SLIDE-OUT DRAWER --}}
-    {{-- ====================================== --}}
-
-    @if($user->isMidwife())
-
+    {{-- ========================================= --}}
+    {{-- MIDWIFE PORTAL: MOBILE DRAWER --}}
+    {{-- ========================================= --}}
+    @if ($user->isMidwife())
         @php
             $midwifeNavLinks = [
                 [
@@ -351,7 +269,6 @@
             ];
         @endphp
 
-        <!-- Overlay -->
         <div
             x-show="midwifeDrawerOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
@@ -361,11 +278,10 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="midwifeDrawerOpen = false"
-            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px]"
-            style="display: none;">
-        </div>
+            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px] lg:hidden"
+            style="display: none;"
+        ></div>
 
-        <!-- Drawer -->
         <div
             x-show="midwifeDrawerOpen"
             x-transition:enter="transition ease-in-out duration-300 transform"
@@ -375,12 +291,10 @@
             x-transition:leave-start="translate-x-0"
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="midwifeDrawerOpen = false"
-            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
-            style="display: none;">
-
-            <!-- Drawer Header -->
+            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40 lg:hidden"
+            style="display: none;"
+        >
             <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
-
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -393,52 +307,32 @@
                     </div>
                 </div>
 
-                <button
-                    @click="midwifeDrawerOpen = false"
-                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition"
-                    aria-label="Close menu">
+                <button @click="midwifeDrawerOpen = false" type="button" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition" aria-label="Close menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
-
             </div>
 
-            <!-- Drawer Navigation -->
-            <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-
-                @foreach($midwifeNavLinks as $link)
-
-                    <a href="{{ route($link['route']) }}"
-                       @click="midwifeDrawerOpen = false"
-                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
-                              {{ $link['active']
-                                    ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700'
-                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}" />
+            <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Midwife mobile navigation">
+                @foreach ($midwifeNavLinks as $link)
+                    <a
+                        href="{{ route($link['route']) }}"
+                        @click="midwifeDrawerOpen = false"
+                        class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}"/>
                         </svg>
-
                         {{ $link['label'] }}
-
                     </a>
-
                 @endforeach
-
             </nav>
 
-            <!-- Divider -->
             <div class="border-t border-slate-100"></div>
 
-            <!-- Account Actions -->
             <div class="space-y-1 px-3 py-4">
-
-                <a href="{{ route('profile.edit') }}"
-                   @click="midwifeDrawerOpen = false"
-                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                <a href="{{ route('profile.edit') }}" @click="midwifeDrawerOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
@@ -447,30 +341,21 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
-                    <button
-                        type="submit"
-                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
+                    <button type="submit" onclick="return confirm('Are you sure you want to log out?');" class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out
                     </button>
-
                 </form>
-
             </div>
-
         </div>
-
     @endif
 
-    {{-- ====================================== --}}
-    {{-- MOTHER PORTAL — LEFT SLIDE-OUT DRAWER --}}
-    {{-- ====================================== --}}
-
-    @if($user->isMother())
-
+    {{-- ========================================= --}}
+    {{-- MOTHER PORTAL: MOBILE DRAWER --}}
+    {{-- ========================================= --}}
+    @if ($user->isMother())
         @php
             $motherNavLinks = [
                 [
@@ -498,7 +383,6 @@
                     'icon' => 'M15.75 11.25a3.75 3.75 0 1 0-7.5 0v.75A2.25 2.25 0 0 1 6 14.25v1.5A2.25 2.25 0 0 0 8.25 18h7.5A2.25 2.25 0 0 0 18 15.75v-1.5A2.25 2.25 0 0 1 15.75 12v-.75Z',
                     'icon2' => 'M12 3.75v1.5',
                 ],
-               
                 [
                     'label' => 'SMS History',
                     'route' => 'mother.sms-history',
@@ -514,7 +398,6 @@
             ];
         @endphp
 
-        <!-- Overlay -->
         <div
             x-show="motherDrawerOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
@@ -525,10 +408,9 @@
             x-transition:leave-end="opacity-0"
             @click="motherDrawerOpen = false"
             class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px]"
-            style="display: none;">
-        </div>
+            style="display: none;"
+        ></div>
 
-        <!-- Drawer -->
         <div
             x-show="motherDrawerOpen"
             x-transition:enter="transition ease-in-out duration-300 transform"
@@ -539,11 +421,9 @@
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="motherDrawerOpen = false"
             class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
-            style="display: none;">
-
-            <!-- Drawer Header -->
+            style="display: none;"
+        >
             <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
-
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -556,55 +436,35 @@
                     </div>
                 </div>
 
-                <button
-                    @click="motherDrawerOpen = false"
-                    class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition"
-                    aria-label="Close menu">
+                <button @click="motherDrawerOpen = false" type="button" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition" aria-label="Close menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
-
             </div>
 
-            <!-- Drawer Navigation -->
-            <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-
-                @foreach($motherNavLinks as $link)
-
-                    <a href="{{ route($link['route']) }}"
-                       @click="motherDrawerOpen = false"
-                       class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
-                              {{ $link['active']
-                                    ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700'
-                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}" />
+            <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Mother mobile navigation">
+                @foreach ($motherNavLinks as $link)
+                    <a
+                        href="{{ route($link['route']) }}"
+                        @click="motherDrawerOpen = false"
+                        class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}"/>
                             @isset($link['icon2'])
-                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon2'] }}" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon2'] }}"/>
                             @endisset
                         </svg>
-
                         {{ $link['label'] }}
-
                     </a>
-
                 @endforeach
-
             </nav>
 
-            <!-- Divider -->
             <div class="border-t border-slate-100"></div>
 
-            <!-- Account Actions -->
             <div class="space-y-1 px-3 py-4">
-
-                <a href="{{ route('profile.edit') }}"
-                   @click="motherDrawerOpen = false"
-                   class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                <a href="{{ route('profile.edit') }}" @click="motherDrawerOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
@@ -613,22 +473,14 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
-                    <button
-                        type="submit"
-                        class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
+                    <button type="submit" onclick="return confirm('Are you sure you want to log out?');" class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out
                     </button>
-
                 </form>
-
             </div>
-
         </div>
-
     @endif
-
 </nav>

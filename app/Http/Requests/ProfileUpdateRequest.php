@@ -18,6 +18,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+
             'email' => [
                 'required',
                 'string',
@@ -25,6 +26,13 @@ class ProfileUpdateRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
+            ],
+
+            'contact_number' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/^(09\d{9}|\+639\d{9})$/',
             ],
         ];
     }

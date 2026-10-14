@@ -9,58 +9,78 @@ use Illuminate\Http\Request;
 
 class SmsNotificationController extends Controller
 {
-    /**
-     * Display SMS Notifications.
-     */
-    public function index(Request $request)
-    {
-        $search = $request->search;
+   
+/**
+ * Display SMS Notifications.
+ */
+public function index(Request $request)
+{
+    $search = trim((string) $request->input('search', ''));
 
-        $notifications = SmsNotification::with([
-                'mother',
-                'appointment',
-            ])
-            ->whereHas('appointment')
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('recipient_number', 'like', "%{$search}%")
-                        ->orWhere('notification_type', 'like', "%{$search}%")
-                        ->orWhere('status', 'like', "%{$search}%")
-                        ->orWhereHas('mother', function ($motherQuery) use ($search) {
-                            $motherQuery
-                                ->where('first_name', 'like', "%{$search}%")
-                                ->orWhere('last_name', 'like', "%{$search}%")
-                                ->orWhere('mother_code', 'like', "%{$search}%");
-                        });
-                });
-            })
-            ->latest()
-            ->paginate(10)
-            ->withQueryString();
+    // Accept only the supported status filters.
+    $allowedStatuses = ['Pending', 'Sent', 'Failed'];
 
-        // Statistics
-        $totalNotifications = SmsNotification::whereHas('appointment')->count();
+    $requestedStatus = $request->input('status', 'All');
 
-        $pendingNotifications = SmsNotification::whereHas('appointment')
-            ->where('status', 'Pending')
-            ->count();
+    $status = in_array($requestedStatus, $allowedStatuses, true)
+        ? $requestedStatus
+        : 'All';
 
-        $sentNotifications = SmsNotification::whereHas('appointment')
-            ->where('status', 'Sent')
-            ->count();
+    // Base query: preserve the existing appointment requirement.
+    $baseQuery = SmsNotification::whereHas('appointment');
 
-        $failedNotifications = SmsNotification::whereHas('appointment')
-            ->where('status', 'Failed')
-            ->count();
+    // Notification records with search and optional status filtering.
+    $notifications = SmsNotification::with([
+            'mother',
+            'appointment',
+        ])
+        ->whereHas('appointment')
+        ->when($search !== '', function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('recipient_number', 'like', "%{$search}%")
+                    ->orWhere('notification_type', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhereHas('mother', function ($motherQuery) use ($search) {
+                        $motherQuery
+                            ->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%")
+                            ->orWhere('mother_code', 'like', "%{$search}%");
+                    });
+            });
+        })
+        ->when($status !== 'All', function ($query) use ($status) {
+            $query->where('status', $status);
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
 
-        return view('sms-notifications.index', compact(
-            'notifications',
-            'totalNotifications',
-            'pendingNotifications',
-            'sentNotifications',
-            'failedNotifications'
-        ));
-    }
+    // Statistics remain independent of the selected filter and search.
+    $totalNotifications = (clone $baseQuery)->count();
+
+    $pendingNotifications = (clone $baseQuery)
+        ->where('status', 'Pending')
+        ->count();
+
+    $sentNotifications = (clone $baseQuery)
+        ->where('status', 'Sent')
+        ->count();
+
+    $failedNotifications = (clone $baseQuery)
+        ->where('status', 'Failed')
+        ->count();
+
+    return view('sms-notifications.index', compact(
+        'notifications',
+        'totalNotifications',
+        'pendingNotifications',
+        'sentNotifications',
+        'failedNotifications',
+        'search',
+        'status'
+    ));
+}
+
 
     /**
      * Display a specific SMS Notification.

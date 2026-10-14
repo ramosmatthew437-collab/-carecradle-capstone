@@ -1,8 +1,10 @@
 <?php
-
 namespace App\Http\Requests;
 
+
+
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class StoreMidwifeRequest extends FormRequest
 {
@@ -15,26 +17,53 @@ class StoreMidwifeRequest extends FormRequest
     }
 
     /**
-     * Validation Rules
+     * Validation rules.
      */
     public function rules(): array
     {
         return [
+            'username' => [
+                'required',
+                'string',
+                'max:50',
+                'unique:users,username',
+            ],
 
-            'username' => 'required|string|max:50|unique:users,username',
+            'first_name' => [
+                'required',
+                'string',
+                'max:100',
+            ],
 
-            'first_name' => 'required|string|max:100',
+            'middle_name' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
 
-            'middle_name' => 'nullable|string|max:100',
+            'last_name' => [
+                'required',
+                'string',
+                'max:100',
+            ],
 
-            'last_name' => 'required|string|max:100',
+            'contact_number' => [
+                'nullable',
+                'string',
+                'max:20',
+            ],
 
-            'contact_number' => 'nullable|string|max:20',
+            'email' => [
+                'nullable',
+                'email',
+                'unique:users,email',
+            ],
 
-            'email' => 'nullable|email|unique:users,email',
-
-            'password' => 'required|confirmed|min:8',
-
+            'password' => [
+                'required',
+                'confirmed',
+                Password::defaults(),
+            ],
         ];
     }
 }

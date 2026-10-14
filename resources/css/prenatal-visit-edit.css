@@ -1,0 +1,742 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --pv-pink-50: #fff7f9;
+    --pv-pink-100: #ffe9ef;
+    --pv-pink-200: #fecdd8;
+    --pv-pink-300: #fda4b8;
+    --pv-pink-500: #ec6f8d;
+    --pv-pink-600: #db5577;
+    --pv-pink-700: #bd3f60;
+    --pv-rose-800: #9f304e;
+
+    --pv-slate-50: #f8fafc;
+    --pv-slate-100: #f1f5f9;
+    --pv-slate-200: #e2e8f0;
+    --pv-slate-300: #cbd5e1;
+    --pv-slate-500: #64748b;
+    --pv-slate-600: #475569;
+    --pv-slate-700: #334155;
+    --pv-slate-900: #0f172a;
+
+    --pv-red-50: #fef2f2;
+    --pv-red-100: #fee2e2;
+    --pv-red-200: #fecaca;
+    --pv-red-500: #ef4444;
+    --pv-red-600: #dc2626;
+    --pv-red-700: #b91c1c;
+
+    --pv-white: #ffffff;
+
+    --pv-radius: 20px;
+    --pv-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* =========================================================
+   Page
+========================================================= */
+
+.pv-edit-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(255, 220, 230, 0.35), transparent 28rem),
+        #fff8fa;
+    padding: 34px 20px 70px;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.pv-edit-container {
+    width: min(1080px, 100%);
+    margin: 0 auto;
+}
+
+.pv-edit-header span {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--pv-pink-600);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.pv-edit-header h2 {
+    margin: 0;
+    color: var(--pv-slate-900);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* =========================================================
+   Hero
+========================================================= */
+
+.pv-edit-hero {
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(255,255,255,0.16), transparent 20rem),
+        linear-gradient(135deg, #c94d70 0%, #dc607e 52%, #c7486b 100%);
+    box-shadow: 0 18px 45px rgba(189, 63, 96, 0.16);
+    color: white;
+}
+
+.pv-edit-hero-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 42px 42px 34px;
+}
+
+.pv-edit-hero-icon {
+    display: flex;
+    flex: 0 0 66px;
+    width: 66px;
+    height: 66px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.13);
+}
+
+.pv-edit-hero-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.pv-edit-hero-content {
+    min-width: 0;
+}
+
+.pv-edit-eyebrow {
+    margin: 0 0 7px;
+    color: #ffe5ec;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.pv-edit-hero h1 {
+    margin: 0;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(2.2rem, 5vw, 3.45rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+}
+
+.pv-edit-hero-description {
+    max-width: 760px;
+    margin: 17px 0 0;
+    color: #ffeef3;
+    font-size: 0.92rem;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   Patient
+========================================================= */
+
+.pv-edit-patient {
+    margin: 0 34px 34px;
+    padding: 22px 24px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.pv-edit-patient-label {
+    margin-bottom: 10px;
+    color: #ffe5ec;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.pv-edit-patient-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.pv-edit-patient h2 {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.pv-edit-patient p {
+    margin: 5px 0 0;
+    color: #ffe8ef;
+    font-size: 0.82rem;
+}
+
+.pv-edit-mother-code {
+    flex-shrink: 0;
+    padding: 9px 14px;
+    border-radius: 10px;
+    background: white;
+    color: var(--pv-pink-600);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   Errors
+========================================================= */
+
+.pv-edit-errors {
+    margin-top: 24px;
+    overflow: hidden;
+    border: 1px solid var(--pv-red-200);
+    border-radius: var(--pv-radius);
+    background: var(--pv-white);
+    box-shadow: var(--pv-shadow);
+}
+
+.pv-edit-errors-header {
+    display: flex;
+    gap: 15px;
+    padding: 21px 24px;
+    border-bottom: 1px solid var(--pv-red-100);
+    background: var(--pv-red-50);
+}
+
+.pv-edit-error-icon {
+    display: flex;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: var(--pv-red-100);
+    color: var(--pv-red-600);
+}
+
+.pv-edit-error-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+.pv-edit-errors-header h2 {
+    margin: 0;
+    color: var(--pv-red-700);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.pv-edit-errors-header p {
+    margin: 4px 0 0;
+    color: var(--pv-red-600);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.pv-edit-errors-list {
+    display: grid;
+    gap: 9px;
+    padding: 20px 24px 24px;
+}
+
+.pv-edit-error-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 13px;
+    border: 1px solid var(--pv-red-100);
+    border-radius: 12px;
+    background: var(--pv-red-50);
+    color: var(--pv-red-700);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.pv-edit-error-item svg {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    color: var(--pv-red-500);
+}
+
+/* =========================================================
+   Form
+========================================================= */
+
+.pv-edit-form {
+    display: grid;
+    gap: 22px;
+    margin-top: 24px;
+}
+
+.pv-edit-card {
+    overflow: hidden;
+    border: 1px solid var(--pv-slate-200);
+    border-radius: var(--pv-radius);
+    background: var(--pv-white);
+    box-shadow: var(--pv-shadow);
+}
+
+.pv-edit-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 22px 25px;
+    border-bottom: 1px solid var(--pv-slate-200);
+    background: linear-gradient(180deg, #fff, #fffafb);
+}
+
+.pv-edit-section-icon {
+    display: flex;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: var(--pv-pink-100);
+    color: var(--pv-pink-600);
+}
+
+.pv-edit-section-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.pv-edit-card-header h2 {
+    margin: 0;
+    color: var(--pv-slate-900);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.pv-edit-card-header p {
+    max-width: 760px;
+    margin: 4px 0 0;
+    color: var(--pv-slate-500);
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+.pv-edit-card-body {
+    padding: 28px;
+}
+
+.pv-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+/* =========================================================
+   Fields
+========================================================= */
+
+.pv-edit-field {
+    min-width: 0;
+}
+
+.pv-edit-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--pv-slate-700);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.pv-edit-field input,
+.pv-edit-field select,
+.pv-edit-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--pv-slate-300);
+    border-radius: 12px;
+    outline: none;
+    background: white;
+    color: var(--pv-slate-700);
+    font-family: inherit;
+    font-size: 0.84rem;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+}
+
+.pv-edit-field input,
+.pv-edit-field select {
+    min-height: 46px;
+    padding: 0 13px;
+}
+
+.pv-edit-field textarea {
+    min-height: 115px;
+    padding: 12px 14px;
+    resize: vertical;
+    line-height: 1.65;
+}
+
+.pv-edit-field input:hover,
+.pv-edit-field select:hover,
+.pv-edit-field textarea:hover {
+    border-color: #b8c2cf;
+}
+
+.pv-edit-field input:focus,
+.pv-edit-field select:focus,
+.pv-edit-field textarea:focus {
+    border-color: var(--pv-pink-500);
+    box-shadow: 0 0 0 4px rgba(236, 111, 141, 0.13);
+}
+
+.pv-edit-field select {
+    appearance: auto;
+}
+
+.pv-edit-input-unit {
+    position: relative;
+}
+
+.pv-edit-input-unit input {
+    padding-right: 68px;
+}
+
+.pv-edit-input-unit span {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    padding-left: 10px;
+    border-left: 1px solid var(--pv-slate-200);
+    color: var(--pv-slate-500);
+    font-size: 0.72rem;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.pv-edit-field-error {
+    display: block;
+    margin-top: 6px;
+    color: var(--pv-red-600);
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+.pv-edit-input-error {
+    border-color: #fca5a5 !important;
+    background: #fffafa !important;
+}
+
+.pv-edit-input-error:focus {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+}
+
+.pv-edit-textarea-stack {
+    display: grid;
+    gap: 24px;
+}
+
+.pv-edit-helper {
+    margin: 7px 0 0;
+    color: var(--pv-slate-500);
+    font-size: 0.74rem;
+    line-height: 1.5;
+}
+
+.pv-edit-followup-field {
+    max-width: 470px;
+}
+
+/* =========================================================
+   Actions
+========================================================= */
+
+.pv-edit-actions {
+    overflow: hidden;
+    border: 1px solid var(--pv-pink-200);
+    border-radius: var(--pv-radius);
+    background:
+        linear-gradient(135deg, #fff8fa 0%, #fff 70%);
+    box-shadow: var(--pv-shadow);
+}
+
+.pv-edit-actions-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 24px 26px;
+}
+
+.pv-edit-actions-label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--pv-pink-600);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.pv-edit-actions h3 {
+    margin: 0;
+    color: var(--pv-rose-800);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.pv-edit-actions p {
+    max-width: 620px;
+    margin: 5px 0 0;
+    color: #a84863;
+    font-size: 0.78rem;
+    line-height: 1.55;
+}
+
+.pv-edit-action-buttons {
+    display: flex;
+    flex-shrink: 0;
+    gap: 10px;
+}
+
+.pv-edit-cancel-btn,
+.pv-edit-submit-btn {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 12px;
+    padding: 0 18px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.pv-edit-cancel-btn {
+    border: 1px solid var(--pv-slate-300);
+    background: white;
+    color: var(--pv-slate-700);
+}
+
+.pv-edit-cancel-btn:hover {
+    border-color: var(--pv-slate-300);
+    background: var(--pv-slate-50);
+}
+
+.pv-edit-submit-btn {
+    border: 1px solid var(--pv-pink-600);
+    background: var(--pv-pink-600);
+    color: white;
+    box-shadow: 0 6px 16px rgba(219, 85, 119, 0.2);
+}
+
+.pv-edit-submit-btn:hover {
+    background: var(--pv-pink-700);
+    border-color: var(--pv-pink-700);
+    transform: translateY(-1px);
+}
+
+.pv-edit-cancel-btn svg,
+.pv-edit-submit-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* =========================================================
+   Accessibility
+========================================================= */
+
+.pv-edit-cancel-btn:focus-visible,
+.pv-edit-submit-btn:focus-visible,
+.pv-edit-field input:focus-visible,
+.pv-edit-field select:focus-visible,
+.pv-edit-field textarea:focus-visible {
+    outline: 3px solid rgba(236, 111, 141, 0.22);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width: 850px) {
+    .pv-edit-page {
+        padding: 25px 16px 55px;
+    }
+
+    .pv-edit-hero-main {
+        padding: 32px 28px 27px;
+    }
+
+    .pv-edit-patient {
+        margin: 0 22px 22px;
+    }
+
+    .pv-edit-card-body {
+        padding: 23px;
+    }
+
+    .pv-edit-actions-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pv-edit-action-buttons {
+        width: 100%;
+    }
+
+    .pv-edit-cancel-btn,
+    .pv-edit-submit-btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 650px) {
+    .pv-edit-page {
+        padding: 20px 12px 45px;
+    }
+
+    .pv-edit-hero {
+        border-radius: 20px;
+    }
+
+    .pv-edit-hero-main {
+        flex-direction: column;
+        gap: 17px;
+        padding: 27px 22px 23px;
+    }
+
+    .pv-edit-hero-icon {
+        width: 54px;
+        height: 54px;
+        flex-basis: 54px;
+        border-radius: 15px;
+    }
+
+    .pv-edit-hero-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .pv-edit-hero h1 {
+        font-size: 2.3rem;
+    }
+
+    .pv-edit-hero-description {
+        margin-top: 13px;
+        font-size: 0.82rem;
+        line-height: 1.7;
+    }
+
+    .pv-edit-patient {
+        margin: 0 14px 14px;
+        padding: 18px;
+    }
+
+    .pv-edit-patient-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .pv-edit-patient h2 {
+        font-size: 1.25rem;
+    }
+
+    .pv-edit-errors-header {
+        padding: 18px;
+    }
+
+    .pv-edit-errors-list {
+        padding: 16px 18px 18px;
+    }
+
+    .pv-edit-card-header {
+        padding: 18px;
+    }
+
+    .pv-edit-card-body {
+        padding: 18px;
+    }
+
+    .pv-edit-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .pv-edit-actions-content {
+        padding: 20px;
+    }
+
+    .pv-edit-action-buttons {
+        flex-direction: column-reverse;
+    }
+
+    .pv-edit-cancel-btn,
+    .pv-edit-submit-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .pv-edit-page {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .pv-edit-hero h1 {
+        font-size: 2rem;
+    }
+
+    .pv-edit-card-header {
+        gap: 11px;
+    }
+
+    .pv-edit-section-icon {
+        width: 39px;
+        height: 39px;
+        flex-basis: 39px;
+    }
+
+    .pv-edit-section-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .pv-edit-card-header h2 {
+        font-size: 0.93rem;
+    }
+
+    .pv-edit-card-header p {
+        font-size: 0.74rem;
+    }
+}
+
+/* =========================================================
+   Reduced Motion
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .pv-edit-field input,
+    .pv-edit-field select,
+    .pv-edit-field textarea,
+    .pv-edit-cancel-btn,
+    .pv-edit-submit-btn {
+        transition: none;
+    }
+}

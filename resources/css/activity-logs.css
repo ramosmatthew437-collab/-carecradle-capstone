@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================================================
+   CARECRADLE — ACTIVITY LOGS
+   Clean alignment, responsive layout, existing pink theme
+   ========================================================= */
+
+:root {
+    --al-pink: #ec4899;
+    --al-pink-dark: #be185d;
+    --al-pink-deep: #9d174d;
+    --al-pink-soft: #fff0f6;
+    --al-border: #fce7f3;
+    --al-text: #1e293b;
+    --al-muted: #64748b;
+    --al-content-width: 1280px;
+}
+
+/* Shared header slot: align its inner content with the page container */
+.al-header-shell {
+    width: 100%;
+    max-width: var(--al-content-width);
+    margin-inline: auto;
+    padding: .25rem 1.5rem;
+    box-sizing: border-box;
+}
+
+.al-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.al-page-heading-main {
+    display: flex;
+    align-items: center;
+    gap: .875rem;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.al-page-heading-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #fbcfe8;
+    border-radius: .875rem;
+    background: #fdf2f8;
+    color: var(--al-pink-dark);
+}
+
+.al-page-heading-main > div { min-width: 0; }
+
+.al-page-heading-title {
+    margin: 0;
+    color: var(--al-pink-deep);
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(1.5rem, 2.3vw, 1.875rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -.015em;
+}
+
+.al-page-heading-subtitle {
+    margin: .25rem 0 0;
+    color: var(--al-muted);
+    font-size: .8125rem;
+    line-height: 1.6;
+}
+
+.al-page-heading-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    flex: 0 0 auto;
+    padding: .45rem .875rem;
+    border: 1px solid #fbcfe8;
+    border-radius: 9999px;
+    background: var(--al-pink-soft);
+    color: var(--al-pink-dark);
+    font-size: .75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.al-page-heading-dot {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border-radius: 50%;
+    background: var(--al-pink);
+}
+
+/* Main content width and centering. Do not offset this by the sidebar width:
+   app.blade.php already positions the authenticated content area. */
+.py-8 > .max-w-7xl {
+    width: 100%;
+    max-width: var(--al-content-width);
+    margin-inline: auto;
+    box-sizing: border-box;
+}
+
+/* Cards share equal heights and consistent internal alignment */
+.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 { align-items: stretch; }
+.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
+    min-width: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex.items-center.justify-between {
+    align-items: center;
+    gap: .75rem;
+}
+.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex.items-center.justify-between > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+/* Filter form fields line up to a shared control height */
+form[action*="activity-logs"] { min-width: 0; }
+form[action*="activity-logs"] label {
+    display: block;
+    line-height: 1.4;
+}
+form[action*="activity-logs"] input,
+form[action*="activity-logs"] select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    box-sizing: border-box;
+}
+#custom-date-fields { align-items: start; }
+form[action*="activity-logs"] .sm\:justify-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .75rem;
+}
+form[action*="activity-logs"] .sm\:justify-end > a,
+form[action*="activity-logs"] .sm\:justify-end > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: 42px;
+    margin: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+/* Table sizing and vertical alignment */
+.overflow-x-auto { width: 100%; max-width: 100%; overflow-x: auto; }
+table.min-w-full {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+table.min-w-full th,
+table.min-w-full td { vertical-align: middle; }
+table.min-w-full th { line-height: 1.4; }
+table.min-w-full td p { overflow-wrap: anywhere; }
+
+/* Pagination: retain Laravel's own pagination layout */
+.border-t.border-gray-100.px-5.py-4.sm\:px-6 { box-sizing: border-box; }
+
+@media (min-width: 1280px) {
+    .al-header-shell { padding-inline: 1.5rem; }
+}
+
+@media (max-width: 1023px) {
+    .al-header-shell { padding-inline: 1.5rem; }
+    .py-8 > .max-w-7xl { max-width: 100%; }
+}
+
+@media (max-width: 639px) {
+    .al-header-shell { padding: .25rem 1rem; }
+    .al-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: .875rem;
+    }
+    .al-page-heading-main {
+        align-items: flex-start;
+        width: 100%;
+        gap: .75rem;
+    }
+    .al-page-heading-icon {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+        border-radius: .75rem;
+    }
+    .al-page-heading-badge { align-self: flex-start; }
+    .py-8 > .max-w-7xl { padding-inline: 1rem; }
+    form[action*="activity-logs"] .sm\:justify-end {
+        align-items: stretch;
+        flex-direction: column;
+    }
+    form[action*="activity-logs"] .sm\:justify-end > a,
+    form[action*="activity-logs"] .sm\:justify-end > button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .transition, .transition-colors { transition: none !important; }
+}

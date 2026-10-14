@@ -31,6 +31,9 @@ class Mother extends Model
         'expected_delivery_date',
         'pregnancy_number',
         'status',
+
+        'privacy_consent',
+    'privacy_consent_at',
     ];
 
     /**

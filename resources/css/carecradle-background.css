@@ -1,0 +1,103 @@
+
+/* =========================================================
+   CARECRADLE — PERFORMANCE-FIRST PINK BACKGROUND
+   Static • Lightweight • Responsive
+   ========================================================= */
+
+:root {
+    --cc-bg: #fff8fa;
+    --cc-dot: rgba(190, 24, 93, 0.035);
+}
+
+html {
+    min-height: 100%;
+    background: var(--cc-bg);
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+    overflow-x: hidden;
+    background-color: var(--cc-bg);
+
+    /* Static background: no animated gradients */
+    background-image:
+        radial-gradient(
+            var(--cc-dot) 1px,
+            transparent 1px
+        ),
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(244, 114, 182, 0.10),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 95% 12%,
+            rgba(251, 207, 232, 0.25),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 88% 92%,
+            rgba(236, 72, 153, 0.045),
+            transparent 30%
+        );
+
+    background-size:
+        30px 30px,
+        auto,
+        auto,
+        auto;
+
+    background-position: 0 0;
+}
+
+/* =========================================================
+   REMOVE EXPENSIVE FLOATING GLOWS
+   ========================================================= */
+
+body::before,
+body::after {
+    content: none !important;
+    animation: none !important;
+    filter: none !important;
+}
+
+/* =========================================================
+   DECORATIVE LAYER
+   Keep the layer without animated rings
+   ========================================================= */
+
+.cc-background-layer {
+    display: none !important;
+    animation: none !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+    body {
+        background-size:
+            24px 24px,
+            auto,
+            auto,
+            auto;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+

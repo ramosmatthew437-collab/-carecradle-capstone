@@ -1,147 +1,454 @@
 <x-app-layout>
 
-<div class="py-8">
+    <div class="gmn-wrap">
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="gmn-container">
 
-        {{-- Hero --}}
-        <div class="overflow-hidden rounded-2xl border border-green-100 bg-white shadow-sm">
+            {{-- =====================================================
+                 PAGE HEADER
+                 ===================================================== --}}
+            <div class="gmn-page-head">
 
-            <div class="flex items-center justify-between p-8">
+                <button
+                    type="button"
+                    onclick="window.history.back()"
+                    aria-label="Go back"
+                    class="gmn-back-btn"
+                >
+                    <svg
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 19l-7-7 7-7"
+                        />
+                    </svg>
+                </button>
 
-                <div>
+                <div class="gmn-page-copy">
 
-                    <p class="text-sm font-semibold uppercase tracking-widest text-green-600">
-                        Mother Portal
+                    <span>Child Health</span>
+
+                    <h1>Growth Monitoring</h1>
+
+                    <p>
+                        Track your baby's growth measurements and development records
                     </p>
 
-                    <h1 class="mt-2 text-4xl font-bold text-gray-900">
-                        Growth Monitoring
-                    </h1>
-
-                    <p class="mt-3 max-w-2xl text-gray-500">
-                        Track your baby's growth measurements and development records.
-                    </p>
-
-                </div>
-
-                <div class="flex h-24 w-24 items-center justify-center rounded-3xl bg-green-100 text-5xl">
-                    📈
                 </div>
 
             </div>
 
-        </div>
 
-        {{-- Records --}}
-        <div class="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+            {{-- =====================================================
+                 HERO
+                 ===================================================== --}}
+            <section class="gmn-hero">
 
-            <div class="border-b border-gray-200 bg-gray-50 px-6 py-5">
+                <div class="gmn-hero-shape gmn-hero-shape-a"></div>
+                <div class="gmn-hero-shape gmn-hero-shape-b"></div>
 
-                <h2 class="text-xl font-bold text-gray-900">
-                    Growth Records
-                </h2>
+                <div class="gmn-hero-inner">
 
-            </div>
+                    <div class="gmn-hero-icon">
 
-            @if($growthRecords->count())
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3 17.25V21h3.75L18.81 9.94l-3.75-3.75L3 17.25Z"
+                            />
 
-            <div class="overflow-x-auto">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M14.06 6.19l3.75 3.75"
+                            />
 
-                <table class="min-w-full divide-y divide-gray-200">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M5.25 17.25h3m-3-3h1.5m-1.5-3h3"
+                            />
+                        </svg>
 
-                    <thead class="bg-gray-50">
+                    </div>
 
-                        <tr>
 
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
-                                Date Measured
-                            </th>
+                    <div class="gmn-hero-content">
 
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
-                                Age (Months)
-                            </th>
+                        <p class="gmn-hero-eyebrow">
+                            Baby Development
+                        </p>
 
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
-                                Weight
-                            </th>
+                        <h2>
+                            Growth Monitoring
+                        </h2>
 
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
-                                Height
-                            </th>
+                        <p>
+                            Keep track of your baby's recorded weight,
+                            height, and head circumference measurements.
+                        </p>
 
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
-                                Head Circumference
-                            </th>
+                    </div>
 
-                        </tr>
-
-                    </thead>
-
-                    <tbody class="divide-y divide-gray-100 bg-white">
-
-                    @foreach($growthRecords as $record)
-
-                        <tr>
-
-                            <td class="px-6 py-5">
-                                {{ \Carbon\Carbon::parse($record->date_measured)->format('F d, Y') }}
-                            </td>
-
-                            <td class="px-6 py-5">
-                                {{ $record->age_in_months }}
-                            </td>
-
-                            <td class="px-6 py-5">
-                                {{ $record->weight }} kg
-                            </td>
-
-                            <td class="px-6 py-5">
-                                {{ $record->height }} cm
-                            </td>
-
-                            <td class="px-6 py-5">
-                                {{ $record->head_circumference }} cm
-                            </td>
-
-                        </tr>
-
-                    @endforeach
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <div class="p-6">
-                {{ $growthRecords->links() }}
-            </div>
-
-            @else
-
-            <div class="p-12 text-center">
-
-                <div class="text-6xl">
-                    📈
                 </div>
 
-                <h3 class="mt-4 text-xl font-bold text-gray-900">
-                    No Growth Records
-                </h3>
+            </section>
 
-                <p class="mt-2 text-gray-500">
-                    No growth monitoring records found.
-                </p>
 
-            </div>
+            {{-- =====================================================
+                 RECORDS
+                 ===================================================== --}}
+            <section class="gmn-section">
 
-            @endif
+                <div class="gmn-section-head">
+
+                    <div>
+
+                        <span>Recorded Measurements</span>
+
+                        <h2>
+                            Growth Records
+                        </h2>
+
+                    </div>
+
+                    <span class="gmn-count-badge">
+                        {{ $growthRecords->total() }}
+                        {{ Str::plural('record', $growthRecords->total()) }}
+                    </span>
+
+                </div>
+
+
+                @if($growthRecords->count())
+
+                    <div class="gmn-record-card">
+
+                        {{-- Desktop / tablet table --}}
+                        <div class="gmn-table-wrap">
+
+                            <table class="gmn-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Date Measured
+                                        </th>
+
+                                        <th>
+                                            Age
+                                        </th>
+
+                                        <th>
+                                            Weight
+                                        </th>
+
+                                        <th>
+                                            Height
+                                        </th>
+
+                                        <th>
+                                            Head Circumference
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    @foreach($growthRecords as $record)
+
+                                        <tr>
+
+                                            <td>
+
+                                                <div class="gmn-date-cell">
+
+                                                    <div class="gmn-date-icon">
+
+                                                        <svg
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke="currentColor"
+                                                            stroke-width="1.8"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
+                                                            />
+                                                        </svg>
+
+                                                    </div>
+
+                                                    <div>
+
+                                                        <strong>
+                                                            {{ \Carbon\Carbon::parse($record->date_measured)->format('F d, Y') }}
+                                                        </strong>
+
+                                                        <span>
+                                                            Measurement date
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <span class="gmn-age-badge">
+                                                    {{ $record->age_in_months }}
+                                                    {{ Str::plural('month', (float) $record->age_in_months) }}
+                                                </span>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <div class="gmn-measurement">
+
+                                                    <strong>
+                                                        {{ $record->weight }}
+                                                    </strong>
+
+                                                    <span>
+                                                        kg
+                                                    </span>
+
+                                                </div>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <div class="gmn-measurement">
+
+                                                    <strong>
+                                                        {{ $record->height }}
+                                                    </strong>
+
+                                                    <span>
+                                                        cm
+                                                    </span>
+
+                                                </div>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <div class="gmn-measurement">
+
+                                                    <strong>
+                                                        {{ $record->head_circumference }}
+                                                    </strong>
+
+                                                    <span>
+                                                        cm
+                                                    </span>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    @endforeach
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                        {{-- Mobile cards --}}
+                        <div class="gmn-mobile-list">
+
+                            @foreach($growthRecords as $record)
+
+                                <article class="gmn-mobile-card">
+
+                                    <div class="gmn-mobile-top">
+
+                                        <div class="gmn-date-cell">
+
+                                            <div class="gmn-date-icon">
+
+                                                <svg
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
+                                                    />
+                                                </svg>
+
+                                            </div>
+
+                                            <div>
+
+                                                <strong>
+                                                    {{ \Carbon\Carbon::parse($record->date_measured)->format('F d, Y') }}
+                                                </strong>
+
+                                                <span>
+                                                    Measurement date
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <span class="gmn-age-badge">
+                                            {{ $record->age_in_months }}
+                                            {{ Str::plural('month', (float) $record->age_in_months) }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="gmn-mobile-measurements">
+
+                                        <div class="gmn-mobile-measurement">
+
+                                            <span>Weight</span>
+
+                                            <strong>
+                                                {{ $record->weight }}
+                                                <small>kg</small>
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="gmn-mobile-measurement">
+
+                                            <span>Height</span>
+
+                                            <strong>
+                                                {{ $record->height }}
+                                                <small>cm</small>
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="gmn-mobile-measurement">
+
+                                            <span>Head circumference</span>
+
+                                            <strong>
+                                                {{ $record->head_circumference }}
+                                                <small>cm</small>
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                            @endforeach
+
+                        </div>
+
+
+                        {{-- Pagination --}}
+                        <div class="gmn-pagination">
+
+                            {{ $growthRecords->links() }}
+
+                        </div>
+
+                    </div>
+
+                @else
+
+                    {{-- =================================================
+                         EMPTY STATE
+                         ================================================= --}}
+                    <section class="gmn-empty">
+
+                        <div class="gmn-empty-icon">
+
+                            <svg
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3 17.25V21h3.75L18.81 9.94l-3.75-3.75L3 17.25Z"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M14.06 6.19l3.75 3.75"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M5.25 17.25h3m-3-3h1.5m-1.5-3h3"
+                                />
+                            </svg>
+
+                        </div>
+
+
+                        <h3>
+                            No Growth Records
+                        </h3>
+
+
+                        <p>
+                            No growth monitoring records found.
+                        </p>
+
+                    </section>
+
+                @endif
+
+            </section>
 
         </div>
 
     </div>
-
-</div>
 
 </x-app-layout>

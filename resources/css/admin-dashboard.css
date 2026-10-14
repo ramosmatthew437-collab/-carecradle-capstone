@@ -1,0 +1,1090 @@
+
+/* =========================================================
+   CARECRADLE — ADMIN DASHBOARD
+   Theme: Soft pink / white / modern healthcare
+   Typography: DM Serif Display + Inter
+   ========================================================= */
+
+.ad-wrap *,
+.ad-wrap *::before,
+.ad-wrap *::after {
+    box-sizing: border-box;
+}
+
+.ad-wrap {
+    color: #1e293b;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+.ad-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    width: 100%;
+    min-width: 0;
+    padding: 0.125rem 0;
+}
+
+.ad-page-header-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.ad-page-header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border: 1px solid #fbcfe8;
+    border-radius: 0.875rem;
+    background: #fdf2f8;
+    color: #be185d;
+}
+
+.ad-page-header-copy {
+    min-width: 0;
+}
+
+.ad-page-header-eyebrow {
+    margin: 0 0 0.2rem;
+    color: #be185d;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.075em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.ad-page-header-title {
+    margin: 0;
+    color: #0f172a;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+}
+
+.ad-page-header-sub {
+    margin: 0.35rem 0 0;
+    color: #64748b;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+}
+
+.ad-page-header-date {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    gap: 0.5rem;
+    max-width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #fce7f3;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #be185d;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    box-shadow: 0 2px 8px rgba(190, 24, 93, 0.04);
+}
+
+.ad-page-header-date svg {
+    flex: 0 0 auto;
+}
+
+.ad-content-container {
+    width: 100%;
+    min-width: 0;
+    max-width: 1440px;
+    margin-inline: auto;
+}
+
+/* Section headings */
+
+.ad-section-head {
+    margin-bottom: 1rem;
+}
+
+.ad-section-title {
+    margin: 0 0 0.25rem;
+    color: #0f172a;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.ad-section-sub {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+}
+
+/* Primary statistics */
+
+.ad-stats-primary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.875rem;
+}
+
+.ad-stat {
+    min-width: 0;
+    padding: 1.125rem 1.25rem;
+    border: 1px solid #f3e4ec;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.ad-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(190, 24, 93, 0.08);
+}
+
+.ad-stat-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.875rem;
+}
+
+.ad-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 0.75rem;
+}
+
+.ad-stat-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.2rem 0.625rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.ad-stat-value {
+    margin: 0 0 0.3rem;
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+}
+
+.ad-stat-label {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.ad-stat-pink .ad-stat-icon,
+.ad-stat-pink .ad-stat-badge {
+    background: #fdf2f8;
+}
+
+.ad-stat-pink .ad-stat-icon {
+    color: #ec4899;
+}
+
+.ad-stat-pink .ad-stat-badge {
+    color: #be185d;
+}
+
+.ad-stat-pink .ad-stat-value {
+    color: #9d174d;
+}
+
+.ad-stat-cyan .ad-stat-icon,
+.ad-stat-cyan .ad-stat-badge {
+    background: #ecfeff;
+}
+
+.ad-stat-cyan .ad-stat-icon {
+    color: #0891b2;
+}
+
+.ad-stat-cyan .ad-stat-badge {
+    color: #0e7490;
+}
+
+.ad-stat-cyan .ad-stat-value {
+    color: #164e63;
+}
+
+.ad-stat-blue .ad-stat-icon,
+.ad-stat-blue .ad-stat-badge {
+    background: #eff6ff;
+}
+
+.ad-stat-blue .ad-stat-icon {
+    color: #3b82f6;
+}
+
+.ad-stat-blue .ad-stat-badge {
+    color: #1d4ed8;
+}
+
+.ad-stat-blue .ad-stat-value {
+    color: #1e3a8a;
+}
+
+.ad-stat-amber .ad-stat-icon,
+.ad-stat-amber .ad-stat-badge {
+    background: #fffbeb;
+}
+
+.ad-stat-amber .ad-stat-icon {
+    color: #f59e0b;
+}
+
+.ad-stat-amber .ad-stat-badge {
+    color: #b45309;
+}
+
+.ad-stat-amber .ad-stat-value {
+    color: #78350f;
+}
+
+/* Secondary statistic */
+
+.ad-stat-secondary {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-top: 0.875rem;
+    padding: 1rem 1.375rem;
+    border: 1px solid #f3e4ec;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+}
+
+.ad-stat-secondary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 0.75rem;
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.ad-stat-secondary-value {
+    margin: 0 0 0.15rem;
+    color: #064e3b;
+    font-size: 1.625rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.ad-stat-secondary-label {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Quick action cards */
+
+.ad-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.875rem;
+}
+
+.ad-action {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    min-width: 0;
+    min-height: 190px;
+    overflow: hidden;
+    padding: 1.5rem 1.625rem;
+    border-radius: 1.125rem;
+    background: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+    transition: box-shadow 0.2s ease, transform 0.15s ease,
+        border-color 0.2s ease;
+}
+
+.ad-action-blob {
+    position: absolute;
+    top: -36px;
+    right: -36px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: background 0.2s ease;
+}
+
+.ad-action-body {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.ad-action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1.125rem;
+    border-radius: 1rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ad-action-name {
+    margin: 0 0 0.5rem;
+    color: #0f172a;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.ad-action-desc {
+    margin: 0 0 1.25rem;
+    color: #64748b;
+    font-size: 0.8125rem;
+    line-height: 1.65;
+}
+
+.ad-action-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.ad-action-arrow {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 0.25rem;
+    transition: transform 0.15s ease;
+}
+
+.ad-action:hover .ad-action-arrow {
+    transform: translateX(4px);
+}
+
+.ad-action-pink {
+    border: 1px solid #f3e4ec;
+}
+
+.ad-action-pink:hover {
+    transform: translateY(-2px);
+    border-color: #fbcfe8;
+    box-shadow: 0 8px 24px rgba(236, 72, 153, 0.10);
+}
+
+.ad-action-pink .ad-action-blob {
+    background: #fdf2f8;
+}
+
+.ad-action-pink:hover .ad-action-blob {
+    background: #fce7f3;
+}
+
+.ad-action-pink .ad-action-icon {
+    background: #fdf2f8;
+    color: #ec4899;
+}
+
+.ad-action-pink:hover .ad-action-icon {
+    background: #ec4899;
+    color: #ffffff;
+}
+
+.ad-action-pink .ad-action-cta {
+    color: #be185d;
+}
+
+.ad-action-emerald {
+    border: 1px solid #d1fae5;
+}
+
+.ad-action-emerald:hover {
+    transform: translateY(-2px);
+    border-color: #a7f3d0;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.10);
+}
+
+.ad-action-emerald .ad-action-blob {
+    background: #ecfdf5;
+}
+
+.ad-action-emerald:hover .ad-action-blob {
+    background: #d1fae5;
+}
+
+.ad-action-emerald .ad-action-icon {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.ad-action-emerald:hover .ad-action-icon {
+    background: #059669;
+    color: #ffffff;
+}
+
+.ad-action-emerald .ad-action-cta {
+    color: #047857;
+}
+
+/* System insights */
+
+.ad-insight-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.875rem;
+}
+
+.ad-insight-head h3 {
+    margin: 0;
+    color: #0f172a;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+}
+
+.ad-insight-count {
+    padding: 0.2rem 0.625rem;
+    border-radius: 9999px;
+    background: #fff1f6;
+    color: #9d174d;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Tables */
+
+.ad-table-shell {
+    overflow: hidden;
+    border: 1px solid #f3e4ec;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+}
+
+.ad-table-scroll {
+    overflow-x: auto;
+}
+
+table.ad-table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+}
+
+table.ad-table thead tr {
+    border-bottom: 1px solid #f3e4ec;
+    background: #fff8fb;
+}
+
+table.ad-table thead th {
+    padding: 0.875rem 1.375rem;
+    color: #64748b;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+table.ad-table tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s ease;
+}
+
+table.ad-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+table.ad-table tbody tr:hover {
+    background: #fffafd;
+}
+
+table.ad-table tbody td {
+    padding: 0.9rem 1.375rem;
+    color: #1e293b;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+table.ad-table tbody td.ad-td-muted {
+    color: #64748b;
+}
+
+.ad-td-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #be185d;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.ad-chip {
+    display: inline-flex;
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.5rem;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Status pills */
+
+.ad-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.ad-pill-dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.ad-pill-blue {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.ad-pill-blue .ad-pill-dot {
+    background: #3b82f6;
+}
+
+.ad-pill-emerald {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.ad-pill-emerald .ad-pill-dot {
+    background: #10b981;
+}
+
+.ad-pill-rose {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+.ad-pill-rose .ad-pill-dot {
+    background: #f43f5e;
+}
+
+.ad-pill-amber {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.ad-pill-amber .ad-pill-dot {
+    background: #f59e0b;
+}
+
+.ad-pill-slate {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.ad-pill-slate .ad-pill-dot {
+    background: #94a3b8;
+}
+
+.ad-pill-due {
+    background: #ecfdf5;
+    color: #047857;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* Empty states */
+
+.ad-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.ad-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
+    border-radius: 1rem;
+    background: #fdf2f8;
+    color: #f9a8d4;
+}
+
+.ad-empty-title {
+    margin: 0 0 0.375rem;
+    color: #0f172a;
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.ad-empty-sub {
+    max-width: 28rem;
+    margin: 0;
+    color: #64748b;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+}
+
+.ad-empty-icon-emerald {
+    background: #ecfdf5;
+    color: #6ee7b7;
+}
+
+/* System footer */
+
+.ad-sys-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.375rem 1.75rem;
+    border: 1px solid #f3e4ec;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+}
+
+.ad-sys-footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-width: 0;
+}
+
+.ad-sys-footer-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 0.875rem;
+    background: #fdf2f8;
+    color: #ec4899;
+}
+
+.ad-sys-footer-name {
+    margin: 0 0 0.2rem;
+    color: #0f172a;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.ad-sys-footer-sub {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.ad-sys-footer-version {
+    flex-shrink: 0;
+    color: #64748b;
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+.ad-sys-footer-version strong {
+    display: block;
+    margin-bottom: 0.125rem;
+    color: #be185d;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* Responsive layout */
+
+@media (min-width: 640px) {
+    .ad-sys-footer {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ad-stats-primary {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .ad-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1280px) {
+    .ad-content-container {
+        padding-inline: 1.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .ad-wrap.py-6 {
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
+    }
+
+    .ad-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.875rem;
+    }
+
+    .ad-page-header-main {
+        align-items: flex-start;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .ad-page-header-icon {
+        flex-basis: 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 0.75rem;
+    }
+
+    .ad-page-header-title {
+        font-size: 1.55rem;
+    }
+
+    .ad-page-header-sub {
+        font-size: 0.78125rem;
+    }
+
+    .ad-page-header-date {
+        align-self: flex-start;
+        margin-left: 3.25rem;
+        white-space: normal;
+    }
+
+    .ad-stat {
+        padding: 1rem;
+    }
+
+    .ad-stat-value {
+        font-size: 1.9rem;
+    }
+
+    .ad-action {
+        min-height: auto;
+        padding: 1.25rem;
+    }
+
+    .ad-sys-footer {
+        padding: 1.125rem;
+    }
+
+    .ad-sys-footer-version {
+        text-align: left;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+    .ad-page-header {
+        align-items: flex-start;
+    }
+
+    .ad-page-header-date {
+        max-width: 12rem;
+        white-space: normal;
+    }
+}
+
+@media (max-width: 639px) {
+    .ad-page-header-date {
+        margin-left: 3.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ad-wrap *,
+    .ad-wrap *::before,
+    .ad-wrap *::after {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+.ad-wrap a:focus-visible,
+.ad-wrap button:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, 0.24);
+    outline-offset: 3px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — ADMIN DASHBOARD REFINEMENT
+   Content alignment and consistent card behavior
+   ========================================================= */
+
+.ad-wrap {
+    width: 100%;
+    min-width: 0;
+}
+
+.ad-content-container {
+    width: 100%;
+    min-width: 0;
+    max-width: 1440px;
+    margin-inline: auto;
+}
+
+.ad-page-header,
+.ad-stats-primary,
+.ad-stat-secondary,
+.ad-actions,
+.ad-table-shell,
+.ad-sys-footer {
+    min-width: 0;
+}
+
+.ad-stat,
+.ad-action {
+    height: 100%;
+}
+
+.ad-action {
+    border-radius: 18px;
+}
+
+.ad-table-shell {
+    width: 100%;
+}
+
+.ad-table-scroll {
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .ad-content-container {
+        padding-inline: 1.5rem;
+    }
+}
+
+@media (max-width: 1023px) {
+    .ad-content-container {
+        padding-inline: 1rem;
+    }
+}
+
+@media (max-width: 639px) {
+    .ad-stats-primary {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ad-page-header-date {
+        margin-left: 0;
+    }
+
+    .ad-action {
+        min-height: 0;
+    }
+
+    .ad-table-scroll {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   ADMIN DASHBOARD — COMPACT EMPTY STATES
+   ========================================================= */
+
+.ad-empty {
+    padding: 2rem 1.5rem;
+}
+
+.ad-empty-icon {
+    margin-bottom: 0.75rem;
+}
+
+.ad-empty-title {
+    line-height: 1.4;
+}
+
+.ad-empty-sub {
+    line-height: 1.55;
+}
+
+@media (max-width: 639px) {
+    .ad-empty {
+        padding: 1.75rem 1rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — ADMIN DASHBOARD SPACING ALIGNMENT
+   Match the Mother Registry's full-width content layout
+   ========================================================= */
+
+.ad-wrap {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+}
+
+.ad-wrap .ad-content-container {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 1.15rem clamp(1rem, 1.7vw, 1.75rem) 2rem;
+}
+
+.ad-wrap .ad-page-header,
+.ad-wrap .ad-stats-primary,
+.ad-wrap .ad-stat-secondary,
+.ad-wrap .ad-actions,
+.ad-wrap .ad-table-shell,
+.ad-wrap .ad-sys-footer {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+}
+
+.ad-wrap .ad-section-head {
+    margin-bottom: 1rem;
+}
+
+.ad-wrap .ad-stats-primary {
+    gap: 0.8rem;
+}
+
+.ad-wrap .ad-stat-secondary {
+    margin-top: 0.8rem;
+}
+
+.ad-wrap .ad-actions {
+    gap: 0.8rem;
+}
+
+.ad-wrap .ad-action {
+    min-width: 0;
+    min-height: 175px;
+    height: auto;
+}
+
+.ad-wrap .ad-table-shell {
+    overflow: hidden;
+}
+
+.ad-wrap .ad-table-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+@media (max-width: 1023px) {
+    .ad-wrap .ad-content-container {
+        padding: 1rem 1rem 1.75rem;
+    }
+}
+
+@media (max-width: 639px) {
+    .ad-wrap .ad-content-container {
+        padding: 1rem 0.75rem 1.5rem;
+    }
+
+    .ad-wrap .ad-stats-primary {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ad-wrap .ad-action {
+        min-height: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,71 +1,177 @@
 <x-app-layout>
 
-    {{-- Google Font: Inter — matches the CareCradle design system --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <div class="smh-wrap">
 
-    <div class="py-6 sm:py-8" style="font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;">
+        <div class="smh-container">
 
-        <div class="max-w-2xl lg:max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- =====================================================
+                 PAGE HEADER
+                 ===================================================== --}}
+            <div class="smh-page-head">
 
-            {{-- ====================================== --}}
-            {{-- PAGE HEADER --}}
-            {{-- ====================================== --}}
-
-            <div class="flex items-center gap-3">
                 <button
-    type="button"
-    onclick="window.history.back()"
-    class="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 rounded-full bg-white border border-pink-100 flex items-center justify-center text-slate-500 cursor-pointer hover:bg-pink-50 transition"
->
-    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-    </svg>
-</button>
-                <div>
-                    <h1 class="text-[19px] sm:text-2xl font-bold text-slate-900 leading-tight">SMS history</h1>
-                    <p class="text-[12px] sm:text-sm text-slate-500">Reminders from your RHU</p>
+                    type="button"
+                    onclick="window.history.back()"
+                    aria-label="Go back"
+                    class="smh-back-btn"
+                >
+                    <svg
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 19l-7-7 7-7"
+                        />
+                    </svg>
+                </button>
+
+                <div class="smh-page-copy">
+
+                    <span>Notifications</span>
+
+                    <h1>SMS History</h1>
+
+                    <p>
+                        Reminders from your RHU
+                    </p>
+
                 </div>
+
             </div>
+
 
             @if($smsNotifications->count())
 
                 @php
-                    // Display-only status label mapping — underlying $sms->status
-                    // values (Sent / Pending / Failed) are never changed.
+
+                    /*
+                     * Presentation-only SMS status mapping.
+                     * Existing database status values remain unchanged.
+                     */
                     $smsStatus = function ($status) {
+
                         return match ($status) {
-                            'Sent' => ['label' => 'Delivered', 'dot' => 'bg-emerald-500', 'bg' => 'bg-emerald-50', 'text' => 'text-emerald-700'],
-                            'Failed' => ['label' => 'Not delivered', 'dot' => 'bg-rose-500', 'bg' => 'bg-rose-50', 'text' => 'text-rose-600'],
-                            default => ['label' => 'Pending', 'dot' => 'bg-amber-500', 'bg' => 'bg-amber-50', 'text' => 'text-amber-700'],
+
+                            'Sent' => [
+                                'label' => 'Delivered',
+                                'dot'   => 'smh-dot-green',
+                                'bg'    => 'smh-status-green',
+                                'text'  => 'smh-text-green',
+                            ],
+
+                            'Failed' => [
+                                'label' => 'Not delivered',
+                                'dot'   => 'smh-dot-rose',
+                                'bg'    => 'smh-status-rose',
+                                'text'  => 'smh-text-rose',
+                            ],
+
+                            default => [
+                                'label' => 'Pending',
+                                'dot'   => 'smh-dot-amber',
+                                'bg'    => 'smh-status-amber',
+                                'text'  => 'smh-text-amber',
+                            ],
+
                         };
+
                     };
 
-                    // Presentation-only date grouping from created_at — no schema/controller changes.
-                    // Operates on the paginator's current-page collection.
-                    $smsGroups = $smsNotifications->getCollection()->groupBy(function ($sms) {
-                        if ($sms->created_at->isToday()) {
-                            return 'Today';
-                        }
-                        if ($sms->created_at->isYesterday()) {
-                            return 'Yesterday';
-                        }
-                        return 'Earlier';
-                    });
+
+                    /*
+                     * Presentation-only grouping using created_at.
+                     * Keeps the existing current-page behavior.
+                     */
+                    $smsGroups = $smsNotifications
+                        ->getCollection()
+                        ->groupBy(function ($sms) {
+
+                            if ($sms->created_at->isToday()) {
+                                return 'Today';
+                            }
+
+                            if ($sms->created_at->isYesterday()) {
+                                return 'Yesterday';
+                            }
+
+                            return 'Earlier';
+
+                        });
+
                 @endphp
 
+
+                {{-- =====================================================
+                     SMS SUMMARY
+                     ===================================================== --}}
+                <div class="smh-summary">
+
+                    <div class="smh-summary-icon">
+
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M21.75 10.5c0 4.556-4.366 8.25-9.75 8.25a10.8 10.8 0 01-3.733-.654L4.5 19.5l1.404-3.511A7.95 7.95 0 012.25 10.5C2.25 5.944 6.616 2.25 12 2.25s9.75 3.694 9.75 8.25Z"
+                            />
+                        </svg>
+
+                    </div>
+
+                    <div class="smh-summary-content">
+
+                        <p>
+                            RHU Messages
+                        </p>
+
+                        <strong>
+                            {{ $smsNotifications->total() }}
+                            {{ Str::plural('message', $smsNotifications->total()) }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                {{-- =====================================================
+                     MESSAGE GROUPS
+                     ===================================================== --}}
                 @foreach(['Today', 'Yesterday', 'Earlier'] as $groupLabel)
 
                     @if($smsGroups->has($groupLabel))
 
-                        <div class="mt-5">
+                        <section class="smh-section">
 
-                            <p class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-pink-500 mb-2">
-                                {{ $groupLabel }}
-                            </p>
+                            <div class="smh-section-head">
 
-                            <div class="space-y-3">
+                                <div>
+                                    <span>Message History</span>
+
+                                    <h2>
+                                        {{ $groupLabel }}
+                                    </h2>
+                                </div>
+
+                                <span class="smh-group-count">
+                                    {{ $smsGroups->get($groupLabel)->count() }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="smh-message-list">
 
                                 @foreach($smsGroups->get($groupLabel) as $sms)
 
@@ -73,69 +179,132 @@
                                         $status = $smsStatus($sms->status);
                                     @endphp
 
-                                    <div class="rounded-2xl bg-white border border-slate-100 p-4 shadow-sm">
 
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <div class="h-8 w-8 flex-shrink-0 rounded-full bg-pink-50 flex items-center justify-center text-pink-500 text-[14px]">
-                                                📩
+                                    <article class="smh-message-card">
+
+                                        <div class="smh-message-top">
+
+                                            <div class="smh-message-icon">
+
+                                                <svg
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M21.75 10.5c0 4.556-4.366 8.25-9.75 8.25a10.8 10.8 0 01-3.733-.654L4.5 19.5l1.404-3.511A7.95 7.95 0 012.25 10.5C2.25 5.944 6.616 2.25 12 2.25s9.75 3.694 9.75 8.25Z"
+                                                    />
+                                                </svg>
+
                                             </div>
-                                            <p class="text-[12px] sm:text-[13px] text-slate-400">
-                                                {{ $groupLabel === 'Earlier'
-                                                    ? $sms->created_at->format('M j') . ' · ' . $sms->created_at->format('g:i A')
-                                                    : $sms->created_at->format('g:i A') }}
+
+
+                                            <div class="smh-message-meta">
+
+                                                <p class="smh-message-source">
+                                                    CareCradle RHU
+                                                </p>
+
+                                                <p class="smh-message-time">
+
+                                                    @if($groupLabel === 'Earlier')
+
+                                                        {{ $sms->created_at->format('M j, Y') }}
+                                                        &middot;
+
+                                                    @endif
+
+                                                    {{ $sms->created_at->format('g:i A') }}
+
+                                                </p>
+
+                                            </div>
+
+
+                                            <span class="smh-status {{ $status['bg'] }} {{ $status['text'] }}">
+
+                                                <span class="smh-status-dot {{ $status['dot'] }}"></span>
+
+                                                {{ $status['label'] }}
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="smh-message-body">
+
+                                            <p>
+                                                {{ $sms->message }}
                                             </p>
+
                                         </div>
 
-                                        <p class="text-[13px] sm:text-sm text-slate-700 leading-relaxed">
-                                            {{ $sms->message }}
-                                        </p>
-
-                                        <div class="mt-3 inline-flex items-center gap-1.5 rounded-full {{ $status['bg'] }} px-2.5 py-1 text-[11px] sm:text-xs font-semibold {{ $status['text'] }}">
-                                            <span class="h-1.5 w-1.5 rounded-full {{ $status['dot'] }}"></span>
-                                            {{ $status['label'] }}
-                                        </div>
-
-                                    </div>
+                                    </article>
 
                                 @endforeach
 
                             </div>
 
-                        </div>
+                        </section>
 
                     @endif
 
                 @endforeach
 
-                {{-- ====================================== --}}
-                {{-- PAGINATION — unchanged --}}
-                {{-- ====================================== --}}
 
-                <div class="mt-6">
-                    {{ $smsNotifications->links() }}
-                </div>
+                {{-- =====================================================
+                     PAGINATION
+                     ===================================================== --}}
+                @if($smsNotifications->hasPages())
+
+                    <div class="smh-pagination">
+                        {{ $smsNotifications->links() }}
+                    </div>
+
+                @endif
+
 
             @else
 
-                {{-- ====================================== --}}
-                {{-- NO SMS NOTIFICATIONS — same empty state as original --}}
-                {{-- ====================================== --}}
+                {{-- =====================================================
+                     EMPTY STATE
+                     ===================================================== --}}
+                <section class="smh-empty">
 
-                <div class="mt-6 rounded-2xl bg-white border border-pink-100 p-10 sm:p-12 text-center shadow-sm">
+                    <div class="smh-empty-icon">
 
-                    <div class="text-5xl sm:text-6xl">
-                        📩
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M21.75 10.5c0 4.556-4.366 8.25-9.75 8.25a10.8 10.8 0 01-3.733-.654L4.5 19.5l1.404-3.511A7.95 7.95 0 012.25 10.5C2.25 5.944 6.616 2.25 12 2.25s9.75 3.694 9.75 8.25Z"
+                            />
+                        </svg>
+
                     </div>
 
-                    <h3 class="mt-4 text-lg sm:text-xl font-bold text-slate-900">
-                        No SMS notifications
-                    </h3>
 
-                    <p class="mt-2 text-[13px] sm:text-sm text-slate-500">
+                    <h2>
+                        No SMS notifications
+                    </h2>
+
+
+                    <p>
                         No reminder messages have been sent yet.
                     </p>
 
-                </div>
+                </section>
 
             @endif
 

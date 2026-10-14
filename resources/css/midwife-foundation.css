@@ -1,0 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================================================
+   CARECRADLE — MIDWIFE FOUNDATION
+   Shared design tokens, layout, sidebar, and utilities
+   Matches the Administrator sidebar design
+   ========================================================= */
+
+
+/* =========================================================
+   1. DESIGN TOKENS
+   ========================================================= */
+
+:root {
+    --cc-midwife-pink: #ec4899;
+    --cc-midwife-pink-dark: #9d174d;
+    --cc-midwife-pink-deep: #be185d;
+    --cc-midwife-pink-light: #fce7f3;
+    --cc-midwife-pink-soft: #fff0f7;
+
+    --cc-midwife-page-bg: #fff8fa;
+    --cc-midwife-card-bg: #ffffff;
+    --cc-midwife-muted-bg: #fdf5f9;
+
+    --cc-midwife-border: #f9d9e9;
+
+    --cc-midwife-text: #243047;
+    --cc-midwife-text-muted: #64748b;
+    --cc-midwife-heading: #9d174d;
+
+    --cc-midwife-radius-sm: 10px;
+    --cc-midwife-radius-md: 16px;
+    --cc-midwife-radius-lg: 20px;
+    --cc-midwife-radius-pill: 999px;
+
+    --cc-midwife-shadow-card:
+        0 4px 14px rgba(190, 24, 93, 0.06);
+
+    --cc-midwife-shadow-hover:
+        0 8px 22px rgba(190, 24, 93, 0.10);
+
+    --cc-midwife-transition: 150ms ease;
+
+    --cc-midwife-content-width: 1280px;
+    --cc-midwife-page-padding: clamp(1rem, 2.5vw, 2rem);
+
+    /* Matches the Administrator sidebar */
+    --cc-midwife-sidebar-width: 272px;
+}
+
+
+/* =========================================================
+   2. BASE LAYOUT
+   ========================================================= */
+
+.cc-midwife-layout {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--cc-midwife-page-bg);
+}
+
+.cc-midwife-main {
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    color: var(--cc-midwife-text);
+    background: var(--cc-midwife-page-bg);
+}
+
+.cc-midwife-main,
+.cc-midwife-main *,
+.cc-midwife-sidebar,
+.cc-midwife-sidebar * {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   3. FIXED SIDEBAR
+   Matches .cc-admin-sidebar
+   ========================================================= */
+
+.cc-midwife-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 40;
+
+    display: none;
+    flex-direction: column;
+
+    width: var(--cc-midwife-sidebar-width);
+    height: 100vh;
+    height: 100dvh;
+
+    padding: 1.5rem 1.125rem 1.125rem;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    color: #831843;
+    background: #fff0f7;
+    border-right: 1px solid #f9d9e9;
+
+    box-shadow: none;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .cc-midwife-sidebar {
+        display: flex;
+    }
+
+    .cc-midwife-main {
+        width: calc(100% - var(--cc-midwife-sidebar-width));
+        margin-left: var(--cc-midwife-sidebar-width);
+    }
+}
+
+/* Mobile and tablet: preserve existing responsive behavior */
+@media (max-width: 1023px) {
+    .cc-midwife-sidebar {
+        display: none;
+    }
+
+    .cc-midwife-main {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+
+/* =========================================================
+   4. SIDEBAR BRAND
+   Matches .cc-admin-brand
+   ========================================================= */
+
+.cc-midwife-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    min-width: 0;
+    padding: 0 0.25rem 1.5rem;
+
+    color: #831843;
+    text-decoration: none;
+
+    border-bottom: 1px solid #f3c4dc;
+}
+
+.cc-midwife-logo {
+    display: block;
+    flex: 0 0 42px;
+
+    width: 42px;
+    height: 42px;
+    max-width: 42px;
+
+    object-fit: contain;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.cc-midwife-brand > span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    min-width: 0;
+}
+
+.cc-midwife-brand strong {
+    color: #831843;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+.cc-midwife-brand small {
+    margin-top: 0.2rem;
+
+    color: #be185d;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   5. SIDEBAR MENU LABEL
+   Matches .cc-admin-menu-label
+   ========================================================= */
+
+.cc-midwife-menu-label {
+    margin: 1.5rem 0 0.75rem;
+
+    color: #9d174d;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   6. SIDEBAR NAVIGATION
+   Matches .cc-admin-links and .cc-admin-link
+   ========================================================= */
+
+.cc-midwife-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    width: 100%;
+    min-width: 0;
+}
+
+.cc-midwife-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+
+    padding: 0.75rem;
+
+    color: #831843;
+    background: transparent;
+    border: 0;
+    border-radius: 0.75rem;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+
+    text-align: left;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 150ms ease,
+        color 150ms ease;
+}
+
+.cc-midwife-link svg {
+    display: block;
+    flex: 0 0 19px;
+
+    width: 19px;
+    height: 19px;
+
+    color: inherit;
+    overflow: visible;
+}
+
+.cc-midwife-link span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Hover */
+@media (hover: hover) and (pointer: fine) {
+    .cc-midwife-link:not(.is-active):hover {
+        color: #9d174d;
+        background: #fce7f3;
+    }
+}
+
+/* Active navigation item */
+.cc-midwife-link.is-active {
+    color: #ffffff;
+    background: #ec4899;
+    border-radius: 0.75rem;
+
+    box-shadow: 0 3px 8px rgba(190, 24, 93, 0.12);
+}
+
+.cc-midwife-link.is-active svg {
+    color: #ffffff;
+}
+
+/* Keep the active item consistent while hovered */
+@media (hover: hover) and (pointer: fine) {
+    .cc-midwife-link.is-active:hover {
+        color: #ffffff;
+        background: #ec4899;
+    }
+
+    .cc-midwife-link.is-active:hover svg {
+        color: #ffffff;
+    }
+}
+
+
+/* =========================================================
+   7. PROFILE AND LOGOUT
+   Matches the Admin sidebar bottom section
+   ========================================================= */
+
+.cc-midwife-sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-top: auto;
+    padding-top: 1rem;
+
+    border-top: 1px solid #f3c4dc;
+}
+
+.cc-midwife-sidebar-bottom form {
+    width: 100%;
+    margin: 0;
+}
+
+/* Make bottom links use the same alignment as navigation links */
+.cc-midwife-sidebar-bottom .cc-midwife-link {
+    width: 100%;
+}
+
+/* Logout hover */
+.cc-midwife-sidebar-bottom .cc-midwife-logout:hover {
+    color: #be123c;
+    background: #ffe4e6;
+}
+
+.cc-midwife-sidebar-bottom .cc-midwife-logout:hover svg {
+    color: inherit;
+}
+
+
+/* =========================================================
+   8. REUSABLE CARDS
+   ========================================================= */
+
+.cc-midwife-card {
+    min-width: 0;
+
+    background: var(--cc-midwife-card-bg);
+    border: 1px solid var(--cc-midwife-border);
+    border-radius: var(--cc-midwife-radius-lg);
+
+    box-shadow: var(--cc-midwife-shadow-card);
+}
+
+.cc-midwife-interactive {
+    transition:
+        box-shadow var(--cc-midwife-transition),
+        transform var(--cc-midwife-transition),
+        border-color var(--cc-midwife-transition);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .cc-midwife-interactive:hover {
+        border-color: #f0b8d3;
+        box-shadow: var(--cc-midwife-shadow-hover);
+    }
+}
+
+.cc-midwife-heading {
+    color: var(--cc-midwife-heading);
+}
+
+.cc-midwife-text-muted {
+    color: var(--cc-midwife-text-muted);
+}
+
+
+/* =========================================================
+   9. ACCESSIBILITY
+   ========================================================= */
+
+.cc-midwife-link:focus-visible,
+.cc-midwife-brand:focus-visible {
+    outline: 3px solid rgba(190, 24, 93, 0.45);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cc-midwife-link,
+    .cc-midwife-interactive {
+        transition: none;
+    }
+}
+
+
+/* =========================================================
+   10. RESPONSIVE FOUNDATION
+   ========================================================= */
+
+@media (max-width: 639px) {
+    :root {
+        --cc-midwife-page-padding: 1rem;
+    }
+}

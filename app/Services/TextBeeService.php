@@ -82,6 +82,8 @@ class TextBeeService
             ];
         }
 
+       
+
         try {
             $response = Http::timeout(30)
                 ->acceptJson()

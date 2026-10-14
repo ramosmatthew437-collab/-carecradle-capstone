@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class StoreMotherRequest extends FormRequest
 {
@@ -18,28 +17,25 @@ class StoreMotherRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
         return [
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:users,username',
+            ],
 
-        'username' => [
-    'required',
-    'string',
-    'max:255',
-    'unique:users,username',
-],
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                Password::defaults(),
+            ],
 
-'password' => [
-    'required',
-    'string',
-    'min:8',
-    'confirmed',
-],
-
-    
-         
             'first_name' => [
                 'required',
                 'string',
@@ -130,8 +126,6 @@ class StoreMotherRequest extends FormRequest
                 'integer',
                 'min:1',
             ],
-
-           
         ];
     }
 }

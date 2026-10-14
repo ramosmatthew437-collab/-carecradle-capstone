@@ -1,0 +1,793 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --ae-pink-50: #fff7f9;
+    --ae-pink-100: #ffe4ec;
+    --ae-pink-200: #fecdd9;
+    --ae-pink-300: #fda4b8;
+    --ae-pink-500: #ec4899;
+    --ae-pink-600: #db2777;
+    --ae-pink-700: #be185d;
+
+    --ae-slate-50: #f8fafc;
+    --ae-slate-100: #f1f5f9;
+    --ae-slate-200: #e2e8f0;
+    --ae-slate-300: #cbd5e1;
+    --ae-slate-500: #64748b;
+    --ae-slate-600: #475569;
+    --ae-slate-700: #334155;
+    --ae-slate-900: #0f172a;
+
+    --ae-red-50: #fef2f2;
+    --ae-red-100: #fee2e2;
+    --ae-red-200: #fecaca;
+    --ae-red-600: #dc2626;
+    --ae-red-700: #b91c1c;
+}
+
+.ae-page {
+    padding: 1.5rem 0 3rem;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.ae-container {
+    width: min(100% - 2rem, 64rem);
+    margin: 0 auto;
+}
+
+.ae-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+
+/* =========================================================
+   Header
+   ========================================================= */
+
+.ae-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.ae-header span {
+    color: var(--ae-pink-600);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+.ae-header h2 {
+    margin: 0;
+    color: var(--ae-slate-900);
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.55rem;
+    line-height: 1.15;
+}
+
+
+/* =========================================================
+   Hero
+   ========================================================= */
+
+.ae-hero {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(190, 24, 93, 0.2);
+    border-radius: 1.25rem;
+    background:
+        linear-gradient(135deg, #db2777 0%, #d61f69 52%, #be185d 100%);
+    box-shadow: 0 8px 24px rgba(190, 24, 93, 0.12);
+}
+
+.ae-hero-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.ae-hero-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.15rem;
+    min-width: 0;
+}
+
+.ae-hero-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    flex: 0 0 4rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1rem;
+    color: white;
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(8px);
+}
+
+.ae-hero-icon svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.ae-hero-copy {
+    min-width: 0;
+}
+
+.ae-eyebrow {
+    margin: 0 0 0.4rem;
+    color: #fce7f3;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+.ae-hero-copy h1 {
+    margin: 0;
+    color: white;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 2.65rem);
+    line-height: 1.05;
+}
+
+.ae-hero-copy > p:last-child {
+    max-width: 46rem;
+    margin: 0.9rem 0 0;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+.ae-patient-card {
+    width: 19rem;
+    flex: 0 0 19rem;
+    padding: 1.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.ae-patient-label {
+    display: block;
+    color: #fce7f3;
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.ae-patient-card h2 {
+    overflow: hidden;
+    margin: 0.7rem 0 0.8rem;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ae-mother-code {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.65rem;
+    background: white;
+    color: var(--ae-pink-700);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+
+/* Decorative hero shapes */
+
+.ae-hero-glow {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    filter: blur(25px);
+}
+
+.ae-hero-glow-one {
+    top: -3rem;
+    right: -2rem;
+    width: 10rem;
+    height: 10rem;
+}
+
+.ae-hero-glow-two {
+    right: 10rem;
+    bottom: -4rem;
+    width: 8rem;
+    height: 8rem;
+}
+
+
+/* =========================================================
+   Validation
+   ========================================================= */
+
+.ae-error-card {
+    overflow: hidden;
+    border: 1px solid var(--ae-red-200);
+    border-radius: 1.25rem;
+    background: white;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+}
+
+.ae-error-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.15rem 1.25rem;
+    border-bottom: 1px solid var(--ae-red-100);
+    background: var(--ae-red-50);
+}
+
+.ae-error-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 2.75rem;
+    border-radius: 0.8rem;
+    background: var(--ae-red-100);
+    color: var(--ae-red-600);
+}
+
+.ae-error-icon svg {
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+.ae-error-header h2 {
+    margin: 0;
+    color: var(--ae-red-700);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.ae-error-header p {
+    margin: 0.2rem 0 0;
+    color: var(--ae-red-600);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.ae-error-body {
+    padding: 1.25rem;
+}
+
+.ae-error-body ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ae-error-body li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid var(--ae-red-100);
+    border-radius: 0.75rem;
+    background: var(--ae-red-50);
+    color: var(--ae-red-700);
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.ae-error-body li svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: 0 0 auto;
+    margin-top: 0.08rem;
+    color: var(--ae-red-600);
+}
+
+
+/* =========================================================
+   Form Card
+   ========================================================= */
+
+.ae-form-card {
+    overflow: hidden;
+    border: 1px solid var(--ae-slate-200);
+    border-radius: 1.25rem;
+    background: white;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+.ae-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--ae-slate-200);
+    background: var(--ae-slate-50);
+}
+
+.ae-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 2.75rem;
+    border-radius: 0.8rem;
+    background: var(--ae-pink-100);
+    color: var(--ae-pink-600);
+}
+
+.ae-card-icon svg {
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+.ae-card-header h2 {
+    margin: 0;
+    color: var(--ae-slate-900);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.ae-card-header p {
+    margin: 0.25rem 0 0;
+    color: var(--ae-slate-500);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.ae-form-body {
+    padding: 2rem;
+}
+
+
+/* =========================================================
+   Form Fields
+   ========================================================= */
+
+.ae-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem 1.5rem;
+}
+
+.ae-field label,
+.ae-notes-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--ae-slate-700);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.ae-input-wrap {
+    position: relative;
+}
+
+.ae-input-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.9rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    color: #94a3b8;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.ae-input-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.ae-input {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.9rem 0.75rem 3rem;
+    border: 1px solid var(--ae-slate-300);
+    border-radius: 0.8rem;
+    outline: none;
+    background: white;
+    color: var(--ae-slate-700);
+    font-family: inherit;
+    font-size: 0.82rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+}
+
+.ae-input:hover {
+    border-color: #cbd5e1;
+}
+
+.ae-input:focus {
+    border-color: var(--ae-pink-500);
+    box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.11);
+}
+
+.ae-select {
+    appearance: auto;
+    cursor: pointer;
+}
+
+.ae-notes-field {
+    margin-top: 1.75rem;
+}
+
+.ae-textarea {
+    display: block;
+    width: 100%;
+    min-height: 8rem;
+    resize: vertical;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--ae-slate-300);
+    border-radius: 1rem;
+    outline: none;
+    background: white;
+    color: var(--ae-slate-700);
+    font-family: inherit;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.ae-textarea::placeholder {
+    color: #94a3b8;
+}
+
+.ae-textarea:focus {
+    border-color: var(--ae-pink-500);
+    box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.11);
+}
+
+.ae-field-hint {
+    margin: 0.45rem 0 0;
+    color: var(--ae-slate-500);
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   Actions
+   ========================================================= */
+
+.ae-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--ae-slate-200);
+}
+
+.ae-update-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    max-width: 34rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--ae-pink-200);
+    border-radius: 0.9rem;
+    background: var(--ae-pink-50);
+}
+
+.ae-update-note-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 2.25rem;
+    border-radius: 0.65rem;
+    background: var(--ae-pink-100);
+    color: var(--ae-pink-600);
+}
+
+.ae-update-note-icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.ae-update-note strong {
+    display: block;
+    color: var(--ae-slate-900);
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+.ae-update-note p {
+    margin: 0.2rem 0 0;
+    color: var(--ae-slate-600);
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+.ae-action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.55rem;
+    flex-shrink: 0;
+}
+
+.ae-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 2.65rem;
+    padding: 0 1rem;
+    border-radius: 0.7rem;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        transform 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.ae-btn svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.ae-btn:active {
+    transform: translateY(1px);
+}
+
+.ae-btn-primary {
+    border: 1px solid var(--ae-pink-600);
+    background: var(--ae-pink-600);
+    color: white;
+    box-shadow: 0 3px 8px rgba(219, 39, 119, 0.16);
+}
+
+.ae-btn-primary:hover {
+    background: var(--ae-pink-700);
+    border-color: var(--ae-pink-700);
+}
+
+.ae-btn-secondary {
+    border: 1px solid var(--ae-slate-300);
+    background: white;
+    color: var(--ae-slate-700);
+}
+
+.ae-btn-secondary:hover {
+    border-color: #94a3b8;
+    background: var(--ae-slate-50);
+}
+
+
+/* =========================================================
+   Accessibility
+   ========================================================= */
+
+.ae-btn:focus-visible,
+.ae-input:focus-visible,
+.ae-textarea:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, 0.25);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .ae-hero-inner {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .ae-patient-card {
+        width: 100%;
+        flex: auto;
+    }
+
+    .ae-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .ae-update-note {
+        max-width: none;
+        width: 100%;
+    }
+
+    .ae-action-buttons {
+        justify-content: flex-end;
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .ae-page {
+        padding: 1rem 0 2rem;
+    }
+
+    .ae-container {
+        width: min(100% - 1.25rem, 64rem);
+    }
+
+    .ae-stack {
+        gap: 1rem;
+    }
+
+    .ae-hero-inner {
+        padding: 1.35rem;
+    }
+
+    .ae-hero-main {
+        gap: 0.85rem;
+    }
+
+    .ae-hero-icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        flex-basis: 3.25rem;
+        border-radius: 0.85rem;
+    }
+
+    .ae-hero-icon svg {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    .ae-hero-copy h1 {
+        font-size: 1.9rem;
+    }
+
+    .ae-hero-copy > p:last-child {
+        font-size: 0.8rem;
+        line-height: 1.6;
+    }
+
+    .ae-form-body {
+        padding: 1.25rem;
+    }
+
+    .ae-card-header {
+        padding: 1rem 1.15rem;
+    }
+
+    .ae-fields-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+    }
+
+    .ae-actions {
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
+    }
+}
+
+
+@media (max-width: 520px) {
+
+    .ae-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .ae-hero-inner {
+        padding: 1.15rem;
+    }
+
+    .ae-hero-main {
+        align-items: flex-start;
+    }
+
+    .ae-hero-copy h1 {
+        font-size: 1.7rem;
+    }
+
+    .ae-eyebrow {
+        font-size: 0.62rem;
+    }
+
+    .ae-patient-card {
+        padding: 1rem;
+    }
+
+    .ae-patient-card h2 {
+        font-size: 1.05rem;
+    }
+
+    .ae-form-body {
+        padding: 1rem;
+    }
+
+    .ae-update-note {
+        padding: 0.75rem;
+    }
+
+    .ae-action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .ae-btn {
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0 0.7rem;
+        font-size: 0.7rem;
+    }
+}
+
+
+@media (max-width: 360px) {
+
+    .ae-action-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .ae-hero-main {
+        flex-direction: column;
+    }
+
+    .ae-hero-copy h1 {
+        font-size: 1.55rem;
+    }
+
+    .ae-card-header {
+        align-items: flex-start;
+    }
+}
+
+
+/* =========================================================
+   Reduced Motion
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ae-input,
+    .ae-textarea,
+    .ae-btn {
+        transition: none;
+    }
+
+    .ae-btn:active {
+        transform: none;
+    }
+}

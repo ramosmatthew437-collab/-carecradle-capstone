@@ -20,6 +20,12 @@ use App\Http\Controllers\Mother\MotherGrowthMonitoringController;
 use App\Http\Controllers\Mother\MotherVaccinationController;
 use App\Http\Controllers\HealthTipController;
 use App\Http\Controllers\MidwifeHealthTipController;
+use App\Http\Middleware\EnsurePrivacyConsent;
+use App\Http\Controllers\PrivacyConsentController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\StaffConfidentialityController;
+use App\Services\TextBeeService;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,12 +34,14 @@ use App\Http\Controllers\MidwifeHealthTipController;
 
 Route::redirect('/', '/login');
 
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware([
+        'auth',
+        'verified',
+        'staff.confidentiality',
+    ])
     ->name('dashboard');
-
-
-    
 
 Route::middleware(['auth'])->group(function () {
 
@@ -58,7 +66,16 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware(['role:Administrator'])->group(function () {
+    Route::middleware([
+    'role:Administrator',
+    'staff.confidentiality',
+])->group(function () {
+
+
+Route::get('/activity-logs', [
+    \App\Http\Controllers\Admin\ActivityLogController::class,
+    'index',
+])->name('admin.activity-logs.index');
 
         // Midwife Management
         Route::post('/midwives/{midwife}/activate', [MidwifeController::class, 'activate'])
@@ -91,17 +108,18 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware(['role:Midwife'])->group(function () {
+   
+Route::middleware([
+    'role:Midwife',
+    'staff.confidentiality',
+])->group(function () {
 
+        Route::resource('midwife/health-tips', MidwifeHealthTipController::class)
+            ->names('midwife.health-tips');
 
-    Route::resource('midwife/health-tips', MidwifeHealthTipController::class)
-    ->names('midwife.health-tips');
-
-    
-
-  Route::get('/test-midwife', function () {
-    return view('test-midwife');
-});
+        Route::get('/test-midwife', function () {
+            return view('test-midwife');
+        });
 
         /*
         |--------------------------------------------------------------------------
@@ -185,8 +203,8 @@ Route::middleware(['auth'])->group(function () {
             [\App\Http\Controllers\SmsNotificationController::class, 'show'])
             ->name('sms-notifications.show');
 
-            Route::post('/sms-notifications/{smsNotification}/send', [SmsNotificationController::class, 'send'])
-    ->name('sms-notifications.send');
+        Route::post('/sms-notifications/{smsNotification}/send', [SmsNotificationController::class, 'send'])
+            ->name('sms-notifications.send');
 
         /*
         |--------------------------------------------------------------------------
@@ -278,15 +296,6 @@ Route::middleware(['auth'])->group(function () {
             [VaccinationController::class, 'destroy'])
             ->name('vaccinations.destroy');
 
-
-            /*
-    |--------------------------------------------------------------------------
-    |Health Tips
-    |--------------------------------------------------------------------------
-    */
-
-      
-
     });
 
     /*
@@ -295,79 +304,163 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware(['role:Mother'])->group(function () {
+    Route::middleware(['role:Mother', EnsurePrivacyConsent::class])->group(function () {
 
-    Route::get('/mother/dashboard', [MotherDashboardController::class, 'index'])
-        ->name('mother.dashboard');
+        Route::get('/mother/dashboard', [MotherDashboardController::class, 'index'])
+            ->name('mother.dashboard');
+
         Route::get('/mother/profile', [MotherProfileController::class, 'index'])
-    ->name('mother.profile');
+            ->name('mother.profile');
 
-    Route::get(
-    '/mother/appointments',
-    [MotherAppointmentController::class, 'index']
-)->name('mother.appointments');
+        Route::get('/mother/appointments', [MotherAppointmentController::class, 'index'])
+            ->name('mother.appointments');
+
+        Route::get('/mother/sms-history', [MotherSmsController::class, 'index'])
+            ->name('mother.sms-history');
+
+        Route::get('/mother/prenatal-records', [MotherPrenatalController::class, 'index'])
+            ->name('mother.prenatal-records');
+
+        Route::get('/mother/infant-records', [MotherInfantController::class, 'index'])
+            ->name('mother.infant-records');
+
+        Route::get('/mother/growth-monitoring', [MotherGrowthMonitoringController::class, 'index'])
+            ->name('mother.growth-monitoring');
+
+        Route::get('/mother/vaccinations', [MotherVaccinationController::class, 'index'])
+            ->name('mother.vaccinations');
+
+        Route::get('/mother/health-tips', [HealthTipController::class, 'index'])
+            ->name('mother.health-tips');
+
+        Route::get('/mother/health-tips/{healthTip}', [HealthTipController::class, 'show'])
+            ->name('mother.health-tips.show');
+
+        Route::get('/mother/growth-monitoring/{growthMonitoring}', [MotherGrowthMonitoringController::class, 'show'])
+            ->name('mother.growth-monitoring.show');
+
+        Route::get('/mother/privacy-notice', function () {
+            return view('mother.privacy-notice');
+        })->name('mother.privacy-notice');
+
+        Route::post('/mother/privacy-consent', function () {
+            $mother = auth()->user()->mother;
+
+            $mother->update([
+                'privacy_consent' => true,
+                'privacy_consent_at' => now(),
+            ]);
+
+            return redirect()->route('mother.dashboard')
+                ->with('success', 'Privacy consent recorded.');
+        })->name('mother.privacy-consent');
+
+    });
 
 
-Route::get(
-    '/mother/sms-history',
-    [MotherSmsController::class, 'index']
-)->name('mother.sms-history');
 
-Route::get(
-    '/mother/prenatal-records',
-    [MotherPrenatalController::class, 'index']
-)->name('mother.prenatal-records');
 
-Route::get(
-    '/mother/infant-records',
-    [MotherInfantController::class, 'index']
-)->name('mother.infant-records');
 
-Route::get(
-    '/mother/growth-monitoring',
-    [MotherGrowthMonitoringController::class, 'index']
-)->name('mother.growth-monitoring');
 
-Route::get(
-    '/mother/vaccinations',
-    [MotherVaccinationController::class, 'index']
-)->name('mother.vaccinations');
+    
+/*
+|--------------------------------------------------------------------------
+| Privacy Consent
+|--------------------------------------------------------------------------
+*/
 
-Route::get(
-    '/mother/health-tips',
-    [HealthTipController::class, 'index']
-)->name('mother.health-tips');
+Route::get('/privacy-consent', [PrivacyConsentController::class, 'show'])
+    ->name('privacy.consent');
 
-Route::get(
-    '/mother/health-tips/{healthTip}',
-    [HealthTipController::class, 'show']
-)->name('mother.health-tips.show');
+Route::post('/privacy-consent', [PrivacyConsentController::class, 'accept'])
+    ->name('privacy.consent.accept');
 
-Route::get(
-    '/mother/growth-monitoring/{growthMonitoring}',
-    [MotherGrowthMonitoringController::class, 'show']
-)->name('mother.growth-monitoring.show');
+Route::post('/privacy-consent/cancel', [PrivacyConsentController::class, 'cancel'])
+    ->name('privacy.consent.cancel');
 
+
+/*
+|--------------------------------------------------------------------------
+| Staff Confidentiality Acknowledgment
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/staff/confidentiality', [
+    StaffConfidentialityController::class,
+    'show',
+])->name('staff.confidentiality.show');
+
+Route::post('/staff/confidentiality/accept', [
+    StaffConfidentialityController::class,
+    'accept',
+])->name('staff.confidentiality.accept');
+
+}); // Closes outer Route::middleware(['auth']) group
+
+
+
+
+
+
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| FORGOT PASSWORD — EMAIL / SMS OTP (Guest Only)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('guest')->group(function () {
+
+    // Forgot Password
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'show'])
+        ->name('password.request');
+
+    // Send OTP through Email
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])
+        ->name('password.send-otp');
+
+    // Send OTP through SMS
+    Route::post('/forgot-password/sms', [ForgotPasswordController::class, 'sendSmsOtp'])
+        ->name('password.send-sms-otp');
+
+    // OTP Verification Page
+    Route::get('/forgot-password/verify', function () {
+        return view('auth.verify-otp');
+    })->name('password.otp');
+
+    // Verify OTP
+    Route::post('/forgot-password/verify', [ForgotPasswordController::class, 'verifyOtp'])
+        ->name('password.verify-otp');
+
+    // Reset Password Page
+    Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPassword'])
+        ->name('password.reset');
+
+    // Update Password
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])
+        ->name('password.update');
 
 });
 
-});
 
 require __DIR__.'/auth.php';
 
 
-use App\Services\TextBeeService;
+/*
+|--------------------------------------------------------------------------
+| Test Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/test-sms', function (TextBeeService $textBee) {
 
     $result = $textBee->send(
-
         '+639925519539',
-
         'Hello! This is a test SMS from CareCradle 🚀'
-
     );
 
     dd($result);
-
 });
