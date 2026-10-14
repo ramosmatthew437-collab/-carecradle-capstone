@@ -1,7 +1,11 @@
+
 name: Deploy CareCradle to Hostinger
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -11,9 +15,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build production assets
+  deploy:
+    name: Build and deploy CareCradle
     runs-on: ubuntu-latest
+
+    env:
+      HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+      HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT }}
+      HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
 
     steps:
       - name: Checkout repository
@@ -28,13 +37,63 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Build Vite assets
+      - name: Build production assets
         run: npm run build
 
-      - name: Upload built assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: carecradle-production-build
-          path: public/build/
-          if-no-files-found: error
-          retention-days: 1
+      - name: Configure SSH
+        env:
+          HOSTINGER_SSH_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
+        run: |
+          set -eu
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$HOSTINGER_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "$HOSTINGER_PORT" "$HOSTINGER_HOST" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Check production connection
+        run: |
+          ssh -i ~/.ssh/id_ed25519 \
+            -p "$HOSTINGER_PORT" \
+            "$HOSTINGER_USER@$HOSTINGER_HOST" \
+            'test -f ~/carecradle/carecradle-fixed/artisan &&
+             test -f ~/carecradle/carecradle-fixed/.env &&
+             test -d ~/carecradle/carecradle-fixed/vendor &&
+             echo "Production checks passed"'
+
+      - name: Deploy application files
+        run: |
+          set -eu
+          rsync -rltz \
+            --omit-dir-times \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='vendor/' \
+            --exclude='storage/' \
+            --exclude='.env*' \
+            --exclude='public/hot' \
+            --exclude='public/storage' \
+            --exclude='public/build/' \
+            --exclude='bootstrap/cache/' \
+            --exclude='database/*.sqlite' \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $HOSTINGER_PORT" \
+            ./ \
+            "$HOSTINGER_USER@$HOSTINGER_HOST:/home/u756517879/carecradle/carecradle-fixed/"
+
+      - name: Deploy built assets to Laravel
+        run: |
+          set -eu
+          rsync -rltz --omit-dir-times \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $HOSTINGER_PORT" \
+            public/build/ \
+            "$HOSTINGER_USER@$HOSTINGER_HOST:/home/u756517879/carecradle/carecradle-fixed/public/build/"
+
+      - name: Deploy built assets to website webroot
+        run: |
+          set -eu
+          rsync -rltz --omit-dir-times \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $HOSTINGER_PORT" \
+            public/build/ \
+            "$HOSTINGER_USER@$HOSTINGER_HOST:/home/u756517879/domains/cornflowerblue-turtle-703440.hostingersite.com/public_html/build/"
