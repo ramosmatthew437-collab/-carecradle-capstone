@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,7 +17,9 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $user = $this->user();
+
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
 
             'email' => [
@@ -25,15 +28,20 @@ class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique(User::class)->ignore($user->id),
             ],
+        ];
 
-            'contact_number' => [
+        // Only validate contact_number when the Mother form submits it.
+        if ($user->isMother() && $user->mother) {
+            $rules['contact_number'] = [
                 'required',
                 'string',
                 'max:20',
                 'regex:/^(09\d{9}|\+639\d{9})$/',
-            ],
-        ];
+            ];
+        }
+
+        return $rules;
     }
 }
