@@ -8,6 +8,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/carecradle.css',
+                'resources/css/mother-dashboard-polish.css',
+                'resources/css/mother-sidebar.css',
                 'resources/css/mother-management.css',
                 'resources/css/mother-profile.css',
                 'resources/css/mother-edit.css',

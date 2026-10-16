@@ -63,7 +63,7 @@
     "isEntry": true
   },
   "resources/css/carecradle.css": {
-    "file": "assets/carecradle-Dk7n4MBa.css",
+    "file": "assets/carecradle-tiHtz4Ma.css",
     "name": "carecradle",
     "names": [
       "carecradle.css"
@@ -107,6 +107,15 @@
     "src": "resources/css/midwife-management.css",
     "isEntry": true
   },
+  "resources/css/mother-dashboard-polish.css": {
+    "file": "assets/mother-dashboard-polish-BuI7W9ao.css",
+    "name": "mother-dashboard-polish",
+    "names": [
+      "mother-dashboard-polish.css"
+    ],
+    "src": "resources/css/mother-dashboard-polish.css",
+    "isEntry": true
+  },
   "resources/css/mother-edit.css": {
     "file": "assets/mother-edit-Bd1DI9NE.css",
     "name": "mother-edit",
@@ -132,6 +141,15 @@
       "mother-profile.css"
     ],
     "src": "resources/css/mother-profile.css",
+    "isEntry": true
+  },
+  "resources/css/mother-sidebar.css": {
+    "file": "assets/mother-sidebar-BnCO8qN0.css",
+    "name": "mother-sidebar",
+    "names": [
+      "mother-sidebar.css"
+    ],
+    "src": "resources/css/mother-sidebar.css",
     "isEntry": true
   },
   "resources/css/prenatal-create.css": {
