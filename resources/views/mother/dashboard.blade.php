@@ -110,23 +110,26 @@
 
             @if($nextAppointment)
 
-                @php
-                    $appointmentDate = \Carbon\Carbon::parse($nextAppointment->appointment_date);
+@php
+    $appointmentDate = \Carbon\Carbon::parse(
+        $nextAppointment->appointment_date
+    )->startOfDay();
 
-                    $daysRemaining = now()
-                        ->startOfDay()
-                        ->diffInDays(
-                            $appointmentDate->copy()->startOfDay(),
-                            false
-                        );
+    $today = now()->startOfDay();
 
-                    $countdownLabel = match(true) {
-                        $daysRemaining === 0 => 'Today',
-                        $daysRemaining === 1 => 'Tomorrow',
-                        $daysRemaining > 1 => $daysRemaining . ' days remaining',
-                        default => $appointmentDate->diffForHumans(),
-                    };
-                @endphp
+    if ($appointmentDate->equalTo($today)) {
+        $countdownLabel = 'Today';
+    } elseif ($appointmentDate->equalTo($today->copy()->addDay())) {
+        $countdownLabel = 'Tomorrow';
+    } elseif ($appointmentDate->greaterThan($today)) {
+        $countdownLabel = $today->diffInDays($appointmentDate) . ' days remaining';
+    } else {
+        $countdownLabel = 'Past appointment';
+    }
+@endphp
+
+<section class="mth-appointment">
+
 
                 <section class="mth-appointment">
 

@@ -482,8 +482,46 @@
 
             @endif
 
-        </div>
+            {{-- DELETE ACCOUNT --}}
+            <div class="mthp-delete-account-card">
+                <div class="mthp-delete-account-header">
+                    <div class="mthp-delete-account-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             class="h-5 w-5">
+                            <path d="M3 6h18"/>
+                            <path d="M8 6V4h8v2"/>
+                            <path d="m19 6-1 14H6L5 6"/>
+                            <path d="M10 11v5M14 11v5"/>
+                        </svg>
+                    </div>
 
-    </div>
+                    <div>
+                        <h3>Delete Account</h3>
+                        <p>Manage your account deletion options.</p>
+                    </div>
+                </div>
+
+                <div class="mthp-delete-account-body">
+                    @include('profile.partials.delete-user-form')
+                </div>
+            </div>
+
+        </div>{{-- End mthp-container --}}
+
+    </div>{{-- End mthp-wrap --}}
 
 </x-app-layout>
+
+
+
+
+
+
+
+
+
+
+

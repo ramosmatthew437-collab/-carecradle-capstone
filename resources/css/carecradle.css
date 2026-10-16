@@ -2968,6 +2968,271 @@
 }
 
 
+/* =========================================================
+   CARECRADLE — MOTHER DASHBOARD POLISH
+   Targeted responsive improvements
+   ========================================================= */
+
+.mth-wrap {
+    width: 100%;
+    min-width: 0;
+}
+
+.mth-container {
+    min-width: 0;
+}
+
+.mth-hero-inner,
+.mth-hero-content,
+.mth-infant-content,
+.mth-infant-text,
+.mth-action-card,
+.mth-action-copy {
+    min-width: 0;
+}
+
+.mth-appointment-date {
+    overflow-wrap: anywhere;
+}
+
+.mth-progress-top {
+    flex-wrap: wrap;
+}
+
+.mth-progress-top strong {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+}
+
+.mth-appointment-top {
+    flex-wrap: wrap;
+}
+
+.mth-countdown {
+    white-space: normal;
+    text-align: center;
+}
+
+.mth-infant-text h2 {
+    overflow-wrap: anywhere;
+}
+
+.mth-action-copy h3,
+.mth-action-copy p {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+    .mth-wrap {
+        padding-top: 1rem;
+    }
+
+    .mth-container {
+        width: calc(100% - 1.5rem);
+        gap: 0.85rem;
+    }
+
+    .mth-hero,
+    .mth-appointment,
+    .mth-empty,
+    .mth-infant {
+        border-radius: 1.15rem;
+    }
+
+    .mth-hero,
+    .mth-appointment,
+    .mth-infant {
+        padding: 1.15rem;
+    }
+
+    .mth-hero-inner {
+        gap: 0.8rem;
+    }
+
+    .mth-avatar-inner {
+        width: 52px;
+        height: 52px;
+        font-size: 0.95rem;
+    }
+
+    .mth-progress-wrap {
+        width: 100%;
+    }
+
+    .mth-appointment-top {
+        align-items: center;
+    }
+
+    .mth-infant-content {
+        align-items: flex-start;
+    }
+
+    .mth-action-card {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 380px) {
+    .mth-container {
+        width: calc(100% - 1rem);
+    }
+
+    .mth-hero-title {
+        font-size: clamp(1.45rem, 7vw, 1.7rem);
+        overflow-wrap: anywhere;
+    }
+
+    .mth-hero,
+    .mth-appointment,
+    .mth-infant {
+        padding: 0.95rem;
+    }
+
+    .mth-infant-content {
+        flex-direction: column;
+    }
+
+    .mth-action-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mth-action-card {
+        min-height: auto;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .mth-action-copy p {
+        max-width: none;
+    }
+}
+
+
+/* =========================================================
+   CARECRADLE — MOTHER DASHBOARD VISUAL POLISH
+   Appointment, infant records, and quick actions
+   ========================================================= */
+
+.mth-appointment,
+.mth-infant {
+    box-shadow: 0 12px 28px rgba(190, 24, 93, 0.055);
+    transition:
+        box-shadow 180ms ease,
+        border-color 180ms ease;
+}
+
+.mth-appointment {
+    padding: 1.35rem 1.5rem;
+}
+
+.mth-appointment-date {
+    margin-top: 0.35rem;
+    letter-spacing: -0.025em;
+}
+
+.mth-appointment-details {
+    margin-top: 0.75rem;
+}
+
+.mth-infant {
+    padding: 1.4rem 1.5rem;
+}
+
+.mth-infant-content {
+    gap: 1.1rem;
+}
+
+.mth-infant-icon {
+    box-shadow: 0 5px 14px rgba(236, 72, 153, 0.07);
+}
+
+.mth-action-card {
+    border-color: #fce7f3;
+    box-shadow: 0 8px 20px rgba(190, 24, 93, 0.045);
+}
+
+.mth-action-card:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, 0.35);
+    outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+    .mth-appointment:hover,
+    .mth-infant:hover {
+        border-color: #f9a8d4;
+        box-shadow: 0 16px 32px rgba(190, 24, 93, 0.085);
+    }
+}
+
+@media (max-width: 767px) {
+    .mth-appointment,
+    .mth-infant {
+        padding: 1.1rem;
+    }
+
+    .mth-appointment-date {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .mth-infant-content {
+        gap: 0.85rem;
+    }
+
+    .mth-action-card {
+        border-radius: 1rem;
+    }
+}
+
+
+
+/* Mother dashboard — mobile infant card refinement */
+
+@media (max-width: 767px) {
+    .mth-infant-content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 0.85rem;
+    }
+
+    .mth-infant-icon {
+        flex: 0 0 49px;
+        width: 49px;
+        height: 49px;
+    }
+
+    .mth-infant-text {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .mth-infant-text h2 {
+        font-size: clamp(1.25rem, 5vw, 1.55rem);
+        line-height: 1.25;
+    }
+
+    .mth-infant-description {
+        line-height: 1.6;
+    }
+
+    .mth-infant > .mth-white-btn {
+        margin-top: 1rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3587,6 +3852,74 @@
     }
 
 }
+
+/* =====================================================
+   FIX: MOTHER PROFILE DELETE ACCOUNT CARD OVERFLOW
+   ===================================================== */
+
+.mthp-container > .mthp-delete-account-card {
+    display: block !important;
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    align-self: stretch;
+    box-sizing: border-box;
+}
+
+.mthp-delete-account-card,
+.mthp-delete-account-card * {
+    box-sizing: border-box;
+}
+
+.mthp-delete-account-card {
+    overflow: hidden;
+    border: 1px solid #fecdd3;
+    border-radius: 1.25rem;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(190, 24, 93, 0.04);
+}
+
+.mthp-delete-account-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    min-width: 0;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #ffe4e6;
+    background: #fff5f8;
+}
+
+.mthp-delete-account-header > div:last-child {
+    min-width: 0;
+}
+
+.mthp-delete-account-body {
+    width: 100%;
+    min-width: 0;
+    padding: 1.25rem;
+}
+
+.mthp-delete-account-body .cc-delete-account {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.mthp-delete-account-body .cc-delete-account-modal {
+    max-width: 100%;
+}
+
+@media (min-width: 640px) {
+    .mthp-delete-account-header,
+    .mthp-delete-account-body {
+        padding-right: 1.75rem;
+        padding-left: 1.75rem;
+    }
+}
+
 
 
 
@@ -5939,6 +6272,8 @@
 
 
 
+
+
 /* =========================================================
    MOTHER PRENATAL RECORDS
    ========================================================= */
@@ -7356,6 +7691,75 @@
         animation: none !important;
     }
 
+}
+
+
+
+
+/* =====================================================
+   MOTHER PROFILE — DELETE ACCOUNT CARD
+   Matches the shared profile page card design
+   ===================================================== */
+
+.mthp-delete-account-card {
+    overflow: hidden;
+    margin-top: 1.5rem;
+    border: 1px solid #fecdd3;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(190, 24, 93, 0.04);
+}
+
+.mthp-delete-account-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #ffe4e6;
+    background: rgba(255, 241, 242, 0.5);
+}
+
+.mthp-delete-account-icon {
+    display: flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background: #ffe4e6;
+    color: #e11d48;
+}
+
+.mthp-delete-account-header h3 {
+    margin: 0;
+    color: #be123c;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.mthp-delete-account-header p {
+    margin-top: 0.125rem;
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.mthp-delete-account-body {
+    padding: 1.25rem;
+}
+
+.mthp-delete-account-body .cc-delete-account {
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .mthp-delete-account-header {
+        padding-inline: 1.75rem;
+    }
+
+    .mthp-delete-account-body {
+        padding: 1.75rem;
+    }
 }
 
 

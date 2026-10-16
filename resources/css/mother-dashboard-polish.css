@@ -1,0 +1,246 @@
+
+/* =========================================================
+   CARECRADLE — MOTHER DASHBOARD POLISH
+   Oula-inspired layout refinement
+   Scoped to Mother Dashboard classes only
+   ========================================================= */
+
+.mth-wrap {
+    width: 100%;
+    min-width: 0;
+}
+
+.mth-container {
+    width: 100%;
+    max-width: 1180px;
+    min-width: 0;
+    margin-inline: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.mth-hero,
+.mth-appointment,
+.mth-empty,
+.mth-vax,
+.mth-infant,
+.mth-actions {
+    min-width: 0;
+    border-radius: 20px;
+}
+
+.mth-hero,
+.mth-appointment,
+.mth-infant {
+    box-shadow: 0 8px 28px rgba(157, 23, 77, 0.055);
+}
+
+.mth-hero-inner {
+    gap: 1.5rem;
+}
+
+.mth-hero-content,
+.mth-infant-text,
+.mth-action-copy {
+    min-width: 0;
+}
+
+.mth-hero-title {
+    overflow-wrap: anywhere;
+    line-height: 1.12;
+}
+
+.mth-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mth-progress-wrap {
+    width: 100%;
+    max-width: 560px;
+}
+
+.mth-progress-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.mth-progress-track {
+    overflow: hidden;
+    border-radius: 999px;
+}
+
+.mth-appointment-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.mth-appointment-date {
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.mth-appointment-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mth-vax {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mth-vax-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.mth-vax-title,
+.mth-vax-label {
+    overflow-wrap: anywhere;
+}
+
+.mth-infant-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.mth-infant-text h2 {
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.mth-infant-description {
+    line-height: 1.65;
+}
+
+.mth-infant-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.mth-actions {
+    width: 100%;
+}
+
+.mth-action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.mth-action-card {
+    min-width: 0;
+    height: 100%;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease;
+}
+
+.mth-action-card:hover {
+    transform: translateY(-2px);
+}
+
+.mth-action-card:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, 0.4);
+    outline-offset: 3px;
+}
+
+.mth-action-copy h3,
+.mth-action-copy p {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .mth-action-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mth-container {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .mth-container {
+        width: 100%;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .mth-hero,
+    .mth-appointment,
+    .mth-empty,
+    .mth-vax,
+    .mth-infant,
+    .mth-actions {
+        border-radius: 16px;
+    }
+
+    .mth-hero-inner {
+        gap: 1rem;
+    }
+
+    .mth-appointment-top {
+        align-items: flex-start;
+    }
+
+    .mth-infant-content {
+        gap: 0.85rem;
+    }
+
+    .mth-action-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+
+    .mth-action-card {
+        min-height: 76px;
+    }
+}
+
+@media (max-width: 380px) {
+    .mth-container {
+        padding: 0.75rem;
+    }
+
+    .mth-hero,
+    .mth-appointment,
+    .mth-infant {
+        padding: 1rem;
+    }
+
+    .mth-infant-content {
+        flex-direction: column;
+    }
+
+    .mth-infant-icon {
+        flex-shrink: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mth-action-card {
+        transition: none;
+    }
+
+    .mth-action-card:hover {
+        transform: none;
+    }
+}
