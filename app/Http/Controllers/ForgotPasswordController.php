@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+
 use App\Models\Mother;
 use App\Models\PasswordOtp;
 use App\Models\User;
@@ -22,22 +24,10 @@ class ForgotPasswordController extends Controller
         $this->textBeeService = $textBeeService;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | SHOW FORGOT PASSWORD PAGE
-    |--------------------------------------------------------------------------
-    */
-
     public function show()
     {
         return view('auth.forgot-password');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SEND OTP
-    |--------------------------------------------------------------------------
-    */
 
     public function sendOtp(Request $request)
     {
@@ -51,44 +41,39 @@ class ForgotPasswordController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | EMAIL METHOD
+        | EMAIL OTP
         |--------------------------------------------------------------------------
         */
-
         if ($method === 'email') {
-
             $email = Str::lower($identifier);
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                return back()
-                    ->withErrors([
-                        'identifier' => 'Please enter a valid email address.',
-                    ])
-                    ->withInput();
+                return back()->withErrors([
+                    'identifier' => 'Please enter a valid email address.',
+                ])->withInput();
             }
 
             $user = User::where('email', $email)->first();
 
             if (!$user) {
-                return back()
-                    ->withErrors([
-                        'identifier' => 'No account was found with that email address.',
-                    ])
-                    ->withInput();
+                return back()->withErrors([
+                    'identifier' => 'No account was found with that email address.',
+                ])->withInput();
             }
 
             $otp = (string) random_int(100000, 999999);
-            
 
-            PasswordOtp::where('email', $email)
+            PasswordOtp::where('user_id', $user->id)
+                ->where('channel', 'email')
                 ->where('verified', false)
                 ->delete();
 
-            PasswordOtp::create([
+            $passwordOtp = PasswordOtp::create([
+                'user_id' => $user->id,
                 'email' => $email,
                 'channel' => 'email',
                 'otp' => $otp,
-                'expires_at' => now()->addMinutes(5),
+                'expires_at' => now()->addMinutes(10),
                 'attempts' => 0,
                 'verified' => false,
             ]);
@@ -96,82 +81,55 @@ class ForgotPasswordController extends Controller
             try {
                 Mail::raw(
                     "Your CareCradle password reset OTP is: {$otp}\n\n"
-                    . "This OTP will expire in 5 minutes.\n\n"
-                    . "If you did not request a password reset, "
-                    . "you can ignore this email.",
+                    . "This OTP expires in 10 minutes.\n\n"
+                    . "If you did not request a password reset, ignore this email.",
                     function ($message) use ($email) {
-                        $message
-                            ->to($email)
+                        $message->to($email)
                             ->subject('CareCradle Password Reset OTP');
                     }
                 );
             } catch (\Throwable $e) {
-
                 Log::error('CARECRADLE PASSWORD RESET EMAIL ERROR', [
+                    'user_id' => $user->id,
                     'message' => $e->getMessage(),
                 ]);
 
-                PasswordOtp::where('email', $email)
-                    ->where('channel', 'email')
-                    ->where('verified', false)
-                    ->delete();
+                $passwordOtp->delete();
 
-                return back()
-                    ->withErrors([
-                        'identifier' =>
-                            'We could not send the email verification code. Please try again.',
-                    ])
-                    ->withInput();
+                return back()->withErrors([
+                    'identifier' =>
+                        'We could not send the email verification code. Please try again.',
+                ])->withInput();
             }
 
             session([
+                'password_reset_user_id' => $user->id,
                 'email' => $email,
                 'otp_channel' => 'email',
                 'otp_identifier' => $identifier,
+                'otp_recipient' => null,
             ]);
 
-            return redirect()
-                ->route('password.otp')
-                ->with(
-                    'status',
-                    'Verification code sent to your email address.'
-                );
+            return redirect()->route('password.otp')
+                ->with('status', 'Verification code sent to your email address.');
         }
-        
 
         /*
         |--------------------------------------------------------------------------
-        | SMS METHOD
+        | SMS OTP — MOTHER ACCOUNTS
         |--------------------------------------------------------------------------
         */
-
         $localPhone = $this->normalizePhilippineMobile($identifier);
 
         if (!$localPhone) {
-            return back()
-                ->withErrors([
-                    'identifier' =>
-                        'Please enter a valid 11-digit Philippine mobile number.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'identifier' => 'Please enter a valid 11-digit Philippine mobile number.',
+            ])->withInput();
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | FIND MOTHER USING REGISTERED CONTACT NUMBER
-        |--------------------------------------------------------------------------
-        */
 
         $mother = Mother::where('contact_number', $localPhone)->first();
 
-        /*
-        |--------------------------------------------------------------------------
-        | SUPPORT +63 FORMAT STORED IN DATABASE
-        |--------------------------------------------------------------------------
-        */
-
         if (!$mother) {
-
             $internationalPhone = '+63' . substr($localPhone, 1);
 
             $mother = Mother::where(
@@ -180,26 +138,11 @@ class ForgotPasswordController extends Controller
             )->first();
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | NO REGISTERED NUMBER
-        |--------------------------------------------------------------------------
-        */
-
         if (!$mother) {
-            return back()
-                ->withErrors([
-                    'identifier' =>
-                        'No account was found with that registered mobile number.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'identifier' => 'No account was found with that registered mobile number.',
+            ])->withInput();
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | GET LINKED USER ACCOUNT
-        |--------------------------------------------------------------------------
-        */
 
         $user = $mother->user;
 
@@ -208,174 +151,84 @@ class ForgotPasswordController extends Controller
         }
 
         if (!$user) {
-            return back()
-                ->withErrors([
-                    'identifier' =>
-                        'This mobile number is registered, but it is not connected to a valid account.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'identifier' =>
+                    'This mobile number is registered, but it is not connected to a valid account.',
+            ])->withInput();
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | MAKE SURE THIS IS A MOTHER ACCOUNT
-        |--------------------------------------------------------------------------
-        */
 
         if ($user->role !== 'Mother') {
-            return back()
-                ->withErrors([
-                    'identifier' =>
-                        'This mobile number is not connected to a valid Mother account.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'identifier' => 'This mobile number is not connected to a valid Mother account.',
+            ])->withInput();
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | MAKE SURE USER HAS AN EMAIL
-        |--------------------------------------------------------------------------
-        |
-        | The email is used internally to associate the OTP
-        | with the correct CareCradle account.
-        |
-        */
-
-        if (!$user->email) {
-            return back()
-                ->withErrors([
-                    'identifier' =>
-                        'This Mother account does not have a valid email address.',
-                ])
-                ->withInput();
-        }
-
-        $email = Str::lower(trim($user->email));
-
-        /*
-        |--------------------------------------------------------------------------
-        | GENERATE OTP
-        |--------------------------------------------------------------------------
-        */
+        // Email is optional for SMS recovery. The user ID identifies the account.
+        $email = filled($user->email)
+            ? Str::lower(trim($user->email))
+            : null;
 
         $otp = (string) random_int(100000, 999999);
-        
 
-        /*
-        |--------------------------------------------------------------------------
-        | DELETE PREVIOUS OTP
-        |--------------------------------------------------------------------------
-        */
-
-        PasswordOtp::where('email', $email)
+        PasswordOtp::where('user_id', $user->id)
+            ->where('channel', 'sms')
             ->where('verified', false)
             ->delete();
 
-        /*
-        |--------------------------------------------------------------------------
-        | SEND SMS
-        |--------------------------------------------------------------------------
-        |
-        | IMPORTANT:
-        | We send to $mother->contact_number resolved from the database,
-        | not to an old hardcoded number.
-        |
-        */
+        $smsRecipient = $this->normalizePhilippineMobile(
+            (string) $mother->contact_number
+        );
 
-        $smsRecipient = $mother->contact_number;
-
-        if (str_starts_with($smsRecipient, '+63')) {
-            $smsRecipient = '0' . substr($smsRecipient, 3);
+        if (!$smsRecipient) {
+            return back()->withErrors([
+                'identifier' => 'The registered mobile number is invalid. Please contact the health worker.',
+            ])->withInput();
         }
 
         $result = $this->textBeeService->send(
             $smsRecipient,
             "CareCradle password reset OTP: {$otp}. "
-            . "This code expires in 5 minutes. "
+            . "This code expires in 10 minutes. "
             . "If you did not request this, ignore this message."
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | HANDLE SMS FAILURE
-        |--------------------------------------------------------------------------
-        */
-
-        if (!$result['success']) {
-
+        if (empty($result['success'])) {
             Log::error('CARECRADLE PASSWORD RESET SMS ERROR', [
                 'user_id' => $user->id,
                 'mother_id' => $mother->id,
-                'phone' => $smsRecipient,
                 'error' => $result['error'] ?? 'Unknown TextBee error.',
             ]);
 
-            return back()
-                ->withErrors([
-                    'identifier' =>
-                        'We could not send the SMS verification code. Please try again.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'identifier' => 'We could not send the SMS verification code. Please try again.',
+            ])->withInput();
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | SAVE OTP AFTER SUCCESSFUL SMS
-        |--------------------------------------------------------------------------
-        */
-
         PasswordOtp::create([
+            'user_id' => $user->id,
             'email' => $email,
             'channel' => 'sms',
             'otp' => $otp,
-            'expires_at' => now()->addMinutes(5),
+            'expires_at' => now()->addMinutes(10),
             'attempts' => 0,
             'verified' => false,
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | MASK PHONE NUMBER
-        |--------------------------------------------------------------------------
-        */
-
-        $maskedPhone =
-            substr($smsRecipient, 0, 4)
+        $maskedPhone = substr($smsRecipient, 0, 4)
             . '•••••'
             . substr($smsRecipient, -2);
 
-        /*
-        |--------------------------------------------------------------------------
-        | STORE RESET INFORMATION
-        |--------------------------------------------------------------------------
-        */
-
         session([
+            'password_reset_user_id' => $user->id,
             'email' => $email,
             'otp_channel' => 'sms',
             'otp_identifier' => $identifier,
             'otp_recipient' => $maskedPhone,
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT TO OTP PAGE
-        |--------------------------------------------------------------------------
-        */
-
-        return redirect()
-            ->route('password.otp')
-            ->with(
-                'status',
-                'Verification code sent to your registered mobile number.'
-            );
+        return redirect()->route('password.otp')
+            ->with('status', 'Verification code sent to your registered mobile number.');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | NORMALIZE PHILIPPINE MOBILE NUMBER
-    |--------------------------------------------------------------------------
-    */
 
     private function normalizePhilippineMobile(string $phone): ?string
     {
@@ -392,185 +245,158 @@ class ForgotPasswordController extends Controller
         return $phone;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | VERIFY OTP
-    |--------------------------------------------------------------------------
-    */
-
     public function verifyOtp(Request $request)
     {
         $request->validate([
             'otp' => ['required', 'digits:6'],
         ]);
 
+        $userId = session('password_reset_user_id');
         $email = session('email');
+        $channel = session('otp_channel');
 
-        if (!$email) {
-            return redirect()
-                ->route('password.request')
-                ->withErrors([
-                    'identifier' =>
-                        'Your password reset session has expired. Please request a new OTP.',
-                ]);
+        if (!$userId || !in_array($channel, ['email', 'sms'], true)) {
+            return redirect()->route('password.request')->withErrors([
+                'identifier' => 'Your password reset session has expired. Please request a new OTP.',
+            ]);
         }
 
-        $passwordOtp = PasswordOtp::where('email', $email)
+        $user = User::find($userId);
+
+        if (!$user) {
+            return redirect()->route('password.request')->withErrors([
+                'identifier' => 'The account could not be found. Please request a new OTP.',
+            ]);
+        }
+
+        $passwordOtp = PasswordOtp::where('user_id', $userId)
+            ->where('channel', $channel)
             ->where('verified', false)
             ->latest()
             ->first();
 
+        // Backward compatibility for older OTP records created before user_id was added.
+        if (!$passwordOtp && $email) {
+            $passwordOtp = PasswordOtp::whereNull('user_id')
+                ->where('email', $email)
+                ->where('channel', $channel)
+                ->where('verified', false)
+                ->latest()
+                ->first();
+        }
+
         if (!$passwordOtp) {
-            return back()
-                ->withErrors([
-                    'otp' =>
-                        'No active verification code was found. Please request a new OTP.',
-                ]);
+            return back()->withErrors([
+                'otp' => 'No active verification code was found. Please request a new OTP.',
+            ]);
         }
 
         if ($passwordOtp->expires_at->isPast()) {
-
             $passwordOtp->delete();
 
-            return back()
-                ->withErrors([
-                    'otp' =>
-                        'This verification code has expired. Please request a new OTP.',
-                ]);
+            return back()->withErrors([
+                'otp' => 'This verification code has expired. Please request a new OTP.',
+            ]);
         }
 
         if ($passwordOtp->attempts >= 5) {
-
             $passwordOtp->delete();
 
-            return back()
-                ->withErrors([
-                    'otp' =>
-                        'Too many incorrect attempts. Please request a new OTP.',
-                ]);
+            return back()->withErrors([
+                'otp' => 'Too many incorrect attempts. Please request a new OTP.',
+            ]);
         }
 
-        if ($passwordOtp->otp !== $request->otp) {
-
+        if (!hash_equals((string) $passwordOtp->otp, (string) $request->otp)) {
             $passwordOtp->increment('attempts');
 
-            return back()
-                ->withErrors([
-                    'otp' => 'The verification code is incorrect.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'otp' => 'The verification code is incorrect.',
+            ])->withInput();
         }
 
-        $passwordOtp->update([
-            'verified' => true,
-        ]);
+        $passwordOtp->update(['verified' => true]);
 
         session([
-            'email' => $email,
+            'password_reset_user_id' => $user->id,
+            'email' => $user->email,
             'otp_channel' => $passwordOtp->channel,
         ]);
 
-        $verificationMessage =
-            $passwordOtp->channel === 'sms'
-                ? 'Mobile number verified. You can now create a new password.'
-                : 'Email verified. You can now create a new password.';
+        $message = $passwordOtp->channel === 'sms'
+            ? 'Mobile number verified. You can now create a new password.'
+            : 'Email verified. You can now create a new password.';
 
-        return redirect()
-            ->route('password.reset')
-            ->with('status', $verificationMessage);
+        return redirect()->route('password.reset')->with('status', $message);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SHOW RESET PASSWORD PAGE
-    |--------------------------------------------------------------------------
-    */
 
     public function showResetPassword(Request $request)
     {
-        $email = session('email');
-
-        if (!$email) {
-            return redirect()
-                ->route('password.request')
-                ->withErrors([
-                    'identifier' =>
-                        'Please request a password reset first.',
-                ]);
+        if (!session('password_reset_user_id')) {
+            return redirect()->route('password.request')->withErrors([
+                'identifier' => 'Please request a password reset first.',
+            ]);
         }
 
         return view('auth.reset-password');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | RESET PASSWORD
-    |--------------------------------------------------------------------------
-    */
-
     public function resetPassword(Request $request)
     {
         $request->validate([
             'password' => [
-    'required',
-    'confirmed',
-    Rules\Password::defaults(),
-],
+                'required',
+                'confirmed',
+                Rules\Password::defaults(),
+            ],
         ]);
 
-        $email = session('email');
+        $userId = session('password_reset_user_id');
+        $channel = session('otp_channel');
 
-        if (!$email) {
-            return redirect()
-                ->route('password.request')
-                ->withErrors([
-                    'identifier' =>
-                        'Your password reset session is invalid. Please request a new OTP.',
-                ]);
+        if (!$userId || !in_array($channel, ['email', 'sms'], true)) {
+            return redirect()->route('password.request')->withErrors([
+                'identifier' => 'Your password reset session is invalid. Please request a new OTP.',
+            ]);
         }
 
-        $passwordOtp = PasswordOtp::where('email', $email)
+        $passwordOtp = PasswordOtp::where('user_id', $userId)
+            ->where('channel', $channel)
             ->where('verified', true)
             ->latest()
             ->first();
 
-        if (!$passwordOtp) {
-            return redirect()
-                ->route('password.request')
-                ->withErrors([
-                    'identifier' =>
-                        'Your password reset session is invalid. Please request a new OTP.',
-                ]);
+        if (!$passwordOtp || $passwordOtp->expires_at->isPast()) {
+            return redirect()->route('password.request')->withErrors([
+                'identifier' => 'Your verified OTP is missing or expired. Please request a new one.',
+            ]);
         }
 
-        $user = User::where('email', $email)->first();
+        $user = User::find($userId);
 
         if (!$user) {
-            return redirect()
-                ->route('password.request')
-                ->withErrors([
-                    'identifier' => 'No account was found.',
-                ]);
+            return redirect()->route('password.request')->withErrors([
+                'identifier' => 'No account was found.',
+            ]);
         }
 
         $user->update([
             'password' => Hash::make($request->password),
         ]);
 
-        $passwordOtp->delete();
+        PasswordOtp::where('user_id', $userId)->delete();
 
         session()->forget([
+            'password_reset_user_id',
             'email',
             'otp_channel',
             'otp_identifier',
             'otp_recipient',
         ]);
 
-        return redirect()
-            ->route('login')
-            ->with(
-                'status',
-                'Your password has been reset successfully. You can now log in with your new password.'
-            );
+        return redirect()->route('login')->with(
+            'status',
+            'Your password has been reset successfully. You can now log in with your new password.'
+        );
     }
 }
