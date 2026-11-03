@@ -97,3 +97,17 @@ jobs:
             -e "ssh -i ~/.ssh/id_ed25519 -p $HOSTINGER_PORT" \
             public/build/ \
             "$HOSTINGER_USER@$HOSTINGER_HOST:/home/u756517879/domains/cornflowerblue-turtle-703440.hostingersite.com/public_html/build/"
+
+      - name: Deploy RHU background image to website webroot
+        run: |
+          set -eu
+
+          ssh -i ~/.ssh/id_ed25519 \
+            -p "$HOSTINGER_PORT" \
+            "$HOSTINGER_USER@$HOSTINGER_HOST" \
+            'mkdir -p /home/u756517879/domains/cornflowerblue-turtle-703440.hostingersite.com/public_html/images'
+
+          rsync -rltz --omit-dir-times \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $HOSTINGER_PORT" \
+            public/images/irosin-rhu.png \
+            "$HOSTINGER_USER@$HOSTINGER_HOST:/home/u756517879/domains/cornflowerblue-turtle-703440.hostingersite.com/public_html/images/irosin-rhu.png"
