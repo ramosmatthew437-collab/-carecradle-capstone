@@ -29,6 +29,8 @@ export default defineConfig({
                 'resources/css/midwife-dashboard.css',
                 'resources/css/health-tips-management.css',
                 'resources/css/infant-records.css',
+                'resources/css/maternal-vaccination-history.css',
+                'resources/css/mother-vaccinations.css',
                 'resources/js/app.js',
             ],
             refresh: true,

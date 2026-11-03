@@ -27,7 +27,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-BhuNhZYR.css",
+    "file": "assets/app-BS4AVdBK.css",
     "name": "app",
     "names": [
       "app.css"
@@ -89,8 +89,17 @@
     "src": "resources/css/infant-records.css",
     "isEntry": true
   },
+  "resources/css/maternal-vaccination-history.css": {
+    "file": "assets/maternal-vaccination-history-o64W5Rt5.css",
+    "name": "maternal-vaccination-history",
+    "names": [
+      "maternal-vaccination-history.css"
+    ],
+    "src": "resources/css/maternal-vaccination-history.css",
+    "isEntry": true
+  },
   "resources/css/midwife-dashboard.css": {
-    "file": "assets/midwife-dashboard-5yYffy61.css",
+    "file": "assets/midwife-dashboard-DgrpNnKh.css",
     "name": "midwife-dashboard",
     "names": [
       "midwife-dashboard.css"
@@ -159,6 +168,15 @@
       "mother-sidebar.css"
     ],
     "src": "resources/css/mother-sidebar.css",
+    "isEntry": true
+  },
+  "resources/css/mother-vaccinations.css": {
+    "file": "assets/mother-vaccinations-DidLgg86.css",
+    "name": "mother-vaccinations",
+    "names": [
+      "mother-vaccinations.css"
+    ],
+    "src": "resources/css/mother-vaccinations.css",
     "isEntry": true
   },
   "resources/css/prenatal-create.css": {
