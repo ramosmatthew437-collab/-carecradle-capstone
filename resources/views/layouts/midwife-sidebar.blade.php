@@ -41,6 +41,35 @@
             <small>Midwife Portal</small>
         </span>
     </a>
+    
+    @php
+        $midwife = auth()->user();
+
+        $profilePhotoUrl = $midwife->profile_photo_path
+            ? \Illuminate\Support\Facades\Storage::disk('public')->url($midwife->profile_photo_path)
+            : null;
+
+        $midwifeInitial = strtoupper(substr($midwife->name ?? 'M', 0, 1));
+    @endphp
+
+    <a href="{{ route('profile.edit') }}" class="cc-midwife-profile-card">
+        <div class="cc-midwife-avatar">
+            @if ($profilePhotoUrl)
+                <img
+                    src="{{ $profilePhotoUrl }}"
+                    alt="{{ $midwife->name }} profile photo"
+                >
+            @else
+                <span>{{ $midwifeInitial }}</span>
+            @endif
+        </div>
+
+        <div class="cc-midwife-profile-info">
+            <strong>{{ $midwife->name }}</strong>
+            <small>Midwife</small>
+        </div>
+    </a>
+
 
     <div class="cc-midwife-menu-label">Main Menu</div>
 

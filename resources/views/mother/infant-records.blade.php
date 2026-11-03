@@ -1,4 +1,7 @@
 <x-app-layout>
+    @push('styles')
+        @vite('resources/css/infant-records.css')
+    @endpush
 
     <div class="ifr-wrap">
 
@@ -133,63 +136,77 @@
             {{-- =====================================================
                  SELECTED INFANT
                  ===================================================== --}}
+
+
+
+
             @if($selectedInfant)
 
+            {{-- PRINT INFANT RECORD --}}
+<div class="ifr-print-actions">
+    <button
+        type="button"
+        class="ifr-print-btn"
+        onclick="window.print()"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+        >
+            <polyline points="6 9 6 2 18 2 18 9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+        </svg>
+
+        Print Infant Record
+    </button>
+</div>
+
                 @php
-
-                    $birthDate = \Carbon\Carbon::parse($selectedInfant->birth_date)->startOfDay();
                     $today = now()->startOfDay();
+                    $birthDate = null;
+                    $birthDateIsRecorded = filled($selectedInfant->birth_date);
+                    $birthDateNeedsVerification = false;
 
-                    /*
-                     * Prevent negative age display when a future birth date
-                     * exists in the database.
-                     */
-                    if ($birthDate->greaterThan($today)) {
+                    if ($birthDateIsRecorded) {
+                        try {
+                            // Keep the stored date visible, even if it is in the future.
+                            // A future date is flagged rather than treated as missing.
+                            $birthDate = \Carbon\Carbon::parse($selectedInfant->birth_date)->startOfDay();
+                            $birthDateNeedsVerification = $birthDate->greaterThan($today);
+                        } catch (\Throwable $exception) {
+                            $birthDate = null;
+                            $birthDateIsRecorded = false;
+                        }
+                    }
 
-                        $ageLabel = 'Birth date unavailable';
-
+                    if (!$birthDateIsRecorded || !$birthDate) {
+                        $ageLabel = 'Birth date not recorded';
+                    } elseif ($birthDateNeedsVerification) {
+                        $ageLabel = 'Date needs verification';
                     } else {
-
                         $days = (int) $birthDate->diffInDays($today);
                         $months = (int) $birthDate->diffInMonths($today);
                         $years = (int) $birthDate->diffInYears($today);
 
                         if ($days < 7) {
-
-                            $ageLabel =
-                                $days .
-                                ' day' .
-                                ($days === 1 ? '' : 's') .
-                                ' old';
-
+                            $ageLabel = $days . ' ' . \Illuminate\Support\Str::plural('day', $days) . ' old';
                         } elseif ($days < 30) {
-
                             $weeks = (int) floor($days / 7);
-
-                            $ageLabel =
-                                $weeks .
-                                ' week' .
-                                ($weeks === 1 ? '' : 's') .
-                                ' old';
-
+                            $ageLabel = $weeks . ' ' . \Illuminate\Support\Str::plural('week', $weeks) . ' old';
                         } elseif ($months < 24) {
-
-                            $ageLabel =
-                                $months .
-                                ' month' .
-                                ($months === 1 ? '' : 's') .
-                                ' old';
-
+                            $ageLabel = $months . ' ' . \Illuminate\Support\Str::plural('month', $months) . ' old';
                         } else {
-
-                            $ageLabel =
-                                $years .
-                                ' year' .
-                                ($years === 1 ? '' : 's') .
-                                ' old';
-
+                            $ageLabel = $years . ' ' . \Illuminate\Support\Str::plural('year', $years) . ' old';
                         }
-
                     }
 
                     $latestGrowth = $growthRecords->count()
@@ -248,97 +265,215 @@
                 @endphp
 
 
-                {{-- =====================================================
-                     INFANT HERO
-                     ===================================================== --}}
-                <section class="ifr-hero {{ $genderTheme['gradient'] }}">
+{{-- =====================================================
+     INFANT HERO
+     ===================================================== --}}
+<section
+    class="ifr-hero ifr-profile-card {{ $genderTheme['gradient'] }}"
+    aria-labelledby="ifr-profile-name"
+>
+    <div class="ifr-hero-inner ifr-profile-inner">
 
-                    <div class="ifr-hero-circle ifr-hero-circle-a"></div>
-                    <div class="ifr-hero-circle ifr-hero-circle-b"></div>
-                    <div class="ifr-hero-circle ifr-hero-circle-c"></div>
+        {{-- INFANT PHOTO --}}
+        <div class="ifr-infant-photo-column">
 
-                    <div class="ifr-hero-inner">
-
-                        <div
-                            class="ifr-baby-avatar"
-                            role="img"
-                            aria-label="{{ $selectedInfant->sex ?? 'Infant' }}"
-                        >
-                            {{ $genderEmoji }}
-                        </div>
-
-                        <div class="ifr-hero-content">
-
-                            <p class="ifr-hero-eyebrow">
-                                Infant Profile
-                            </p>
-
-                            <h2 class="ifr-hero-name">
-                                {{ $selectedInfant->first_name }}
-                                {{ $selectedInfant->middle_name }}
-                                {{ $selectedInfant->last_name }}
-                            </h2>
-
-                            <p class="ifr-hero-birth">
-                                Born {{ $birthDate->format('F d, Y') }}
-                            </p>
-
-                            <div class="ifr-hero-tags">
-
-                                <span class="ifr-hero-tag">
-                                    <svg
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        stroke-width="2.2"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M12 6v6l4 2"
-                                        />
-                                        <circle
-                                            cx="12"
-                                            cy="12"
-                                            r="9"
-                                        />
-                                    </svg>
-
-                                    {{ $ageLabel }}
-                                </span>
-
-                                <span class="ifr-hero-tag ifr-hero-tag-solid {{ $genderTheme['text'] }}">
-                                    {{ $selectedInfant->sex ?? 'Not set' }}
-                                </span>
-
-                                <span class="ifr-hero-tag">
-
-                                    <svg
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        stroke-width="2.8"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M4.5 12.75l6 6 9-13.5"
-                                        />
-                                    </svg>
-
-                                    {{ $selectedInfant->birth_status ?? 'Growth on track' }}
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
+            <div class="ifr-infant-photo-wrap">
+                @if($selectedInfant->photo_path)
+                    <img
+                        src="{{ route('mother.infant-photo.show', $selectedInfant) }}"
+                        class="ifr-baby-avatar ifr-profile-avatar ifr-infant-photo"
+                        alt="Photo of {{ $selectedInfant->first_name }}"
+                    >
+                @else
+                    <div
+                        class="ifr-baby-avatar ifr-profile-avatar"
+                        role="img"
+                        aria-label="{{ $selectedInfant->sex ?? 'Infant' }}"
+                    >
+                        {{ $genderEmoji }}
                     </div>
+                @endif
+            </div>
 
-                </section>
+            {{-- MOTHER-ONLY PHOTO CONTROLS --}}
+            <div class="ifr-infant-photo-actions">
+
+                <form
+                    action="{{ route('mother.infant-photo.update', $selectedInfant) }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="ifr-infant-photo-form"
+                >
+                    @csrf
+
+                    <label
+                        for="infant-photo-upload-{{ $selectedInfant->id }}"
+                        class="ifr-infant-photo-button"
+                    >
+                        {{ $selectedInfant->photo_path ? 'Change photo' : 'Add photo' }}
+                    </label>
+
+                    <input
+                        type="file"
+                        id="infant-photo-upload-{{ $selectedInfant->id }}"
+                        name="photo"
+                        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                        required
+                        hidden
+                        onchange="if (this.files.length) this.form.requestSubmit()"
+                    >
+                </form>
+
+                @if($selectedInfant->photo_path)
+                    <form
+                        action="{{ route('mother.infant-photo.destroy', $selectedInfant) }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to remove this baby photo?')"
+                    >
+                        @csrf
+                        @method('DELETE')
+
+                        <button
+                            type="submit"
+                            class="ifr-infant-photo-remove"
+                        >
+                            Remove photo
+                        </button>
+                    </form>
+                @endif
+
+            </div>
+        </div>
+
+        {{-- INFANT DETAILS --}}
+        <div class="ifr-hero-content ifr-profile-content">
+
+            <div class="ifr-profile-heading">
+                <div>
+                    <p class="ifr-hero-eyebrow">Infant Profile</p>
+
+                    <h2 class="ifr-hero-name" id="ifr-profile-name">
+                        {{ $selectedInfant->first_name }}
+                        {{ $selectedInfant->middle_name }}
+                        {{ $selectedInfant->last_name }}
+                    </h2>
+
+                    <p class="ifr-profile-caption">
+                        Your child's health details at a glance
+                    </p>
+                </div>
+
+                @if($birthDateIsRecorded && $birthDate)
+                    <span class="ifr-age-pill {{ $birthDateNeedsVerification ? 'ifr-age-pill-warning' : '' }}">
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <circle cx="12" cy="12" r="9" />
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 7v5l3 2"
+                            />
+                        </svg>
+
+                        {{ $ageLabel }}
+                    </span>
+                @endif
+            </div>
+
+            <div class="ifr-profile-details">
+
+                {{-- DATE OF BIRTH --}}
+                <div class="ifr-profile-detail">
+                    <span class="ifr-profile-detail-label">
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <rect x="3.75" y="5" width="16.5" height="15" rx="2" />
+                            <path stroke-linecap="round" d="M8 3.5v3M16 3.5v3M4 9.5h16" />
+                        </svg>
+
+                        Date of birth
+                    </span>
+
+                    <strong class="ifr-profile-detail-value {{ (!$birthDateIsRecorded || !$birthDate) ? 'ifr-birth-missing' : '' }}">
+                        @if($birthDateIsRecorded && $birthDate)
+                            {{ $birthDate->format('F d, Y') }}
+                        @else
+                            Not recorded
+                        @endif
+                    </strong>
+
+                    @if($birthDateNeedsVerification)
+                        <span class="ifr-date-warning" role="status">
+                            Date needs verification
+                        </span>
+                    @endif
+                </div>
+
+                {{-- SEX --}}
+                <div class="ifr-profile-detail">
+                    <span class="ifr-profile-detail-label">
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <circle cx="12" cy="7" r="4" />
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M4.5 20a7.5 7.5 0 0 1 15 0"
+                            />
+                        </svg>
+
+                        Sex
+                    </span>
+
+                    <strong class="ifr-profile-detail-value">
+                        {{ $selectedInfant->sex ?: 'Not recorded' }}
+                    </strong>
+                </div>
+
+                {{-- BIRTH STATUS --}}
+                <div class="ifr-profile-detail">
+                    <span class="ifr-profile-detail-label">
+                        <svg
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 3.5l2.6 5.3 5.9.9-4.25 4.15 1 5.85L12 16.9l-5.25 2.8 1-5.85L3.5 9.7l5.9-.9L12 3.5z"
+                            />
+                        </svg>
+
+                        Birth status
+                    </span>
+
+                    <strong class="ifr-profile-detail-value ifr-profile-status-value">
+                        {{ $selectedInfant->birth_status ?: 'Not recorded' }}
+                    </strong>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 
 
                 {{-- =====================================================
@@ -636,7 +771,11 @@
                                     <p>Birth date</p>
 
                                     <strong>
-                                        {{ $birthDate->format('F d, Y') }}
+                                        @if($birthDateIsRecorded && $birthDate)
+                                            {{ $birthDate->format('F d, Y') }}
+                                        @else
+                                            Not recorded
+                                        @endif
                                     </strong>
                                 </div>
 
@@ -1150,10 +1289,7 @@
 
                 </section>
 
-            @endif
+                       @endif
 
-        </div>
-
-    </div>
-
+          
 </x-app-layout>

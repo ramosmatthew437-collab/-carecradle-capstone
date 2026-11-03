@@ -39,35 +39,39 @@
             'resources/css/health-tips-management.css',
             'resources/css/mother-sidebar.css',
             'resources/css/mother-dashboard-polish.css',
+              'resources/css/maternal-vaccination-history.css',
+              'resources/css/mother-vaccinations.css',
             'resources/js/app.js'
         ])
+
+        @stack('styles')
     </head>
 
     <body
         class="font-sans antialiased"
         style="font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;"
     >
-       @php
-    $user = Auth::user();
-    $isAdmin = $user && $user->isAdministrator();
-    $isMidwife = $user && $user->isMidwife();
-    $isMother = $user && $user->isMother();
-@endphp
+        @php
+            $user = Auth::user();
+            $isAdmin = $user && $user->isAdministrator();
+            $isMidwife = $user && $user->isMidwife();
+            $isMother = $user && $user->isMother();
+        @endphp
 
         <div class="{{ $isAdmin ? 'cc-admin-layout' : ($isMidwife ? 'cc-midwife-layout' : ($isMother ? 'cc-mother-layout' : 'min-h-screen')) }}">
 
             {{-- Desktop sidebar --}}
-         @if ($isAdmin)
-    @include('layouts.admin-sidebar')
-@elseif ($isMidwife)
-    @include('layouts.midwife-sidebar')
-@elseif ($isMother)
-    @include('layouts.mother-sidebar')
-@else
-    @include('layouts.navigation')
-@endif
+            @if ($isAdmin)
+                @include('layouts.admin-sidebar')
+            @elseif ($isMidwife)
+                @include('layouts.midwife-sidebar')
+            @elseif ($isMother)
+                @include('layouts.mother-sidebar')
+            @else
+                @include('layouts.navigation')
+            @endif
 
-           <div class="{{ $isAdmin ? 'cc-admin-main' : '' }} {{ $isMidwife ? 'cc-midwife-main' : '' }} {{ $isMother ? 'cc-mother-main' : '' }}">
+            <div class="{{ $isAdmin ? 'cc-admin-main' : '' }} {{ $isMidwife ? 'cc-midwife-main' : '' }} {{ $isMother ? 'cc-mother-main' : '' }}">
 
                 {{-- Administrator mobile navigation --}}
                 @if ($isAdmin)
@@ -84,11 +88,11 @@
                 @endif
 
                 {{-- Mother mobile navigation --}}
-@if ($isMother)
-    <div class="cc-mother-mobile-nav">
-        @include('layouts.navigation')
-    </div>
-@endif
+                @if ($isMother)
+                    <div class="cc-mother-mobile-nav" style="margin: 0; padding: 0; line-height: 0;">
+                        @include('layouts.navigation')
+                    </div>
+                @endif
 
                 {{-- Optional page header --}}
                 @isset($header)
@@ -108,4 +112,3 @@
         </div>
     </body>
 </html>
-

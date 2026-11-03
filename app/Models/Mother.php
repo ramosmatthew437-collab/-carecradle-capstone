@@ -11,30 +11,41 @@ use App\Models\PrenatalCheckup;
 
 class Mother extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'mother_code',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'birth_date',
-        'contact_number',
-        'address',
-        'barangay',
-        'blood_type',
-        'civil_status',
-        'occupation',
-        'philhealth_number',
-        'height',
-        'weight',
-        'last_menstrual_period',
-        'expected_delivery_date',
-        'pregnancy_number',
-        'status',
+   
+protected $fillable = [
+    'user_id',
+    'profile_photo_path',
+    'mother_code',
+    'first_name',
+    'middle_name',
+    'last_name',
+    'birth_date',
+    'contact_number',
+    'address',
+    'barangay',
+    'blood_type',
+    'civil_status',
+    'occupation',
 
-        'privacy_consent',
+    // Father's Information
+    'father_first_name',
+    'father_middle_name',
+    'father_last_name',
+    'father_birth_date',
+    'father_contact_number',
+    'father_occupation',
+
+    'philhealth_number',
+    'height',
+    'weight',
+    'last_menstrual_period',
+    'expected_delivery_date',
+    'pregnancy_number',
+    'status',
+    'privacy_consent',
     'privacy_consent_at',
-    ];
+];
+
 
     /**
      * The login account of this mother.
@@ -67,6 +78,13 @@ class Mother extends Model
     {
         return $this->hasMany(Infant::class);
     }
+    /**
+ * Vaccination records of the mother.
+ */
+public function maternalVaccinations(): HasMany
+{
+    return $this->hasMany(MaternalVaccination::class);
+}
 
     /**
      * Medical logs of the mother.

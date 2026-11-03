@@ -1,11 +1,6 @@
 <x-app-layout>
 
-    <x-slot name="header">
-        <h2 class="font-semibold text-lg sm:text-xl text-gray-800 leading-tight">
-            Infant Profile
-        </h2>
-    </x-slot>
-
+   
     @php
         $totalVaccinations = $infant->vaccinations->count();
         $totalGrowthRecords = $infant->growthMonitorings->count();

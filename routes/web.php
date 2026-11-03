@@ -16,6 +16,7 @@ use App\Http\Controllers\Mother\MotherAppointmentController;
 use App\Http\Controllers\Mother\MotherSmsController;
 use App\Http\Controllers\Mother\MotherPrenatalController;
 use App\Http\Controllers\Mother\MotherInfantController;
+use App\Http\Controllers\Mother\MotherPrintRecordsController;
 use App\Http\Controllers\Mother\MotherGrowthMonitoringController;
 use App\Http\Controllers\Mother\MotherVaccinationController;
 use App\Http\Controllers\HealthTipController;
@@ -60,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
+        
     /*
     |--------------------------------------------------------------------------
     | Administrator Only
@@ -114,12 +116,58 @@ Route::middleware([
     'staff.confidentiality',
 ])->group(function () {
 
+
+    // Midwife Profile Photo
+    Route::post('/midwife/profile/photo', [
+        \App\Http\Controllers\Midwife\MidwifeProfilePhotoController::class,
+        'update',
+    ])->name('midwife.profile-photo.update');
+
+    Route::delete('/midwife/profile/photo', [
+        \App\Http\Controllers\Midwife\MidwifeProfilePhotoController::class,
+        'destroy',
+    ])->name('midwife.profile-photo.destroy');
+
         Route::resource('midwife/health-tips', MidwifeHealthTipController::class)
             ->names('midwife.health-tips');
 
         Route::get('/test-midwife', function () {
             return view('test-midwife');
         });
+
+        // Read-only infant photo display for Midwives
+Route::get('/midwife/infants/{infant}/photo', [
+    \App\Http\Controllers\Midwife\MidwifeInfantPhotoController::class,
+    'show',
+])->name('midwife.infant-photo.show');
+
+
+
+        // Maternal Vaccinations
+Route::get(
+    '/midwife/mothers/{mother}/vaccinations/create',
+    [\App\Http\Controllers\Midwife\MaternalVaccinationController::class, 'create']
+)->name('midwife.maternal-vaccinations.create');
+
+Route::post(
+    '/midwife/mothers/{mother}/vaccinations',
+    [\App\Http\Controllers\Midwife\MaternalVaccinationController::class, 'store']
+)->name('midwife.maternal-vaccinations.store');
+
+Route::get(
+    '/midwife/mothers/{mother}/vaccinations/{vaccination}/edit',
+    [\App\Http\Controllers\Midwife\MaternalVaccinationController::class, 'edit']
+)->name('midwife.maternal-vaccinations.edit');
+
+Route::put(
+    '/midwife/mothers/{mother}/vaccinations/{vaccination}',
+    [\App\Http\Controllers\Midwife\MaternalVaccinationController::class, 'update']
+)->name('midwife.maternal-vaccinations.update');
+
+Route::delete(
+    '/midwife/mothers/{mother}/vaccinations/{vaccination}',
+    [\App\Http\Controllers\Midwife\MaternalVaccinationController::class, 'destroy']
+)->name('midwife.maternal-vaccinations.destroy');
 
         /*
         |--------------------------------------------------------------------------
@@ -339,12 +387,45 @@ Route::middleware([
         Route::get('/mother/growth-monitoring/{growthMonitoring}', [MotherGrowthMonitoringController::class, 'show'])
             ->name('mother.growth-monitoring.show');
 
-        Route::get('/mother/privacy-notice', function () {
-            return view('mother.privacy-notice');
-        })->name('mother.privacy-notice');
+            Route::get('/mother/print-records', [MotherPrintRecordsController::class, 'index'])
+    ->name('mother.print-records');
+
+
+    Route::post('/mother/profile/photo', [
+    \App\Http\Controllers\Mother\MotherProfileController::class,
+    'updateProfilePhoto',
+])->name('mother.profile.photo.update');
+
+Route::delete('/mother/profile/photo', [
+    \App\Http\Controllers\Mother\MotherProfileController::class,
+    'removeProfilePhoto',
+])->name('mother.profile.photo.remove');
+
+       Route::get('/mother/privacy-notice', function () {
+    return view('privacy.consent');
+})->name('mother.privacy-notice');
+
+
+
+        // Mother-only infant photo management
+        Route::post('/mother/infants/{infant}/photo', [
+            \App\Http\Controllers\Mother\MotherInfantPhotoController::class,
+            'update',
+        ])->name('mother.infant-photo.update');
+
+        Route::get('/mother/infants/{infant}/photo', [
+            \App\Http\Controllers\Mother\MotherInfantPhotoController::class,
+            'show',
+        ])->name('mother.infant-photo.show');
+
+        Route::delete('/mother/infants/{infant}/photo', [
+            \App\Http\Controllers\Mother\MotherInfantPhotoController::class,
+            'destroy',
+        ])->name('mother.infant-photo.destroy');
+
 
         Route::post('/mother/privacy-consent', function () {
-            $mother = auth()->user()->mother;
+            $mother = \Illuminate\Support\Facades\Auth::user()?->mother;
 
             $mother->update([
                 'privacy_consent' => true,
@@ -395,7 +476,16 @@ Route::post('/staff/confidentiality/accept', [
     'accept',
 ])->name('staff.confidentiality.accept');
 
+
+
 }); // Closes outer Route::middleware(['auth']) group
+
+
+Route::post('/staff/confidentiality/cancel', [
+    StaffConfidentialityController::class,
+    'cancel',
+])->name('staff.confidentiality.cancel');
+
 
 
 

@@ -5284,6 +5284,142 @@
 
 }
 
+/* CARECRADLE — MOTHER INFANT PRINT BUTTON */
+
+.ifr-print-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 20px;
+}
+
+.ifr-print-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border: 1px solid #e9a4bc;
+    border-radius: 12px;
+    background: #fff1f6;
+    color: #a83260;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.ifr-print-btn:hover {
+    background: #fce0ea;
+}
+
+@media print {
+    /* Hide Mother Portal navigation and interactive controls */
+    .ifr-print-actions,
+    .ifr-page-head,
+    .ifr-selector,
+    .ifr-back-btn,
+    .ifr-outline-btn,
+    aside,
+    nav,
+    header,
+    footer {
+        display: none !important;
+    }
+
+    /* Remove application layout spacing */
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+    }
+
+    body * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Let the infant record use the printable page width */
+    .ifr-wrap,
+    .ifr-container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    @page {
+        size: A4 portrait;
+        margin: 12mm;
+    }
+
+        /* Keep record sections together when possible */
+    .ifr-growth-row,
+    .ifr-list-card,
+    .ifr-empty-card,
+    .ifr-no-infant,
+    .ifr-growth-values {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* Avoid splitting section headings from their content */
+    .ifr-wrap h2,
+    .ifr-wrap h3 {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+
+    /* Reduce excess spacing on printed pages */
+    .ifr-wrap section {
+        margin-bottom: 12px !important;
+    }
+
+
+    /* CARECRADLE — INFANT RECORD PRINT FOOTER */
+
+.ifr-print-footer {
+    display: none;
+}
+
+@media print {
+    .ifr-print-footer {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid #f3c4d5;
+        color: #64748b;
+        font-size: 9px;
+    }
+
+    .ifr-print-footer-brand {
+        color: #c02668;
+        font-weight: 700;
+    }
+
+    .ifr-print-footer-label {
+        color: #64748b;
+        text-align: right;
+    }
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7693,6 +7829,250 @@
 
 }
 
+
+
+
+
+/* =========================================================
+   CARECRADLE — MOTHER DASHBOARD PREMIUM REFINEMENT
+   Visual styling only; preserves existing layout and logic
+   ========================================================= */
+
+.mth-wrap {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.mth-container {
+    width: min(1180px, calc(100% - 2.5rem));
+    gap: 1.15rem;
+}
+
+/* Calm, neutral pregnancy banner */
+.mth-hero {
+    background: linear-gradient(120deg, #ffffff 0%, #fff7fb 100%);
+    color: #1e293b;
+    border: 1px solid #f1e4eb;
+    box-shadow: 0 8px 26px rgba(15, 23, 42, 0.045);
+}
+
+.mth-hero-glow {
+    display: none;
+}
+
+.mth-eyebrow {
+    background: #fdf2f8;
+    border-color: #fce7f3;
+    color: #be185d;
+    backdrop-filter: none;
+}
+
+.mth-eyebrow-dot {
+    background: #db2777;
+    box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.09);
+}
+
+.mth-hero-title {
+    color: #0f172a;
+    font-family: 'DM Serif Display', Georgia, serif;
+}
+
+.mth-meta-row {
+    color: #64748b;
+}
+
+.mth-pregnancy-badge {
+    background: #fdf2f8;
+    border-color: #fbcfe8;
+    color: #be185d;
+    backdrop-filter: none;
+}
+
+.mth-progress-top {
+    color: #64748b;
+}
+
+.mth-progress-top strong {
+    background: #fce7f3;
+    color: #9d174d;
+}
+
+.mth-progress-track {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+}
+
+.mth-progress-fill {
+    background: linear-gradient(90deg, #f9a8d4, #db2777);
+    box-shadow: none;
+}
+
+.mth-avatar-inner {
+    background: #fce7f3;
+    border: 1px solid #fbcfe8;
+    color: #9d174d;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+/* Appointment card */
+.mth-appointment,
+.mth-infant {
+    border-color: #e8edf3;
+    border-radius: 1.2rem;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.035);
+}
+
+.mth-appointment::before {
+    height: 3px;
+    background: #db2777;
+}
+
+.mth-floating-circle,
+.mth-infant-shape {
+    display: none;
+}
+
+.mth-appointment-label,
+.mth-countdown {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #475569;
+    box-shadow: none;
+}
+
+.mth-appointment-label svg,
+.mth-time svg {
+    color: #db2777;
+}
+
+.mth-appointment-type {
+    color: #64748b;
+}
+
+.mth-appointment-date,
+.mth-infant-text h2,
+.mth-empty h3,
+.mth-section-heading h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+}
+
+.mth-appointment-date {
+    color: #0f172a;
+}
+
+.mth-white-btn,
+.mth-appointment .mth-white-btn,
+.mth-infant > .mth-white-btn,
+.mth-primary-btn {
+    background: #db2777;
+    color: #ffffff;
+    box-shadow: none;
+}
+
+.mth-white-btn:hover,
+.mth-appointment .mth-white-btn:hover,
+.mth-infant > .mth-white-btn:hover,
+.mth-primary-btn:hover {
+    background: #be185d;
+}
+
+/* Empty appointment state */
+.mth-empty {
+    background: #ffffff;
+    border-color: #dbe3ec;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.035);
+}
+
+.mth-empty-icon {
+    background: #fdf2f8;
+    color: #db2777;
+    box-shadow: none;
+}
+
+/* Vaccination reminders retain meaningful warning colors */
+.mth-vax {
+    box-shadow: none;
+}
+
+/* Infant records */
+.mth-infant-icon {
+    background: #fdf2f8;
+    border-color: #fce7f3;
+    color: #db2777;
+    box-shadow: none;
+}
+
+.mth-infant-name {
+    color: #64748b;
+}
+
+.mth-infant-tags span {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+
+/* Quick actions */
+.mth-section-heading span {
+    color: #db2777;
+}
+
+.mth-section-heading p {
+    color: #64748b;
+}
+
+.mth-action-card {
+    border-color: #e8edf3;
+    border-radius: 1rem;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.035);
+}
+
+.mth-action-card:hover {
+    border-color: #f0b6d3;
+    box-shadow: 0 9px 22px rgba(15, 23, 42, 0.065);
+}
+
+.mth-action-pink,
+.mth-action-fuchsia,
+.mth-action-rose {
+    background: #f8fafc;
+    color: #db2777;
+}
+
+.mth-action-card:hover .mth-action-copy h3 {
+    color: #be185d;
+}
+
+.mth-action-card:hover .mth-action-arrow {
+    color: #db2777;
+}
+
+.mth-white-btn:focus-visible,
+.mth-primary-btn:focus-visible,
+.mth-action-card:focus-visible,
+.mth-vax-arrow:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, 0.35);
+    outline-offset: 3px;
+    box-shadow: none;
+}
+
+/* Responsive layout */
+@media (max-width: 767px) {
+    .mth-container {
+        width: calc(100% - 1.5rem);
+    }
+
+    .mth-hero {
+        background: linear-gradient(120deg, #ffffff, #fff7fb);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mth-eyebrow-dot {
+        animation: none;
+    }
+}
 
 
 
@@ -12137,4 +12517,96 @@
         width: 100%;
         margin-left: 0;
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE SIDEBAR PROFILE CARD
+   ========================================================= */
+
+.cc-midwife-profile-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    margin: 1rem 1rem 1.5rem;
+    padding: 0.875rem;
+    border: 1px solid #fce7f3;
+    border-radius: 1rem;
+    background: #fff8fb;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cc-midwife-profile-card:hover {
+    background: #fdf2f8;
+    border-color: #fbcfe8;
+}
+
+.cc-midwife-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    overflow: hidden;
+    border: 2px solid #fbcfe8;
+    border-radius: 50%;
+    background: #fce7f3;
+    color: #be185d;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.cc-midwife-avatar img {
+    display: block;
+    width: 44px;
+    height: 44px;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+}
+.cc-midwife-profile-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    gap: 0.2rem;
+}
+
+.cc-midwife-profile-info strong {
+    overflow: hidden;
+    color: #831843;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cc-midwife-profile-info small {
+    color: #9d174d;
+    font-size: 0.6875rem;
+    font-weight: 500;
+}
+
+.cc-midwife-profile-card:focus-visible {
+    outline: 2px solid #ec4899;
+    outline-offset: 3px;
 }

@@ -1,8 +1,10 @@
+
 /* =========================================================
    CARECRADLE — MIDWIFE HEALTH TIPS MANAGEMENT
-   Dedicated page stylesheet
-   Shared fonts are loaded by layouts/app.blade.php.
+   Redesigned dedicated stylesheet
+   Theme: Pink / White Healthcare
    Typography: DM Serif Display + Inter
+   Scope: .health-tips-management-page ONLY
    ========================================================= */
 
 .health-tips-management-page {
@@ -10,17 +12,20 @@
     --htm-pink-dark: #be185d;
     --htm-pink-soft: #fff1f6;
     --htm-pink-border: #fbcfe8;
-    --htm-navy: #0f172a;
-    --htm-text: #1f2937;
+    --htm-pink-hover: #fdf2f8;
+
+    --htm-navy: #172033;
+    --htm-text: #334155;
     --htm-muted: #64748b;
     --htm-border: #e8eaf0;
     --htm-surface: #ffffff;
-    --htm-page: #fff8fa;
+    --htm-page: #fff9fb;
 
     width: 100%;
     min-width: 0;
     color: var(--htm-text);
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 .health-tips-management-page,
@@ -32,63 +37,60 @@
 
 .health-tips-management-page > .max-w-6xl {
     width: 100%;
-    max-width: 1220px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 1240px;
+    min-width: 0;
+    margin-inline: auto;
 }
 
-/* Page hero */
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
 .health-tips-management-page > .max-w-6xl > .relative.overflow-hidden {
     position: relative;
     isolation: isolate;
-    padding: 26px 28px;
-    border-color: var(--htm-pink-border);
-    border-radius: 18px;
+    padding: clamp(20px, 3vw, 34px);
+    border: 1px solid var(--htm-pink-border);
+    border-radius: 22px;
     background:
-        radial-gradient(circle at 100% 0%, rgba(251, 207, 232, .42), transparent 38%),
-        linear-gradient(135deg, #ffffff 0%, #fff8fb 100%);
-    box-shadow: 0 6px 22px rgba(15, 23, 42, .035);
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(251, 207, 232, .55),
+            transparent 38%
+        ),
+        linear-gradient(135deg, #ffffff 0%, #fff7fb 65%, #f0fdfa 100%);
+    box-shadow: 0 8px 28px rgba(15, 23, 42, .045);
 }
 
 .health-tips-management-page .pointer-events-none {
-    opacity: .45;
-}
-
-.health-tips-management-page .bg-pink-600 {
-    background-color: var(--htm-pink);
-}
-
-.health-tips-management-page .text-pink-600 {
-    color: var(--htm-pink);
-}
-
-.health-tips-management-page h1,
-.health-tips-management-page h2,
-.health-tips-management-page h3 {
-    color: var(--htm-navy);
+    opacity: .5;
 }
 
 .health-tips-management-page h1,
 .health-tips-management-page h2 {
+    color: var(--htm-navy);
     font-family: 'DM Serif Display', Georgia, serif;
     font-weight: 400;
     letter-spacing: -.025em;
 }
 
 .health-tips-management-page h1 {
-    margin-top: 5px;
-    font-size: clamp(28px, 3vw, 36px);
-    line-height: 1.12;
+    margin-top: 6px;
+    font-size: clamp(27px, 3vw, 38px);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
 }
 
 .health-tips-management-page h2 {
-    font-size: 23px;
-    line-height: 1.2;
+    font-size: clamp(20px, 2vw, 25px);
+    line-height: 1.25;
 }
 
 .health-tips-management-page h3 {
+    color: var(--htm-navy);
     font-weight: 700;
-    line-height: 1.4;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
 }
 
 .health-tips-management-page p {
@@ -96,7 +98,7 @@
 }
 
 .health-tips-management-page .tracking-widest {
-    letter-spacing: .11em;
+    letter-spacing: .105em;
 }
 
 .health-tips-management-page .text-gray-500,
@@ -104,23 +106,39 @@
     color: var(--htm-muted);
 }
 
-/* Search and category filter */
+/* =========================================================
+   PANELS AND CONTENT SURFACES
+   ========================================================= */
+
 .health-tips-management-page > .max-w-6xl > .overflow-hidden.rounded-2xl.border.bg-white {
-    border-color: var(--htm-border);
-    border-radius: 16px;
+    min-width: 0;
+    border: 1px solid var(--htm-border);
+    border-radius: 18px;
     background: var(--htm-surface);
-    box-shadow: 0 4px 16px rgba(15, 23, 42, .025);
+    box-shadow: 0 5px 22px rgba(15, 23, 42, .035);
 }
+
+.health-tips-management-page .border-b {
+    border-color: #eef0f5;
+}
+
+/* =========================================================
+   SEARCH AND CATEGORY FILTERS
+   ========================================================= */
 
 .health-tips-management-page input[name="search"],
 .health-tips-management-page select[name="category"] {
-    min-height: 42px;
-    border-color: #dfe4ec;
-    border-radius: 11px;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 13px;
+    border: 1px solid #dfe4ec;
+    border-radius: 12px;
     background-color: #fff;
-    color: #334155;
+    color: var(--htm-text);
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
+    transition: border-color .18s ease, box-shadow .18s ease;
 }
 
 .health-tips-management-page input[name="search"]::placeholder {
@@ -134,29 +152,31 @@
     outline: none;
 }
 
+/* Keep filter controls flexible in their existing form layout. */
+.health-tips-management-page form {
+    min-width: 0;
+}
+
 .health-tips-management-page button[type="submit"],
 .health-tips-management-page a[href*="health-tips.create"] {
+    min-height: 42px;
     border-radius: 11px;
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     font-weight: 700;
-    transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    transition:
+        background-color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
 }
 
 .health-tips-management-page button[type="submit"]:hover,
 .health-tips-management-page a[href*="health-tips.create"]:hover {
-    box-shadow: 0 5px 14px rgba(190, 24, 93, .14);
+    box-shadow: 0 5px 15px rgba(190, 24, 93, .14);
 }
 
-.health-tips-management-page button:focus-visible,
-.health-tips-management-page a:focus-visible {
-    outline: 3px solid rgba(219, 39, 119, .23);
-    outline-offset: 3px;
-}
-
-/* Records panel */
-.health-tips-management-page > .max-w-6xl > .overflow-hidden.rounded-2xl.border.bg-white > .border-b {
-    border-color: #eef0f4;
-}
+/* =========================================================
+   DESKTOP RECORDS TABLE
+   ========================================================= */
 
 .health-tips-management-page table {
     width: 100%;
@@ -165,16 +185,18 @@
 }
 
 .health-tips-management-page thead {
-    background: #fffafb;
+    background: #fff9fc;
 }
 
 .health-tips-management-page thead th {
-    padding-top: 13px;
-    padding-bottom: 13px;
-    color: #94a3b8;
+    padding: 14px 14px;
+    border-bottom: 1px solid #f0eaf0;
+    color: #8490a3;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: .075em;
+    text-align: left;
+    text-transform: uppercase;
     white-space: nowrap;
 }
 
@@ -183,37 +205,43 @@
 }
 
 .health-tips-management-page tbody tr:hover {
-    background-color: #fff8fb;
+    background-color: #fff9fc;
 }
 
 .health-tips-management-page tbody td {
-    padding-top: 13px;
-    padding-bottom: 13px;
-    border-color: #f1f5f9;
-    vertical-align: middle;
+    padding: 15px 14px;
+    border-bottom: 1px solid #f1f3f7;
+    color: var(--htm-text);
     font-size: 12px;
+    vertical-align: middle;
+}
+
+.health-tips-management-page tbody tr:last-child td {
+    border-bottom: 0;
 }
 
 .health-tips-management-page tbody td:first-child {
-    min-width: 300px;
+    min-width: 260px;
 }
 
 .health-tips-management-page tbody td:nth-child(2) {
-    min-width: 150px;
+    min-width: 135px;
 }
 
 .health-tips-management-page tbody td:nth-child(3) {
-    min-width: 120px;
+    min-width: 115px;
     white-space: nowrap;
 }
 
 .health-tips-management-page tbody td:last-child {
-    min-width: 255px;
+    min-width: 245px;
 }
 
 .health-tips-management-page tbody td:first-child img,
 .health-tips-management-page .lg\:hidden img {
-    border-radius: 10px;
+    border: 1px solid #f1e6ed;
+    border-radius: 11px;
+    object-fit: cover;
 }
 
 .health-tips-management-page .rounded-full.bg-pink-100 {
@@ -222,33 +250,39 @@
     color: #9d174d;
     font-size: 10px;
     font-weight: 700;
-    line-height: 1.4;
+    line-height: 1.45;
 }
 
+/* =========================================================
+   RECORD ACTIONS
+   ========================================================= */
 
-
-
-
-
-
-
-
-
-/* Action buttons retain their distinct action meanings but share geometry. */
 .health-tips-management-page tbody td:last-child > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 7px;
 }
 
 .health-tips-management-page tbody td:last-child a,
 .health-tips-management-page tbody td:last-child button {
-    min-height: 34px;
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
     justify-content: center;
     padding: 8px 11px;
     border-radius: 9px;
     font-size: 11px;
     font-weight: 700;
+    line-height: 1.2;
     white-space: nowrap;
     box-shadow: none;
+    transition: background-color .16s ease, transform .16s ease;
+}
+
+.health-tips-management-page tbody td:last-child a:active,
+.health-tips-management-page tbody td:last-child button:active {
+    transform: scale(.97);
 }
 
 .health-tips-management-page .bg-blue-600 {
@@ -275,71 +309,142 @@
     background-color: #b91c1c;
 }
 
-/* Mobile and tablet cards */
+/* =========================================================
+   MOBILE AND TABLET RECORD CARDS
+   ========================================================= */
+
+.health-tips-management-page .lg\:hidden {
+    min-width: 0;
+}
+
 .health-tips-management-page .lg\:hidden > div {
-    border-color: #f1f5f9;
+    min-width: 0;
+    border: 1px solid #f0e8ee;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, .025);
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.health-tips-management-page .lg\:hidden > div:hover {
+    border-color: #f5c5dd;
+    box-shadow: 0 6px 18px rgba(190, 24, 93, .055);
 }
 
 .health-tips-management-page .lg\:hidden > div > .flex.items-start {
     min-width: 0;
+    gap: 12px;
 }
 
 .health-tips-management-page .lg\:hidden .flex-1 {
     min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .health-tips-management-page .lg\:hidden a,
 .health-tips-management-page .lg\:hidden button {
+    display: inline-flex;
     min-height: 40px;
+    align-items: center;
+    justify-content: center;
     border-radius: 10px;
     font-size: 12px;
     font-weight: 700;
+    transition: background-color .16s ease, transform .16s ease;
 }
 
-/* Empty state */
+/* Allow action groups to wrap on small screens. */
+.health-tips-management-page .lg\:hidden > div > .mt-4 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
 .health-tips-management-page .border-dashed {
-    border-color: var(--htm-pink-border);
-    border-radius: 16px;
-    background: #fffafb;
+    border: 1px dashed var(--htm-pink-border);
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at top, #fff1f6 0%, transparent 68%),
+        #fffafb;
 }
 
 .health-tips-management-page .border-dashed h3 {
+    color: var(--htm-navy);
     font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 24px;
+    font-size: clamp(22px, 2.5vw, 27px);
     font-weight: 400;
 }
 
-/* Responsive placement */
-@media (min-width: 1024px) {
-    .health-tips-management-page {
-        padding-left: 24px;
-        padding-right: 24px;
-    }
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
 
-    .health-tips-management-page > .max-w-6xl {
-        max-width: none;
+.health-tips-management-page button:focus-visible,
+.health-tips-management-page a:focus-visible,
+.health-tips-management-page input:focus-visible,
+.health-tips-management-page select:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, .25);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .health-tips-management-page *,
+    .health-tips-management-page *::before,
+    .health-tips-management-page *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }
+
+/* =========================================================
+   TABLET
+   ========================================================= */
 
 @media (max-width: 1023px) {
     .health-tips-management-page > .max-w-6xl {
         max-width: none;
     }
+
+    .health-tips-management-page {
+        padding-inline: 16px;
+    }
+
+    .health-tips-management-page tbody td:first-child {
+        min-width: 220px;
+    }
+
+    .health-tips-management-page tbody td:last-child {
+        min-width: 220px;
+    }
 }
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 640px) {
     .health-tips-management-page {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-inline: 10px;
+    }
+
+    .health-tips-management-page > .max-w-6xl {
+        max-width: none;
     }
 
     .health-tips-management-page > .max-w-6xl > .relative.overflow-hidden {
-        padding: 20px;
-        border-radius: 16px;
+        padding: 20px 17px;
+        border-radius: 17px;
     }
 
     .health-tips-management-page h1 {
         font-size: 27px;
+        line-height: 1.18;
     }
 
     .health-tips-management-page h2 {
@@ -349,29 +454,55 @@
     .health-tips-management-page input[name="search"],
     .health-tips-management-page select[name="category"] {
         width: 100%;
+        min-height: 44px;
+        font-size: 14px;
     }
 
     .health-tips-management-page .lg\:hidden > div {
-        padding: 16px;
+        padding: 15px;
+        border-radius: 14px;
     }
 
     .health-tips-management-page .lg\:hidden > div > .mt-4 {
-        gap: 7px;
+        gap: 8px;
     }
 
     .health-tips-management-page .lg\:hidden a,
     .health-tips-management-page .lg\:hidden button {
-        padding-left: 8px;
-        padding-right: 8px;
+        min-height: 42px;
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    .health-tips-management-page .rounded-full.bg-pink-100 {
+        white-space: normal;
+        overflow-wrap: anywhere;
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .health-tips-management-page *,
-    .health-tips-management-page *::before,
-    .health-tips-management-page *::after {
-        transition-duration: .01ms !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+    .health-tips-management-page {
+        padding-inline: 8px;
+    }
+
+    .health-tips-management-page > .max-w-6xl > .relative.overflow-hidden {
+        padding: 17px 14px;
+    }
+
+    .health-tips-management-page h1 {
+        font-size: 25px;
+    }
+
+    .health-tips-management-page .lg\:hidden > div {
+        padding: 12px;
+    }
+
+    .health-tips-management-page .lg\:hidden a,
+    .health-tips-management-page .lg\:hidden button {
+        flex: 1 1 auto;
     }
 }

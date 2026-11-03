@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\StaffConfidentialityAcknowledgment;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -62,5 +61,32 @@ class StaffConfidentialityController extends Controller
         return redirect()
             ->route('dashboard')
             ->with('status', 'staff-confidentiality-accepted');
+    }
+
+    /**
+     * Cancel the acknowledgment process and log the staff member out.
+     */
+    public function cancel(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // Allow only authorized staff.
+        if (
+            !$user ||
+            (!$user->isMidwife() && !$user->isAdministrator())
+        ) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // Log out without saving an acknowledgment.
+        auth()->logout();
+
+        // Invalidate the session securely.
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()
+            ->route('login')
+            ->with('status', 'staff-confidentiality-cancelled');
     }
 }

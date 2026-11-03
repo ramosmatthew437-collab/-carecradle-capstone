@@ -27,7 +27,7 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-C6omxx7Y.css",
+    "file": "assets/app-BhuNhZYR.css",
     "name": "app",
     "names": [
       "app.css"
@@ -63,7 +63,7 @@
     "isEntry": true
   },
   "resources/css/carecradle.css": {
-    "file": "assets/carecradle-tiHtz4Ma.css",
+    "file": "assets/carecradle-C140YzJm.css",
     "name": "carecradle",
     "names": [
       "carecradle.css"
@@ -72,7 +72,7 @@
     "isEntry": true
   },
   "resources/css/health-tips-management.css": {
-    "file": "assets/health-tips-management-BdfHkjAA.css",
+    "file": "assets/health-tips-management-D2b10SP5.css",
     "name": "health-tips-management",
     "names": [
       "health-tips-management.css"
@@ -80,8 +80,17 @@
     "src": "resources/css/health-tips-management.css",
     "isEntry": true
   },
+  "resources/css/infant-records.css": {
+    "file": "assets/infant-records-BUzdoINk.css",
+    "name": "infant-records",
+    "names": [
+      "infant-records.css"
+    ],
+    "src": "resources/css/infant-records.css",
+    "isEntry": true
+  },
   "resources/css/midwife-dashboard.css": {
-    "file": "assets/midwife-dashboard-B20l9N5b.css",
+    "file": "assets/midwife-dashboard-5yYffy61.css",
     "name": "midwife-dashboard",
     "names": [
       "midwife-dashboard.css"
@@ -90,7 +99,7 @@
     "isEntry": true
   },
   "resources/css/midwife-foundation.css": {
-    "file": "assets/midwife-foundation-DkdngGe0.css",
+    "file": "assets/midwife-foundation-DtkJgYi7.css",
     "name": "midwife-foundation",
     "names": [
       "midwife-foundation.css"
@@ -108,7 +117,7 @@
     "isEntry": true
   },
   "resources/css/mother-dashboard-polish.css": {
-    "file": "assets/mother-dashboard-polish-BuI7W9ao.css",
+    "file": "assets/mother-dashboard-polish-DG0qSrnj.css",
     "name": "mother-dashboard-polish",
     "names": [
       "mother-dashboard-polish.css"
@@ -135,7 +144,7 @@
     "isEntry": true
   },
   "resources/css/mother-profile.css": {
-    "file": "assets/mother-profile-CNl9xV4A.css",
+    "file": "assets/mother-profile-CA6135qk.css",
     "name": "mother-profile",
     "names": [
       "mother-profile.css"
@@ -144,7 +153,7 @@
     "isEntry": true
   },
   "resources/css/mother-sidebar.css": {
-    "file": "assets/mother-sidebar-BnCO8qN0.css",
+    "file": "assets/mother-sidebar-DFwyMH44.css",
     "name": "mother-sidebar",
     "names": [
       "mother-sidebar.css"

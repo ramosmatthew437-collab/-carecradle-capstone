@@ -1,5 +1,7 @@
-﻿
-<nav x-data="{ open: false, motherDrawerOpen: false, midwifeDrawerOpen: false, adminDrawerOpen: false }" class="bg-white border-b border-pink-100">
+﻿<nav
+    x-data="{ open: false, motherDrawerOpen: false, midwifeDrawerOpen: false, adminDrawerOpen: false }"
+    class="border-b-0 sm:border-b sm:border-pink-100 {{ Auth::user()?->isMother() ? 'bg-pink-50' : 'bg-white' }}"
+>
 
     @php
         $user = Auth::user();
@@ -11,6 +13,25 @@
                 : ($user->isAdministrator()
                     ? 'adminDrawerOpen = true'
                     : 'open = ! open'));
+
+        // Shared drawer styling so all three portals look and behave identically.
+        $drawerLinkBase = 'group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-100';
+        $drawerLinkActive = 'bg-pink-50 text-pink-700';
+        $drawerLinkInactive = 'text-slate-600 hover:bg-pink-50/70 hover:text-pink-700 focus-visible:bg-pink-50/70 focus-visible:text-pink-700';
+        $drawerIconBase = 'h-5 w-5 flex-shrink-0 transition';
+        $drawerIconActive = 'text-pink-600';
+        $drawerIconInactive = 'text-slate-400 group-hover:text-pink-500 group-focus-visible:text-pink-500';
+        $drawerLogoutHover = 'text-slate-600 hover:bg-rose-50 hover:text-rose-600 focus-visible:bg-rose-50 focus-visible:text-rose-600 focus-visible:ring-rose-100';
+        $profileActive = request()->routeIs('profile.edit');
+
+        // Mother Portal drawer tokens (refined styling, scoped to the Mother drawer only).
+        $mLinkBase = 'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors duration-200 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-inset';
+        $mLinkActive = 'bg-pink-50 font-semibold text-pink-700 focus-visible:ring-pink-300';
+        $mLinkInactive = 'font-medium text-slate-600 hover:bg-pink-50/60 hover:text-pink-700 focus-visible:bg-pink-50/60 focus-visible:text-pink-700 focus-visible:ring-pink-300';
+        $mIconBase = 'h-5 w-5 flex-shrink-0 transition-colors duration-200 ease-out';
+        $mIconActive = 'text-pink-600';
+        $mIconInactive = 'text-slate-400 group-hover:text-pink-500 group-focus-visible:text-pink-500';
+        $mLogout = 'font-medium text-slate-500 hover:bg-rose-50/70 hover:text-rose-600 focus-visible:bg-rose-50/70 focus-visible:text-rose-600 focus-visible:ring-rose-200';
     @endphp
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -153,6 +174,7 @@
             ];
         @endphp
 
+        {{-- Overlay --}}
         <div
             x-show="adminDrawerOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
@@ -166,6 +188,7 @@
             style="display: none;"
         ></div>
 
+        {{-- Drawer --}}
         <div
             x-show="adminDrawerOpen"
             x-transition:enter="transition ease-in-out duration-300 transform"
@@ -178,34 +201,37 @@
             class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
             style="display: none;"
         >
-            <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
-                <div class="flex items-center gap-3">
-                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75a3.75 3.75 0 00-3.75 3.75v3.75A5.25 5.25 0 0012 21a5.25 5.25 0 003.75-9.75V7.5A3.75 3.75 0 0012 3.75Z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-base font-bold leading-tight">CareCradle</p>
-                        <p class="text-xs font-medium text-pink-100">Administrator Portal</p>
-                    </div>
+            {{-- Header --}}
+            <div class="flex items-center justify-between gap-3 border-b border-pink-100 bg-white px-5 py-4">
+                <div class="flex min-w-0 flex-col items-start gap-1.5">
+                    <x-application-logo size="sm" />
+                    <span class="inline-flex items-center rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-semibold text-pink-700 ring-1 ring-inset ring-pink-100">
+                        Administrator Portal
+                    </span>
                 </div>
 
-                <button @click="adminDrawerOpen = false" type="button" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition" aria-label="Close menu">
+                <button
+                    @click="adminDrawerOpen = false"
+                    type="button"
+                    class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-slate-500 hover:bg-pink-50 hover:text-pink-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-100 transition"
+                    aria-label="Close menu"
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
 
+            {{-- Navigation links --}}
             <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Administrator mobile navigation">
                 @foreach ($adminNavLinks as $link)
                     <a
                         href="{{ route($link['route']) }}"
                         @click="adminDrawerOpen = false"
-                        class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                        @if ($link['active']) aria-current="page" @endif
+                        class="{{ $drawerLinkBase }} {{ $link['active'] ? $drawerLinkActive : $drawerLinkInactive }}"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} {{ $link['active'] ? $drawerIconActive : $drawerIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}"/>
                         </svg>
                         {{ $link['label'] }}
@@ -213,11 +239,17 @@
                 @endforeach
             </nav>
 
-            <div class="border-t border-slate-100"></div>
+            <div class="border-t border-pink-100"></div>
 
+            {{-- Profile + Log Out --}}
             <div class="space-y-1 px-3 py-4">
-                <a href="{{ route('profile.edit') }}" @click="adminDrawerOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <a
+                    href="{{ route('profile.edit') }}"
+                    @click="adminDrawerOpen = false"
+                    @if ($profileActive) aria-current="page" @endif
+                    class="{{ $drawerLinkBase }} {{ $profileActive ? $drawerLinkActive : $drawerLinkInactive }}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} {{ $profileActive ? $drawerIconActive : $drawerIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
                     Profile
@@ -225,8 +257,12 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" onclick="return confirm('Are you sure you want to log out?');" class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <button
+                        type="submit"
+                        onclick="return confirm('Are you sure you want to log out?');"
+                        class="{{ $drawerLinkBase }} w-full text-left {{ $drawerLogoutHover }}"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} text-slate-400 group-hover:text-rose-500 group-focus-visible:text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out
@@ -269,6 +305,7 @@
             ];
         @endphp
 
+        {{-- Overlay --}}
         <div
             x-show="midwifeDrawerOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
@@ -282,6 +319,7 @@
             style="display: none;"
         ></div>
 
+        {{-- Drawer --}}
         <div
             x-show="midwifeDrawerOpen"
             x-transition:enter="transition ease-in-out duration-300 transform"
@@ -294,34 +332,37 @@
             class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40 lg:hidden"
             style="display: none;"
         >
-            <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
-                <div class="flex items-center gap-3">
-                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75a3.75 3.75 0 00-3.75 3.75v3.75A5.25 5.25 0 0012 21a5.25 5.25 0 003.75-9.75V7.5A3.75 3.75 0 0012 3.75Z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-base font-bold leading-tight">CareCradle</p>
-                        <p class="text-xs font-medium text-pink-100">Midwife Portal</p>
-                    </div>
+            {{-- Header --}}
+            <div class="flex items-center justify-between gap-3 border-b border-pink-100 bg-white px-5 py-4">
+                <div class="flex min-w-0 flex-col items-start gap-1.5">
+                    <x-application-logo size="sm" />
+                    <span class="inline-flex items-center rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-semibold text-pink-700 ring-1 ring-inset ring-pink-100">
+                        Midwife Portal
+                    </span>
                 </div>
 
-                <button @click="midwifeDrawerOpen = false" type="button" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition" aria-label="Close menu">
+                <button
+                    @click="midwifeDrawerOpen = false"
+                    type="button"
+                    class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-slate-500 hover:bg-pink-50 hover:text-pink-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-100 transition"
+                    aria-label="Close menu"
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
 
+            {{-- Navigation links --}}
             <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Midwife mobile navigation">
                 @foreach ($midwifeNavLinks as $link)
                     <a
                         href="{{ route($link['route']) }}"
                         @click="midwifeDrawerOpen = false"
-                        class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                        @if ($link['active']) aria-current="page" @endif
+                        class="{{ $drawerLinkBase }} {{ $link['active'] ? $drawerLinkActive : $drawerLinkInactive }}"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} {{ $link['active'] ? $drawerIconActive : $drawerIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}"/>
                         </svg>
                         {{ $link['label'] }}
@@ -329,11 +370,17 @@
                 @endforeach
             </nav>
 
-            <div class="border-t border-slate-100"></div>
+            <div class="border-t border-pink-100"></div>
 
+            {{-- Profile + Log Out --}}
             <div class="space-y-1 px-3 py-4">
-                <a href="{{ route('profile.edit') }}" @click="midwifeDrawerOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <a
+                    href="{{ route('profile.edit') }}"
+                    @click="midwifeDrawerOpen = false"
+                    @if ($profileActive) aria-current="page" @endif
+                    class="{{ $drawerLinkBase }} {{ $profileActive ? $drawerLinkActive : $drawerLinkInactive }}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} {{ $profileActive ? $drawerIconActive : $drawerIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
                     Profile
@@ -341,8 +388,12 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" onclick="return confirm('Are you sure you want to log out?');" class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <button
+                        type="submit"
+                        onclick="return confirm('Are you sure you want to log out?');"
+                        class="{{ $drawerLinkBase }} w-full text-left {{ $drawerLogoutHover }}"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} text-slate-400 group-hover:text-rose-500 group-focus-visible:text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
                         Log Out
@@ -384,6 +435,18 @@
                     'icon2' => 'M12 3.75v1.5',
                 ],
                 [
+                    'label' => 'My Vaccinations',
+                    'route' => 'mother.vaccinations',
+                    'active' => request()->routeIs('mother.vaccinations'),
+                    'icon' => 'M12 6v12m-6-6h12',
+                ],
+                [
+                    'label' => 'Print My Records',
+                    'route' => 'mother.print-records',
+                    'active' => request()->routeIs('mother.print-records'),
+                    'icon' => 'M6 9V4.5A1.5 1.5 0 017.5 3h9A1.5 1.5 0 0118 4.5V9m-12 0h12m-12 0A2.25 2.25 0 003.75 11.25v7.5A2.25 2.25 0 006 21h12a2.25 2.25 0 002.25-2.25v-7.5A2.25 2.25 0 0018 9m-9 4.5h6m-6 3h6',
+                ],
+                [
                     'label' => 'SMS History',
                     'route' => 'mother.sms-history',
                     'active' => request()->routeIs('mother.sms-history'),
@@ -398,6 +461,7 @@
             ];
         @endphp
 
+        {{-- Overlay --}}
         <div
             x-show="motherDrawerOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
@@ -407,10 +471,11 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="motherDrawerOpen = false"
-            class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-[2px]"
+            class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px]"
             style="display: none;"
         ></div>
 
+        {{-- Drawer --}}
         <div
             x-show="motherDrawerOpen"
             x-transition:enter="transition ease-in-out duration-300 transform"
@@ -420,64 +485,76 @@
             x-transition:leave-start="translate-x-0"
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="motherDrawerOpen = false"
-            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
+            class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-xl shadow-pink-200/30"
             style="display: none;"
         >
-            <div class="flex items-center justify-between bg-gradient-to-br from-pink-500 to-pink-600 px-5 py-5 text-white">
-                <div class="flex items-center gap-3">
-                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75a3.75 3.75 0 00-3.75 3.75v3.75A5.25 5.25 0 0012 21a5.25 5.25 0 003.75-9.75V7.5A3.75 3.75 0 0012 3.75Z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-base font-bold leading-tight">CareCradle</p>
-                        <p class="text-xs font-medium text-pink-100">Mother Portal</p>
-                    </div>
+            {{-- Header --}}
+            <div class="flex items-start justify-between gap-3 border-b border-pink-100/80 bg-white px-5 pb-4 pt-5">
+                <div class="flex min-w-0 flex-col items-start gap-2.5">
+                    <x-application-logo size="sm" />
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-pink-50 py-1 pl-2 pr-3 text-[11px] font-semibold leading-none tracking-wide text-pink-700 ring-1 ring-inset ring-pink-100">
+                        <span class="h-1.5 w-1.5 rounded-full bg-pink-400" aria-hidden="true"></span>
+                        Mother Portal
+                    </span>
                 </div>
 
-                <button @click="motherDrawerOpen = false" type="button" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus:outline-none transition" aria-label="Close menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <button
+                    @click="motherDrawerOpen = false"
+                    type="button"
+                    class="-mr-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors duration-200 ease-out hover:bg-pink-50 hover:text-pink-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-300"
+                    aria-label="Close menu"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
 
+            {{-- Navigation links --}}
             <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Mother mobile navigation">
                 @foreach ($motherNavLinks as $link)
                     <a
                         href="{{ route($link['route']) }}"
                         @click="motherDrawerOpen = false"
-                        class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition {{ $link['active'] ? 'border-l-4 border-pink-600 bg-pink-50 pl-2 text-pink-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}"
+                        @if ($link['active']) aria-current="page" @endif
+                        class="{{ $mLinkBase }} {{ $link['active'] ? $mLinkActive : $mLinkInactive }}"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 {{ $link['active'] ? 'text-pink-600' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $mIconBase }} {{ $link['active'] ? $mIconActive : $mIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon'] }}"/>
                             @isset($link['icon2'])
                                 <path stroke-linecap="round" stroke-linejoin="round" d="{{ $link['icon2'] }}"/>
                             @endisset
                         </svg>
-                        {{ $link['label'] }}
+                        <span class="truncate">{{ $link['label'] }}</span>
                     </a>
                 @endforeach
             </nav>
 
-            <div class="border-t border-slate-100"></div>
-
-            <div class="space-y-1 px-3 py-4">
-                <a href="{{ route('profile.edit') }}" @click="motherDrawerOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            {{-- Profile + Log Out --}}
+            <div class="space-y-1 border-t border-slate-100 bg-slate-50/50 px-3 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+                <a
+                    href="{{ route('profile.edit') }}"
+                    @click="motherDrawerOpen = false"
+                    @if ($profileActive) aria-current="page" @endif
+                    class="{{ $mLinkBase }} {{ $profileActive ? $mLinkActive : $mLinkInactive }}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="{{ $mIconBase }} {{ $profileActive ? $mIconActive : $mIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
-                    Profile
+                    <span class="truncate">Profile</span>
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" onclick="return confirm('Are you sure you want to log out?');" class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-slate-600 transition hover:bg-rose-50 hover:text-rose-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <button
+                        type="submit"
+                        onclick="return confirm('Are you sure you want to log out?');"
+                        class="{{ $mLinkBase }} w-full text-left {{ $mLogout }}"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $mIconBase }} text-slate-400 group-hover:text-rose-500 group-focus-visible:text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
                         </svg>
-                        Log Out
+                        <span class="truncate">Log Out</span>
                     </button>
                 </form>
             </div>

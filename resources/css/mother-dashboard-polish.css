@@ -2,7 +2,12 @@
 /* =========================================================
    CARECRADLE — MOTHER DASHBOARD POLISH
    Oula-inspired layout refinement
+   Pink healthcare theme with RHU photo hero
    Scoped to Mother Dashboard classes only
+   ========================================================= */
+
+/* =========================================================
+   1. DASHBOARD LAYOUT
    ========================================================= */
 
 .mth-wrap {
@@ -10,16 +15,7 @@
     min-width: 0;
 }
 
-.mth-container {
-    width: 100%;
-    max-width: 1180px;
-    min-width: 0;
-    margin-inline: auto;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
+
 
 .mth-hero,
 .mth-appointment,
@@ -37,6 +33,43 @@
     box-shadow: 0 8px 28px rgba(157, 23, 77, 0.055);
 }
 
+/* =========================================================
+   2. HERO — RHU PHOTO AND BALANCED PINK DETAILS
+   ========================================================= */
+
+.mth-wrap .mth-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-width: 0;
+
+    border: 1px solid rgba(240, 182, 211, 0.65);
+    border-radius: 1.5rem;
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+
+    background:
+        linear-gradient(
+            100deg,
+            rgba(255, 255, 255, 0.97) 0%,
+            rgba(255, 255, 255, 0.91) 42%,
+            rgba(255, 255, 255, 0.63) 72%,
+            rgba(255, 255, 255, 0.35) 100%
+        ),
+       var(--cc-rhu-image, none) center 45% / cover no-repeat;
+
+    color: #1e293b;
+
+    box-shadow:
+        0 16px 38px rgba(131, 24, 67, 0.07),
+        0 3px 10px rgba(15, 23, 42, 0.03);
+}
+
+.mth-wrap .mth-hero-glow,
+.mth-wrap .mth-floating-circle,
+.mth-wrap .mth-infant-shape {
+    display: none;
+}
+
 .mth-hero-inner {
     gap: 1.5rem;
 }
@@ -47,9 +80,36 @@
     min-width: 0;
 }
 
+.mth-wrap .mth-hero-title,
+.mth-wrap .mth-appointment-date,
+.mth-wrap .mth-infant-text h2,
+.mth-wrap .mth-empty h3,
+.mth-wrap .mth-section-heading h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    color: #0f172a;
+}
+
 .mth-hero-title {
     overflow-wrap: anywhere;
     line-height: 1.12;
+}
+
+.mth-wrap .mth-eyebrow {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #fce7f3;
+    color: #be185d;
+    backdrop-filter: none;
+}
+
+.mth-wrap .mth-eyebrow-dot {
+    background: #db2777;
+    box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.1);
+    animation: none;
+}
+
+.mth-wrap .mth-meta-row,
+.mth-wrap .mth-progress-top {
+    color: #475569;
 }
 
 .mth-meta-row {
@@ -57,6 +117,13 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
+}
+
+.mth-wrap .mth-pregnancy-badge,
+.mth-wrap .mth-progress-top strong {
+    background: #fdf2f8;
+    border: 1px solid #fbcfe8;
+    color: #9d174d;
 }
 
 .mth-progress-wrap {
@@ -72,9 +139,51 @@
     gap: 0.5rem;
 }
 
-.mth-progress-track {
+.mth-wrap .mth-progress-track {
     overflow: hidden;
     border-radius: 999px;
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.mth-wrap .mth-progress-fill {
+    background: linear-gradient(90deg, #f9a8d4, #db2777);
+    box-shadow: none;
+}
+
+.mth-wrap .mth-avatar-inner {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #fbcfe8;
+    color: #9d174d;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+/* =========================================================
+   3. APPOINTMENT CARD
+   ========================================================= */
+
+.mth-wrap .mth-appointment,
+.mth-wrap .mth-empty,
+.mth-wrap .mth-infant,
+.mth-wrap .mth-action-card {
+    border-color: #e2e8f0;
+    border-radius: 1rem;
+    background-color: #fff;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
+}
+
+
+.mth-wrap .mth-appointment {
+    position: relative;
+    overflow: hidden;
+    padding: 1.125rem 1.25rem;
+}
+
+
+.mth-wrap .mth-appointment::before {
+    height: 3px;
+    background: #db2777;
 }
 
 .mth-appointment-top {
@@ -97,6 +206,30 @@
     gap: 0.75rem;
 }
 
+.mth-wrap .mth-appointment-label,
+.mth-wrap .mth-countdown {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #475569;
+    box-shadow: none;
+}
+
+.mth-wrap .mth-appointment-type,
+.mth-wrap .mth-section-heading span {
+    color: #be185d;
+}
+
+.mth-wrap .mth-time,
+.mth-wrap .mth-infant-description,
+.mth-wrap .mth-section-heading p,
+.mth-wrap .mth-action-copy p {
+    color: #64748b;
+}
+
+/* =========================================================
+   4. VACCINATION REMINDER
+   ========================================================= */
+
 .mth-vax {
     display: flex;
     align-items: center;
@@ -112,6 +245,10 @@
 .mth-vax-label {
     overflow-wrap: anywhere;
 }
+
+/* =========================================================
+   5. INFANT AND CHILD RECORDS
+   ========================================================= */
 
 .mth-infant-content {
     display: flex;
@@ -134,6 +271,28 @@
     gap: 0.5rem;
 }
 
+.mth-wrap .mth-empty-icon,
+.mth-wrap .mth-infant-icon {
+    background: #fdf2f8;
+    border-color: #fce7f3;
+    color: #db2777;
+    box-shadow: none;
+}
+
+.mth-wrap .mth-infant-name {
+    color: #64748b;
+}
+
+.mth-wrap .mth-infant-tags span {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+
+/* =========================================================
+   6. QUICK ACTIONS
+   ========================================================= */
+
 .mth-actions {
     width: 100%;
 }
@@ -144,7 +303,7 @@
     gap: 1rem;
 }
 
-.mth-action-card {
+.mth-wrap .mth-action-card {
     min-width: 0;
     height: 100%;
     transition:
@@ -153,19 +312,57 @@
         border-color 180ms ease;
 }
 
-.mth-action-card:hover {
-    transform: translateY(-2px);
+.mth-wrap .mth-action-icon,
+.mth-wrap .mth-action-pink,
+.mth-wrap .mth-action-fuchsia,
+.mth-wrap .mth-action-rose {
+    background: #f8fafc;
+    color: #db2777;
 }
 
-.mth-action-card:focus-visible {
-    outline: 3px solid rgba(236, 72, 153, 0.4);
-    outline-offset: 3px;
+.mth-wrap .mth-action-card:hover {
+    border-color: #f0b6d3;
+    transform: translateY(-2px);
+    box-shadow: 0 9px 22px rgba(15, 23, 42, 0.065);
+}
+
+.mth-wrap .mth-action-card:hover .mth-action-copy h3 {
+    color: #be185d;
 }
 
 .mth-action-copy h3,
 .mth-action-copy p {
     overflow-wrap: anywhere;
 }
+
+/* =========================================================
+   7. BUTTONS AND KEYBOARD ACCESSIBILITY
+   ========================================================= */
+
+.mth-wrap .mth-white-btn,
+.mth-wrap .mth-primary-btn {
+    background: #db2777;
+    color: #fff;
+    box-shadow: none;
+    border-radius: 0.75rem;
+}
+
+.mth-wrap .mth-white-btn:hover,
+.mth-wrap .mth-primary-btn:hover {
+    background: #be185d;
+}
+
+.mth-wrap .mth-action-card:focus-visible,
+.mth-wrap .mth-white-btn:focus-visible,
+.mth-wrap .mth-primary-btn:focus-visible,
+.mth-wrap .mth-vax-arrow:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, 0.35);
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   8. TABLET RESPONSIVENESS
+   ========================================================= */
 
 @media (max-width: 900px) {
     .mth-action-grid {
@@ -176,6 +373,10 @@
         padding: 1.25rem;
     }
 }
+
+/* =========================================================
+   9. MOBILE RESPONSIVENESS
+   ========================================================= */
 
 @media (max-width: 767px) {
     .mth-container {
@@ -193,8 +394,20 @@
         border-radius: 16px;
     }
 
+    .mth-wrap .mth-hero {
+        padding: 1.2rem;
+        background-position: center;
+    }
+
     .mth-hero-inner {
+        align-items: flex-start;
         gap: 1rem;
+    }
+
+    .mth-wrap .mth-avatar-inner {
+        width: 52px;
+        height: 52px;
+        font-size: 1rem;
     }
 
     .mth-appointment-top {
@@ -203,6 +416,12 @@
 
     .mth-infant-content {
         gap: 0.85rem;
+    }
+
+    .mth-wrap .mth-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.25rem;
     }
 
     .mth-action-grid {
@@ -215,14 +434,18 @@
     }
 }
 
+/* =========================================================
+   10. EXTRA-SMALL PHONES
+   ========================================================= */
+
 @media (max-width: 380px) {
     .mth-container {
         padding: 0.75rem;
     }
 
-    .mth-hero,
-    .mth-appointment,
-    .mth-infant {
+    .mth-wrap .mth-hero,
+    .mth-wrap .mth-appointment,
+    .mth-wrap .mth-infant {
         padding: 1rem;
     }
 
@@ -233,7 +456,15 @@
     .mth-infant-icon {
         flex-shrink: 0;
     }
+
+    .mth-wrap .mth-hero-title {
+        font-size: 1.7rem;
+    }
 }
+
+/* =========================================================
+   11. REDUCED MOTION
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
     .mth-action-card {
@@ -241,6 +472,643 @@
     }
 
     .mth-action-card:hover {
+        transform: none;
+    }
+
+    .mth-wrap *,
+    .mth-wrap *::before,
+    .mth-wrap *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+
+/* =========================================================
+   12. BALANCED RHU PHOTO AND FINAL SPACING REFINEMENTS
+   ========================================================= */
+
+.mth-wrap .mth-container {
+    gap: 1.125rem;
+}
+
+.mth-wrap section.mth-hero {
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+}
+
+/* Keep appointment and infant cards from overflowing */
+.mth-wrap .mth-appointment,
+.mth-wrap .mth-infant {
+    min-width: 0;
+}
+
+
+/* CARECRADLE — FULL DASHBOARD RHU BACKGROUND */
+.mth-wrap {
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.76),
+            rgba(255, 255, 255, 0.76)
+        ),
+        var(--cc-rhu-image, none);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Keep the hero photo visible across its own card */
+.mth-wrap section.mth-hero {
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.38) 0%,
+            rgba(255, 255, 255, 0.18) 38%,
+            rgba(255, 255, 255, 0.02) 100%
+        ),
+        var(--cc-rhu-image, none);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — COMPACT APPOINTMENT CARD
+   ========================================================= */
+
+.mth-wrap .mth-appointment-top {
+    margin-bottom: 0.65rem;
+}
+
+.mth-wrap .mth-appointment-type {
+    margin: 0 0 0.35rem;
+    line-height: 1.35;
+}
+
+.mth-wrap .mth-appointment-date {
+    margin: 0 0 0.55rem;
+    line-height: 1.2;
+}
+
+.mth-wrap .mth-appointment-details {
+    margin: 0 0 0.65rem;
+}
+
+.mth-wrap .mth-appointment .mth-white-btn {
+    margin-top: 0;
+}
+
+@media (max-width: 767px) {
+    .mth-wrap .mth-appointment {
+        padding: 1rem;
+    }
+
+    .mth-wrap .mth-appointment-top {
+        gap: 0.5rem;
+        margin-bottom: 0.6rem;
+    }
+}
+
+/* =========================================================
+   13. SUBTLE INTERACTIONS — DASHBOARD DESIGN POLISH
+   Scoped to Mother Dashboard only; no backend or layout changes.
+   ========================================================= */
+
+.mth-wrap .mth-hero,
+.mth-wrap .mth-appointment,
+.mth-wrap .mth-infant,
+.mth-wrap .mth-vax,
+.mth-wrap .mth-empty,
+.mth-wrap .mth-action-card {
+    transition:
+        box-shadow 220ms ease,
+        border-color 220ms ease,
+        background-color 220ms ease;
+}
+
+/* Gentle entrance: keeps the existing card positions and dimensions. */
+@keyframes mth-dashboard-enter {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mth-wrap .mth-hero {
+    animation: mth-dashboard-enter 480ms ease-out both;
+}
+
+.mth-wrap .mth-appointment {
+    animation: mth-dashboard-enter 480ms 70ms ease-out both;
+}
+
+.mth-wrap .mth-infant {
+    animation: mth-dashboard-enter 480ms 140ms ease-out both;
+}
+
+.mth-wrap .mth-vax,
+.mth-wrap .mth-empty,
+.mth-wrap .mth-actions {
+    animation: mth-dashboard-enter 480ms 200ms ease-out both;
+}
+
+/* Make interactive cards feel responsive without moving on touch screens. */
+@media (hover: hover) and (pointer: fine) {
+    .mth-wrap .mth-appointment:hover,
+    .mth-wrap .mth-infant:hover,
+    .mth-wrap .mth-vax:hover,
+    .mth-wrap .mth-empty:hover {
+        border-color: #f3bfd8;
+        box-shadow: 0 10px 26px rgba(157, 23, 77, 0.085);
+    }
+
+    .mth-wrap .mth-hero:hover {
+        box-shadow:
+            0 19px 42px rgba(131, 24, 67, 0.10),
+            0 4px 12px rgba(15, 23, 42, 0.035);
+    }
+
+    .mth-wrap .mth-primary-btn:hover,
+    .mth-wrap .mth-white-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(219, 39, 119, 0.18);
+    }
+}
+
+.mth-wrap .mth-primary-btn,
+.mth-wrap .mth-white-btn,
+.mth-wrap .mth-vax-arrow {
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease;
+}
+
+.mth-wrap .mth-primary-btn:active,
+.mth-wrap .mth-white-btn:active {
+    transform: translateY(0) scale(0.985);
+}
+
+/* Keep text and controls above the photographic background. */
+.mth-wrap .mth-hero-inner,
+.mth-wrap .mth-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Honor the user's motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+    .mth-wrap .mth-hero,
+    .mth-wrap .mth-appointment,
+    .mth-wrap .mth-infant,
+    .mth-wrap .mth-vax,
+    .mth-wrap .mth-empty,
+    .mth-wrap .mth-actions,
+    .mth-wrap .mth-action-card,
+    .mth-wrap .mth-primary-btn,
+    .mth-wrap .mth-white-btn,
+    .mth-wrap .mth-vax-arrow {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+
+/* =========================================================
+   14. TYPOGRAPHY REFINEMENT — MOTHER DASHBOARD
+   Scoped overrides only; preserves existing layout and colors.
+   ========================================================= */
+
+.mth-wrap {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.mth-wrap .mth-hero-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(2rem, 3.2vw, 3rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    margin-block: 0.35rem 0.6rem;
+}
+
+.mth-wrap .mth-appointment-date,
+.mth-wrap .mth-infant-text h2,
+.mth-wrap .mth-empty h3,
+.mth-wrap .mth-section-heading h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.012em;
+}
+
+.mth-wrap .mth-appointment-date {
+    font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+    line-height: 1.18;
+}
+
+.mth-wrap .mth-infant-text h2,
+.mth-wrap .mth-section-heading h2 {
+    font-size: clamp(1.35rem, 2vw, 1.65rem);
+    line-height: 1.22;
+}
+
+.mth-wrap .mth-empty h3 {
+    font-size: 1.4rem;
+    line-height: 1.25;
+}
+
+.mth-wrap .mth-eyebrow,
+.mth-wrap .mth-appointment-label,
+.mth-wrap .mth-countdown,
+.mth-wrap .mth-appointment-type,
+.mth-wrap .mth-progress-top,
+.mth-wrap .mth-pregnancy-badge,
+.mth-wrap .mth-vax-label,
+.mth-wrap .mth-section-heading > div > span {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.015em;
+}
+
+.mth-wrap .mth-meta-row {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    font-weight: 500;
+}
+
+.mth-wrap .mth-progress-top strong {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.mth-wrap .mth-appointment-type {
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.mth-wrap .mth-time,
+.mth-wrap .mth-status,
+.mth-wrap .mth-infant-tags span {
+    font-size: 0.75rem;
+    line-height: 1.45;
+    font-weight: 600;
+}
+
+.mth-wrap .mth-infant-name {
+    font-size: 1rem;
+    line-height: 1.45;
+    font-weight: 750;
+}
+
+.mth-wrap .mth-infant-name span {
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.mth-wrap .mth-infant-description,
+.mth-wrap .mth-section-heading p,
+.mth-wrap .mth-action-copy p,
+.mth-wrap .mth-empty p {
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+.mth-wrap .mth-vax-title {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    font-weight: 700;
+}
+
+.mth-wrap .mth-action-copy h3 {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.mth-wrap .mth-action-copy p {
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    line-height: 1.55;
+}
+
+.mth-wrap .mth-white-btn,
+.mth-wrap .mth-primary-btn {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+}
+
+@media (max-width: 767px) {
+    .mth-wrap .mth-hero-title {
+        font-size: clamp(1.75rem, 7vw, 2.25rem);
+        line-height: 1.12;
+    }
+
+    .mth-wrap .mth-appointment-date {
+        font-size: 1.45rem;
+    }
+
+    .mth-wrap .mth-infant-text h2,
+    .mth-wrap .mth-section-heading h2 {
+        font-size: 1.35rem;
+    }
+
+    .mth-wrap .mth-meta-row {
+        font-size: 0.75rem;
+    }
+
+    .mth-wrap .mth-action-copy h3 {
+        font-size: 0.875rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mth-wrap .mth-hero-title,
+    .mth-wrap .mth-appointment-date,
+    .mth-wrap .mth-infant-text h2,
+    .mth-wrap .mth-section-heading h2 {
+        scroll-behavior: auto;
+    }
+}
+
+
+/* =========================================================
+   CARECRADLE — MOTHER DASHBOARD QUICK ACTIONS REFINEMENT
+   Three focused actions: Profile, Vaccinations, Health Tips
+   ========================================================= */
+
+.mth-wrap .mth-actions {
+    padding: clamp(1.1rem, 2.4vw, 1.65rem);
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #fce7f3;
+    box-shadow: 0 12px 32px rgba(157, 23, 77, 0.055);
+}
+
+.mth-wrap .mth-section-heading {
+    margin-bottom: 1.15rem;
+    align-items: flex-end;
+    gap: 0.8rem;
+}
+
+.mth-wrap .mth-section-heading h2 {
+    margin-top: 0.2rem;
+    font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+}
+
+.mth-wrap .mth-section-heading p {
+    color: #7c6471;
+    font-size: 0.875rem;
+}
+
+.mth-wrap .mth-action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.mth-wrap .mth-action-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 205px;
+    padding: 1.25rem;
+    gap: 1rem;
+    overflow: hidden;
+    border: 1px solid #fce7f3;
+    border-radius: 1.2rem;
+    background: linear-gradient(145deg, #fff 0%, #fff8fb 100%);
+    box-shadow: 0 8px 24px rgba(157, 23, 77, 0.045);
+    text-decoration: none;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.mth-wrap .mth-action-card::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    right: -38px;
+    bottom: -42px;
+    border-radius: 50%;
+    background: rgba(251, 207, 232, 0.24);
+    pointer-events: none;
+}
+
+.mth-wrap .mth-action-card:hover {
+    transform: translateY(-4px);
+    border-color: #f9a8d4;
+    box-shadow: 0 16px 32px rgba(190, 24, 93, 0.11);
+}
+
+.mth-wrap .mth-action-card:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, 0.32);
+    outline-offset: 3px;
+}
+
+.mth-wrap .mth-action-icon {
+    display: flex;
+    flex: 0 0 52px;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(190, 24, 93, 0.07);
+}
+
+.mth-wrap .mth-action-icon svg {
+    width: 25px;
+    height: 25px;
+}
+
+.mth-wrap .mth-action-pink {
+    color: #be185d;
+    background: #fce7f3;
+}
+
+.mth-wrap .mth-action-fuchsia {
+    color: #a21caf;
+    background: #fae8ff;
+}
+
+.mth-wrap .mth-action-rose {
+    color: #be123c;
+    background: #ffe4e6;
+}
+
+.mth-wrap .mth-action-copy {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 0;
+}
+
+.mth-wrap .mth-action-eyebrow {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #be185d;
+    font-family: Inter, sans-serif;
+    font-size: 0.64rem;
+    font-weight: 750;
+    letter-spacing: 0.095em;
+    line-height: 1.4;
+}
+
+.mth-wrap .mth-action-copy h3 {
+    margin: 0;
+    color: #382532;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(1.18rem, 1.55vw, 1.42rem);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.mth-wrap .mth-action-copy p {
+    margin-top: 0.45rem;
+    color: #796775;
+    font-family: Inter, sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+.mth-wrap .mth-action-arrow {
+    position: absolute;
+    z-index: 1;
+    top: 1.25rem;
+    right: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #fce7f3;
+    border-radius: 50%;
+    color: #be185d;
+    background: rgba(255, 255, 255, 0.9);
+    transition: transform 180ms ease, background 180ms ease;
+}
+
+.mth-wrap .mth-action-arrow svg {
+    width: 15px;
+    height: 15px;
+}
+
+.mth-wrap .mth-action-card:hover .mth-action-arrow {
+    transform: translate(2px, -2px);
+    background: #fce7f3;
+}
+
+@media (max-width: 900px) {
+    .mth-wrap .mth-action-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mth-wrap .mth-action-card:last-child {
+        grid-column: 1 / -1;
+        min-height: 165px;
+    }
+}
+
+@media (max-width: 600px) {
+    .mth-wrap .mth-actions {
+        padding: 1rem;
+        border-radius: 1.15rem;
+    }
+
+    .mth-wrap .mth-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .mth-wrap .mth-action-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+
+    .mth-wrap .mth-action-card,
+    .mth-wrap .mth-action-card:last-child {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        align-items: center;
+        min-height: 0;
+        grid-column: auto;
+        padding: 1rem 3rem 1rem 1rem;
+        gap: 0.85rem;
+        border-radius: 1rem;
+    }
+
+    .mth-wrap .mth-action-icon {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+        border-radius: 14px;
+    }
+
+    .mth-wrap .mth-action-copy h3 {
+        font-size: 1.18rem;
+    }
+
+    .mth-wrap .mth-action-copy p {
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+
+    .mth-wrap .mth-action-arrow {
+        top: 50%;
+        right: 0.85rem;
+        transform: translateY(-50%);
+    }
+
+    .mth-wrap .mth-action-card:hover .mth-action-arrow {
+        transform: translate(2px, calc(-50% - 2px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mth-wrap .mth-action-card,
+    .mth-wrap .mth-action-arrow {
+        transition: none;
+    }
+
+    .mth-wrap .mth-action-card:hover {
         transform: none;
     }
 }

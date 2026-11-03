@@ -396,3 +396,21 @@ Create model + migration: php artisan make:model Mother -m
 
 Username: admin
 Password: Admin@12345
+
+
+
+ssh -p 65002 u756517879@145.79.26.200
+
+
+
+
+
+
+cd ~/carecradle/carecradle-fixed
+
+php artisan tinker --execute="dump(
+    \App\Models\SmsNotification::whereIn('appointment_id', [2, 3, 13])
+        ->orderBy('appointment_id')
+        ->get(['appointment_id', 'status', 'error_message', 'sent_at'])
+        ->toArray()
+);"

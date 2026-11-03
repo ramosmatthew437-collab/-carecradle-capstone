@@ -1,0 +1,871 @@
+/*
+|--------------------------------------------------------------------------
+| CareCradle — Infant Records
+| Page-specific styles. Keep this file separate from carecradle.css.
+|--------------------------------------------------------------------------
+*/
+
+.ifr-wrap {
+    --ifr-pink: #df2478;
+    --ifr-pink-dark: #c81765;
+    --ifr-pink-soft: #fff0f6;
+    --ifr-ink: #171827;
+    --ifr-muted: #65738b;
+    --ifr-line: #f6dce8;
+    --ifr-card: #ffffff;
+    width: 100%;
+    min-height: 100%;
+    padding: 28px 30px 56px;
+    color: var(--ifr-ink);
+    background:
+        radial-gradient(circle at 0% 0%, rgba(250, 220, 235, .36), transparent 32rem),
+        #fff8fb;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.ifr-wrap *,
+.ifr-wrap *::before,
+.ifr-wrap *::after { box-sizing: border-box; }
+
+.ifr-container { width: min(100%, 1440px); margin-inline: auto; }
+
+.ifr-page-head {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 0 28px;
+    margin: 0 0 30px;
+    border-bottom: 1px solid #f5dfe9;
+}
+
+.ifr-back-btn {
+    display: grid;
+    flex: 0 0 54px;
+    width: 54px;
+    height: 54px;
+    place-items: center;
+    color: var(--ifr-pink-dark);
+    background: #fff;
+    border: 1px solid #f9e1ec;
+    border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(158, 38, 91, .07);
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.ifr-back-btn:hover { transform: translateY(-2px); background: #fff4f8; box-shadow: 0 12px 25px rgba(158, 38, 91, .12); }
+.ifr-back-btn svg { width: 22px; height: 22px; }
+
+.ifr-page-copy > span,
+.ifr-section-heading > div > span,
+.ifr-hero-eyebrow {
+    display: block;
+    margin: 0 0 8px;
+    color: #d41468;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .11em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+.ifr-page-copy h1,
+.ifr-section-heading h3,
+.ifr-hero-name {
+    margin: 0;
+    color: #171827;
+    font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    letter-spacing: -.035em;
+}
+.ifr-page-copy h1 { font-size: clamp(2.2rem, 3vw, 3rem); line-height: 1.06; }
+.ifr-page-copy p { margin: 12px 0 0; color: #60708a; font-size: 16px; line-height: 1.5; }
+
+.ifr-selector {
+    margin: 0 0 30px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #f8dfeb;
+    border-radius: 26px;
+    box-shadow: 0 12px 34px rgba(126, 35, 77, .045);
+}
+.ifr-selector form { margin: 0; }
+.ifr-selector-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 132px;
+    padding: 28px 42px;
+}
+.ifr-selector-icon {
+    display: grid;
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    place-items: center;
+    color: #ed2380;
+    background: #fff1f7;
+    border-radius: 18px;
+}
+.ifr-selector-icon svg { width: 26px; height: 26px; }
+.ifr-selector-content { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 5px; }
+.ifr-selector-content p { margin: 0; color: #68758b; font-size: 13px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.ifr-select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 0 34px 0 0;
+    appearance: none;
+    color: #111827;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    font-size: 19px;
+    font-weight: 750;
+    cursor: pointer;
+}
+.ifr-select:disabled { opacity: 1; color: #111827; cursor: default; }
+.ifr-select-arrow { width: 20px; height: 20px; flex: 0 0 auto; color: #d41468; }
+
+.ifr-print-actions { display: flex; justify-content: flex-end; margin: 0 0 54px; }
+.ifr-print-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    min-height: 52px;
+    padding: 0 23px;
+    color: #fff;
+    background: linear-gradient(135deg, #e72a80, #d91f72);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: 0 10px 24px rgba(217, 31, 114, .2);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.ifr-print-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(217, 31, 114, .27); }
+.ifr-print-btn svg { width: 20px; height: 20px; }
+
+.ifr-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    min-height: 250px;
+    margin: 0 0 30px;
+    padding: 38px 40px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: 30px;
+    box-shadow: 0 20px 42px rgba(151, 64, 105, .09);
+}
+.ifr-gradient-female { background: linear-gradient(115deg, #ffe3f0 0%, #fff0f7 52%, #fffafd 100%); }
+.ifr-gradient-male { background: linear-gradient(115deg, #dceaff 0%, #eef5ff 53%, #ffffff 100%); }
+.ifr-gradient-neutral { background: linear-gradient(115deg, #f0e9ff 0%, #f8f5ff 53%, #ffffff 100%); }
+.ifr-hero-circle { position: absolute; z-index: -1; pointer-events: none; border-radius: 50%; background: rgba(255,255,255,.38); }
+.ifr-hero-circle-a { width: 230px; height: 230px; top: -120px; right: -10px; }
+.ifr-hero-circle-b { width: 210px; height: 210px; bottom: -125px; right: 18%; }
+.ifr-hero-circle-c { width: 76px; height: 76px; top: 38px; left: 40%; background: rgba(255,255,255,.42); }
+.ifr-hero-inner { display: flex; align-items: center; gap: 25px; width: 100%; }
+.ifr-baby-avatar {
+    display: grid;
+    flex: 0 0 110px;
+    width: 110px;
+    height: 110px;
+    place-items: center;
+    background: rgba(255,255,255,.78);
+    border: 6px solid rgba(255,255,255,.94);
+    border-radius: 32px;
+    box-shadow: 0 12px 26px rgba(55, 70, 100, .08);
+    font-size: 43px;
+}
+.ifr-hero-content { min-width: 0; }
+.ifr-hero-eyebrow { margin-bottom: 11px; }
+.ifr-hero-name { overflow-wrap: anywhere; font-size: clamp(2rem, 3vw, 2.7rem); line-height: 1.12; }
+.ifr-hero-birth { margin: 12px 0 19px; color: #5e718c; font-size: 16px; line-height: 1.5; }
+.ifr-hero-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+.ifr-hero-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 8px 14px;
+    color: #4d5b72;
+    background: rgba(255,255,255,.82);
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 750;
+    line-height: 1.25;
+}
+.ifr-hero-tag svg { width: 17px; height: 17px; flex: 0 0 auto; }
+.ifr-hero-tag-muted { color: #7b6471; background: #fff9fc; border-color: #f5d9e7; }
+.ifr-hero-tag-solid { color: #2454ce; background: rgba(255,255,255,.92); }
+.ifr-text-female { color: #c21d69 !important; }
+.ifr-text-male { color: #2454ce !important; }
+.ifr-text-neutral { color: #7044b5 !important; }
+.ifr-soft-female { background: #fff0f6; }
+.ifr-soft-male { background: #eaf2ff; }
+.ifr-soft-neutral { background: #f2ecff; }
+.ifr-border-female { border-color: #f6c9dd; }
+.ifr-border-male { border-color: #cbdfff; }
+.ifr-border-neutral { border-color: #e1d3ff; }
+
+.ifr-section { margin: 0 0 38px; }
+.ifr-section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 0 2px 20px;
+}
+.ifr-section-heading > div > span { margin-bottom: 8px; }
+.ifr-section-heading h3 { font-size: clamp(1.8rem, 2.5vw, 2.25rem); line-height: 1.1; }
+.ifr-section-heading > p { margin: 0 0 3px; color: #68758b; font-size: 14px; }
+.ifr-section-heading-row { align-items: center; }
+.ifr-count-badge { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 34px; padding: 7px 13px; color: #c81765; background: #fff0f6; border: 1px solid #f7d7e5; border-radius: 999px; font-size: 12px; font-weight: 800; }
+
+.ifr-summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.ifr-stat-card {
+    min-width: 0;
+    min-height: 174px;
+    padding: 23px 24px;
+    background: var(--ifr-card);
+    border: 1px solid #f7dfeb;
+    border-radius: 24px;
+    box-shadow: 0 9px 25px rgba(132, 47, 83, .035);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.ifr-stat-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(132, 47, 83, .075); }
+.ifr-stat-icon { display: grid; width: 48px; height: 48px; margin-bottom: 18px; place-items: center; border-radius: 16px; }
+.ifr-stat-icon svg { width: 23px; height: 23px; }
+.ifr-stat-rose { color: #e92768; background: #fff0f1; }
+.ifr-stat-fuchsia { color: #bd20d9; background: #fbf0ff; }
+.ifr-stat-pink { color: #ef2b70; background: #fff0f5; }
+.ifr-stat-blue { color: #3e70db; background: #edf4ff; }
+.ifr-stat-green { color: #159568; background: #eafaf2; }
+.ifr-stat-label { margin: 0 0 8px; color: #69758a; font-size: 13px; font-weight: 700; }
+.ifr-stat-value { margin: 0; color: #171827; font-size: clamp(1.55rem, 2vw, 2rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.2; overflow-wrap: anywhere; }
+.ifr-stat-value span { color: #6a768a; font-size: 13px; font-weight: 700; letter-spacing: 0; }
+.ifr-stat-empty { margin: 0; color: #8a6578; font-size: 15px; font-weight: 750; }
+.ifr-growth-value { margin: 0; color: #16845d; font-size: 18px; font-weight: 800; overflow-wrap: anywhere; }
+
+.ifr-info-card, .ifr-vaccination-card, .ifr-list-card, .ifr-empty-card {
+    background: #fff;
+    border: 1px solid #f7dfeb;
+    border-radius: 24px;
+    box-shadow: 0 9px 25px rgba(132, 47, 83, .035);
+}
+.ifr-info-card { padding: 24px; }
+.ifr-info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.ifr-info-item { display: flex; align-items: center; gap: 15px; min-width: 0; padding: 18px; background: #fffafd; border: 1px solid #f9e8f0; border-radius: 18px; }
+.ifr-info-icon { display: grid; flex: 0 0 46px; width: 46px; height: 46px; place-items: center; color: #d91f72; background: #fff0f6; border-radius: 14px; }
+.ifr-info-icon svg { width: 22px; height: 22px; }
+.ifr-info-icon.ifr-info-amber { color: #b7791f; background: #fff7e8; }
+.ifr-info-item > div:last-child { min-width: 0; }
+.ifr-info-item p { margin: 0 0 5px; color: #7a8293; font-size: 12px; font-weight: 700; }
+.ifr-info-item strong { display: block; color: #242536; font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
+
+.ifr-vaccination-card { padding: 25px; }
+.ifr-vax-grid { display: grid; gap: 0; }
+.ifr-vax-item { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 16px; }
+.ifr-vax-line { display: flex; align-items: center; flex-direction: column; }
+.ifr-vax-dot { z-index: 1; width: 13px; height: 13px; flex: 0 0 13px; margin-top: 5px; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 0 2px currentColor; }
+.ifr-vax-connector { width: 2px; flex: 1; min-height: 56px; margin: 5px 0; background: #f1dce6; }
+.ifr-dot-completed { color: #1da779; background: #1da779; }
+.ifr-dot-overdue { color: #e34d5b; background: #e34d5b; }
+.ifr-dot-soon { color: #e5a32b; background: #e5a32b; }
+.ifr-vax-body { min-width: 0; padding: 0 0 24px; }
+.ifr-vax-item:last-child .ifr-vax-body { padding-bottom: 0; }
+.ifr-vax-top, .ifr-history-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.ifr-vax-top > p, .ifr-history-top > p { margin: 0; color: #272738; font-size: 15px; font-weight: 800; line-height: 1.45; overflow-wrap: anywhere; }
+.ifr-vax-top > p span, .ifr-history-top > p span { color: #c1a2b1; padding-inline: 3px; }
+.ifr-status { display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; line-height: 1.2; }
+.ifr-status-dot { width: 7px; height: 7px; border-radius: 50%; }
+.ifr-status-completed { background: #eafaf2; }
+.ifr-status-text-completed { color: #16845d; }
+.ifr-status-overdue { background: #fff0f0; }
+.ifr-status-text-overdue { color: #c73543; }
+.ifr-status-soon { background: #fff7e6; }
+.ifr-status-text-soon { color: #a96c0b; }
+.ifr-vax-date, .ifr-vax-due, .ifr-history-date, .ifr-history-due { margin: 8px 0 0; color: #748096; font-size: 13px; line-height: 1.5; }
+.ifr-vax-due { color: #bd5a83; }
+
+.ifr-list-card { overflow: hidden; }
+.ifr-history-row { display: flex; align-items: flex-start; gap: 16px; padding: 22px 24px; }
+.ifr-history-row + .ifr-history-row { border-top: 1px solid #f6e7ee; }
+.ifr-history-icon, .ifr-growth-icon { display: grid; flex: 0 0 44px; width: 44px; height: 44px; place-items: center; color: #d91f72; background: #fff0f6; border-radius: 14px; }
+.ifr-history-icon svg, .ifr-growth-icon svg { width: 22px; height: 22px; }
+.ifr-history-content { flex: 1; min-width: 0; }
+.ifr-empty, .ifr-empty-card { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; padding: 38px 24px; text-align: center; }
+.ifr-empty-card { min-height: 170px; }
+.ifr-empty p, .ifr-empty-card p { max-width: 520px; margin: 0; color: #6c788d; font-size: 14px; line-height: 1.6; }
+.ifr-empty-icon { display: grid; width: 52px; height: 52px; place-items: center; color: #d91f72; background: #fff0f6; border-radius: 17px; }
+.ifr-empty-icon svg { width: 26px; height: 26px; }
+
+.ifr-outline-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; padding: 0 15px; color: #c81765; background: #fff; border: 1px solid #f1cddd; border-radius: 999px; font-size: 13px; font-weight: 800; text-decoration: none; transition: background .2s ease, transform .2s ease; }
+.ifr-outline-btn:hover { transform: translateY(-1px); background: #fff1f7; }
+.ifr-outline-btn svg { width: 16px; height: 16px; }
+
+.ifr-growth-row { display: flex; align-items: center; gap: 16px; padding: 20px 24px; }
+.ifr-growth-row + .ifr-growth-row { border-top: 1px solid #f6e7ee; }
+.ifr-growth-main { flex: 1; min-width: 0; }
+.ifr-growth-main p { margin: 0 0 5px; color: #29293a; font-size: 14px; font-weight: 800; }
+.ifr-growth-main span { color: #798398; font-size: 12px; }
+.ifr-growth-values { display: flex; align-items: flex-end; flex-direction: column; gap: 5px; white-space: nowrap; }
+.ifr-growth-values strong { color: #262638; font-size: 14px; font-weight: 800; }
+.ifr-growth-values span { color: #6e7a90; font-size: 13px; }
+
+.ifr-no-infant { display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 70px 24px; background: #fff; border: 1px solid #f7dfeb; border-radius: 28px; text-align: center; box-shadow: 0 12px 32px rgba(132, 47, 83, .04); }
+.ifr-no-infant-icon { display: grid; width: 82px; height: 82px; margin-bottom: 18px; place-items: center; background: #fff0f6; border-radius: 25px; font-size: 40px; }
+.ifr-no-infant h3 { margin: 0 0 10px; color: #171827; font-family: "DM Serif Display", Georgia, serif; font-size: 30px; font-weight: 400; }
+.ifr-no-infant p { max-width: 520px; margin: 0; color: #6b778c; font-size: 14px; line-height: 1.7; }
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .ifr-wrap { padding: 24px 22px 44px; }
+    .ifr-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ifr-hero { padding: 32px; }
+    .ifr-baby-avatar { flex-basis: 94px; width: 94px; height: 94px; border-radius: 27px; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .ifr-wrap { padding: 18px 14px 34px; }
+    .ifr-page-head { align-items: flex-start; gap: 13px; padding-bottom: 22px; margin-bottom: 20px; }
+    .ifr-back-btn { flex-basis: 44px; width: 44px; height: 44px; border-radius: 14px; }
+    .ifr-page-copy > span { margin-bottom: 5px; font-size: 11px; }
+    .ifr-page-copy h1 { font-size: 2rem; }
+    .ifr-page-copy p { margin-top: 7px; font-size: 13px; }
+    .ifr-selector { margin-bottom: 18px; border-radius: 20px; }
+    .ifr-selector-inner { min-height: 94px; gap: 12px; padding: 18px 16px; }
+    .ifr-selector-icon { flex-basis: 44px; width: 44px; height: 44px; border-radius: 14px; }
+    .ifr-selector-icon svg { width: 22px; height: 22px; }
+    .ifr-selector-content p { font-size: 10px; }
+    .ifr-select { font-size: 15px; }
+    .ifr-print-actions { margin-bottom: 26px; }
+    .ifr-print-btn { min-height: 46px; padding: 0 17px; font-size: 12px; }
+    .ifr-hero { min-height: 0; margin-bottom: 26px; padding: 24px 18px; border-radius: 23px; }
+    .ifr-hero-inner { align-items: flex-start; gap: 15px; }
+    .ifr-baby-avatar { flex-basis: 66px; width: 66px; height: 66px; border-width: 4px; border-radius: 21px; font-size: 30px; }
+    .ifr-hero-eyebrow { margin-bottom: 7px; font-size: 10px; }
+    .ifr-hero-name { font-size: 1.7rem; }
+    .ifr-hero-birth { margin: 8px 0 13px; font-size: 13px; }
+    .ifr-hero-tags { gap: 6px; }
+    .ifr-hero-tag { min-height: 31px; padding: 6px 9px; font-size: 10px; }
+    .ifr-hero-tag svg { width: 14px; height: 14px; }
+    .ifr-section { margin-bottom: 28px; }
+    .ifr-section-heading { align-items: flex-start; gap: 12px; margin-bottom: 15px; }
+    .ifr-section-heading > div > span { margin-bottom: 6px; font-size: 10px; }
+    .ifr-section-heading h3 { font-size: 1.7rem; }
+    .ifr-section-heading > p { max-width: 120px; font-size: 11px; text-align: right; }
+    .ifr-count-badge { min-height: 29px; padding: 6px 9px; font-size: 10px; }
+    .ifr-summary-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .ifr-stat-card { min-height: 0; padding: 18px; border-radius: 20px; }
+    .ifr-stat-icon { width: 42px; height: 42px; margin-bottom: 13px; border-radius: 14px; }
+    .ifr-stat-value { font-size: 1.7rem; }
+    .ifr-info-card, .ifr-vaccination-card { padding: 16px; border-radius: 20px; }
+    .ifr-info-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .ifr-info-item { padding: 14px; }
+    .ifr-vax-top, .ifr-history-top { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .ifr-vax-top > p, .ifr-history-top > p { font-size: 14px; }
+    .ifr-vax-item { grid-template-columns: 16px minmax(0, 1fr); gap: 12px; }
+    .ifr-history-row, .ifr-growth-row { gap: 12px; padding: 17px 15px; }
+    .ifr-history-icon, .ifr-growth-icon { flex-basis: 38px; width: 38px; height: 38px; border-radius: 12px; }
+    .ifr-growth-row { flex-wrap: wrap; }
+    .ifr-growth-values { margin-left: 50px; align-items: flex-start; flex-direction: row; gap: 12px; }
+    .ifr-outline-btn { min-height: 37px; padding: 0 11px; font-size: 11px; }
+    .ifr-no-infant { padding: 48px 18px; border-radius: 22px; }
+    .ifr-no-infant h3 { font-size: 25px; }
+}
+
+/* Keep the printed record clean and hide interactive controls. */
+@media print {
+    body { background: #fff !important; }
+    .ifr-wrap { padding: 0 !important; background: #fff !important; }
+    .ifr-container { width: 100% !important; max-width: none !important; }
+    .ifr-page-head { padding-bottom: 14px !important; margin-bottom: 18px !important; }
+    .ifr-back-btn, .ifr-selector, .ifr-print-actions, .ifr-outline-btn { display: none !important; }
+    .ifr-hero, .ifr-stat-card, .ifr-info-card, .ifr-vaccination-card, .ifr-list-card, .ifr-empty-card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+    .ifr-section { break-inside: avoid; margin-bottom: 20px !important; }
+    .ifr-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+    .ifr-wrap { color: #111 !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ifr-wrap *, .ifr-wrap *::before, .ifr-wrap *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+
+/* =====================================================================
+   PREMIUM COMPACT REFINEMENT — Infant Records
+   Scoped to this page; keeps existing Blade hooks and behavior intact.
+   ===================================================================== */
+.ifr-wrap {
+    padding: 24px clamp(18px, 2.4vw, 34px) 48px;
+    background: linear-gradient(135deg, #fff7fa 0%, #fffafd 52%, #fff8fb 100%);
+}
+.ifr-container { width: min(100%, 1380px); }
+.ifr-page-head { gap: 16px; padding-bottom: 22px; margin-bottom: 24px; }
+.ifr-back-btn { flex-basis: 48px; width: 48px; height: 48px; border-radius: 15px; box-shadow: 0 4px 14px rgba(158, 38, 91, .055); }
+.ifr-page-copy > span, .ifr-section-heading > div > span, .ifr-hero-eyebrow { font-size: 11px; letter-spacing: .13em; margin-bottom: 6px; }
+.ifr-page-copy h1 { font-size: clamp(2rem, 2.7vw, 2.65rem); letter-spacing: -.04em; }
+.ifr-page-copy p { margin-top: 7px; font-size: 14px; }
+
+.ifr-selector { margin-bottom: 16px; border-radius: 18px; box-shadow: 0 5px 18px rgba(126, 35, 77, .035); }
+.ifr-selector-inner { min-height: 88px; padding: 17px 24px; gap: 14px; }
+.ifr-selector-icon { flex-basis: 46px; width: 46px; height: 46px; border-radius: 14px; }
+.ifr-selector-icon svg { width: 22px; height: 22px; }
+.ifr-selector-content { gap: 3px; }
+.ifr-selector-content p { font-size: 11px; letter-spacing: .1em; }
+.ifr-select { font-size: 16px; font-weight: 750; }
+.ifr-select-arrow { width: 18px; height: 18px; }
+
+.ifr-print-actions { margin: 0 0 22px; }
+.ifr-print-btn { min-height: 44px; padding: 0 18px; gap: 9px; border-radius: 12px; box-shadow: 0 5px 14px rgba(217, 31, 114, .14); font-size: 13px; }
+.ifr-print-btn:hover { transform: translateY(-1px); }
+.ifr-print-btn svg { width: 18px; height: 18px; }
+
+/* Structured white profile card instead of a large decorative gradient banner. */
+.ifr-hero {
+    min-height: 0;
+    margin-bottom: 27px;
+    padding: 24px 26px;
+    background: #fff !important;
+    border: 1px solid #f3dbe6;
+    border-left: 4px solid #df2478;
+    border-radius: 18px;
+    box-shadow: 0 7px 22px rgba(113, 39, 72, .045);
+}
+.ifr-hero-inner { gap: 19px; align-items: center; }
+.ifr-baby-avatar {
+    flex-basis: 76px; width: 76px; height: 76px;
+    border: 1px solid #f5dce8; border-radius: 20px;
+    background: #fff4f8; box-shadow: none; font-size: 34px;
+}
+.ifr-hero-content { flex: 1; }
+.ifr-hero-eyebrow { color: #c81765; margin-bottom: 5px; }
+.ifr-hero-name { font-size: clamp(1.65rem, 2.2vw, 2.1rem); line-height: 1.16; letter-spacing: -.035em; }
+.ifr-hero-birth {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px;
+    margin: 7px 0 13px; color: #68758b; font-size: 13px; line-height: 1.4;
+}
+.ifr-birth-label { color: #7a8495; font-weight: 600; }
+.ifr-hero-birth strong { color: #344054; font-weight: 750; }
+.ifr-hero-birth .ifr-birth-missing { color: #9b647c; font-weight: 650; }
+.ifr-hero-tags { gap: 7px; }
+.ifr-hero-tag { min-height: 30px; padding: 6px 10px; gap: 6px; background: #fff8fb; border: 1px solid #f3e1e9; border-radius: 9px; font-size: 11px; font-weight: 750; }
+.ifr-hero-tag svg { width: 14px; height: 14px; }
+.ifr-hero-tag-solid { background: #fff0f6; border-color: #f6d4e3; color: #c81765; }
+.ifr-text-female, .ifr-text-male, .ifr-text-neutral { color: #c81765 !important; }
+
+.ifr-section { margin-bottom: 30px; }
+.ifr-section-heading { gap: 14px; margin: 0 2px 14px; }
+.ifr-section-heading > div > span { margin-bottom: 5px; }
+.ifr-section-heading h3 { font-size: clamp(1.55rem, 2.1vw, 1.9rem); line-height: 1.12; letter-spacing: -.035em; }
+.ifr-section-heading > p { font-size: 12px; color: #788397; }
+.ifr-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+.ifr-stat-card {
+    min-height: 145px; padding: 18px 19px;
+    border: 1px solid #f1e1e8; border-radius: 17px;
+    box-shadow: 0 4px 14px rgba(132, 47, 83, .025);
+}
+.ifr-stat-card:hover { transform: translateY(-2px); box-shadow: 0 9px 20px rgba(132, 47, 83, .06); }
+.ifr-stat-icon { width: 40px; height: 40px; margin-bottom: 13px; border-radius: 12px; }
+.ifr-stat-icon svg { width: 20px; height: 20px; }
+.ifr-stat-rose, .ifr-stat-pink { color: #d91f72; background: #fff0f6; }
+.ifr-stat-fuchsia { color: #c0268c; background: #fff1f8; }
+.ifr-stat-blue { color: #b52b72; background: #fff2f7; }
+.ifr-stat-green { color: #b52b72; background: #fff2f7; }
+.ifr-stat-label { margin-bottom: 6px; font-size: 12px; }
+.ifr-stat-value { font-size: clamp(1.4rem, 1.8vw, 1.75rem); }
+.ifr-stat-value span { font-size: 12px; }
+.ifr-stat-empty { font-size: 13px; }
+.ifr-growth-value { color: #b51f68; font-size: 15px; }
+
+.ifr-info-card, .ifr-vaccination-card, .ifr-list-card, .ifr-empty-card {
+    border-color: #f1e1e8; border-radius: 17px; box-shadow: 0 4px 14px rgba(132, 47, 83, .025);
+}
+.ifr-info-card, .ifr-vaccination-card, .ifr-list-card { padding: 6px; }
+.ifr-count-badge { min-height: 30px; padding: 6px 10px; border-radius: 9px; font-size: 11px; }
+.ifr-outline-btn { border-radius: 10px; }
+.ifr-vax-item, .ifr-history-row, .ifr-growth-row { border-color: #f4e5ec; }
+.ifr-empty, .ifr-empty-card { padding: 26px 20px; }
+.ifr-empty-icon { border-radius: 13px; }
+.ifr-no-infant { border-radius: 18px; }
+
+@media (max-width: 900px) {
+    .ifr-wrap { padding: 22px 20px 40px; }
+    .ifr-selector-inner { min-height: 78px; padding: 15px 18px; }
+    .ifr-hero { padding: 21px; }
+    .ifr-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+    .ifr-wrap { padding: 18px 14px 32px; }
+    .ifr-page-head { align-items: flex-start; gap: 12px; padding-bottom: 18px; margin-bottom: 18px; }
+    .ifr-back-btn { flex-basis: 42px; width: 42px; height: 42px; border-radius: 13px; }
+    .ifr-page-copy h1 { font-size: 1.85rem; }
+    .ifr-page-copy p { font-size: 13px; }
+    .ifr-selector-inner { gap: 11px; padding: 14px; }
+    .ifr-selector-icon { flex-basis: 40px; width: 40px; height: 40px; }
+    .ifr-select { font-size: 14px; }
+    .ifr-print-actions { margin-bottom: 16px; }
+    .ifr-print-btn { min-height: 41px; padding-inline: 13px; }
+    .ifr-hero { padding: 18px 15px; margin-bottom: 24px; border-radius: 15px; }
+    .ifr-hero-inner { align-items: flex-start; gap: 13px; }
+    .ifr-baby-avatar { flex-basis: 58px; width: 58px; height: 58px; border-radius: 15px; font-size: 27px; }
+    .ifr-hero-name { font-size: 1.45rem; overflow-wrap: anywhere; }
+    .ifr-hero-birth { margin: 7px 0 10px; font-size: 12px; }
+    .ifr-hero-tags { gap: 6px; }
+    .ifr-hero-tag { min-height: 28px; padding: 5px 8px; font-size: 10px; }
+    .ifr-section { margin-bottom: 25px; }
+    .ifr-section-heading { align-items: flex-start; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+    .ifr-section-heading h3 { font-size: 1.6rem; }
+    .ifr-section-heading > p { margin: 0; }
+    .ifr-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .ifr-stat-card { min-height: 132px; padding: 14px; border-radius: 14px; }
+    .ifr-stat-icon { width: 35px; height: 35px; margin-bottom: 11px; border-radius: 10px; }
+    .ifr-stat-icon svg { width: 18px; height: 18px; }
+    .ifr-stat-label { font-size: 11px; }
+    .ifr-stat-value { font-size: 1.35rem; }
+    .ifr-info-card, .ifr-vaccination-card, .ifr-list-card, .ifr-empty-card { border-radius: 14px; }
+}
+@media print {
+    .ifr-wrap { padding: 0; background: #fff; }
+    .ifr-page-head { margin-bottom: 16px; }
+    .ifr-back-btn, .ifr-selector, .ifr-print-actions { display: none !important; }
+    .ifr-hero { break-inside: avoid; box-shadow: none; background: #fff !important; border: 1px solid #ddd; border-left: 4px solid #df2478; }
+    .ifr-stat-card, .ifr-info-card, .ifr-vaccination-card, .ifr-list-card, .ifr-empty-card { box-shadow: none; break-inside: avoid; }
+    .ifr-stat-card:hover { transform: none; }
+}
+
+
+/* ==========================================================================
+   PREMIUM INFANT PROFILE — structured details, clear labels, balanced pink
+   Scoped to the Infant Records page; existing data and other sections remain
+   unchanged. These rules intentionally override earlier hero declarations.
+   ========================================================================== */
+.ifr-wrap .ifr-hero.ifr-profile-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 0;
+    margin-bottom: 28px;
+    padding: clamp(22px, 2.6vw, 34px);
+    color: var(--ifr-ink, #171827);
+    background: #fff !important;
+    border: 1px solid #f1dce6;
+    border-left: 4px solid #df2478;
+    border-radius: 22px;
+    box-shadow: 0 12px 32px rgba(122, 40, 78, .055);
+}
+.ifr-wrap .ifr-profile-inner {
+    position: relative;
+    z-index: 1;
+    align-items: flex-start;
+    gap: clamp(18px, 2.2vw, 28px);
+}
+.ifr-wrap .ifr-profile-avatar {
+    flex: 0 0 76px;
+    width: 76px;
+    height: 76px;
+    display: grid;
+    place-items: center;
+    margin-top: 3px;
+    border: 1px solid #f3d6e4;
+    border-radius: 21px;
+    background: #fff2f8;
+    box-shadow: 0 5px 14px rgba(194, 38, 105, .07);
+    font-size: 34px;
+}
+.ifr-wrap .ifr-profile-content { flex: 1 1 auto; min-width: 0; }
+.ifr-wrap .ifr-profile-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 21px;
+}
+.ifr-wrap .ifr-hero-eyebrow { margin: 0 0 7px; color: #c81765; }
+.ifr-wrap .ifr-hero-name { font-size: clamp(1.65rem, 2.2vw, 2.15rem); line-height: 1.14; letter-spacing: -.035em; }
+.ifr-wrap .ifr-profile-caption { margin: 7px 0 0; color: #718096; font-size: 13px; line-height: 1.5; }
+.ifr-wrap .ifr-age-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    padding: 8px 11px;
+    color: #9f245b;
+    background: #fff3f8;
+    border: 1px solid #f5dbe7;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+.ifr-wrap .ifr-age-pill svg { width: 15px; height: 15px; }
+.ifr-wrap .ifr-profile-details {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+.ifr-wrap .ifr-profile-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+    min-width: 0;
+    padding: 13px 15px;
+    background: #fff9fc;
+    border: 1px solid #f3e2ea;
+    border-radius: 13px;
+}
+.ifr-wrap .ifr-profile-detail-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #7c6873;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .075em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+.ifr-wrap .ifr-profile-detail-label svg { width: 15px; height: 15px; flex: 0 0 auto; color: #d91d72; }
+.ifr-wrap .ifr-profile-detail-value {
+    display: block;
+    max-width: 100%;
+    color: #202033;
+    font-size: 13px;
+    font-weight: 750;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+.ifr-wrap .ifr-profile-detail-value.ifr-birth-missing { color: #9a6a80; font-weight: 650; }
+.ifr-wrap .ifr-profile-status-value { color: #256c4a; }
+
+@media (max-width: 900px) {
+    .ifr-wrap .ifr-profile-heading { flex-direction: column; gap: 10px; }
+    .ifr-wrap .ifr-profile-details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ifr-wrap .ifr-profile-detail:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+    .ifr-wrap .ifr-hero.ifr-profile-card { padding: 18px 15px; margin-bottom: 22px; border-radius: 17px; }
+    .ifr-wrap .ifr-profile-inner { align-items: flex-start; gap: 12px; }
+    .ifr-wrap .ifr-profile-avatar { flex-basis: 54px; width: 54px; height: 54px; border-radius: 15px; font-size: 25px; }
+    .ifr-wrap .ifr-profile-heading { margin-bottom: 15px; }
+    .ifr-wrap .ifr-hero-name { font-size: 1.45rem; }
+    .ifr-wrap .ifr-profile-caption { font-size: 12px; }
+    .ifr-wrap .ifr-age-pill { padding: 6px 9px; font-size: 10px; }
+    .ifr-wrap .ifr-profile-details { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .ifr-wrap .ifr-profile-detail:first-child { grid-column: auto; }
+    .ifr-wrap .ifr-profile-detail { gap: 5px; padding: 11px 12px; border-radius: 11px; }
+    .ifr-wrap .ifr-profile-detail-label { font-size: 9px; }
+    .ifr-wrap .ifr-profile-detail-value { font-size: 12px; }
+}
+@media print {
+    .ifr-wrap .ifr-hero.ifr-profile-card { background: #fff !important; border: 1px solid #d9d9d9; border-left: 4px solid #df2478; box-shadow: none; }
+    .ifr-wrap .ifr-profile-detail { background: #fff; border-color: #ddd; }
+    .ifr-wrap .ifr-age-pill { background: #fff; border-color: #ddd; }
+}
+
+
+/* Future birth dates remain visible but are clearly flagged for review. */
+.ifr-age-pill-warning {
+    color: #92400e;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+}
+
+.ifr-date-warning {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: 7px;
+    padding: 4px 8px;
+    border: 1px solid #f5d28a;
+    border-radius: 999px;
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+
+
+
+
+
+/* =====================================================
+   CARECRADLE — PRIVATE INFANT PHOTO
+   ===================================================== */
+
+.ifr-infant-photo-wrap {
+    flex: 0 0 76px;
+    width: 76px;
+    height: 76px;
+}
+
+.ifr-wrap .ifr-infant-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 21px;
+    border: 1px solid #f3d6e4;
+    background: #fff4f8;
+}
+
+@media (max-width: 600px) {
+    .ifr-infant-photo-wrap {
+        flex-basis: 54px;
+        width: 54px;
+        height: 54px;
+    }
+
+    .ifr-wrap .ifr-infant-photo {
+        border-radius: 15px;
+    }
+}
+
+
+
+/* Infant photo controls */
+.ifr-infant-photo-actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.ifr-infant-photo-form {
+    margin: 0;
+}
+
+.ifr-infant-photo-button,
+.ifr-infant-photo-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 6px 10px;
+    border: 1px solid #efc7da;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #b51e60;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ifr-infant-photo-button:hover,
+.ifr-infant-photo-remove:hover {
+    background: #fff0f6;
+    border-color: #e5a5c1;
+}
+
+.ifr-infant-photo-remove {
+    color: #9f254c;
+}
+
+@media (max-width: 600px) {
+    .ifr-infant-photo-actions {
+        gap: 5px;
+    }
+
+    .ifr-infant-photo-button,
+    .ifr-infant-photo-remove {
+        min-height: 28px;
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+}
+
+
+
+
+
+
+
+/* Infant photo column and controls */
+.ifr-infant-photo-column {
+    display: flex;
+    flex: 0 0 76px;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+}
+
+.ifr-infant-photo-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.ifr-infant-photo-form,
+.ifr-infant-photo-actions form {
+    margin: 0;
+}
+
+.ifr-infant-photo-button,
+.ifr-infant-photo-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 6px 9px;
+    border: 1px solid #efc7da;
+    border-radius: 9px;
+    background: #fff;
+    color: #b51e60;
+    font: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+}
+
+.ifr-infant-photo-button:hover,
+.ifr-infant-photo-remove:hover {
+    background: #fff0f6;
+    border-color: #e5a5c1;
+}
+
+.ifr-infant-photo-remove {
+    color: #9f254c;
+}
+
+@media (max-width: 600px) {
+    .ifr-infant-photo-column {
+        flex-basis: 54px;
+    }
+
+    .ifr-infant-photo-actions {
+        gap: 5px;
+    }
+
+    .ifr-infant-photo-button,
+    .ifr-infant-photo-remove {
+        padding: 5px 6px;
+        font-size: 9px;
+    }
+}
+
+

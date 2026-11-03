@@ -34,6 +34,19 @@
                 'pattern' => 'mother.infant-records',
                 'icon' => 'baby',
             ],
+            [
+    'label' => 'My Vaccinations',
+    'route' => 'mother.vaccinations',
+    'pattern' => 'mother.vaccinations',
+    'icon' => 'syringe',
+],
+
+            [
+    'label' => 'Print My Records',
+    'route' => 'mother.print-records',
+    'pattern' => 'mother.print-records',
+    'icon' => 'printer',
+],
             
             [
                 'label' => 'SMS History',
@@ -93,6 +106,12 @@
                                 <path d="M9 10h.01M15 10h.01M9 15c2 2 4 2 6 0M8 4l2 2M16 4l-2 2"/>
                             </svg>
                             @break
+                            @case('printer')
+    <svg viewBox="0 0 24 24">
+        <path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <path d="M7 14h10v7H7zM17 11h.01"/>
+    </svg>
+    @break
 
                         @case('trending-up')
                             <svg viewBox="0 0 24 24">
@@ -128,15 +147,15 @@
 
     <div class="cc-mother-sidebar-footer">
         <a
-            href="{{ route('mother.profile') }}"
-            @class([
-                'cc-mother-sidebar-link',
-                'is-active' => request()->routeIs('mother.profile'),
-            ])
-            @if (request()->routeIs('mother.profile'))
-                aria-current="page"
-            @endif
-        >
+    href="{{ route('profile.edit') }}"
+    @class([
+        'cc-mother-sidebar-link',
+        'is-active' => request()->routeIs('profile.edit'),
+    ])
+    @if (request()->routeIs('profile.edit'))
+        aria-current="page"
+    @endif
+>
             <span class="cc-mother-sidebar-link-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                     <circle cx="12" cy="8" r="4"/>

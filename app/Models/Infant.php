@@ -9,20 +9,20 @@ use App\Models\Vaccination;
 
 
 class Infant extends Model
-{
-    protected $fillable = [
-        'mother_id',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'sex',
-        'birth_date',
-        'birth_weight',
-        'birth_length',
-        'head_circumference',
-        'birth_status',
-        'remarks',
-    ];
+{protected $fillable = [
+    'mother_id',
+    'first_name',
+    'middle_name',
+    'last_name',
+    'sex',
+    'birth_date',
+    'birth_weight',
+    'birth_length',
+    'head_circumference',
+    'birth_status',
+    'remarks',
+    'photo_path',
+];
     public function growthMonitorings(): HasMany
 {
      return $this->hasMany(GrowthMonitoring::class)

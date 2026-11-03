@@ -1,10 +1,6 @@
 <x-app-layout>
 
-    <x-slot name="header">
-        <h2 class="font-semibold text-lg sm:text-xl text-gray-800 leading-tight">
-            Add Health Tip
-        </h2>
-    </x-slot>
+
 
     <div class="py-4 sm:py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">

@@ -92,67 +92,97 @@
     <div class="mshow-wrap">
         <div class="mshow-container">
 
-            {{-- =====================================================
-                 PAGE HERO
-                 ===================================================== --}}
+{{-- =====================================================
+     PAGE HERO
+     ===================================================== --}}
 
-            <section class="mshow-hero">
+<section class="mshow-hero">
 
-                <div class="mshow-hero-blob mshow-hero-blob-a"></div>
-                <div class="mshow-hero-blob mshow-hero-blob-b"></div>
-                <div class="mshow-hero-blob mshow-hero-blob-c"></div>
+    <div class="mshow-hero-blob mshow-hero-blob-a"></div>
+    <div class="mshow-hero-blob mshow-hero-blob-b"></div>
+    <div class="mshow-hero-blob mshow-hero-blob-c"></div>
 
-                <div class="mshow-hero-inner">
+    <div class="mshow-hero-inner">
 
-                    <div class="mshow-hero-main">
+        {{-- Mother Profile + Avatar --}}
+        <div class="mshow-hero-main">
 
-                        <div class="mshow-hero-eyebrow">
-                            <div class="mshow-hero-eyebrow-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor"
-                                     stroke-width="1.8">
-                                    <path stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                          d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
-                                </svg>
-                            </div>
+            {{-- Mother's Profile Photo --}}
+            <div class="mshow-profile-avatar">
 
-                            <span>Mother Profile</span>
-                        </div>
+                @if ($mother->profile_photo_path)
+                    <img
+                        src="{{ asset('storage/' . $mother->profile_photo_path) }}"
+                        alt="Profile photo of {{ $mother->first_name }} {{ $mother->last_name }}"
+                        class="mshow-profile-avatar-image"
+                    >
+                @else
+                    <span class="mshow-profile-avatar-initials">
+                        {{ strtoupper(
+                            substr($mother->first_name ?? '', 0, 1) .
+                            substr($mother->last_name ?? '', 0, 1)
+                        ) }}
+                    </span>
+                @endif
 
-                        <h1 class="mshow-hero-title">
-                            {{ $mother->first_name }} {{ $mother->last_name }}
-                        </h1>
+            </div>
 
-                        <p class="mshow-hero-code">
-                            {{ $mother->mother_code }}
-                        </p>
+            {{-- Mother's Information --}}
+            <div class="mshow-profile-copy">
 
-                        <p class="mshow-hero-description">
-                            Complete maternal health record, prenatal care history,
-                            appointments, and associated infant records.
-                        </p>
+                <div class="mshow-hero-eyebrow">
 
+                    <div class="mshow-hero-eyebrow-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
+                        </svg>
                     </div>
 
-                    <div class="mshow-hero-side">
-
-                        <span class="mshow-status {{ $statusClasses }}">
-                            <span class="mshow-status-dot"></span>
-                            {{ $mother->status }}
-                        </span>
-
-                        <div class="mshow-hero-mini">
-                            <span>Barangay</span>
-                            <strong>{{ $mother->barangay }}</strong>
-                        </div>
-
-                    </div>
+                    <span>Mother Profile</span>
 
                 </div>
-            </section>
+
+                <h1 class="mshow-hero-title">
+                    {{ $mother->first_name }} {{ $mother->last_name }}
+                </h1>
+
+                <p class="mshow-hero-code">
+                    {{ $mother->mother_code }}
+                </p>
+
+                <p class="mshow-hero-description">
+                    Complete maternal health record, prenatal care history,
+                    appointments, and associated infant records.
+                </p>
+
+            </div>
+
+        </div>
+
+        {{-- Mother Status + Barangay --}}
+        <div class="mshow-hero-side">
+
+            <span class="mshow-status {{ $statusClasses }}">
+                <span class="mshow-status-dot"></span>
+                {{ $mother->status }}
+            </span>
+
+            <div class="mshow-hero-mini">
+                <span>Barangay</span>
+                <strong>{{ $mother->barangay }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
             {{-- =====================================================
                  STATISTICS
@@ -495,79 +525,117 @@
 
             </section>
 
-            {{-- =====================================================
-                 QUICK ACTIONS
-                 ===================================================== --}}
+            
+{{-- =====================================================
+     QUICK ACTIONS
+     ===================================================== --}}
 
-            <section class="mshow-actions">
+<section class="mshow-actions">
 
-                <a href="{{ route('prenatal-checkups.create', $mother->id) }}"
-                   class="mshow-action mshow-action-primary">
+    {{-- Record Maternal Vaccination --}}
+    <a href="{{ route('midwife.maternal-vaccinations.create', $mother->id) }}"
+       class="mshow-action mshow-action-primary">
 
-                    <span class="mshow-action-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor"
-                             stroke-width="1.8">
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M12 4.5v15m7.5-7.5h-15"/>
-                        </svg>
-                    </span>
+        <span class="mshow-action-icon">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 stroke-width="1.8">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+        </span>
 
-                    <span>
-                        <strong>Add Prenatal Visit</strong>
-                        <small>Record a new prenatal checkup</small>
-                    </span>
+        <span>
+            <strong>Record Maternal Vaccination</strong>
+            <small>Add a vaccine to the mother's health record</small>
+        </span>
 
-                    <svg class="mshow-action-arrow"
-                         xmlns="http://www.w3.org/2000/svg"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor"
-                         stroke-width="1.8">
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="m9 5 7 7-7 7"/>
-                    </svg>
+        <svg class="mshow-action-arrow"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="1.8">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m9 5 7 7-7 7"/>
+        </svg>
 
-                </a>
+    </a>
 
-                <a href="{{ route('appointments.create', $mother->id) }}"
-                   class="mshow-action mshow-action-secondary">
+    {{-- Add Prenatal Visit --}}
+    <a href="{{ route('prenatal-checkups.create', $mother->id) }}"
+       class="mshow-action mshow-action-primary">
 
-                    <span class="mshow-action-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor"
-                             stroke-width="1.8">
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
-                        </svg>
-                    </span>
+        <span class="mshow-action-icon">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 stroke-width="1.8">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+        </span>
 
-                    <span>
-                        <strong>Schedule Appointment</strong>
-                        <small>Create a new care appointment</small>
-                    </span>
+        <span>
+            <strong>Add Prenatal Visit</strong>
+            <small>Record a new prenatal checkup</small>
+        </span>
 
-                    <svg class="mshow-action-arrow"
-                         xmlns="http://www.w3.org/2000/svg"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor"
-                         stroke-width="1.8">
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="m9 5 7 7-7 7"/>
-                    </svg>
+        <svg class="mshow-action-arrow"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="1.8">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m9 5 7 7-7 7"/>
+        </svg>
 
-                </a>
+    </a>
 
-            </section>
+    {{-- Schedule Appointment --}}
+    <a href="{{ route('appointments.create', $mother->id) }}"
+       class="mshow-action mshow-action-secondary">
+
+        <span class="mshow-action-icon">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 stroke-width="1.8">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
+            </svg>
+        </span>
+
+        <span>
+            <strong>Schedule Appointment</strong>
+            <small>Create a new care appointment</small>
+        </span>
+
+        <svg class="mshow-action-arrow"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="1.8">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m9 5 7 7-7 7"/>
+        </svg>
+
+    </a>
+
+</section>
+
 
             {{-- =====================================================
                  PRENATAL CHECKUPS
@@ -1070,6 +1138,80 @@
 
             </section>
 
+
+            
+            {{-- =====================================================
+                 FATHER'S INFORMATION
+                 ===================================================== --}}
+
+            <section class="mshow-info-card">
+
+                <div class="mshow-info-head">
+                    <div class="mshow-info-head-icon mshow-info-pink">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <p class="mshow-section-kicker">
+                            <span class="mshow-section-kicker-dot"></span>
+                            Family Record
+                        </p>
+
+                        <h2 class="mshow-card-title">
+                            Father's Information
+                        </h2>
+
+                        <p class="mshow-section-sub">
+                            Father's personal and contact details, when provided.
+                        </p>
+                    </div>
+                </div>
+
+                <dl class="mshow-info-grid">
+
+                    <div class="mshow-info-item">
+                        <dt>Full Name</dt>
+                        <dd>
+                            {{ collect([
+                                $mother->father_first_name,
+                                $mother->father_middle_name,
+                                $mother->father_last_name,
+                            ])->filter()->implode(' ') ?: 'Not provided' }}
+                        </dd>
+                    </div>
+
+                    <div class="mshow-info-item">
+                        <dt>Birth Date</dt>
+                        <dd>
+                            {{ $mother->father_birth_date
+                                ? \Carbon\Carbon::parse($mother->father_birth_date)->format('F d, Y')
+                                : 'Not provided' }}
+                        </dd>
+                    </div>
+
+                    <div class="mshow-info-item">
+                        <dt>Contact Number</dt>
+                        <dd>{{ $mother->father_contact_number ?: 'Not provided' }}</dd>
+                    </div>
+
+                    <div class="mshow-info-item">
+                        <dt>Occupation</dt>
+                        <dd>{{ $mother->father_occupation ?: 'Not provided' }}</dd>
+                    </div>
+
+                </dl>
+
+            </section>
+
+
             {{-- =====================================================
                  PREGNANCY INFORMATION
                  ===================================================== --}}
@@ -1147,6 +1289,171 @@
 
             </section>
 
+            
+{{-- =====================================================
+     MATERNAL VACCINATION HISTORY
+     ===================================================== --}}
+
+{{-- =====================================================
+     MATERNAL VACCINATION HISTORY
+     ===================================================== --}}
+
+<section class="mshow-card">
+
+    <div class="mshow-card-header">
+        <div>
+            <p class="mshow-section-kicker">
+                <span class="mshow-section-kicker-dot"></span>
+                Maternal Health
+            </p>
+
+            <h2 class="mshow-card-title">
+                Maternal Vaccination History
+            </h2>
+
+            <p class="mshow-section-sub">
+                Manage and review vaccines administered to this mother.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <span class="mshow-count">
+                {{ $mother->maternalVaccinations->count() }}
+                {{ $mother->maternalVaccinations->count() === 1 ? 'Record' : 'Records' }}
+            </span>
+
+            <a href="{{ route('midwife.maternal-vaccinations.create', $mother->id) }}"
+               class="inline-flex items-center gap-2 rounded-xl bg-pink-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-300">
+                <span aria-hidden="true">+</span>
+                Add Vaccination
+            </a>
+        </div>
+    </div>
+
+    @if(session('success'))
+        <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if($mother->maternalVaccinations->isNotEmpty())
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b border-pink-100 bg-pink-50/60">
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                            Vaccine
+                        </th>
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                            Dose
+                        </th>
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                            Date Given
+                        </th>
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                            Next Due
+                        </th>
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                            Administered By
+                        </th>
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-600 text-right">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-pink-50">
+                    @foreach($mother->maternalVaccinations->sortByDesc('date_given') as $record)
+                        <tr class="transition hover:bg-pink-50/30">
+
+                            <td class="px-4 py-4">
+                                <span class="font-semibold text-gray-800">
+                                    {{ $record->vaccine_name }}
+                                </span>
+
+                                @if($record->remarks)
+                                    <p class="mt-1 max-w-xs text-xs text-gray-500">
+                                        {{ $record->remarks }}
+                                    </p>
+                                @endif
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-gray-700">
+                                {{ $record->dose }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
+                                {{ $record->date_given
+                                    ? $record->date_given->format('M d, Y')
+                                    : '—' }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
+                                {{ $record->next_due_date
+                                    ? $record->next_due_date->format('M d, Y')
+                                    : 'Not scheduled' }}
+                            </td>
+
+                            <td class="px-4 py-4 text-sm text-gray-700">
+                                {{ $record->administered_by }}
+                            </td>
+
+                            <td class="px-4 py-4">
+                                <div class="flex items-center justify-end gap-2">
+
+                                    <a href="{{ route('midwife.maternal-vaccinations.edit', [$mother->id, $record->id]) }}"
+                                       class="inline-flex items-center justify-center rounded-lg border border-pink-200 bg-white px-3 py-2 text-xs font-semibold text-pink-700 transition hover:bg-pink-50"
+                                       aria-label="Edit vaccination record">
+                                        Edit
+                                    </a>
+
+                                    <form method="POST"
+                                          action="{{ route('midwife.maternal-vaccinations.destroy', [$mother->id, $record->id]) }}"
+                                          onsubmit="return confirm('Are you sure you want to delete this maternal vaccination record? This action cannot be undone.');">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="inline-flex items-center justify-center rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                                                aria-label="Delete vaccination record">
+                                            Delete
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+    @else
+
+        <div class="rounded-xl border border-dashed border-pink-200 bg-pink-50/50 px-5 py-8 text-center">
+            <p class="font-semibold text-gray-700">
+                No maternal vaccination records yet
+            </p>
+
+            <p class="mt-1 text-sm text-gray-500">
+                Start documenting this mother's vaccination history.
+            </p>
+
+            <a href="{{ route('midwife.maternal-vaccinations.create', $mother->id) }}"
+               class="mt-4 inline-flex items-center justify-center rounded-xl bg-pink-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-pink-700">
+                Add First Vaccination
+            </a>
+        </div>
+
+    @endif
+
+</section>
+
+
+
             {{-- =====================================================
                  INFANT RECORDS
                  ===================================================== --}}
@@ -1204,18 +1511,27 @@
                             <article class="mshow-infant">
 
                                 <div class="mshow-infant-head">
+<div class="mshow-infant-icon">
 
-                                    <div class="mshow-infant-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             fill="none"
-                                             viewBox="0 0 24 24"
-                                             stroke="currentColor"
-                                             stroke-width="1.8">
-                                            <path stroke-linecap="round"
-                                                  stroke-linejoin="round"
-                                                  d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
-                                        </svg>
-                                    </div>
+    @if($infant->photo_path)
+        <img
+            src="{{ route('midwife.infant-photo.show', $infant->id) }}"
+            alt="{{ $infant->first_name }}'s photo"
+            loading="lazy"
+        >
+    @else
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="1.8">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
+        </svg>
+    @endif
+
+</div>
 
                                     <div>
                                         <p class="mshow-infant-name">

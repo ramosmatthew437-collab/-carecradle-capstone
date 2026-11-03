@@ -10,7 +10,7 @@
     </header>
 
     <form method="post"
-          action="{{ route('password.update') }}"
+          action="{{ route('password.change') }}"
           class="space-y-5">
         @csrf
         @method('put')

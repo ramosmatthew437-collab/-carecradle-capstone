@@ -98,11 +98,29 @@
                         </div>
 
                         <input
+                            id="mother-initial-password"
                             type="password"
                             name="password"
-                            class="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+                            autocomplete="new-password"
+                            class="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-12 pr-12 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
                             placeholder="Enter temporary password"
                             required>
+
+                        <button
+                            type="button"
+                            class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 transition hover:text-pink-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-inset"
+                            data-password-toggle="mother-initial-password"
+                            aria-label="Show initial password"
+                            aria-pressed="false">
+                            <svg data-eye-open xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.5-6.75 9.75-6.75S21.75 12 21.75 12 18.25 18.75 12 18.75 2.25 12 2.25 12Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg data-eye-closed xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.58 10.59a2 2 0 0 0 2.83 2.83"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.88 5.24A10.8 10.8 0 0 1 12 5.04c6.25 0 9.75 6.96 9.75 6.96a17.5 17.5 0 0 1-3.03 3.83M6.61 6.61C3.78 8.34 2.25 12 2.25 12s3.5 6.96 9.75 6.96c1.2 0 2.28-.26 3.25-.69"/>
+                            </svg>
+                        </button>
 
                     </div>
 
@@ -134,11 +152,29 @@
                         </div>
 
                         <input
+                            id="mother-confirm-password"
                             type="password"
                             name="password_confirmation"
-                            class="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+                            autocomplete="new-password"
+                            class="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-12 pr-12 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
                             placeholder="Re-enter password"
                             required>
+
+                        <button
+                            type="button"
+                            class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 transition hover:text-pink-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-inset"
+                            data-password-toggle="mother-confirm-password"
+                            aria-label="Show confirmation password"
+                            aria-pressed="false">
+                            <svg data-eye-open xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.5-6.75 9.75-6.75S21.75 12 21.75 12 18.25 18.75 12 18.75 2.25 12 2.25 12Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg data-eye-closed xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.58 10.59a2 2 0 0 0 2.83 2.83"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.88 5.24A10.8 10.8 0 0 1 12 5.04c6.25 0 9.75 6.96 9.75 6.96a17.5 17.5 0 0 1-3.03 3.83M6.61 6.61C3.78 8.34 2.25 12 2.25 12s3.5 6.96 9.75 6.96c1.2 0 2.28-.26 3.25-.69"/>
+                            </svg>
+                        </button>
 
                     </div>
                 </div>
@@ -354,6 +390,149 @@
 <div class="my-8 border-t border-gray-200"></div>
 
 
+
+{{-- ============================= --}}
+{{-- FATHER'S INFORMATION --}}
+{{-- ============================= --}}
+<section class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+
+    {{-- Header --}}
+    <div class="border-b border-gray-200 bg-gradient-to-r from-pink-50 via-white to-white px-6 py-5">
+        <div class="flex items-center gap-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-pink-100 text-pink-600 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="1.5"
+                     stroke="currentColor"
+                     class="h-6 w-6">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0"/>
+                </svg>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-semibold text-gray-900">
+                    Father's Information
+                </h2>
+                <p class="mt-1 text-sm text-gray-500">
+                    Record the father's details for the mother's maternal health record.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {{-- Body --}}
+    <div class="p-6">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+            {{-- Father's First Name --}}
+            <div>
+                <label class="mb-2 block text-sm font-semibold text-gray-700">
+                    Father's First Name
+                </label>
+                <input
+                    type="text"
+                    name="father_first_name"
+                    value="{{ old('father_first_name', $mother->father_first_name ?? '') }}"
+                    class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+                    placeholder="Enter father's first name">
+
+                @error('father_first_name')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Father's Middle Name --}}
+            <div>
+                <label class="mb-2 block text-sm font-semibold text-gray-700">
+                    Father's Middle Name
+                </label>
+                <input
+                    type="text"
+                    name="father_middle_name"
+                    value="{{ old('father_middle_name', $mother->father_middle_name ?? '') }}"
+                    class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+                    placeholder="Enter father's middle name (optional)">
+
+                @error('father_middle_name')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Father's Last Name --}}
+            <div>
+                <label class="mb-2 block text-sm font-semibold text-gray-700">
+                    Father's Last Name
+                </label>
+                <input
+                    type="text"
+                    name="father_last_name"
+                    value="{{ old('father_last_name', $mother->father_last_name ?? '') }}"
+                    class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+                    placeholder="Enter father's last name">
+
+                @error('father_last_name')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Father's Birth Date --}}
+            <div>
+                <label class="mb-2 block text-sm font-semibold text-gray-700">
+                    Father's Birth Date
+                </label>
+                <input
+                    type="date"
+                    name="father_birth_date"
+                    value="{{ old('father_birth_date', $mother->father_birth_date ?? '') }}"
+                    class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm focus:border-pink-500 focus:ring-2 focus:ring-pink-100">
+
+                @error('father_birth_date')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Father's Contact Number --}}
+            <div>
+                <label class="mb-2 block text-sm font-semibold text-gray-700">
+                    Father's Contact Number
+                </label>
+                <input
+                    type="text"
+                    name="father_contact_number"
+                    value="{{ old('father_contact_number', $mother->father_contact_number ?? '') }}"
+                    class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+                    placeholder="09XXXXXXXXX">
+
+                @error('father_contact_number')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Father's Occupation --}}
+            <div>
+                <label class="mb-2 block text-sm font-semibold text-gray-700">
+                    Father's Occupation
+                </label>
+                <input
+                    type="text"
+                    name="father_occupation"
+                    value="{{ old('father_occupation', $mother->father_occupation ?? '') }}"
+                    class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+                    placeholder="Enter father's occupation">
+
+                @error('father_occupation')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="my-8 border-t border-gray-200"></div>
 
 {{-- ============================= --}}
 {{-- PREGNANCY INFORMATION --}}
@@ -594,3 +773,36 @@
     </div>
 
 </section>
+
+
+@once
+    <script>
+        (() => {
+            document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+                if (button.dataset.toggleReady === 'true') return;
+
+                const input = document.getElementById(button.dataset.passwordToggle);
+                if (!input) return;
+
+                button.dataset.toggleReady = 'true';
+
+                button.addEventListener('click', () => {
+                    const willShow = input.type === 'password';
+
+                    input.type = willShow ? 'text' : 'password';
+                    button.setAttribute('aria-pressed', String(willShow));
+                    button.setAttribute(
+                        'aria-label',
+                        willShow ? 'Hide password' : 'Show password'
+                    );
+
+                    const openEye = button.querySelector('[data-eye-open]');
+                    const closedEye = button.querySelector('[data-eye-closed]');
+
+                    if (openEye) openEye.classList.toggle('hidden', willShow);
+                    if (closedEye) closedEye.classList.toggle('hidden', !willShow);
+                });
+            });
+        })();
+    </script>
+@endonce

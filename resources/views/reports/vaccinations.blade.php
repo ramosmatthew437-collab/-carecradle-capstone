@@ -127,23 +127,48 @@
 
                         <div class="grid grid-cols-1 gap-4 lg:grid-cols-4">
 
-                            <div class="lg:col-span-3">
-                                <label class="mb-2 block text-sm font-medium text-gray-700">Search Vaccine</label>
+                            {{-- Search Vaccination Records --}}
+                            <div class="lg:col-span-2">
+                                <label class="mb-2 block text-sm font-medium text-gray-700">
+                                    Search Vaccination Records
+                                </label>
+
                                 <div class="relative">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-gray-400">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                                         </svg>
                                     </div>
+
                                     <input
                                         type="text"
                                         name="search"
                                         value="{{ request('search') }}"
-                                        placeholder="Search Vaccine..."
+                                        placeholder="Search vaccine, dose, or infant..."
                                         class="w-full rounded-xl border border-gray-300 bg-white py-3 pl-11 pr-4 text-sm shadow-sm transition focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-100">
                                 </div>
                             </div>
 
+                            {{-- Barangay Filter --}}
+                            <div>
+                                <label class="mb-2 block text-sm font-medium text-gray-700">
+                                    Barangay
+                                </label>
+
+                                <select
+                                    name="barangay"
+                                    class="w-full rounded-xl border border-gray-300 bg-white px-3 py-3 text-sm shadow-sm transition focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-100">
+                                    <option value="">All Barangays</option>
+
+                                    @foreach ($barangays as $barangay)
+                                        <option value="{{ $barangay }}" @selected(request('barangay') == $barangay)>
+                                            {{ $barangay }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Search and Reset Buttons --}}
                             <div class="flex items-end">
                                 <div class="flex w-full gap-2">
                                     <button
@@ -158,6 +183,7 @@
                                     <a
                                         href="{{ route('reports.vaccinations') }}"
                                         aria-label="Reset search"
+                                        title="Reset search and barangay filter"
                                         class="inline-flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.992 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865A8.25 8.25 0 0 1 17.803 6.17l3.181 3.182"/>
@@ -200,7 +226,7 @@
                         </button>
 
                         <a
-                            href="{{ route('reports.vaccinations.pdf') }}"
+                           href="{{ route('reports.vaccinations.pdf', request()->query()) }}"
                             class="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-pink-600 px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 active:scale-[0.98]">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v2.625A2.625 2.625 0 0 1 16.875 19.5H7.125A2.625 2.625 0 0 1 4.5 16.875V14.25m10.5-6.75L12 4.5m0 0L9 7.5m3-3v10.5"/>

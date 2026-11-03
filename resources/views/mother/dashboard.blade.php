@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="mth-wrap">
+    <div class="mth-wrap" style="--cc-rhu-image: url('{{ asset('images/irosin-rhu.png') }}');">
 
         <div class="mth-container">
 
@@ -10,8 +10,8 @@
 
             <section class="mth-hero">
 
-                <div class="mth-hero-glow mth-hero-glow-a"></div>
-                <div class="mth-hero-glow mth-hero-glow-b"></div>
+                <div class="mth-hero-glow mth-hero-glow-a" aria-hidden="true"></div>
+                <div class="mth-hero-glow mth-hero-glow-b" aria-hidden="true"></div>
 
                 <div class="mth-hero-inner">
 
@@ -128,18 +128,18 @@
     }
 @endphp
 
-<section class="mth-appointment">
-
 
                 <section class="mth-appointment">
 
-                    <div class="mth-floating-circle mth-floating-circle-a"></div>
-                    <div class="mth-floating-circle mth-floating-circle-b"></div>
+                    <div class="mth-floating-circle mth-floating-circle-a" aria-hidden="true"></div>
+                    <div class="mth-floating-circle mth-floating-circle-b" aria-hidden="true"></div>
 
                     <div class="mth-appointment-top">
 
                         <div class="mth-appointment-label">
                             <svg
+                                aria-hidden="true"
+                                focusable="false"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 fill="none"
@@ -179,6 +179,8 @@
                         <span class="mth-time">
 
                             <svg
+                                aria-hidden="true"
+                                focusable="false"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 fill="none"
@@ -212,7 +214,7 @@
                     >
                         View Details
 
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -230,6 +232,8 @@
                     <div class="mth-empty-icon">
 
                         <svg
+                                aria-hidden="true"
+                                focusable="false"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             fill="none"
@@ -259,7 +263,7 @@
                     >
                         View Appointments History
 
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -308,6 +312,8 @@
                     <div class="mth-vax-icon">
 
                         <svg
+                                aria-hidden="true"
+                                focusable="false"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -339,7 +345,7 @@
                         class="mth-vax-arrow"
                         aria-label="View vaccination details for {{ $nextVaccination->vaccine_name }}"
                     >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -359,14 +365,16 @@
 
             <section class="mth-infant">
 
-                <div class="mth-infant-shape mth-infant-shape-a"></div>
-                <div class="mth-infant-shape mth-infant-shape-b"></div>
+                <div class="mth-infant-shape mth-infant-shape-a" aria-hidden="true"></div>
+                <div class="mth-infant-shape mth-infant-shape-b" aria-hidden="true"></div>
 
                 <div class="mth-infant-content">
 
                     <div class="mth-infant-icon">
 
                         <svg
+                                aria-hidden="true"
+                                focusable="false"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -463,7 +471,7 @@
                 >
                     View Infant Records
 
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -483,31 +491,27 @@
                 $navLinks = [
                     [
                         'title' => 'My Profile',
-                        'description' => 'Personal & health details',
+                        'description' => 'View your personal and maternal information.',
                         'route' => 'mother.profile',
                         'icon' => 'profile',
                         'theme' => 'pink',
+                        'eyebrow' => 'YOUR INFORMATION',
                     ],
                     [
-                        'title' => 'Appointments',
-                        'description' => 'Upcoming & past visits',
-                        'route' => 'mother.appointments',
-                        'icon' => 'calendar',
+                        'title' => 'My Vaccinations',
+                        'description' => 'Review vaccination records and upcoming doses.',
+                        'route' => 'mother.vaccinations',
+                        'icon' => 'vaccinations',
                         'theme' => 'fuchsia',
+                        'eyebrow' => 'MOTHER & INFANT CARE',
                     ],
                     [
-                        'title' => 'Prenatal Records',
-                        'description' => 'Checkup history & stats',
-                        'route' => 'mother.prenatal-records',
-                        'icon' => 'heartbeat',
+                        'title' => 'Featured Health Tips',
+                        'description' => 'Explore practical guidance for a healthy pregnancy and baby.',
+                        'route' => 'mother.health-tips',
+                        'icon' => 'health-tips',
                         'theme' => 'rose',
-                    ],
-                    [
-                        'title' => 'SMS History',
-                        'description' => 'Clinic message reminders',
-                        'route' => 'mother.sms-history',
-                        'icon' => 'sms',
-                        'theme' => 'pink',
+                        'eyebrow' => 'HEALTH & WELLNESS',
                     ],
                 ];
             @endphp
@@ -544,7 +548,7 @@
 
                                     @case('profile')
 
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                             <path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
@@ -554,9 +558,27 @@
 
                                         @break
 
+                                    @case('vaccinations')
+
+                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m14 4 6 6M12.5 5.5l6 6M4 20l5.5-1.5L20 8a2.12 2.12 0 0 0-3-3L6.5 15.5 4 20Z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m8 14 2 2M6.5 16.5l2 2"/>
+                                        </svg>
+
+                                        @break
+
+                                    @case('health-tips')
+
+                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h2l1.2-2.5L13 15l1.2-3H16"/>
+                                        </svg>
+
+                                        @break
+
                                     @case('calendar')
 
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                             <path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
@@ -568,7 +590,7 @@
 
                                     @case('heartbeat')
 
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                             <path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
@@ -580,7 +602,7 @@
 
                                     @case('sms')
 
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                             <path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
@@ -594,12 +616,37 @@
                                         </svg>
 
                                         @break
+                                        @case('print-records')
+    <svg
+        aria-hidden="true"
+        focusable="false"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+    >
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
+        />
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7 14h10v7H7zM17 11h.01"
+        />
+    </svg>
+    @break
 
                                 @endswitch
 
                             </div>
 
                             <div class="mth-action-copy">
+
+                                <span class="mth-action-eyebrow">
+                                    {{ $link['eyebrow'] }}
+                                </span>
 
                                 <h3>
                                     {{ $link['title'] }}
@@ -613,7 +660,7 @@
 
                             <div class="mth-action-arrow">
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"

@@ -128,7 +128,6 @@
 }
 
 
-
 /* Mother mobile top navigation */
 .cc-mother-mobile-nav {
     display: none;
@@ -137,5 +136,15 @@
 @media (max-width: 767px) {
     .cc-mother-mobile-nav {
         display: block;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .cc-mother-mobile-nav > nav {
+        margin-top: 0 !important;
     }
 }
+
+
+
+

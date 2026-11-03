@@ -1537,6 +1537,17 @@
     color: #2563eb;
 }
 
+
+
+.mshow-infant-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+
 .mshow-infant-icon svg {
     width: 19px;
     height: 19px;
@@ -1671,3 +1682,245 @@
         transform: none;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MOTHER PROFILE — HERO AVATAR
+   ========================================================= */
+
+.mshow-profile-avatar {
+    width: 104px;
+    height: 104px;
+    flex: 0 0 104px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    background: #fce7f3;
+    color: #be185d;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35),
+                0 8px 22px rgba(0, 0, 0, 0.16);
+}
+
+.mshow-profile-avatar-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.mshow-profile-avatar-initials {
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.mshow-profile-copy {
+    min-width: 0;
+}
+
+.mshow-hero-main {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+@media (max-width: 520px) {
+    .mshow-hero-main {
+        align-items: flex-start;
+        gap: 0.875rem;
+    }
+
+    .mshow-profile-avatar {
+        width: 76px;
+        height: 76px;
+        flex-basis: 76px;
+    }
+
+    .mshow-profile-avatar-initials {
+        font-size: 1.5rem;
+    }
+
+    .mshow-hero-title {
+        overflow-wrap: anywhere;
+    }
+}
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MOTHER PROFILE VISUAL POLISH
+   Phase 1: Page Background + Summary Cards
+   ========================================================= */
+
+/* Soft blush page background */
+.mshow-wrap {
+    background:
+        radial-gradient(
+            circle at 8% 5%,
+            rgba(249, 168, 212, 0.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #fff7fa 0%,
+            #fffafd 45%,
+            #ffffff 100%
+        );
+}
+
+/* Statistics cards */
+.mshow-stat {
+    border-radius: 1.15rem;
+    background: linear-gradient(145deg, #ffffff, #fffafd);
+    box-shadow:
+        0 2px 8px rgba(157, 23, 77, 0.035),
+        0 8px 22px rgba(157, 23, 77, 0.045);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.mshow-stat-pink {
+    border-color: #fbcfe8;
+}
+
+.mshow-stat-amber {
+    border-color: #fce7b2;
+}
+
+.mshow-stat-blue {
+    border-color: #dbeafe;
+}
+
+.mshow-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(190, 24, 93, 0.09);
+}
+
+/* Contact information card */
+.mshow-contact-card {
+    border: 1px solid #fce7f3;
+    border-radius: 1.15rem;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow:
+        0 2px 8px rgba(157, 23, 77, 0.025),
+        0 8px 22px rgba(157, 23, 77, 0.045);
+}
+
+.mshow-contact-item + .mshow-contact-item {
+    border-color: #fce7f3;
+}
+
+.mshow-contact-icon {
+    background: #fff0f6;
+    color: #be185d;
+    border: 1px solid #fce7f3;
+}
+
+/* Clinical summary cards */
+.mshow-metric {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #fce7f3;
+    border-radius: 1.15rem;
+    background: linear-gradient(145deg, #ffffff 0%, #fffafd 100%);
+    box-shadow:
+        0 2px 8px rgba(157, 23, 77, 0.025),
+        0 8px 22px rgba(157, 23, 77, 0.04);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.mshow-metric:hover {
+    transform: translateY(-3px);
+    border-color: #f9a8d4;
+    box-shadow: 0 10px 25px rgba(190, 24, 93, 0.075);
+}
+
+/* Consistent pink treatment for neutral metric icons */
+.mshow-metric-pink,
+.mshow-metric-fuchsia,
+.mshow-metric-sky {
+    background: #fff0f6;
+    color: #be185d;
+}
+
+/* Keep meaningful clinical status colors */
+.mshow-metric-emerald {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.mshow-metric-rose {
+    background: #fff1f2;
+    color: #e11d48;
+}
+
+.mshow-metric-amber {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+/* Refined section headings */
+.mshow-section {
+    margin-top: 2.25rem;
+}
+
+.mshow-section-title {
+    color: #9d174d;
+}
+
+.mshow-section-sub {
+    color: #7c6571;
+}
+
+/* Keyboard accessibility */
+.mshow-stat:focus-within,
+.mshow-action:focus-visible {
+    outline: 2px solid #ec4899;
+    outline-offset: 3px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .mshow-stat,
+    .mshow-metric {
+        transition: none;
+    }
+
+    .mshow-stat:hover,
+    .mshow-metric:hover {
+        transform: none;
+    }
+}
+
+
+
+
+
+
+
+

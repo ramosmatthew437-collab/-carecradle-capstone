@@ -130,7 +130,13 @@ class MotherController extends Controller
                 'barangay' => $request->barangay,
                 'blood_type' => $request->blood_type,
                 'civil_status' => $request->civil_status,
-                'occupation' => $request->occupation,
+                
+                'father_first_name' => $request->father_first_name,
+'father_middle_name' => $request->father_middle_name,
+'father_last_name' => $request->father_last_name,
+'father_birth_date' => $request->father_birth_date,
+'father_contact_number' => $request->father_contact_number,
+'father_occupation' => $request->father_occupation,
                 'philhealth_number' => $request->philhealth_number,
                 'height' => $request->height,
                 'weight' => $request->weight,
@@ -158,15 +164,16 @@ class MotherController extends Controller
      * Display the specified mother.
      */
     public function show(string $id): View
-    {
-        $mother = Mother::with([
-            'prenatalCheckups',
-            'appointments',
-            'infants',
-        ])->findOrFail($id);
+{
+    $mother = Mother::with([
+        'prenatalCheckups',
+        'appointments',
+        'infants',
+        'maternalVaccinations',
+    ])->findOrFail($id);
 
-        return view('admin.mothers.show', compact('mother'));
-    }
+    return view('admin.mothers.show', compact('mother'));
+}
 
     /**
      * Show the form for editing the specified mother.
@@ -214,7 +221,13 @@ class MotherController extends Controller
                 'barangay' => $request->barangay,
                 'blood_type' => $request->blood_type,
                 'civil_status' => $request->civil_status,
-                'occupation' => $request->occupation,
+                
+                'father_first_name' => $request->father_first_name,
+'father_middle_name' => $request->father_middle_name,
+'father_last_name' => $request->father_last_name,
+'father_birth_date' => $request->father_birth_date,
+'father_contact_number' => $request->father_contact_number,
+'father_occupation' => $request->father_occupation,
                 'philhealth_number' => $request->philhealth_number,
                 'height' => $request->height,
                 'weight' => $request->weight,

@@ -80,119 +80,77 @@
 
             {{-- ====================================== --}}
 
+            {{-- ====================================== --}}
             {{-- 2. SEARCH / FILTER --}}
-
             {{-- ====================================== --}}
 
             <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
                 <div class="p-4 sm:p-6">
-
                     <form method="GET" action="{{ route('midwife.health-tips.index') }}">
+                        <div class="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_220px_auto_auto]">
 
-                        <div class="flex flex-col gap-3 sm:flex-row">
-
-                            <div class="relative flex-1">
-
-                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m0 0A7.65 7.65 0 1 0 5.825 5.825a7.65 7.65 0 0 0 10.825 10.825Z"/>
-
-                                    </svg>
-
-                                </div>
-
+                            {{-- Keyword Search --}}
+                            <div class="min-w-0">
                                 <input
-
                                     type="text"
-
                                     name="search"
-
                                     value="{{ request('search') }}"
-
-                                    placeholder="Search by title..."
-
-                                    class="w-full rounded-2xl border border-gray-300 bg-gray-50 py-3 pl-12 pr-4 text-sm text-gray-700 placeholder:text-gray-400 transition focus:border-pink-600 focus:bg-white focus:outline-none focus:ring-4 focus:ring-pink-100">
-
+                                    placeholder="Search health tips..."
+                                    class="h-12 w-full rounded-xl border border-gray-300 bg-white px-4 text-sm text-gray-700 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100">
                             </div>
 
+                            {{-- Category Filter --}}
                             <select
-
                                 name="category"
-
-                                class="w-full rounded-2xl border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-700 transition focus:border-pink-600 focus:bg-white focus:outline-none focus:ring-4 focus:ring-pink-100 sm:w-56">
-
+                                class="h-12 w-full min-w-0 rounded-xl border border-gray-300 bg-white px-4 text-sm text-gray-700 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100">
                                 <option value="">All Categories</option>
-
                                 @foreach([
-
                                     'Pregnancy Care',
-
                                     'Nutrition',
-
                                     'Danger Signs',
-
                                     'Preparing for Delivery',
-
                                     'Breastfeeding',
-
                                     'Newborn Care',
-
                                     'Vaccination',
-
                                     'Postpartum Care',
-
                                 ] as $category)
-
                                     <option value="{{ $category }}" @selected(request('category') == $category)>
-
                                         {{ $category }}
-
                                     </option>
-
                                 @endforeach
-
                             </select>
 
+                            {{-- Search Button --}}
                             <button
-
                                 type="submit"
-
-                                class="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-pink-600 px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 active:scale-[0.98] sm:w-auto">
-
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m0 0A7.65 7.65 0 1 0 5.825 5.825a7.65 7.65 0 0 0 10.825 10.825Z"/>
-
+                                class="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-pink-600 px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 active:scale-[0.98]">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-5 w-5"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     aria-hidden="true">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="m21 21-4.35-4.35m0 0A7.65 7.65 0 1 0 5.825 5.825a7.65 7.65 0 0 0 10.825 10.825Z"/>
                                 </svg>
-
                                 Search
-
                             </button>
 
+                            {{-- Reset Button --}}
                             @if(request('search') || request('category'))
-
-                                <a href="{{ route('midwife.health-tips.index') }}"
-
-                                   class="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-gray-300 bg-white px-6 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 sm:w-auto">
-
+                                <a
+                                    href="{{ route('midwife.health-tips.index') }}"
+                                    class="inline-flex h-12 items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-sm font-semibold text-gray-700 transition hover:border-pink-300 hover:bg-pink-50">
                                     Reset
-
                                 </a>
-
                             @endif
 
                         </div>
-
                     </form>
-
                 </div>
-
             </div>
-
-            {{-- ====================================== --}}
 
             {{-- 3. HEALTH TIP LIST --}}
 

@@ -6,38 +6,26 @@ use App\Models\HealthTip;
 use Illuminate\Http\Request;
 
 class MidwifeHealthTipController extends Controller
+{public function index(Request $request)
 {
-    public function index()
-    {
-        $tips = HealthTip::latest()->get();
+    $search = trim($request->query('search', ''));
+    $category = $request->query('category', '');
 
-        return view('midwife.health-tips.index', compact('tips'));
-    }
+    $tips = HealthTip::query()
+        ->when($search !== '', function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                  ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        })
+        ->when($category !== '', function ($query) use ($category) {
+            $query->where('category', $category);
+        })
+        ->latest()
+        ->get();
 
-    public function create()
-    {
-        return view('midwife.health-tips.create');
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
-
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('health-tips', 'public');
-        }
-
-        HealthTip::create($validated);
-
-        return redirect()
-            ->route('midwife.health-tips.index')
-            ->with('success', 'Health tip created successfully.');
-    }
+    return view('midwife.health-tips.index', compact('tips'));
+}
 
     public function show(HealthTip $healthTip)
     {

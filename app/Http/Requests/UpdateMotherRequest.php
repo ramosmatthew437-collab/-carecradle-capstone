@@ -78,6 +78,44 @@ class UpdateMotherRequest extends FormRequest
                 'string',
                 'max:255',
             ],
+            
+            // Father's Information
+            'father_first_name' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'father_middle_name' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'father_last_name' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'father_birth_date' => [
+                'nullable',
+                'date',
+                'before_or_equal:today',
+            ],
+
+            'father_contact_number' => [
+                'nullable',
+                'digits:11',
+                'regex:/^09[0-9]{9}$/',
+            ],
+
+            'father_occupation' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
 
             'philhealth_number' => [
                 'nullable',
