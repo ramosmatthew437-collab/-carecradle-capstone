@@ -344,6 +344,8 @@
             </section>
 
 
+
+
             {{-- =========================================================
                  LABORATORY FINDINGS
             ========================================================== --}}
@@ -374,9 +376,9 @@
 
                 </div>
 
-
                 <div class="pvd-card-body">
 
+                    {{-- Existing Laboratory Results --}}
                     <div class="pvd-lab-grid">
 
                         <div class="pvd-lab-item">
@@ -403,7 +405,6 @@
 
                         </div>
 
-
                         <div class="pvd-lab-item">
 
                             <div>
@@ -427,6 +428,97 @@
                             </div>
 
                         </div>
+
+                    </div>
+
+                    {{-- Laboratory Documents --}}
+                    <div class="pvd-lab-documents" style="margin-top: 24px;">
+
+                        <div style="margin-bottom: 14px;">
+                            <h3 style="font-size: 15px; font-weight: 700; color: #374151;">
+                                Laboratory Documents
+                            </h3>
+
+                            <p style="font-size: 13px; color: #6b7280; margin-top: 4px;">
+                                Uploaded laboratory results and supporting documents.
+                            </p>
+                        </div>
+
+                       @forelse ($prenatalCheckup->attachments as $attachment)
+
+    @php
+        $extension = strtolower(
+            pathinfo($attachment->file_name, PATHINFO_EXTENSION)
+        );
+
+        $isImage = in_array($extension, ['jpg', 'jpeg', 'png']);
+    @endphp
+
+    <div style="padding: 14px; border: 1px solid #f3dce8; border-radius: 12px; margin-bottom: 14px; background: #fff;">
+
+        @if ($isImage)
+            <a
+                href="{{ route('midwife.prenatal-attachments.preview', $attachment->id) }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: block; margin-bottom: 14px;"
+            >
+                <img
+                    src="{{ route('midwife.prenatal-attachments.preview', $attachment->id) }}"
+                    alt="{{ $attachment->file_name }}"
+                    loading="lazy"
+                    style="display: block; width: 100%; max-width: 420px; max-height: 320px; object-fit: contain; object-position: left center; border-radius: 10px; background: #fff8fb; border: 1px solid #f3dce8;"
+                >
+            </a>
+        @endif
+
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+
+            <div style="min-width: 0;">
+                <strong style="display: block; font-size: 14px; color: #374151; overflow-wrap: anywhere;">
+                    {{ $attachment->file_name }}
+                </strong>
+
+                <span style="font-size: 12px; color: #9ca3af;">
+                    {{ strtoupper($extension) }}
+                    ·
+                    {{ number_format($attachment->file_size / 1024, 1) }} KB
+                </span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+
+                <a
+                    href="{{ route('midwife.prenatal-attachments.download', $attachment->id) }}"
+                    class="pvd-btn pvd-btn-edit"
+                >
+                    Download
+                </a>
+
+                <form
+                    action="{{ route('midwife.prenatal-attachments.destroy', $attachment->id) }}"
+                    method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete this laboratory document?');"
+                >
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="pvd-btn pvd-btn-delete">
+                        Delete
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+@empty
+
+    <p style="font-size: 13px; color: #9ca3af; padding: 14px; background: #fff8fb; border-radius: 10px;">
+        No laboratory documents have been uploaded for this prenatal visit.
+    </p>
+
+@endforelse
 
                     </div>
 

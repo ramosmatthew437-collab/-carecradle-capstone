@@ -25,6 +25,7 @@ use App\Http\Middleware\EnsurePrivacyConsent;
 use App\Http\Controllers\PrivacyConsentController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\StaffConfidentialityController;
+use App\Http\Controllers\PrenatalCheckupAttachmentController;
 use App\Services\TextBeeService;
 
 /*
@@ -61,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
-        
+
     /*
     |--------------------------------------------------------------------------
     | Administrator Only
@@ -110,7 +111,7 @@ Route::get('/activity-logs', [
     |--------------------------------------------------------------------------
     */
 
-   
+
 Route::middleware([
     'role:Midwife',
     'staff.confidentiality',
@@ -206,6 +207,23 @@ Route::delete(
         Route::delete('/prenatal-checkups/{prenatalCheckup}',
             [\App\Http\Controllers\PrenatalCheckupController::class, 'destroy'])
             ->name('prenatal-checkups.destroy');
+
+
+    // Prenatal Laboratory Attachments
+Route::get(
+    '/prenatal-attachments/{attachment}/download',
+    [PrenatalCheckupAttachmentController::class, 'downloadForMidwife']
+)->name('midwife.prenatal-attachments.download');
+
+Route::get(
+    '/prenatal-attachments/{attachment}/preview',
+    [PrenatalCheckupAttachmentController::class, 'previewForMidwife']
+)->name('midwife.prenatal-attachments.preview');
+
+Route::delete(
+    '/prenatal-attachments/{attachment}',
+    [PrenatalCheckupAttachmentController::class, 'destroy']
+)->name('midwife.prenatal-attachments.destroy');
 
         /*
         |--------------------------------------------------------------------------
@@ -391,6 +409,7 @@ Route::delete(
     ->name('mother.print-records');
 
 
+
     Route::post('/mother/profile/photo', [
     \App\Http\Controllers\Mother\MotherProfileController::class,
     'updateProfilePhoto',
@@ -404,6 +423,20 @@ Route::delete('/mother/profile/photo', [
        Route::get('/mother/privacy-notice', function () {
     return view('privacy.consent');
 })->name('mother.privacy-notice');
+
+
+// Mother Prenatal Laboratory Attachments
+Route::get(
+    '/mother/prenatal-attachments/{attachment}/download',
+    [PrenatalCheckupAttachmentController::class, 'downloadForMother']
+)->name('mother.prenatal-attachments.download');
+
+
+Route::get(
+    '/mother/prenatal-attachments/{attachment}/preview',
+    [PrenatalCheckupAttachmentController::class, 'previewForMother']
+)->name('mother.prenatal-attachments.preview');
+
 
 
 
@@ -443,7 +476,7 @@ Route::delete('/mother/profile/photo', [
 
 
 
-    
+
 /*
 |--------------------------------------------------------------------------
 | Privacy Consent

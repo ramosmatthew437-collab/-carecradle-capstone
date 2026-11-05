@@ -120,11 +120,11 @@
             {{-- =========================================================
                  Form
             ========================================================== --}}
-            <form
-                action="{{ route('prenatal-checkups.update', $prenatalCheckup->id) }}"
-                method="POST"
-                class="pv-edit-form">
-
+           <form
+    action="{{ route('prenatal-checkups.update', $prenatalCheckup->id) }}"
+    method="POST"
+    enctype="multipart/form-data"
+    class="pv-edit-form">
                 @csrf
                 @method('PUT')
 
@@ -375,95 +375,102 @@
                     </div>
                 </section>
 
+{{-- Laboratory Findings --}}
+<section class="pv-edit-card">
+    <div class="pv-edit-card-header">
+        <div>
+            <h3>Laboratory Findings</h3>
+            <p>Record urine test results and attach laboratory documents.</p>
+        </div>
+    </div>
 
-                {{-- =====================================================
-                     Laboratory Findings
-                ====================================================== --}}
-                <section class="pv-edit-card">
+    <div class="pv-edit-card-body">
+        <div class="pv-edit-grid">
 
-                    <div class="pv-edit-card-header">
-                        <div class="pv-edit-section-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375H15V6.75A2.25 2.25 0 0012.75 4.5h-1.5A2.25 2.25 0 009 6.75v1.5H7.875A3.375 3.375 0 004.5 11.625v2.625A6.75 6.75 0 0011.25 21h1.5a6.75 6.75 0 006.75-6.75Z" />
-                            </svg>
-                        </div>
+            {{-- Urine Protein --}}
+            <div class="pv-edit-field">
+                <label for="urine_protein">Urine Protein</label>
 
-                        <div>
-                            <h2>Laboratory Findings</h2>
-                            <p>
-                                Record urine screening results obtained during
-                                the prenatal consultation.
-                            </p>
-                        </div>
-                    </div>
+                <select
+                    id="urine_protein"
+                    name="urine_protein"
+                    class="pv-edit-input"
+                >
+                    <option value="">Select result</option>
+                    @foreach (['Negative', 'Trace', '+1', '+2', '+3'] as $result)
+                        <option
+                            value="{{ $result }}"
+                            @selected(old('urine_protein', $prenatalCheckup->urine_protein) === $result)
+                        >
+                            {{ $result }}
+                        </option>
+                    @endforeach
+                </select>
 
-                    <div class="pv-edit-card-body">
-                        <div class="pv-edit-grid">
+                @error('urine_protein')
+                    <p class="pv-edit-error">{{ $message }}</p>
+                @enderror
+            </div>
 
-                            {{-- Urine Protein --}}
-                            <div class="pv-edit-field">
-                                <label for="urine_protein">
-                                    Urine Protein
-                                </label>
+            {{-- Urine Glucose --}}
+            <div class="pv-edit-field">
+                <label for="urine_glucose">Urine Glucose</label>
 
-                                <select
-                                    id="urine_protein"
-                                    name="urine_protein"
-                                    class="@error('urine_protein') pv-edit-input-error @enderror">
+                <select
+                    id="urine_glucose"
+                    name="urine_glucose"
+                    class="pv-edit-input"
+                >
+                    <option value="">Select result</option>
+                    @foreach (['Negative', 'Trace', '+1', '+2', '+3'] as $result)
+                        <option
+                            value="{{ $result }}"
+                            @selected(old('urine_glucose', $prenatalCheckup->urine_glucose) === $result)
+                        >
+                            {{ $result }}
+                        </option>
+                    @endforeach
+                </select>
 
-                                    <option value="">Select</option>
+                @error('urine_glucose')
+                    <p class="pv-edit-error">{{ $message }}</p>
+                @enderror
+            </div>
 
-                                    @foreach (['Negative', 'Trace', '+1', '+2', '+3'] as $value)
-                                        <option
-                                            value="{{ $value }}"
-                                            {{ old('urine_protein', $prenatalCheckup->urine_protein) == $value ? 'selected' : '' }}>
-                                            {{ $value }}
-                                        </option>
-                                    @endforeach
-                                </select>
+        </div>
 
-                                @error('urine_protein')
-                                    <span class="pv-edit-field-error">{{ $message }}</span>
-                                @enderror
-                            </div>
+        {{-- Laboratory Document Attachments --}}
+        <div class="pv-edit-field" style="margin-top: 20px;">
+            <label for="laboratory_attachments">
+                Add Laboratory Documents
+            </label>
 
+            <input
+                id="laboratory_attachments"
+                type="file"
+                name="laboratory_attachments[]"
+                multiple
+                accept=".pdf,.jpg,.jpeg,.png"
+                class="pv-edit-input"
+            >
 
-                            {{-- Urine Glucose --}}
-                            <div class="pv-edit-field">
-                                <label for="urine_glucose">
-                                    Urine Glucose
-                                </label>
+            <p class="pv-edit-help">
+                Upload laboratory results such as CBC, urinalysis,
+                blood chemistry, or other prenatal laboratory reports.
+                Accepted formats: PDF, JPG, JPEG, PNG.
+                Maximum 10 MB per file, up to 10 files.
+            </p>
 
-                                <select
-                                    id="urine_glucose"
-                                    name="urine_glucose"
-                                    class="@error('urine_glucose') pv-edit-input-error @enderror">
+            @error('laboratory_attachments')
+                <p class="pv-edit-error">{{ $message }}</p>
+            @enderror
 
-                                    <option value="">Select</option>
-
-                                    @foreach (['Negative', 'Trace', '+1', '+2', '+3'] as $value)
-                                        <option
-                                            value="{{ $value }}"
-                                            {{ old('urine_glucose', $prenatalCheckup->urine_glucose) == $value ? 'selected' : '' }}>
-                                            {{ $value }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('urine_glucose')
-                                    <span class="pv-edit-field-error">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
+            @error('laboratory_attachments.*')
+                <p class="pv-edit-error">{{ $message }}</p>
+            @enderror
+        </div>
+    </div>
+</section>
 
 
                 {{-- =====================================================

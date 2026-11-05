@@ -37,7 +37,7 @@ class MaternalVaccinationController extends Controller
 
         return redirect()
             ->route('mothers.show', $mother->id)
-            ->with('success', 'Maternal vaccination record added successfully.');
+            ->with('vaccination_success', 'Maternal vaccination record added successfully.');
     }
 
     /**
@@ -80,7 +80,7 @@ class MaternalVaccinationController extends Controller
 
         return redirect()
             ->route('mothers.show', $mother->id)
-            ->with('success', 'Maternal vaccination record updated successfully.');
+            ->with('vaccination_success', 'Maternal vaccination record updated successfully.');
     }
 
     /**
@@ -96,6 +96,6 @@ class MaternalVaccinationController extends Controller
 
         return redirect()
             ->route('mothers.show', $mother->id)
-            ->with('success', 'Maternal vaccination record deleted successfully.');
+            ->with('vaccination_success', 'Maternal vaccination record deleted successfully.');
     }
 }

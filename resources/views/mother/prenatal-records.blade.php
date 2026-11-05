@@ -229,6 +229,150 @@
                         </div>
 
 
+
+
+                        {{-- Laboratory Documents --}}
+                        @if($latestVisit->attachments->isNotEmpty())
+                            <div style="margin-top: 22px; padding: 16px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3); border-radius: 14px;">
+
+                                <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">
+                                    Laboratory Documents
+                                </h3>
+
+                                <div style="display: grid; gap: 10px;">
+                               @foreach($latestVisit->attachments as $attachment)
+    @php
+        $extension = strtolower(pathinfo($attachment->file_name, PATHINFO_EXTENSION));
+        $isImage = in_array($extension, ['jpg', 'jpeg', 'png']);
+    @endphp
+
+    <div style="
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px;
+        background: rgba(255,255,255,0.95);
+        border: 1px solid rgba(255,255,255,0.55);
+        border-radius: 12px;
+        color: #374151;
+    ">
+
+        {{-- Document thumbnail --}}
+        @if($isImage)
+            <a
+                href="{{ route('mother.prenatal-attachments.preview', $attachment->id) }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                    display: block;
+                    flex-shrink: 0;
+                    width: 92px;
+                    height: 82px;
+                    overflow: hidden;
+                    border-radius: 9px;
+                    background: #fce7f3;
+                "
+            >
+                <img
+                    src="{{ route('mother.prenatal-attachments.preview', $attachment->id) }}"
+                    alt="Laboratory result"
+                    loading="lazy"
+                    style="width: 100%; height: 100%; object-fit: cover;"
+                >
+            </a>
+        @else
+            <div style="
+                flex-shrink: 0;
+                width: 92px;
+                height: 82px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 9px;
+                background: #fce7f3;
+                color: #be185d;
+                font-size: 13px;
+                font-weight: 800;
+            ">
+                PDF
+            </div>
+        @endif
+
+        {{-- Document information --}}
+        <div style="flex: 1; min-width: 0;">
+
+            <strong style="
+                display: block;
+                font-size: 13px;
+                font-weight: 700;
+                overflow-wrap: anywhere;
+                color: #374151;
+            ">
+                {{ $attachment->file_name }}
+            </strong>
+
+            <span style="
+                display: block;
+                margin-top: 4px;
+                font-size: 11px;
+                color: #9ca3af;
+            ">
+                {{ strtoupper($extension) }}
+                ·
+                {{ number_format($attachment->file_size / 1024, 1) }} KB
+            </span>
+
+            <div style="
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 8px;
+                margin-top: 10px;
+            ">
+
+                @if($isImage)
+                    <a
+                        href="{{ route('mother.prenatal-attachments.preview', $attachment->id) }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="
+                            padding: 6px 12px;
+                            border-radius: 7px;
+                            background: #fce7f3;
+                            color: #be185d;
+                            font-size: 11px;
+                            font-weight: 700;
+                            text-decoration: none;
+                        "
+                    >
+                        View Image
+                    </a>
+                @endif
+
+                <a
+                    href="{{ route('mother.prenatal-attachments.download', $attachment->id) }}"
+                    style="
+                        padding: 6px 12px;
+                        border-radius: 7px;
+                        background: #be185d;
+                        color: white;
+                        font-size: 11px;
+                        font-weight: 700;
+                        text-decoration: none;
+                    "
+                >
+                    Download
+                </a>
+
+            </div>
+        </div>
+    </div>
+@endforeach
+                                </div>
+
+                            </div>
+                        @endif
+
                         @if($latestVisit->next_visit_date)
 
                             <div class="pnt-next-visit">
@@ -397,7 +541,68 @@
                                         </div>
 
                                     </div>
+                                    {{-- Laboratory Documents --}}
+                                    @if($record->attachments->isNotEmpty())
+                                        <div style="margin-top: 16px; padding: 14px; background: #fff7fa; border: 1px solid #fce7f3; border-radius: 12px;">
 
+                                            <h4 style="font-size: 13px; font-weight: 700; color: #9d174d; margin-bottom: 10px;">
+                                                Laboratory Documents
+                                            </h4>
+
+                                            <div style="display: grid; gap: 8px;">
+                                                @foreach($record->attachments as $attachment)
+    @php
+        $extension = strtolower(pathinfo($attachment->file_name, PATHINFO_EXTENSION));
+        $isImage = in_array($extension, ['jpg', 'jpeg', 'png']);
+    @endphp
+
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 10px 12px; background: #ffffff; border: 1px solid #fce7f3; border-radius: 9px;">
+
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+
+            <div style="min-width: 0;">
+                <strong style="display: block; font-size: 12px; color: #374151; overflow-wrap: anywhere;">
+                    {{ $attachment->file_name }}
+                </strong>
+
+                <span style="font-size: 11px; color: #6b7280;">
+                    {{ strtoupper($extension) }}
+                    ·
+                    {{ number_format($attachment->file_size / 1024, 1) }} KB
+                </span>
+            </div>
+
+            <a
+                href="{{ route('mother.prenatal-attachments.download', $attachment->id) }}"
+                style="font-size: 12px; font-weight: 700; color: #be185d; text-decoration: none;"
+            >
+                Download
+            </a>
+
+        </div>
+
+        @if($isImage)
+            <a
+                href="{{ route('mother.prenatal-attachments.preview', $attachment->id) }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: block; overflow: hidden; border-radius: 8px; background: #fff7fa;"
+            >
+                <img
+                    src="{{ route('mother.prenatal-attachments.preview', $attachment->id) }}"
+                    alt="Laboratory document: {{ $attachment->file_name }}"
+                    loading="lazy"
+                    style="display: block; width: 100%; max-height: 280px; object-fit: contain; border-radius: 8px;"
+                >
+            </a>
+        @endif
+
+    </div>
+@endforeach
+                                            </div>
+
+                                        </div>
+                                    @endif
 
                                     <div class="pnt-history-footer">
 

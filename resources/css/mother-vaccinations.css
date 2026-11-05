@@ -59,18 +59,34 @@
     font-size: 13px;
 }
 
-/* Hero */
+
+/* =========================================================
+   HERO — SOFT BLUSH PINK
+   ========================================================= */
 
 .mother-vaccinations-page .mv-hero {
     position: relative;
     isolation: isolate;
     overflow: hidden;
+
     padding: 28px;
-    color: white;
-    background: linear-gradient(125deg, #ed3d98 0%, #df2785 55%, #c91f78 100%);
+
+    color: #831843;
+
+    background: linear-gradient(
+        135deg,
+        #fff1f7 0%,
+        #fce7f3 52%,
+        #fff7fa 100%
+    );
+
+    border: 1px solid #fbcfe8;
     border-radius: 22px;
-    box-shadow: 0 10px 25px rgba(217, 35, 128, 0.16);
+
+    box-shadow: 0 12px 30px rgba(190, 24, 93, 0.07);
 }
+
+/* Decorative circles */
 
 .mother-vaccinations-page .mv-hero::before,
 .mother-vaccinations-page .mv-hero::after {
@@ -78,7 +94,6 @@
     z-index: -1;
     content: "";
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.09);
     pointer-events: none;
 }
 
@@ -87,6 +102,8 @@
     height: 190px;
     top: -95px;
     right: -35px;
+
+    background: rgba(244, 114, 182, 0.10);
 }
 
 .mother-vaccinations-page .mv-hero::after {
@@ -94,7 +111,11 @@
     height: 105px;
     right: 20px;
     bottom: -65px;
+
+    background: rgba(236, 72, 153, 0.08);
 }
+
+/* Hero content */
 
 .mother-vaccinations-page .mv-hero-content {
     display: flex;
@@ -106,12 +127,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 62px;
     height: 62px;
     flex-shrink: 0;
-    color: white;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    color: #be185d;
+    background: #ffffff;
+
+    border: 1px solid #fbcfe8;
     border-radius: 17px;
 }
 
@@ -120,11 +144,15 @@
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #ffe5f2;
+
+    color: #be185d;
 }
 
 .mother-vaccinations-page .mv-hero-title {
     margin-top: 5px;
+
+    color: #831843;
+
     font-size: 22px;
     font-weight: 750;
     line-height: 1.3;
@@ -133,38 +161,50 @@
 .mother-vaccinations-page .mv-hero-description {
     max-width: 520px;
     margin-top: 6px;
-    color: #ffe8f3;
+
+    color: #9d174d;
+
     font-size: 13px;
     line-height: 1.65;
 }
 
-/* Statistics */
+
+/* =========================================================
+   STATISTICS — WHITE CARDS
+   ========================================================= */
 
 .mother-vaccinations-page .mv-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
+
     margin-top: 25px;
 }
 
 .mother-vaccinations-page .mv-stat {
     padding: 13px 10px;
+
     text-align: center;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: #ffffff;
+    border: 1px solid #fce7f3;
     border-radius: 14px;
-    backdrop-filter: blur(8px);
+
+    box-shadow: 0 3px 10px rgba(190, 24, 93, 0.04);
 }
 
 .mother-vaccinations-page .mv-stat-label {
-    color: #ffe5f2;
+    color: #9d174d;
+
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .mother-vaccinations-page .mv-stat-value {
     margin-top: 3px;
-    color: white;
+
+    color: #831843;
+
     font-size: 23px;
     font-weight: 800;
     line-height: 1.2;
@@ -172,9 +212,12 @@
 
 .mother-vaccinations-page .mv-hero-footnote {
     margin-top: 14px;
-    color: #ffe5f2;
+
+    color: #9d174d;
+
     font-size: 11px;
 }
+
 
 /* Main cards */
 

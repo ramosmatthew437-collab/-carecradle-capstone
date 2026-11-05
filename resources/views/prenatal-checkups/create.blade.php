@@ -133,10 +133,10 @@
 
                 </div>
 
-
-                <form action="{{ route('prenatal-checkups.store', $mother->id) }}"
-                      method="POST"
-                      class="pc-form">
+<form action="{{ route('prenatal-checkups.store', $mother->id) }}"
+      method="POST"
+      enctype="multipart/form-data"
+      class="pc-form">
 
                     @csrf
 
@@ -563,6 +563,35 @@
                                     <p class="pc-field-error">{{ $message }}</p>
                                 @enderror
                             </div>
+
+{{-- Laboratory Document Attachments --}}
+<div class="pc-fields pc-fields-one">
+    <div class="pc-field">
+        <label for="laboratory_attachments">
+            Laboratory Documents
+        </label>
+
+        <input
+            id="laboratory_attachments"
+            type="file"
+            name="laboratory_attachments[]"
+            multiple
+            accept=".pdf,.jpg,.jpeg,.png"
+            class="pc-input">
+
+        <p class="pc-helper">
+            Upload laboratory results such as CBC, urinalysis,
+            blood chemistry, or other prenatal laboratory reports.
+            Accepted formats: PDF, JPG, JPEG, PNG.
+            Maximum 10 MB per file, up to 10 files.
+        </p>
+
+        @error('laboratory_attachments')
+            <p class="pc-field-error">{{ $message }}</p>
+        @enderror
+    </div>
+</div>
+
 
                         </div>
                     </div>

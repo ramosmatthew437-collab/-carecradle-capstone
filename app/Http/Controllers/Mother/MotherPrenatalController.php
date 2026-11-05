@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mother;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PrenatalCheckup;
@@ -16,6 +17,7 @@ class MotherPrenatalController extends Controller
             'mother_id',
             $mother->id
         )
+        ->with('attachments')
         ->latest()
         ->paginate(10);
 
