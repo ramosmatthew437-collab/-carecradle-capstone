@@ -1,7 +1,11 @@
 <x-app-layout>
 
     {{-- Midwife Dashboard styles are kept separate from the shared application styles. --}}
-   <div class="db-wrap" style="--cc-rhu-image: url('{{ asset('images/irosin-rhu.png') }}');">
+  <div class="db-wrap"
+     style="
+        --cc-rhu-image: url('{{ asset('images/irosin-rhu.png') }}');
+        --cc-dashboard-bg: url('{{ asset('images/carecradle-dashboard-bg.png') }}');
+     ">
         <div class="db-container">
 
             {{-- ====================================== --}}

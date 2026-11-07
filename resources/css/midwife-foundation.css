@@ -546,3 +546,187 @@
         padding-bottom: 0.55rem;
     }
 }
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE SIDEBAR VISUAL REFINEMENT
+   Refined blush and white healthcare interface
+   ========================================================= */
+
+/* Sidebar surface */
+.cc-midwife-sidebar {
+    padding: 1.45rem 1rem 1rem;
+    background: linear-gradient(180deg, #fff 0%, #fff8fb 100%);
+    border-right: 1px solid #f1dfe8;
+    box-shadow: 5px 0 22px rgba(157, 23, 77, 0.035);
+}
+
+/* Branding */
+.cc-midwife-brand {
+    gap: 0.85rem;
+    padding: 0 0.3rem 1.3rem;
+    border-bottom-color: #f3e2ea;
+}
+
+.cc-midwife-logo {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+    max-width: 46px;
+    padding: 2px;
+    border: 1px solid #f7e4ed;
+    box-shadow: 0 3px 10px rgba(190, 24, 93, 0.09);
+}
+
+.cc-midwife-brand strong {
+    color: #96365f;
+    font-size: 1.2rem;
+    letter-spacing: -0.025em;
+}
+
+.cc-midwife-brand small {
+    color: #a16d85;
+    font-size: 0.7rem;
+    letter-spacing: 0.015em;
+}
+
+/* Midwife profile card */
+.cc-midwife-profile-card {
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #fff 0%, #fff8fb 100%);
+    border-color: #f0dce6;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(157, 23, 77, 0.035);
+}
+
+.cc-midwife-profile-card:hover {
+    background: #fff5f9;
+    border-color: #e9bfd1;
+    box-shadow: 0 7px 18px rgba(157, 23, 77, 0.075);
+}
+
+.cc-midwife-avatar {
+    flex-basis: 44px;
+    width: 44px;
+    height: 44px;
+    color: #96365f;
+    background: #fceaf2;
+    box-shadow: 0 0 0 1px #f0d6e2;
+}
+
+.cc-midwife-profile-info strong {
+    color: #29364b;
+    font-size: 0.78rem;
+}
+
+.cc-midwife-profile-info small {
+    color: #a16d85;
+    font-size: 0.67rem;
+}
+
+/* Main menu label */
+.cc-midwife-menu-label {
+    margin-top: 1.2rem;
+    margin-bottom: 0.7rem;
+    color: #a16d85;
+    font-size: 0.64rem;
+    letter-spacing: 0.13em;
+}
+
+/* Navigation spacing */
+.cc-midwife-links {
+    gap: 0.4rem;
+}
+
+.cc-midwife-link {
+    min-height: 46px;
+    padding: 0.75rem 0.85rem;
+    border-radius: 11px;
+    color: #596579;
+    font-size: 0.79rem;
+    font-weight: 600;
+}
+
+.cc-midwife-link svg {
+    flex-basis: 20px;
+    width: 20px;
+    height: 20px;
+    color: #8792a3;
+}
+
+/* Navigation hover */
+@media (hover: hover) and (pointer: fine) {
+    .cc-midwife-link:not(.is-active):hover {
+        color: #96365f;
+        background: #fff0f6;
+        border-color: #f6dce8;
+        transform: translateX(2px);
+    }
+
+    .cc-midwife-link:not(.is-active):hover svg {
+        color: #c34d83;
+    }
+}
+
+/* Active navigation */
+.cc-midwife-link.is-active {
+    position: relative;
+    color: #96365f;
+    background: linear-gradient(100deg, #fbe8f0 0%, #fff3f8 100%);
+    border-color: #f0d0df;
+    box-shadow: 0 3px 9px rgba(157, 23, 77, 0.055);
+    font-weight: 750;
+}
+
+.cc-midwife-link.is-active::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    bottom: 9px;
+    left: 0;
+    width: 3px;
+    border-radius: 0 4px 4px 0;
+    background: #d94b86;
+}
+
+.cc-midwife-link.is-active svg {
+    color: #bd477b;
+}
+
+/* Bottom profile and logout area */
+.cc-midwife-sidebar-bottom {
+    gap: 0.4rem;
+    padding-top: 1rem;
+    border-top-color: #f0dfe7;
+}
+
+.cc-midwife-sidebar-bottom .cc-midwife-link {
+    min-height: 44px;
+}
+
+/* Logout */
+.cc-midwife-sidebar-bottom .cc-midwife-logout {
+    color: #7b5966;
+}
+
+.cc-midwife-sidebar-bottom .cc-midwife-logout:hover {
+    color: #a33d4b;
+    background: #fff0f0;
+    border-color: #f4dada;
+}
+
+/* Focus accessibility */
+.cc-midwife-link:focus-visible,
+.cc-midwife-profile-card:focus-visible,
+.cc-midwife-brand:focus-visible {
+    outline: 3px solid rgba(217, 75, 134, 0.3);
+    outline-offset: 3px;
+}

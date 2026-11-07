@@ -3004,3 +3004,1029 @@
         transform: none !important;
     }
 }
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE DASHBOARD
+   STEP 1: CLEAN AND ELEGANT WELCOME HEADER
+   ========================================================= */
+
+.db-wrap {
+    background: #fffafb;
+}
+
+.db-wrap .db-banner {
+    min-height: 176px;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid #f0e1e7;
+    border-radius: 1.25rem;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 252, 253, 0.97) 0%,
+            rgba(255, 249, 251, 0.91) 48%,
+            rgba(255, 247, 250, 0.62) 100%
+        ),
+        var(--cc-rhu-image, none) center 45% / cover no-repeat;
+    box-shadow: 0 5px 18px rgba(76, 35, 54, 0.055);
+}
+
+.db-wrap .db-banner-inner {
+    min-height: 0;
+    gap: 1.25rem;
+}
+
+.db-wrap .db-banner-portal {
+    margin-bottom: 0.65rem;
+    gap: 0.7rem;
+}
+
+.db-wrap .db-banner-portal-icon {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #fff0f5;
+    border: 1px solid #f3dce6;
+    box-shadow: none;
+}
+
+.db-wrap .db-banner-portal-label {
+    color: #a64b70;
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+}
+
+.db-wrap .db-banner-title {
+    margin-bottom: 0;
+    color: #713b53;
+    font-size: clamp(1.7rem, 2.5vw, 2.15rem);
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+}
+
+.db-wrap .db-banner-sub {
+    max-width: 620px;
+    margin-top: 0.4rem;
+    color: #687589;
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+.db-wrap .db-banner-date {
+    padding: 0.65rem 0.9rem;
+    color: #91415f;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #f0e0e7;
+    border-radius: 0.85rem;
+    box-shadow: 0 2px 8px rgba(76, 35, 54, 0.045);
+}
+
+.db-wrap .db-banner-date svg,
+.db-wrap .db-banner-date-label,
+.db-wrap .db-banner-date-value {
+    color: #91415f;
+}
+
+@media (max-width: 639px) {
+    .db-wrap .db-banner {
+        min-height: 0;
+        padding: 1.15rem;
+        border-radius: 1.1rem;
+        background-position: 62% center;
+    }
+
+    .db-wrap .db-banner-title {
+        font-size: 1.55rem;
+    }
+
+    .db-wrap .db-banner-sub {
+        font-size: 0.79rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE DASHBOARD
+   STEP 2: REFINED SYSTEM OVERVIEW STATISTIC CARDS
+   ========================================================= */
+
+.db-wrap .db-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.db-wrap .db-stat {
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    min-height: 120px;
+    padding: 1.25rem 1.3rem;
+    border: 1px solid #f0e1e8;
+    border-radius: 1.1rem;
+    background: linear-gradient(145deg, #ffffff 0%, #fffafb 100%);
+    box-shadow: 0 4px 15px rgba(76, 35, 54, 0.045);
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+/* Slim accent on the left */
+.db-wrap .db-stat::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: #d77a9e;
+    border-radius: 3px 0 0 3px;
+}
+
+.db-wrap .db-stat:hover {
+    transform: translateY(-3px);
+    border-color: #e8c5d4;
+    box-shadow: 0 10px 24px rgba(76, 35, 54, 0.085);
+}
+
+.db-wrap .db-stat-content {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+}
+
+.db-wrap .db-stat-label {
+    margin: 0 0 0.55rem;
+    color: #788092;
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.db-wrap .db-stat-value {
+    margin: 0;
+    color: #713b53;
+    font-size: clamp(1.9rem, 2.5vw, 2.3rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+}
+
+.db-wrap .db-stat-icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #f1dce5;
+    border-radius: 14px;
+    color: #b64e7b;
+    background: #fff1f6;
+}
+
+.db-wrap .db-stat-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Coordinated healthcare color variations */
+.db-wrap .db-stat:nth-child(1)::before {
+    background: #d77a9e;
+}
+
+.db-wrap .db-stat:nth-child(2)::before {
+    background: #bd6d91;
+}
+
+.db-wrap .db-stat:nth-child(3)::before {
+    background: #9c83b8;
+}
+
+.db-wrap .db-stat:nth-child(4)::before {
+    background: #c49a69;
+}
+
+.db-wrap .db-stat-icon-rose {
+    color: #bd5b83;
+    background: #fff1f6;
+    border-color: #f3dce6;
+}
+
+.db-wrap .db-stat-icon-pink {
+    color: #c05c91;
+    background: #fff0f7;
+    border-color: #f2d9e8;
+}
+
+.db-wrap .db-stat-icon-purple {
+    color: #8e70a9;
+    background: #f6f1fb;
+    border-color: #e8def1;
+}
+
+.db-wrap .db-stat-icon-amber {
+    color: #a77c48;
+    background: #fbf5eb;
+    border-color: #eee2ce;
+}
+
+/* Mobile */
+@media (max-width: 639px) {
+    .db-wrap .db-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+    }
+
+    .db-wrap .db-stat {
+        min-height: 105px;
+        padding: 1rem;
+    }
+
+    .db-wrap .db-stat-icon {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+    }
+
+    .db-wrap .db-stat-value {
+        font-size: 1.85rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .db-wrap .db-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE DASHBOARD
+   STEP 3: COMPACT QUICK ACTION CARDS
+   ========================================================= */
+
+.db-wrap .db-actions-grid {
+    gap: 1rem;
+}
+
+.db-wrap .db-action {
+    min-height: 148px;
+    padding: 1.1rem 1.2rem;
+    border-radius: 1rem;
+    background: #fff;
+    border: 1px solid #f0e3e8;
+    box-shadow: 0 4px 14px rgba(76, 35, 54, 0.035);
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.db-wrap .db-action:hover {
+    transform: translateY(-2px);
+    border-color: #e9cbd8;
+    box-shadow: 0 8px 18px rgba(76, 35, 54, 0.06);
+}
+
+.db-wrap .db-action-icon {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 0.65rem;
+    border-radius: 11px;
+    background: #fff3f7;
+    border: 1px solid #f1dce5;
+    color: #b64e7b;
+}
+
+.db-wrap .db-action-name {
+    margin-bottom: 0.3rem;
+    color: #713b53;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.db-wrap .db-action-desc {
+    max-width: 560px;
+    color: #778195;
+    font-size: 0.79rem;
+    line-height: 1.5;
+}
+
+.db-wrap .db-action-cta {
+    margin-top: 0.6rem;
+    font-size: 0.75rem;
+}
+
+@media (max-width: 639px) {
+    .db-wrap .db-action {
+        min-height: 0;
+        padding: 1rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE DASHBOARD
+   STEP 4: POLISHED QUICK ACTION CARDS
+   ========================================================= */
+
+.db-wrap .db-action {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.1rem;
+    min-height: 124px;
+    padding: 1.25rem 1.35rem;
+    overflow: hidden;
+    border: 1px solid #eedde5;
+    border-radius: 1.15rem;
+    background: linear-gradient(135deg, #ffffff 0%, #fff9fb 100%);
+    box-shadow: 0 4px 15px rgba(76, 35, 54, 0.045);
+    text-decoration: none;
+    transition:
+        transform 200ms ease,
+        border-color 200ms ease,
+        box-shadow 200ms ease,
+        background 200ms ease;
+}
+
+.db-wrap .db-action::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: #d77a9e;
+    transition: width 200ms ease;
+}
+
+.db-wrap .action-sms::before {
+    background: #69a88f;
+}
+
+.db-wrap .db-action > div {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 0.95rem;
+    min-width: 0;
+}
+
+.db-wrap .db-action-icon {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin: 0;
+    border-radius: 14px;
+    color: #b64e7b;
+    background: #fff0f5;
+    border: 1px solid #f1d9e4;
+    transition:
+        transform 200ms ease,
+        background 200ms ease;
+}
+
+.db-wrap .db-action-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.db-wrap .db-action-name {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0 0 0.25rem;
+    color: #713b53;
+    font-size: 0.94rem;
+    font-weight: 750;
+    line-height: 1.35;
+}
+
+.db-wrap .db-action-desc {
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0;
+    max-width: 560px;
+    color: #778195;
+    font-size: 0.78rem;
+    line-height: 1.55;
+}
+
+.db-wrap .db-action-cta {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    align-self: center;
+    margin: 0;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.7rem;
+    color: #a94e73;
+    background: #fff1f6;
+    font-size: 0.73rem;
+    font-weight: 750;
+    white-space: nowrap;
+    transition:
+        background 200ms ease,
+        color 200ms ease,
+        gap 200ms ease;
+}
+
+.db-wrap .db-action-cta svg {
+    width: 15px;
+    height: 15px;
+}
+
+.db-wrap .action-sms .db-action-icon {
+    color: #438b72;
+    background: #eff9f4;
+    border-color: #dcefe6;
+}
+
+.db-wrap .action-sms .db-action-cta {
+    color: #438b72;
+    background: #eff9f4;
+}
+
+/* Hover and keyboard interaction */
+.db-wrap .db-action:hover {
+    transform: translateY(-3px);
+    border-color: #e6c4d3;
+    box-shadow: 0 10px 24px rgba(76, 35, 54, 0.085);
+    background: #ffffff;
+}
+
+.db-wrap .db-action:hover::before {
+    width: 5px;
+}
+
+.db-wrap .db-action:hover .db-action-icon {
+    transform: scale(1.06);
+}
+
+.db-wrap .db-action:hover .db-action-cta {
+    gap: 0.65rem;
+    background: #fbe6ef;
+}
+
+.db-wrap .action-sms:hover {
+    border-color: #cce7db;
+}
+
+.db-wrap .action-sms:hover .db-action-cta {
+    background: #e4f4ec;
+}
+
+.db-wrap .db-action:focus-visible {
+    outline: 3px solid rgba(190, 91, 135, 0.3);
+    outline-offset: 3px;
+}
+
+/* Mobile */
+@media (max-width: 639px) {
+    .db-wrap .db-action {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.85rem;
+        min-height: 0;
+        padding: 1.1rem;
+    }
+
+    .db-wrap .db-action > div {
+        grid-template-columns: 42px minmax(0, 1fr);
+        column-gap: 0.8rem;
+    }
+
+    .db-wrap .db-action-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .db-wrap .db-action-cta {
+        justify-self: start;
+        margin-left: 2.8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .db-wrap .db-action,
+    .db-wrap .db-action::before,
+    .db-wrap .db-action-icon,
+    .db-wrap .db-action-cta {
+        transition: none !important;
+    }
+}
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE DASHBOARD
+   STEP 5: REFINED APPOINTMENTS & VACCINATION PANELS
+   ========================================================= */
+
+/* Section headings */
+.db-wrap .db-row-head {
+    margin-bottom: 0.9rem;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.db-wrap .db-row-head h2 {
+    color: #713b53;
+    font-size: 1.18rem;
+    line-height: 1.35;
+}
+
+.db-wrap .db-badge {
+    padding: 0.4rem 0.75rem;
+    color: #a64b70;
+    background: #fff3f7;
+    border: 1px solid #f0dce5;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+/* Appointment and vaccination lists */
+.db-wrap .db-two-col .db-card-list {
+    gap: 0.8rem;
+}
+
+.db-wrap .db-two-col .db-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    min-width: 0;
+    padding: 1.1rem 1.2rem;
+    overflow: hidden;
+    border: 1px solid #eee0e7;
+    border-radius: 1.05rem;
+    background: linear-gradient(145deg, #ffffff, #fffafb);
+    box-shadow: 0 3px 13px rgba(76, 35, 54, 0.035);
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.db-wrap .db-two-col .db-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: #d77a9e;
+    opacity: 0.8;
+}
+
+.db-wrap .db-two-col .db-card:hover {
+    transform: translateY(-2px);
+    border-color: #e8cbd8;
+    box-shadow: 0 8px 19px rgba(76, 35, 54, 0.065);
+}
+
+/* Appointment time */
+.db-wrap .db-card-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.2rem;
+}
+
+.db-wrap .db-card-time-text {
+    color: #a64b70;
+    font-size: 0.76rem;
+    font-weight: 750;
+    letter-spacing: 0.01em;
+}
+
+.db-wrap .db-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+}
+
+.db-wrap .db-card-icon-pink {
+    color: #b64e7b;
+    background: #fff0f5;
+    border: 1px solid #f1dce5;
+}
+
+.db-wrap .db-card-icon-blue {
+    color: #3686bb;
+    background: #edf7ff;
+    border: 1px solid #d9edfb;
+}
+
+/* Patient and infant information */
+.db-wrap .db-card-person {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.db-wrap .db-two-col .db-card-name {
+    margin: 0;
+    color: #713b53;
+    font-size: 0.88rem;
+    font-weight: 750;
+    line-height: 1.4;
+}
+
+.db-wrap .db-two-col .db-card-meta {
+    margin: 0;
+    color: #7b8495;
+    font-size: 0.76rem;
+    line-height: 1.5;
+}
+
+/* Status and due-date pills */
+.db-wrap .db-two-col .db-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 0.2rem;
+    padding: 0.38rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 750;
+    line-height: 1.3;
+}
+
+.db-wrap .db-two-col .db-pill-teal-due {
+    color: #167b70;
+    background: #e5f8f3;
+    border: 1px solid #cceee4;
+}
+
+/* Empty states */
+.db-wrap .db-two-col .db-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 168px;
+    padding: 1.6rem 1.25rem;
+    text-align: center;
+    border: 1px solid #eee0e7;
+    border-radius: 1.05rem;
+    background: linear-gradient(145deg, #ffffff, #fff8fb);
+    box-shadow: 0 3px 13px rgba(76, 35, 54, 0.03);
+}
+
+.db-wrap .db-two-col .db-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 0.8rem;
+    color: #ad4771;
+    background: #fff0f5;
+    border: 1px solid #f1dce5;
+    border-radius: 14px;
+}
+
+.db-wrap .db-two-col .db-empty-title {
+    margin: 0 0 0.3rem;
+    color: #713b53;
+    font-size: 0.9rem;
+    font-weight: 750;
+}
+
+.db-wrap .db-two-col .db-empty-sub {
+    max-width: 340px;
+    margin: 0;
+    color: #858b98;
+    font-size: 0.77rem;
+    line-height: 1.6;
+}
+
+/* Mobile */
+@media (max-width: 639px) {
+    .db-wrap .db-row-head h2 {
+        font-size: 1.05rem;
+    }
+
+    .db-wrap .db-two-col .db-card {
+        padding: 1rem;
+    }
+
+    .db-wrap .db-two-col .db-empty {
+        min-height: 145px;
+        padding: 1.3rem 1rem;
+    }
+}
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE DASHBOARD
+   STEP 6: MOBILE BACKGROUND & RESPONSIVENESS
+   ========================================================= */
+
+@media (max-width: 639px) {
+
+    /* Show the custom background illustration on phones */
+    .db-wrap {
+        min-height: 100vh;
+        background-color: #fffafb;
+        background-image:
+            linear-gradient(
+                rgba(255, 250, 251, 0.66),
+                rgba(255, 250, 251, 0.66)
+            ),
+            var(--cc-dashboard-bg);
+        background-repeat: repeat-y;
+        background-position: center top;
+        background-size: 100% auto;
+        background-attachment: scroll;
+    }
+
+    /* Keep the RHU building visible in the welcome banner */
+    .db-wrap .db-banner {
+        min-height: 205px;
+        background-image:
+            linear-gradient(
+                100deg,
+                rgba(255, 250, 251, 0.84) 0%,
+                rgba(255, 248, 250, 0.67) 48%,
+                rgba(255, 247, 250, 0.34) 100%
+            ),
+            var(--cc-rhu-image);
+        background-position: center, 65% center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    /* Improve mobile content spacing */
+    .db-wrap .db-container {
+        gap: 1.15rem;
+        padding-inline: 0.85rem;
+    }
+
+    /* Two-column statistics on regular phones */
+    .db-wrap .db-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+    }
+
+    /* Stack quick actions and information panels */
+    .db-wrap .db-actions-grid,
+    .db-wrap .db-two-col {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.85rem;
+    }
+
+    /* Keep cards comfortable to read */
+    .db-wrap .db-action,
+    .db-wrap .db-card {
+        max-width: 100%;
+    }
+
+    /* Recent infant registrations */
+    .db-wrap .db-infants {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+/* Extra-small phones */
+@media (max-width: 380px) {
+    .db-wrap .db-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .db-wrap .db-banner {
+        min-height: 190px;
+    }
+
+    .db-wrap .db-banner-title {
+        font-size: 1.35rem;
+    }
+}
+
+
+
+
+
+/* Mobile welcome banner — improve text readability */
+@media (max-width: 639px) {
+    .db-wrap .db-banner {
+        background-image:
+            linear-gradient(
+                100deg,
+                rgba(255, 250, 251, 0.94) 0%,
+                rgba(255, 248, 250, 0.86) 52%,
+                rgba(255, 247, 250, 0.58) 100%
+            ),
+            var(--cc-rhu-image);
+
+        background-position: center, 68% center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+}
+
+
+
+/* =========================================================
+   CARECRADLE — MIDWIFE DASHBOARD
+   STEP 7: RECENT INFANT REGISTRATIONS
+   ========================================================= */
+
+/* Registration card grid */
+.db-wrap .db-infants {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+/* Individual infant cards */
+.db-wrap .db-infants .db-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+    min-width: 0;
+    min-height: 118px;
+    padding: 1.15rem;
+    overflow: hidden;
+    border: 1px solid #eee0e7;
+    border-radius: 1.05rem;
+    background: linear-gradient(145deg, #ffffff 0%, #fff9fb 100%);
+    box-shadow: 0 3px 13px rgba(76, 35, 54, 0.035);
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.db-wrap .db-infants .db-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: #d77a9e;
+    opacity: 0.75;
+}
+
+.db-wrap .db-infants .db-card:hover {
+    transform: translateY(-2px);
+    border-color: #e8cbd8;
+    box-shadow: 0 8px 19px rgba(76, 35, 54, 0.065);
+}
+
+/* Infant identity */
+.db-wrap .db-infants .db-card-person {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.db-wrap .db-infants .db-card-icon {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+}
+
+.db-wrap .db-infants .db-card-name {
+    min-width: 0;
+    margin: 0;
+    color: #713b53;
+    font-size: 0.9rem;
+    font-weight: 750;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+/* Mother's name */
+.db-wrap .db-infants .db-card-meta {
+    margin: 0;
+    padding-left: 0.1rem;
+    color: #788295;
+    font-size: 0.76rem;
+    line-height: 1.45;
+}
+
+/* Registration date */
+.db-wrap .db-infants .db-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: auto;
+    padding: 0.38rem 0.7rem;
+    color: #16866f;
+    background: #e7f8f1;
+    border: 1px solid #cef0e2;
+    border-radius: 999px;
+    font-size: 0.67rem;
+    font-weight: 750;
+    line-height: 1.3;
+}
+
+/* Empty registration state */
+.db-wrap .db-section > .db-empty {
+    border: 1px solid #eee0e7;
+    border-radius: 1.05rem;
+    background: linear-gradient(145deg, #ffffff, #fff8fb);
+    box-shadow: 0 3px 13px rgba(76, 35, 54, 0.03);
+}
+
+/* Tablet */
+@media (min-width: 640px) and (max-width: 1023px) {
+    .db-wrap .db-infants {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 639px) {
+    .db-wrap .db-infants {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+
+    .db-wrap .db-infants .db-card {
+        min-height: 110px;
+        padding: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .db-wrap .db-infants .db-card {
+        transition: none !important;
+    }
+}

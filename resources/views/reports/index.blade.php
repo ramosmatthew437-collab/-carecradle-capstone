@@ -4,42 +4,61 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
 
+{{-- ====================================== --}}
+{{-- 1. REPORT HEADER --}}
+{{-- ====================================== --}}
 
+<header class="rp-page-header" aria-labelledby="rp-page-title">
 
-            {{-- ====================================== --}}
+    <div class="rp-page-header-main">
+        <div class="rp-page-header-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18M7.5 15l3-3 2.25 2.25L17.25 9"/>
+            </svg>
+        </div>
 
-            {{-- 1. REPORT HEADER --}}
+        <div class="rp-page-header-copy">
+            <p class="rp-page-eyebrow">Reports &amp; Analytics</p>
 
-            {{-- ====================================== --}}
+            <h1 class="rp-page-title" id="rp-page-title">
+                CareCradle Reports
+            </h1>
 
+            <p class="rp-page-sub">
+                Generate and review maternal and infant healthcare reports for the Rural Health Unit.
+            </p>
+        </div>
+    </div>
 
+    <div class="rp-page-header-actions">
 
-            <header class="rp-page-header" aria-labelledby="rp-page-title">
-                <div class="rp-page-header-icon" aria-hidden="true">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="1.8"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 3v18h18M7.5 15l3-3 2.25 2.25L17.25 9"/>
-                    </svg>
-                </div>
-                <div class="rp-page-header-copy">
-                    <p class="rp-page-eyebrow">Reports &amp; Analytics</p>
-                    <h1 class="rp-page-title" id="rp-page-title">CareCradle Reports</h1>
-                    <p class="rp-page-sub">
-                        Generate and review maternal and infant healthcare reports for the Rural Health Unit.
-                    </p>
-                </div>
-                <div class="rp-page-tag">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="1.8"
-                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M4 19V5M4 19h16"/>
-                        <path d="M8 15l3-3 2 2 4-5"/>
-                    </svg>
-                    <span>Healthcare Reporting Center</span>
-                </div>
-            </header>
+        <div class="rp-page-tag">
+            <svg width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M4 19V5M4 19h16"/>
+                <path d="M8 15l3-3 2 2 4-5"/>
+            </svg>
+            <span>Healthcare Reporting Center</span>
+        </div>
 
+        <a href="{{ route('dashboard') }}" class="rp-back-button">
+            <svg width="17" height="17" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M19 12H5"/>
+                <path d="m12 19-7-7 7-7"/>
+            </svg>
+            <span>Back to Dashboard</span>
+        </a>
+
+    </div>
+
+</header>
 
             {{-- 2. REPORT CATEGORIES --}}
 

@@ -138,15 +138,17 @@
             gap: 0.5rem;
         }
         .lf-remember input[type="checkbox"] {
-            width: 1rem;
-            height: 1rem;
-            border-radius: 0.3rem !important;
-            border: 1.5px solid #cbd5e1 !important;
-            background: #f8fafc !important;
-            accent-color: #e11d48;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
+    width: 1rem;
+    height: 1rem;
+    appearance: auto !important;
+    -webkit-appearance: checkbox !important;
+    border: 1.5px solid #cbd5e1;
+    background-color: #f8fafc;
+    accent-color: #e11d48;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: 0;
+}
         .lf-remember input[type="checkbox"]:focus {
             outline: 2px solid rgba(225, 29, 72, 0.3);
             outline-offset: 1px;

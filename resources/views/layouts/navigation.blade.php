@@ -1,4 +1,4 @@
-﻿<nav
+<nav
     x-data="{ open: false, motherDrawerOpen: false, midwifeDrawerOpen: false, adminDrawerOpen: false }"
     class="border-b-0 sm:border-b sm:border-pink-100 {{ Auth::user()?->isMother() ? 'bg-pink-50' : 'bg-white' }}"
 >

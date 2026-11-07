@@ -213,3 +213,435 @@ table.min-w-full td p { overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) {
     .transition, .transition-colors { transition: none !important; }
 }
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   ACTIVITY LOGS — HEADER ACTIONS
+   ========================================================= */
+
+.al-page-heading-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: .625rem;
+    flex: 0 0 auto;
+}
+
+.al-back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: 40px;
+    padding: .6rem .95rem;
+    border: 1px solid #e2e8f0;
+    border-radius: .75rem;
+    background: #ffffff;
+    color: #475569;
+    font-family: 'Inter', sans-serif;
+    font-size: .8rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .18s ease, color .18s ease,
+                border-color .18s ease;
+}
+
+.al-back-button:hover {
+    background: #fdf2f8;
+    color: #be185d;
+    border-color: #f9a8d4;
+}
+
+.al-back-button:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, .3);
+    outline-offset: 3px;
+}
+
+@media (max-width: 639px) {
+    .al-page-heading-actions {
+        width: 100%;
+        justify-content: flex-start;
+        padding-left: 3.25rem;
+    }
+
+    .al-back-button {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .al-back-button {
+        transition: none;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — ACTIVITY LOGS VISUAL POLISH
+   UI styling only — no backend or Blade changes
+   ========================================================= */
+
+/* Main page spacing */
+.py-8 > .max-w-7xl {
+    padding-top: 0.25rem;
+    padding-bottom: 1.5rem;
+}
+
+.py-8 > .max-w-7xl.space-y-6 {
+    --tw-space-y-reverse: 0;
+    --tw-space-y-reverse: 0;
+}
+
+.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 {
+    gap: 1rem;
+}
+
+/* Summary cards */
+.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
+    position: relative;
+    min-height: 142px;
+    padding: 1.35rem 1.4rem;
+    border: 1px solid #f9d9e9;
+    border-radius: 1.1rem;
+    background: linear-gradient(145deg, #ffffff 65%, #fff7fb);
+    box-shadow: 0 3px 12px rgba(157, 23, 77, 0.035);
+    transition: transform .2s ease, box-shadow .2s ease,
+                border-color .2s ease;
+}
+
+.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:hover {
+    transform: translateY(-3px);
+    border-color: #f5b7d3;
+    box-shadow: 0 9px 22px rgba(190, 24, 93, 0.09);
+}
+
+.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex p {
+    color: #64748b;
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > p.text-3xl {
+    margin-top: 1rem;
+    color: #263449;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -.045em;
+    line-height: 1.1;
+}
+
+.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > p:last-child {
+    margin-top: .45rem;
+    color: #94a3b8;
+    font-size: .72rem;
+}
+
+.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex > span {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+}
+
+/* Filter panel */
+.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden {
+    border: 1px solid #f8dce9;
+    border-radius: 1.15rem;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(157, 23, 77, 0.045);
+}
+
+/* Filter panel heading */
+.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child {
+    padding: 0.9rem 1.1rem;
+    background: linear-gradient(110deg, #fff0f6, #fffafd 70%, #ffffff) !important;
+    border-bottom: 1px solid #fce7f3;
+}
+
+.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child h3 {
+    color: #9d174d;
+    font-size: .98rem;
+    font-weight: 750;
+}
+
+.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child p {
+    color: #7c8798;
+    font-size: .8rem;
+}
+
+/* Form spacing and controls */
+.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden form {
+    padding: 1.5rem;
+    background: #ffffff;
+}
+
+.py-8 > .max-w-7xl form label {
+    margin-bottom: .5rem;
+    color: #475569;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.py-8 > .max-w-7xl form input,
+.py-8 > .max-w-7xl form select {
+    min-height: 43px;
+    border: 1px solid #e5e7eb;
+    border-radius: .7rem;
+    background-color: #ffffff;
+    color: #334155;
+    font-size: .82rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .025);
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.py-8 > .max-w-7xl form input:focus,
+.py-8 > .max-w-7xl form select:focus {
+    border-color: #ec4899;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, .11);
+}
+
+/* Keep all five filters on one row on wide screens */
+@media (min-width: 1280px) {
+    .py-8 > .max-w-7xl form > .grid.md\:grid-cols-2.xl\:grid-cols-4 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .py-8 > .max-w-7xl form > .grid.md\:grid-cols-2.xl\:grid-cols-4 > div.xl\:col-span-2 {
+        grid-column: span 2;
+    }
+}
+
+/* Filter action buttons */
+.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row {
+    padding-top: .25rem;
+}
+
+.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > a,
+.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > button {
+    min-height: 43px;
+    padding-inline: 1.2rem;
+    border-radius: .7rem;
+    font-size: .8rem;
+    font-weight: 700;
+    transition: transform .18s ease, box-shadow .18s ease,
+                background .18s ease;
+}
+
+.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > a:hover {
+    background: #fff5f9;
+    border-color: #f5b7d3;
+    color: #be185d;
+}
+
+.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > button {
+    box-shadow: 0 4px 10px rgba(190, 24, 93, .16);
+}
+
+.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(190, 24, 93, .22);
+}
+
+/* Activity history panel */
+.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden:last-of-type {
+    border-color: #f8dce9;
+    border-radius: 1.15rem;
+    box-shadow: 0 4px 16px rgba(157, 23, 77, .045);
+}
+
+.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div.flex.flex-col {
+    padding: 1.2rem 1.5rem;
+    background: linear-gradient(110deg, #fffafd, #ffffff);
+    border-bottom-color: #fce7f3;
+}
+
+.py-8 > .max-w-7xl h3.text-base.font-semibold.text-gray-800 {
+    color: #263449;
+    font-weight: 750;
+}
+
+/* Table */
+.py-8 > .max-w-7xl table.min-w-full thead {
+    background: #fff5f9 !important;
+}
+
+.py-8 > .max-w-7xl table.min-w-full th {
+    padding: .9rem 1.1rem;
+    color: #9d174d;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .065em;
+    border-bottom: 1px solid #fce7f3;
+}
+
+.py-8 > .max-w-7xl table.min-w-full td {
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.py-8 > .max-w-7xl table.min-w-full tbody tr {
+    transition: background .15s ease;
+}
+
+.py-8 > .max-w-7xl table.min-w-full tbody tr:hover {
+    background: #fff7fb;
+}
+
+.py-8 > .max-w-7xl table.min-w-full tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Empty state */
+.py-8 > .max-w-7xl .px-6.py-16.text-center {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+}
+
+.py-8 > .max-w-7xl .px-6.py-16.text-center h4 {
+    color: #334155;
+    font-size: 1rem;
+    font-weight: 750;
+}
+
+.py-8 > .max-w-7xl .px-6.py-16.text-center p {
+    color: #94a3b8;
+    font-size: .82rem;
+}
+
+/* Responsive refinements */
+@media (max-width: 767px) {
+    .py-8 > .max-w-7xl form {
+        padding: 0.9rem;
+    }
+
+    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
+        min-height: 125px;
+    }
+
+    .py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child,
+    .py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div.flex.flex-col {
+        padding-inline: 1.1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div,
+    .py-8 > .max-w-7xl form button,
+    .py-8 > .max-w-7xl form a {
+        transition: none;
+    }
+}
+
+
+
+
+/* Activity Logs — compact mobile header actions */
+@media (max-width: 639px) {
+    .al-page-heading-actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: .5rem;
+        width: 100%;
+        padding-left: 3.25rem;
+    }
+
+    .al-page-heading-badge {
+        flex: 0 0 auto;
+    }
+
+    .al-back-button {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+        padding-inline: .5rem;
+        font-size: .73rem;
+    }
+}
+
+
+
+
+
+
+/* Activity Logs — remove separate white header strip */
+header:has(.al-header-shell) {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+header:has(.al-header-shell) > div {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+
+.al-header-shell {
+    background: transparent !important;
+}
+
+.al-page-heading {
+    background: transparent !important;
+}
+
+
+
+
+
+/* =========================================================
+   ACTIVITY LOGS — COMPACT MOBILE STATISTICS
+   ========================================================= */
+
+@media (max-width: 639px) {
+    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
+        min-width: 0;
+        min-height: 112px;
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+
+    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > p.text-3xl {
+        margin-top: 0.75rem;
+        font-size: 1.75rem;
+    }
+}
+
+
+
+
+
+/* Activity Logs — reduce mobile top spacing */
+
+@media (max-width: 639px) {
+    .py-8 {
+        padding-top: 0.5rem !important;
+    }
+}

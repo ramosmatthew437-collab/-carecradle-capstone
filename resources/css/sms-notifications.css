@@ -2593,3 +2593,43 @@
         padding-right: 10px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+/* SMS Notifications Back Button */
+.sms-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin-bottom: 18px;
+    padding: 9px 15px;
+    border: 1px solid #fbcfe8;
+    border-radius: 10px;
+    background: #fff;
+    color: #be185d;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.sms-back-button svg {
+    width: 17px;
+    height: 17px;
+}
+
+.sms-back-button:hover {
+    background: #fdf2f8;
+    border-color: #f472b6;
+    color: #9d174d;
+}

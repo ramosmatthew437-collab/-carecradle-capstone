@@ -1367,9 +1367,10 @@
         padding: 1rem;
     }
 
-    .mm-mobile-details {
-        grid-template-columns: 1fr;
-    }
+   .mm-mobile-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
 
     .mm-search-input {
         padding-right: 6.25rem;
@@ -1563,4 +1564,165 @@
 
 .mm-stat-total .mm-stat-value {
     color: #be185d;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MIDWIFE MANAGEMENT — HEADER REFINEMENT
+   ========================================================= */
+
+.mm-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: #ffffff;
+    border: 1px solid #fce7f3;
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(190, 24, 93, 0.045);
+}
+
+.mm-page-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+}
+
+.mm-back-button,
+.mm-page-header-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 42px;
+    padding: 0.65rem 1rem;
+    border-radius: 0.75rem;
+    font-family: "Inter", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.18s ease, border-color 0.18s ease,
+                color 0.18s ease, transform 0.18s ease;
+}
+
+.mm-back-button {
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+}
+
+.mm-back-button:hover {
+    color: #be185d;
+    background: #fdf2f8;
+    border-color: #f9a8d4;
+}
+
+.mm-page-header-button {
+    color: #ffffff;
+    background: #db2777;
+    border: 1px solid #db2777;
+    box-shadow: 0 3px 8px rgba(190, 24, 93, 0.12);
+}
+
+.mm-page-header-button:hover {
+    color: #ffffff;
+    background: #be185d;
+    border-color: #be185d;
+    transform: translateY(-1px);
+}
+
+.mm-back-button:focus-visible,
+.mm-page-header-button:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, 0.3);
+    outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+    .mm-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .mm-page-header-main {
+        width: 100%;
+    }
+
+    .mm-page-header-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mm-back-button,
+    .mm-page-header-button {
+        width: 100%;
+        padding-inline: 0.5rem;
+        font-size: 0.72rem;
+    }
+}
+
+
+/* =========================================================
+   MOBILE STATISTICS — COMPACT TWO-COLUMN LAYOUT
+   ========================================================= */
+
+@media (max-width: 639px) {
+
+    .mm-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .mm-stat {
+        min-width: 0;
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+
+    .mm-stat-top {
+        margin-bottom: 0.7rem;
+    }
+
+    .mm-stat-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 0.7rem;
+    }
+
+    .mm-stat-badge {
+        padding: 0.2rem 0.45rem;
+        font-size: 0.55rem;
+    }
+
+    .mm-stat-value {
+        font-size: 1.75rem;
+    }
+
+    .mm-stat-label {
+        font-size: 0.65rem;
+        line-height: 1.45;
+    }
+
+    .mm-stat-inactive {
+        grid-column: 1 / -1;
+    }
 }

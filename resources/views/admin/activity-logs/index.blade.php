@@ -2,54 +2,54 @@
 
    <link rel="stylesheet" href="{{ asset('css/activity-logs.css') }}">
     <x-slot name="header">
+<div class="al-header-shell">
 
-        <div class="al-header-shell">
+    <div class="al-page-heading">
 
-            <div class="al-page-heading">
+        <div class="al-page-heading-main">
 
-                <div class="al-page-heading-main">
+            <span class="al-page-heading-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 6h13M8 12h13M8 18h13"/>
+                    <path d="M3 6h.01M3 12h.01M3 18h.01"/>
+                </svg>
+            </span>
 
-                    <span class="al-page-heading-icon" aria-hidden="true">
+            <div>
+                <h1 class="al-page-heading-title">Activity Logs</h1>
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
-
-                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-
-                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-
-                            <path d="M8 6h13M8 12h13M8 18h13"/>
-
-                            <path d="M3 6h.01M3 12h.01M3 18h.01"/>
-
-                        </svg>
-
-                    </span>
-
-                    <div>
-
-                        <h1 class="al-page-heading-title">Activity Logs</h1>
-
-                        <p class="al-page-heading-subtitle">
-
-                            Track staff actions and system record changes.
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <span class="al-page-heading-badge">
-
-                    <span class="al-page-heading-dot" aria-hidden="true"></span>
-
-                    Audit Trail
-
-                </span>
-
+                <p class="al-page-heading-subtitle">
+                    Track staff actions and system record changes.
+                </p>
             </div>
 
         </div>
+
+        <div class="al-page-heading-actions">
+
+            <span class="al-page-heading-badge">
+                <span class="al-page-heading-dot" aria-hidden="true"></span>
+                Audit Trail
+            </span>
+
+            <a href="{{ route('dashboard') }}" class="al-back-button">
+                <svg width="17" height="17" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                    <path d="M19 12H5"/>
+                    <path d="m12 19-7-7 7-7"/>
+                </svg>
+                <span>Back to Dashboard</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
 
     </x-slot>
 

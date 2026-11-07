@@ -1,15 +1,18 @@
 <x-app-layout>
-<div class="ad-wrap py-6 sm:py-8">
+    <div class="ad-wrap py-6 sm:py-8"
+         style="
+            --cc-rhu-image: url('{{ asset('images/irosin-rhu.png') }}');
+            --cc-dashboard-bg: url('{{ asset('images/carecradle-dashboard-bg.png') }}');
+         ">
 
         <div class="ad-content-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-7 sm:space-y-8">
-
             {{-- ====================================== --}}
 
             {{-- 1. Compact Page Header --}}
 
             {{-- ====================================== --}}
 
-            <header class="ad-page-header">
+           <header class="ad-page-header ad-page-header-hero">
 
                 <div class="ad-page-header-main">
 

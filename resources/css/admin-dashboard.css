@@ -1083,8 +1083,532 @@ table.ad-table tbody td.ad-td-muted {
 
 
 
+/* =========================================================
+   CARECRADLE — ADMIN DASHBOARD CARD REFINEMENT
+   Statistics and Quick Actions
+   ========================================================= */
+
+/* Primary statistics cards */
+.ad-wrap .ad-stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 142px;
+    padding: 1.25rem;
+    border: 1px solid #f3dce8;
+    border-radius: 1.125rem;
+    background: linear-gradient(145deg, #ffffff 0%, #fffafd 100%);
+    box-shadow: 0 3px 14px rgba(157, 23, 77, 0.045);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.ad-wrap .ad-stat:hover {
+    transform: translateY(-3px);
+    border-color: #f9a8d4;
+    box-shadow: 0 10px 26px rgba(190, 24, 93, 0.09);
+}
+
+.ad-wrap .ad-stat-top {
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.ad-wrap .ad-stat-icon {
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(236, 72, 153, 0.08);
+    border-radius: 0.875rem;
+}
+
+.ad-wrap .ad-stat-badge {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.055em;
+}
+
+.ad-wrap .ad-stat-value {
+    margin-bottom: 0.4rem;
+    font-size: clamp(2rem, 2.5vw, 2.4rem);
+    line-height: 1;
+}
+
+.ad-wrap .ad-stat-label {
+    font-size: 0.775rem;
+    line-height: 1.45;
+}
+
+/* Secondary statistic */
+.ad-wrap .ad-stat-secondary {
+    min-height: 72px;
+    padding: 1rem 1.25rem;
+    border-color: #d9f1e7;
+    border-radius: 1rem;
+    background: linear-gradient(110deg, #ffffff 0%, #f7fffb 100%);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ad-wrap .ad-stat-secondary:hover {
+    border-color: #a7f3d0;
+    box-shadow: 0 7px 20px rgba(5, 150, 105, 0.07);
+}
+
+.ad-wrap .ad-stat-secondary-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 0.875rem;
+}
+
+/* Quick action cards */
+.ad-wrap .ad-action {
+    min-height: 190px;
+    padding: 1.625rem;
+    border-radius: 1.125rem;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.035);
+}
+
+.ad-wrap .ad-action-pink {
+    border-color: #f3dce8;
+    background: linear-gradient(145deg, #ffffff 0%, #fffafd 100%);
+}
+
+.ad-wrap .ad-action-emerald {
+    border-color: #d5eee3;
+    background: linear-gradient(145deg, #ffffff 0%, #f9fffc 100%);
+}
+
+.ad-wrap .ad-action-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 1rem;
+}
+
+.ad-wrap .ad-action-name {
+    font-size: 1.025rem;
+    letter-spacing: -0.015em;
+}
+
+.ad-wrap .ad-action-desc {
+    max-width: 34rem;
+    line-height: 1.7;
+}
+
+.ad-wrap .ad-action-cta {
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    transition: gap 0.2s ease;
+}
+
+.ad-wrap .ad-action:hover .ad-action-cta {
+    gap: 0.75rem;
+}
+
+.ad-wrap .ad-action:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, 0.25);
+    outline-offset: 4px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 639px) {
+    .ad-wrap .ad-stat {
+        min-height: 130px;
+        padding: 1rem;
+    }
+
+    .ad-wrap .ad-action {
+        min-height: 0;
+        padding: 1.25rem;
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .ad-wrap .ad-stat,
+    .ad-wrap .ad-stat-secondary,
+    .ad-wrap .ad-action,
+    .ad-wrap .ad-action-cta {
+        transition: none;
+    }
+}
 
 
 
 
 
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — ADMIN SYSTEM INSIGHTS REFINEMENT
+   Tables, empty states, and section indicators
+   ========================================================= */
+
+/* Insight section headings */
+.ad-wrap .ad-insight-head {
+    margin-bottom: 0.875rem;
+    align-items: center;
+}
+
+.ad-wrap .ad-insight-head h3 {
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+}
+
+.ad-wrap .ad-insight-count {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid #fce7f3;
+    background: #fff1f7;
+    color: #be185d;
+    font-size: 0.675rem;
+}
+
+/* Table containers */
+.ad-wrap .ad-table-shell {
+    border: 1px solid #f3dce8;
+    border-radius: 1.05rem;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(157, 23, 77, 0.035);
+}
+
+/* Table header */
+.ad-wrap table.ad-table thead tr {
+    background: #fff7fb;
+    border-bottom: 1px solid #f3dce8;
+}
+
+.ad-wrap table.ad-table thead th {
+    padding: 0.95rem 1.25rem;
+    color: #64748b;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.075em;
+}
+
+/* Table rows */
+.ad-wrap table.ad-table tbody tr {
+    transition: background-color 0.18s ease;
+}
+
+.ad-wrap table.ad-table tbody tr:hover {
+    background: #fff9fc;
+}
+
+.ad-wrap table.ad-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.ad-wrap table.ad-table tbody td {
+    padding: 0.95rem 1.25rem;
+    color: #475569;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.ad-wrap table.ad-table tbody td:first-child {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* Date and due-date indicators */
+.ad-wrap .ad-pill-due {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid #d1fae5;
+    border-radius: 9999px;
+    background: #ecfdf5;
+    color: #047857;
+    font-size: 0.725rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Empty appointment state */
+.ad-wrap .ad-empty {
+    min-height: 145px;
+    padding: 2rem 1.5rem;
+}
+
+.ad-wrap .ad-empty-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.9rem;
+    background: #fdf2f8;
+    color: #ec4899;
+}
+
+.ad-wrap .ad-empty-title {
+    color: #1e293b;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.ad-wrap .ad-empty-sub {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+/* Mobile table spacing */
+@media (max-width: 639px) {
+    .ad-wrap table.ad-table thead th,
+    .ad-wrap table.ad-table tbody td {
+        padding: 0.8rem 1rem;
+    }
+
+    .ad-wrap .ad-insight-head h3 {
+        font-size: 1.05rem;
+    }
+
+    .ad-wrap .ad-empty {
+        min-height: 130px;
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .ad-wrap table.ad-table tbody tr {
+        transition: none;
+    }
+}
+
+
+/* Admin Dashboard — Full Background Image */
+.ad-wrap {
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.30),
+            rgba(255, 255, 255, 0.30)
+        ),
+        var(--cc-dashboard-bg);
+
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — ADMIN DASHBOARD RESPONSIVE REFINEMENT
+   Desktop, tablet, and mobile layouts
+   ========================================================= */
+
+/* Tablet and smaller screens */
+@media (max-width: 1023px) {
+    .ad-wrap,
+    .ad-wrap .ad-content-container {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .ad-wrap .ad-content-container {
+        padding-inline: 1rem;
+    }
+
+    .ad-wrap .ad-stats-primary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ad-wrap .ad-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 767px) {
+    .ad-wrap {
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+        background-size: cover;
+        background-position: center top;
+    }
+
+    .ad-wrap .ad-content-container {
+        padding: 1rem 0.875rem 1.5rem;
+    }
+
+    /* Dashboard heading */
+    .ad-wrap .ad-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.875rem;
+    }
+
+    .ad-wrap .ad-page-header-main {
+        width: 100%;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .ad-wrap .ad-page-header-icon {
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .ad-wrap .ad-page-header-title {
+        font-size: clamp(1.35rem, 5vw, 1.65rem);
+        line-height: 1.25;
+    }
+
+    .ad-wrap .ad-page-header-sub {
+        font-size: 0.75rem;
+    }
+
+    .ad-wrap .ad-page-header-date {
+        align-self: flex-start;
+        margin-left: 0;
+        max-width: 100%;
+        white-space: normal;
+    }
+
+    /* Statistics */
+    .ad-wrap .ad-stats-primary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .ad-wrap .ad-stat {
+        min-width: 0;
+        min-height: 125px;
+        padding: 0.875rem;
+    }
+
+    .ad-wrap .ad-stat-top {
+        gap: 0.35rem;
+    }
+
+    .ad-wrap .ad-stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .ad-wrap .ad-stat-badge {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.55rem;
+    }
+
+    .ad-wrap .ad-stat-value {
+        font-size: 1.75rem;
+    }
+
+    .ad-wrap .ad-stat-label {
+        font-size: 0.7rem;
+        line-height: 1.4;
+    }
+
+    .ad-wrap .ad-stat-secondary {
+        gap: 0.75rem;
+        padding: 0.875rem;
+    }
+
+    /* Quick Actions */
+    .ad-wrap .ad-actions {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+
+    .ad-wrap .ad-action {
+        min-height: 0;
+        padding: 1.25rem;
+    }
+
+    .ad-wrap .ad-action-icon {
+        width: 46px;
+        height: 46px;
+        margin-bottom: 0.875rem;
+    }
+
+    /* System Insights */
+    .ad-wrap .ad-insight-head {
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .ad-wrap .ad-table-shell {
+        max-width: 100%;
+    }
+
+    .ad-wrap .ad-table-scroll {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .ad-wrap table.ad-table {
+        min-width: 480px;
+    }
+
+    /* Footer */
+    .ad-wrap .ad-sys-footer {
+        padding: 1rem;
+        gap: 0.875rem;
+    }
+
+    .ad-wrap .ad-sys-footer-version {
+        text-align: left;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+    .ad-wrap .ad-content-container {
+        padding-inline: 0.625rem;
+    }
+
+    .ad-wrap .ad-stats-primary {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ad-wrap .ad-stat {
+        min-height: 110px;
+    }
+
+    .ad-wrap .ad-page-header-main {
+        gap: 0.5rem;
+    }
+
+    .ad-wrap .ad-page-header-title {
+        font-size: 1.3rem;
+    }
+}
+
+/* Touch devices: avoid hover movement */
+@media (hover: none) {
+    .ad-wrap .ad-stat:hover,
+    .ad-wrap .ad-action:hover {
+        transform: none;
+    }
+}
+
+
+
+
+/* Admin Dashboard — Mobile Background Visibility */
+@media (max-width: 767px) {
+    .ad-wrap {
+        background-image:
+            linear-gradient(
+                rgba(255, 255, 255, 0.12),
+                rgba(255, 255, 255, 0.12)
+            ),
+            var(--cc-dashboard-bg);
+
+        background-size: auto 100vh;
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+}

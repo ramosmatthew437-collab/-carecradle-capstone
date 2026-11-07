@@ -41,6 +41,7 @@
             'resources/css/mother-dashboard-polish.css',
               'resources/css/maternal-vaccination-history.css',
               'resources/css/mother-vaccinations.css',
+              'resources/css/mobile-navigation.css',
             'resources/js/app.js'
         ])
 

@@ -6,7 +6,7 @@
             {{-- BACK TO DASHBOARD --}}
             <div>
                 <a
-                   href="{{ route('mother.dashboard') }}"
+                    href="{{ route('mother.dashboard') }}"
                     class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-pink-200 bg-white px-4 py-2.5 text-sm font-semibold text-pink-700 shadow-sm transition hover:border-pink-300 hover:bg-pink-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400 focus-visible:ring-offset-2"
                     aria-label="Back to Dashboard"
                 >
@@ -17,7 +17,7 @@
                 </a>
             </div>
 
-            {{-- 1. PAGE HEADER / HERO --}}
+            {{-- PAGE HEADER --}}
             <header class="relative isolate overflow-hidden rounded-2xl border border-pink-100 bg-gradient-to-br from-pink-50 via-white to-teal-50 p-5 shadow-sm sm:p-8">
                 <div class="pointer-events-none absolute -right-10 -top-10 -z-10 h-40 w-40 rounded-full bg-pink-100/60 blur-2xl"></div>
                 <div class="pointer-events-none absolute -bottom-12 right-8 -z-10 h-32 w-32 rounded-full bg-teal-100/50 blur-2xl sm:right-24"></div>
@@ -45,12 +45,23 @@
 
             @if(isset($tips) && $tips->count())
 
-                {{-- 2. FEATURED HEALTH TIP --}}
                 @php
                     $featuredTip = $tips->first();
+
+                    $categories = [
+                        'Pregnancy Care',
+                        'Nutrition',
+                        'Danger Signs',
+                        'Preparing for Delivery',
+                        'Breastfeeding',
+                        'Newborn Care',
+                        'Vaccination',
+                        'Postpartum Care',
+                    ];
                 @endphp
 
-                <section aria-labelledby="featured-tip-heading">
+                {{-- FEATURED HEALTH TIP --}}
+                <section id="featured-tip-section" aria-labelledby="featured-tip-heading">
                     <h2 id="featured-tip-heading" class="mb-3 text-xs font-semibold uppercase tracking-widest text-teal-600 sm:text-sm">
                         Featured Health Tip
                     </h2>
@@ -101,42 +112,60 @@
                     </article>
                 </section>
 
-                {{-- 3. CATEGORY LABELS --}}
+                {{-- FUNCTIONAL CATEGORY FILTERS --}}
                 <section aria-labelledby="category-heading">
                     <h2 id="category-heading" class="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-500 sm:text-sm">
                         Browse by Category
                     </h2>
 
-                    <div class="-mx-4 flex gap-2 overflow-x-auto overscroll-x-contain px-4 pb-3 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0" aria-label="Health tip categories">
-                        <span class="inline-flex min-h-9 shrink-0 items-center rounded-full bg-pink-600 px-4 py-2 text-xs font-semibold text-white shadow-sm sm:text-sm">
-                            All
-                        </span>
+                    <div class="-mx-4 flex gap-2 overflow-x-auto overscroll-x-contain px-4 pb-3 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0"
+                         aria-label="Health tip categories">
 
-                        @foreach([
-                            'Pregnancy Care',
-                            'Nutrition',
-                            'Danger Signs',
-                            'Preparing for Delivery',
-                            'Breastfeeding',
-                            'Newborn Care',
-                            'Vaccination',
-                            'Postpartum Care',
-                        ] as $category)
-                            <span class="inline-flex min-h-9 shrink-0 items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition hover:border-pink-200 hover:text-pink-700 sm:text-sm">
+                        <button
+                            type="button"
+                            data-category-filter="all"
+                            aria-pressed="true"
+                            class="category-filter inline-flex min-h-10 shrink-0 items-center rounded-full border border-pink-600 bg-pink-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:text-sm"
+                        >
+                            All
+                        </button>
+
+                        @foreach($categories as $category)
+                            <button
+                                type="button"
+                                data-category-filter="{{ $category }}"
+                                aria-pressed="false"
+                                class="category-filter inline-flex min-h-10 shrink-0 items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition hover:border-pink-300 hover:bg-pink-50 hover:text-pink-700 sm:text-sm"
+                            >
                                 {{ $category }}
-                            </span>
+                            </button>
                         @endforeach
                     </div>
                 </section>
 
-                {{-- 4. HEALTH TIP CARD GRID --}}
+                {{-- HEALTH TIP CARD GRID --}}
                 <section aria-labelledby="all-tips-heading">
-                    <h2 id="all-tips-heading" class="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-500 sm:text-sm">
-                        All Health Tips
-                    </h2>
+                    <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+                        <h2
+                            id="all-tips-heading"
+                            class="text-xs font-semibold uppercase tracking-widest text-gray-500 sm:text-sm"
+                        >
+                            All Health Tips
+                        </h2>
 
-                    <div class="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-                        @foreach($tips->skip(1) as $tip)
+                        <span
+                            id="tips-count"
+                            class="text-xs font-medium text-gray-400"
+                        >
+                            {{ $tips->count() }} health tips
+                        </span>
+                    </div>
+
+                    <div
+                        id="health-tips-grid"
+                        class="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
+                    >
+                        @foreach($tips as $tip)
 
                             @php
                                 $categoryClasses = match($tip->category ?? null) {
@@ -152,7 +181,12 @@
                                 };
                             @endphp
 
-                            <article class="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                            <article
+                                data-tip-card
+                                data-tip-category="{{ $tip->category ?? '' }}"
+                                @if($loop->first) hidden @endif
+                                class="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                            >
                                 <div class="relative flex h-44 shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br from-pink-50 to-teal-50 sm:h-40">
                                     @if(!empty($tip->image))
                                         <img
@@ -163,7 +197,7 @@
                                         >
                                     @else
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 01-18 0Zm-9-3.75h.008v.008H12V8.25Z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0Zm-9-3.75h.008v.008H12V8.25Z"/>
                                         </svg>
                                     @endif
                                 </div>
@@ -198,11 +232,40 @@
                             </article>
                         @endforeach
                     </div>
+
+                    {{-- FILTER EMPTY STATE --}}
+                    <div
+                        id="no-matching-tips"
+                        hidden
+                        class="mt-4 rounded-2xl border-2 border-dashed border-pink-100 bg-white px-5 py-10 text-center"
+                    >
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-pink-50 text-pink-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m-6-14.25v14.25"/>
+                            </svg>
+                        </div>
+
+                        <h3 class="mt-4 text-base font-bold text-gray-900">
+                            No health tips in this category yet
+                        </h3>
+
+                        <p class="mt-1 text-sm text-gray-500">
+                            Try another category or select All to see every available health tip.
+                        </p>
+
+                        <button
+                            type="button"
+                            data-category-filter="all"
+                            class="mt-4 inline-flex min-h-10 items-center justify-center rounded-xl bg-pink-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-pink-700"
+                        >
+                            View All Health Tips
+                        </button>
+                    </div>
                 </section>
 
             @else
 
-                {{-- 5. EMPTY STATE --}}
+                {{-- EMPTY STATE --}}
                 <section class="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-pink-100 bg-white px-5 py-12 text-center sm:px-6 sm:py-16">
                     <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-pink-100 to-teal-100 text-pink-500 sm:h-20 sm:w-20">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-10 sm:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -221,7 +284,7 @@
 
             @endif
 
-            {{-- 5. IMPORTANT HEALTH REMINDER --}}
+            {{-- IMPORTANT HEALTH REMINDER --}}
             <aside class="rounded-2xl border border-teal-100 bg-teal-50 px-5 py-4 sm:px-6 sm:py-5">
                 <div class="flex items-start gap-3">
                     <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-600 sm:h-10 sm:w-10">
@@ -243,4 +306,94 @@
 
         </div>
     </div>
+
+    {{-- CATEGORY FILTER SCRIPT --}}
+    @if(isset($tips) && $tips->count())
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const filterButtons = document.querySelectorAll('[data-category-filter]');
+                const tipCards = document.querySelectorAll('[data-tip-card]');
+                const featuredSection = document.getElementById('featured-tip-section');
+                const emptyState = document.getElementById('no-matching-tips');
+                const tipsCount = document.getElementById('tips-count');
+                const heading = document.getElementById('all-tips-heading');
+
+                if (!filterButtons.length || !tipCards.length) {
+                    return;
+                }
+
+                const normalize = value => value.trim().toLowerCase();
+
+                function filterTips(category) {
+                    const showAll = category === 'all';
+                    let visibleCount = 0;
+
+                    // Show the featured layout only when All is selected.
+                    if (featuredSection) {
+                        featuredSection.hidden = !showAll;
+                    }
+
+                    tipCards.forEach((card, index) => {
+                        const cardCategory = normalize(card.dataset.tipCategory || '');
+
+                        // The first tip is already displayed in the featured section
+                        // when All is selected. Avoid showing it twice.
+                        const matches = showAll
+                            ? index !== 0
+                            : cardCategory === normalize(category);
+
+                        card.classList.toggle('hidden', !matches);
+
+                        if (matches) {
+                            visibleCount++;
+                        }
+                    });
+
+                    if (emptyState) {
+                        emptyState.hidden = showAll || visibleCount > 0;
+                    }
+
+                    if (tipsCount) {
+                        tipsCount.textContent = showAll
+                            ? `${tipCards.length} health tips`
+                            : `${visibleCount} matching health tip${visibleCount === 1 ? '' : 's'}`;
+                    }
+
+                    if (heading) {
+                        heading.textContent = showAll
+                            ? 'All Health Tips'
+                            : category + ' Health Tips';
+                    }
+
+                    // Update active button styling and accessibility state.
+                    filterButtons.forEach(button => {
+                        const active = normalize(button.dataset.categoryFilter) === normalize(category);
+
+                        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+
+                        button.classList.toggle('bg-pink-600', active);
+                        button.classList.toggle('border-pink-600', active);
+                        button.classList.toggle('text-white', active);
+                        button.classList.toggle('shadow-sm', active);
+
+                        button.classList.toggle('bg-white', !active);
+                        button.classList.toggle('border-gray-200', !active);
+                        button.classList.toggle('text-gray-600', !active);
+                        button.classList.toggle('font-medium', !active);
+
+                        button.classList.toggle('font-semibold', active);
+                    });
+                }
+
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        filterTips(this.dataset.categoryFilter);
+                    });
+                });
+
+                // Start with all health tips displayed.
+                filterTips('all');
+            });
+        </script>
+    @endif
 </x-app-layout>

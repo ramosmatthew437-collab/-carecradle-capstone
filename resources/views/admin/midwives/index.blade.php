@@ -202,46 +202,59 @@
 
 
 
-            {{-- ========================================= --}}
+{{-- ========================================= --}}
+{{-- PAGE HEADER --}}
+{{-- ========================================= --}}
 
-            {{-- PAGE HERO --}}
+<section class="mm-page-header" aria-labelledby="mm-page-title">
 
-            {{-- ========================================= --}}
+    <div class="mm-page-header-main">
+        <div class="mm-page-header-icon" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6"/>
+                <path d="M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+        </div>
 
+        <div class="mm-page-header-copy">
+            <h1 class="mm-page-header-title" id="mm-page-title">
+                Midwife Management
+            </h1>
+            <p class="mm-page-header-description">
+                Manage registered midwives and their access to the CareCradle system.
+            </p>
+        </div>
+    </div>
 
+    <div class="mm-page-header-actions">
 
-            <section class="mm-page-header" aria-labelledby="mm-page-title">
-                <div class="mm-page-header-main">
-                    <div class="mm-page-header-icon" aria-hidden="true">
-                        <svg width="21" height="21" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="1.8"
-                             stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 10v6"/>
-                            <path d="M2 10l10-5 10 5-10 5z"/>
-                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                        </svg>
-                    </div>
+        <a href="{{ route('dashboard') }}" class="mm-back-button">
+            <svg width="17" height="17" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M19 12H5"/>
+                <path d="m12 19-7-7 7-7"/>
+            </svg>
+            <span>Back to Dashboard</span>
+        </a>
 
-                    <div class="mm-page-header-copy">
-                        <h1 class="mm-page-header-title" id="mm-page-title">
-                            Midwife Management
-                        </h1>
-                        <p class="mm-page-header-description">
-                            Manage registered midwives and their access to the CareCradle system.
-                        </p>
-                    </div>
-                </div>
+        <a href="{{ route('midwives.create') }}" class="mm-page-header-button">
+            <svg width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M12 5v14M5 12h14"/>
+            </svg>
+            <span>Register Midwife</span>
+        </a>
 
-                <a href="{{ route('midwives.create') }}" class="mm-page-header-button">
-                    <svg width="18" height="18" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor" stroke-width="2.5"
-                         stroke-linecap="round" stroke-linejoin="round"
-                         aria-hidden="true">
-                        <path d="M12 5v14M5 12h14"/>
-                    </svg>
-                    <span>Register Midwife</span>
-                </a>
-            </section>
+    </div>
+
+</section>
 
 
 

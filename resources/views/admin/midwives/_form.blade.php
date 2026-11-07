@@ -185,13 +185,29 @@
                         Password <span class="text-red-500">*</span>
                     </label>
 
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        placeholder="Enter password"
-                        class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
-                        required>
+                    <div class="relative">
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            placeholder="Enter password"
+                            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 pr-12 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
+                            required>
+
+                        <button
+                            type="button"
+                            data-password-toggle="password"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                            class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-pink-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
 
                     @error('password')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -204,13 +220,29 @@
                         Confirm Password <span class="text-red-500">*</span>
                     </label>
 
-                    <input
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        placeholder="Re-enter password"
-                        class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
-                        required>
+                    <div class="relative">
+                        <input
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            placeholder="Re-enter password"
+                            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 pr-12 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
+                            required>
+
+                        <button
+                            type="button"
+                            data-password-toggle="password_confirmation"
+                            aria-label="Show confirm password"
+                            aria-pressed="false"
+                            class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-pink-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
 
                     @error('password_confirmation')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -224,3 +256,25 @@
     </div>
 
 </section>
+
+
+<script>
+    document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+        button.addEventListener('click', function () {
+            const inputId = this.dataset.passwordToggle;
+            const passwordInput = document.getElementById(inputId);
+
+            if (!passwordInput) return;
+
+            const isPassword = passwordInput.type === 'password';
+
+            passwordInput.type = isPassword ? 'text' : 'password';
+
+            this.setAttribute('aria-pressed', String(isPassword));
+            this.setAttribute(
+                'aria-label',
+                isPassword ? 'Hide password' : 'Show password'
+            );
+        });
+    });
+</script>

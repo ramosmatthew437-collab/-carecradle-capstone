@@ -1,0 +1,408 @@
+
+/* =========================================================
+   CARECRADLE — PREMIUM MINIMALIST MOBILE NAVIGATION
+   Shared visual theme:
+   Administrator | Midwife | Mother
+========================================================= */
+
+:root {
+    --cc-drawer-bg: #fff9fc;
+    --cc-drawer-header: #fceaf2;
+    --cc-drawer-footer: #fdf0f6;
+    --cc-drawer-pink: #db2777;
+    --cc-drawer-pink-dark: #be185d;
+    --cc-drawer-active: #fce7f3;
+    --cc-drawer-border: #f5d5e4;
+    --cc-drawer-text: #475569;
+    --cc-drawer-muted: #94a3b8;
+}
+
+/* ---------------------------------------------------------
+   DRAWER SHELL
+--------------------------------------------------------- */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 {
+    width: min(86vw, 340px) !important;
+    max-width: 340px !important;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--cc-drawer-bg) !important;
+    border-right: 1px solid var(--cc-drawer-border);
+    box-shadow: 12px 0 36px rgba(190, 24, 93, 0.10) !important;
+}
+
+/* ---------------------------------------------------------
+   HEADER
+--------------------------------------------------------- */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:first-child {
+    flex-shrink: 0;
+    min-height: 76px;
+    padding: 17px 18px !important;
+    background: linear-gradient(
+        135deg,
+        #fceaf2 0%,
+        #fff3f8 65%,
+        #ffffff 100%
+    ) !important;
+    border-bottom: 1px solid var(--cc-drawer-border) !important;
+}
+
+/* ---------------------------------------------------------
+   NAVIGATION AREA
+--------------------------------------------------------- */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 20px 14px !important;
+    background: transparent !important;
+}
+
+/* Navigation section heading */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav::before {
+    content: "WORKSPACE";
+    display: block;
+    margin: 0 0 13px 10px;
+    color: #be7897;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+/* ---------------------------------------------------------
+   NAVIGATION LINKS
+--------------------------------------------------------- */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 11px 12px !important;
+    margin-bottom: 4px;
+    border: 1px solid transparent !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    color: var(--cc-drawer-text);
+    font-size: 13px;
+    font-weight: 500;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease;
+}
+
+/* Navigation icons */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav a svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--cc-drawer-muted);
+    transition: color 180ms ease;
+}
+
+/* Hover */
+
+@media (hover: hover) {
+    :is(
+        .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+        .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+        .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+    ).fixed.inset-y-0.left-0.z-50 > nav a:hover {
+        background: rgba(252, 231, 243, 0.65) !important;
+        color: var(--cc-drawer-pink-dark);
+    }
+
+    :is(
+        .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+        .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+        .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+    ).fixed.inset-y-0.left-0.z-50 > nav a:hover svg {
+        color: var(--cc-drawer-pink);
+    }
+}
+
+/* Active page */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav a[aria-current="page"] {
+    background: var(--cc-drawer-active) !important;
+    border-color: #f8d0e2 !important;
+    color: var(--cc-drawer-pink-dark) !important;
+    font-weight: 700;
+    box-shadow: inset 3px 0 0 var(--cc-drawer-pink);
+}
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav a[aria-current="page"] svg {
+    color: var(--cc-drawer-pink);
+}
+
+/* ---------------------------------------------------------
+   FOOTER
+--------------------------------------------------------- */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:last-child {
+    flex-shrink: 0;
+    padding: 13px 14px calc(15px + env(safe-area-inset-bottom)) !important;
+    background: var(--cc-drawer-footer) !important;
+    border-top: 1px solid var(--cc-drawer-border) !important;
+}
+
+/* Profile and logout controls */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:last-child a,
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:last-child button {
+    min-height: 44px;
+    padding: 10px 11px !important;
+    border: 1px solid transparent !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+    font-size: 13px;
+    font-weight: 500;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease;
+}
+
+/* Footer icons */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:last-child svg {
+    width: 19px;
+    height: 19px;
+}
+
+/* Logout hover */
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:last-child button:hover {
+    background: #fff0f3 !important;
+    color: #be123c;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVENESS & ACCESSIBILITY
+--------------------------------------------------------- */
+
+@media (max-width: 380px) {
+    :is(
+        .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+        .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+        .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+    ).fixed.inset-y-0.left-0.z-50 {
+        width: 88vw !important;
+    }
+}
+
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 a:focus-visible,
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 button:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, 0.25);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is(
+        .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+        .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+        .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+    ).fixed.inset-y-0.left-0.z-50 * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — FINAL PREMIUM DRAWER POLISH
+========================================================= */
+
+/* Softer, richer drawer background */
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 {
+    background:
+        radial-gradient(
+            ellipse at 10% 25%,
+            rgba(251, 207, 232, 0.32),
+            transparent 48%
+        ),
+        linear-gradient(
+            155deg,
+            #fff7fb 0%,
+            #fffafd 55%,
+            #fff1f7 100%
+        ) !important;
+    border-radius: 0 16px 16px 0;
+}
+
+/* Slightly richer header */
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:first-child {
+    background: linear-gradient(
+        120deg,
+        #fce4ef 0%,
+        #fff0f7 55%,
+        #fffafd 100%
+    ) !important;
+}
+
+/* Give navigation icons a subtle identity */
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav a svg {
+    box-sizing: content-box;
+    width: 18px;
+    height: 18px;
+    padding: 6px;
+    border-radius: 9px;
+    background: #fceaf3;
+    color: #c16b91;
+}
+
+/* Active icon gets a stronger pink */
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav a[aria-current="page"] svg {
+    background: #f9c4dc;
+    color: #a91555;
+}
+
+/* Refined active navigation item */
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > nav a[aria-current="page"] {
+    background: linear-gradient(
+        100deg,
+        #fce3ef,
+        #fcecf4
+    ) !important;
+    border-color: #f7c8dc !important;
+    box-shadow:
+        inset 3px 0 0 #db2777,
+        0 3px 12px rgba(190, 24, 93, 0.045);
+}
+
+/* More defined footer */
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:last-child {
+    background: linear-gradient(
+        135deg,
+        #fceaf2,
+        #fff1f7
+    ) !important;
+    border-top: 1px solid #f3cddd !important;
+}
+
+/* Small icon backgrounds in footer */
+:is(
+    .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+    .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+    .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+).fixed.inset-y-0.left-0.z-50 > div:last-child svg {
+    box-sizing: content-box;
+    padding: 5px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.65);
+    color: #bd7294;
+}
+
+/* Footer hover */
+@media (hover: hover) {
+    :is(
+        .cc-admin-mobile-nav [x-show="adminDrawerOpen"],
+        .cc-midwife-mobile-nav [x-show="midwifeDrawerOpen"],
+        .cc-mother-mobile-nav [x-show="motherDrawerOpen"]
+    ).fixed.inset-y-0.left-0.z-50 > div:last-child a:hover {
+        background: rgba(255, 255, 255, 0.75) !important;
+        color: #be185d;
+    }
+}
+

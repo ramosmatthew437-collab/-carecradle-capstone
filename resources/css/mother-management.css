@@ -2711,3 +2711,309 @@
         font-size: 0.78125rem;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MOTHER MANAGEMENT — BACK TO DASHBOARD
+   ========================================================= */
+
+.mm-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 38px;
+    margin-bottom: 1.15rem;
+    padding: 0.5rem 0.85rem;
+    color: #a64b70;
+    background: #fff1f6;
+    border: 1px solid #f0dce5;
+    border-radius: 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 180ms ease;
+}
+
+.mm-back-btn svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+.mm-back-btn:hover {
+    color: #8e345b;
+    background: #fce5ee;
+    border-color: #e8c3d3;
+    transform: translateX(-2px);
+}
+
+.mm-back-btn:focus-visible {
+    outline: 3px solid rgba(190, 91, 135, 0.3);
+    outline-offset: 3px;
+}
+
+
+
+
+
+
+
+
+/* =========================================================
+   CARECRADLE — MOTHER MANAGEMENT
+   MOBILE RESPONSIVENESS REFINEMENT
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    /* Main page spacing */
+    .mm-wrap .mm-container {
+        width: 100%;
+        min-width: 0;
+        padding: 1rem 0.85rem 1.75rem;
+    }
+
+    /* Back button */
+    .mm-wrap .mm-back-btn {
+        width: fit-content;
+        min-height: 38px;
+        margin-bottom: 1rem;
+        font-size: 0.75rem;
+    }
+
+    /* Page heading */
+    .mm-wrap .mm-page-head {
+        align-items: stretch;
+        gap: 0.85rem;
+        margin-bottom: 1.1rem;
+    }
+
+    .mm-wrap .mm-page-main {
+        align-items: flex-start;
+        gap: 0.7rem;
+    }
+
+    .mm-wrap .mm-page-copy {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .mm-wrap .mm-title {
+        font-size: 1.55rem;
+        line-height: 1.2;
+    }
+
+    .mm-wrap .mm-description {
+        font-size: 0.77rem;
+        line-height: 1.55;
+    }
+
+    .mm-wrap .mm-register-btn {
+        width: 100%;
+        min-height: 2.7rem;
+    }
+
+    /* Statistics: two columns */
+    .mm-wrap .mm-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+        margin-bottom: 1rem;
+    }
+
+    .mm-wrap .mm-stat {
+        min-width: 0;
+        min-height: 112px;
+        padding: 0.85rem;
+        border-radius: 0.9rem;
+    }
+
+    .mm-wrap .mm-stat-top {
+        gap: 0.4rem;
+    }
+
+    .mm-wrap .mm-stat-label {
+        font-size: 0.62rem;
+        line-height: 1.4;
+    }
+
+    .mm-wrap .mm-stat-value {
+        font-size: 1.65rem;
+    }
+
+    .mm-wrap .mm-stat-description {
+        font-size: 0.65rem;
+        line-height: 1.45;
+    }
+
+    .mm-wrap .mm-stat-icon {
+        flex: 0 0 2rem;
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .mm-wrap .mm-stat-icon svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    /* Search panel */
+    .mm-wrap .mm-search-head,
+    .mm-wrap .mm-search-body {
+        padding: 0.9rem;
+    }
+
+    .mm-wrap .mm-search-input {
+        min-height: 2.8rem;
+        font-size: 0.78rem;
+    }
+
+    /* Status filters remain horizontally scrollable */
+    .mm-wrap .mm-filter-bar {
+        gap: 0.4rem;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .mm-wrap .mm-filter {
+        flex: 0 0 auto;
+        min-height: 2.2rem;
+    }
+
+    /* Mother record cards */
+    .mm-wrap .mm-mobile-list {
+        padding: 0.85rem;
+        gap: 0.75rem;
+    }
+
+    .mm-wrap .mm-mother-card {
+        padding: 0.95rem;
+        border-radius: 0.95rem;
+    }
+
+    .mm-wrap .mm-mobile-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .mm-wrap .mm-detail-value {
+        font-size: 0.72rem;
+        overflow-wrap: anywhere;
+    }
+
+    .mm-wrap .mm-mobile-actions {
+        gap: 0.55rem;
+    }
+
+    .mm-wrap .mm-mobile-actions .mm-action {
+        min-height: 2.4rem;
+    }
+
+    /* Registry heading */
+    .mm-wrap .mm-registry-head {
+        gap: 0.65rem;
+        padding: 0.95rem;
+    }
+
+}
+
+/* Very narrow phones */
+@media (max-width: 359px) {
+
+    .mm-wrap .mm-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mm-wrap .mm-mobile-details {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mm-wrap .mm-title {
+        font-size: 1.4rem;
+    }
+
+}
+
+
+
+@media (max-width: 640px) {
+    .mm-wrap .mm-filter-bar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .mm-wrap .mm-filter-bar::-webkit-scrollbar {
+        display: none;
+        height: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================
+   MOTHER PROFILE - BACK TO REGISTRY BUTTON
+   ========================================= */
+
+.mshow-back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: fit-content;
+    margin-bottom: 16px;
+    padding: 10px 16px;
+
+    background: #ffffff;
+    border: 1px solid #fbcfe8;
+    border-radius: 12px;
+
+    color: #be185d;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    box-shadow: 0 2px 8px rgba(190, 24, 93, 0.05);
+    transition: all 0.2s ease;
+}
+
+.mshow-back-button svg {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.mshow-back-button:hover {
+    background: #fdf2f8;
+    border-color: #f9a8d4;
+    color: #9d174d;
+    box-shadow: 0 4px 12px rgba(190, 24, 93, 0.10);
+}
+
+.mshow-back-button:hover svg {
+    transform: translateX(-3px);
+}
+
+.mshow-back-button:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, 0.25);
+    outline-offset: 3px;
+}
