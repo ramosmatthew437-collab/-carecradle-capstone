@@ -3017,3 +3017,843 @@
     outline: 3px solid rgba(236, 72, 153, 0.25);
     outline-offset: 3px;
 }
+
+/* =========================================================
+   CARECRADLE — MOTHER REGISTRY TOP SECTION (DESIGN STEP 1)
+   Header, statistic cards, and search panel.
+
+   Every rule is scoped to .mm-wrap (used only by the Mother
+   Registry) so nothing here reaches Midwife Management, which
+   shares some .mm-* class names. Several rules below also
+   neutralise unscoped Midwife Management rules that were
+   leaking into this page (search icon position, search card
+   padding, search input padding/background, section margins).
+   ========================================================= */
+
+/* ---------- Section rhythm ---------- */
+
+.mm-wrap .mm-container > * + * {
+    margin-top: 0;
+}
+
+.mm-wrap .mm-back-btn {
+    margin-bottom: 1.25rem;
+}
+
+/* ---------- Page header ---------- */
+
+.mm-wrap .mm-page-head {
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.mm-wrap .mm-page-main {
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.mm-wrap .mm-page-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.875rem;
+    box-shadow: 0 2px 6px rgba(190, 24, 93, 0.08);
+}
+
+.mm-wrap .mm-page-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.mm-wrap .mm-eyebrow {
+    margin: 0 0 0.25rem;
+    color: #be185d;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.mm-wrap .mm-title {
+    font-size: clamp(1.75rem, 2.4vw, 2.125rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+}
+
+.mm-wrap .mm-description {
+    max-width: 62ch;
+    margin-top: 0.375rem;
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.55;
+}
+
+.mm-wrap .mm-register-btn {
+    min-height: 2.75rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 6px 16px rgba(190, 24, 93, 0.18);
+}
+
+.mm-wrap .mm-register-btn:hover {
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 10px 22px rgba(190, 24, 93, 0.24);
+}
+
+.mm-wrap .mm-register-btn svg {
+    width: 1.05rem;
+    height: 1.05rem;
+}
+
+/* ---------- Statistic cards ---------- */
+
+.mm-wrap .mm-stats {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.mm-wrap .mm-stat {
+    padding: 1.125rem 1.25rem;
+    background: #ffffff;
+    border: 1px solid #f3e4ea;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(190, 24, 93, 0.04);
+}
+
+.mm-wrap .mm-stat:hover {
+    transform: none;
+    border-color: #f9c5d8;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 20px rgba(190, 24, 93, 0.08);
+}
+
+.mm-wrap .mm-stat-top {
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0;
+}
+
+.mm-wrap .mm-stat-label {
+    color: #64748b;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.mm-wrap .mm-stat-value {
+    margin: 0.5rem 0 0;
+    color: #0f172a;
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.mm-wrap .mm-stat-value-pink {
+    color: #be185d;
+}
+
+.mm-wrap .mm-stat-description {
+    margin-top: 0.375rem;
+    color: #64748b;
+    font-size: 0.75rem;
+    line-height: 1.45;
+}
+
+.mm-wrap .mm-stat-icon {
+    flex: 0 0 2.375rem;
+    width: 2.375rem;
+    height: 2.375rem;
+    border-radius: 0.75rem;
+}
+
+.mm-wrap .mm-stat-icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+/* ---------- Search panel ---------- */
+
+.mm-wrap .mm-search-card {
+    margin-bottom: 1.5rem;
+    padding: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #f3e4ea;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(190, 24, 93, 0.04);
+}
+
+.mm-wrap .mm-search-head {
+    gap: 0.875rem;
+    padding: 1rem 1.25rem;
+    background: #ffffff;
+    border-bottom: 1px solid #f8e8ee;
+}
+
+.mm-wrap .mm-search-icon {
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 2.375rem;
+    width: 2.375rem;
+    height: 2.375rem;
+    color: #be185d;
+    background: #fff1f6;
+    border: 1px solid #fce0ea;
+    border-radius: 0.75rem;
+}
+
+.mm-wrap .mm-search-icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.mm-wrap .mm-search-title {
+    margin: 0;
+    color: #0f172a;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.mm-wrap .mm-search-description {
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.mm-wrap .mm-search-body {
+    padding: 1rem 1.25rem 1.125rem;
+}
+
+.mm-wrap .mm-search-form {
+    gap: 0.625rem;
+}
+
+.mm-wrap .mm-search-field-icon {
+    left: 0.875rem;
+    color: #94a3b8;
+}
+
+.mm-wrap .mm-search-input {
+    min-height: 2.75rem;
+    padding: 0.625rem 0.875rem 0.625rem 2.5rem;
+    color: #1e293b;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    box-shadow: none;
+}
+
+.mm-wrap .mm-search-input::placeholder {
+    color: #94a3b8;
+}
+
+.mm-wrap .mm-search-input:hover {
+    border-color: #cbd5e1;
+}
+
+.mm-wrap .mm-search-input:focus {
+    border-color: #ec4899;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
+}
+
+.mm-wrap .mm-search-btn,
+.mm-wrap .mm-reset-btn {
+    min-height: 2.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Searchable-field hints: quiet, uniform labels (not buttons). */
+.mm-wrap .mm-search-tags {
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: 0.75rem;
+}
+
+.mm-wrap .mm-search-tags-label {
+    margin-right: 0.125rem;
+    color: #94a3b8;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.mm-wrap .mm-search-tags .mm-search-tag {
+    padding: 0.25rem 0.625rem;
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px solid #e9eef4;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: default;
+}
+
+/* ---------- Responsive ---------- */
+
+/* Four-across layout: reserve two label lines so the numbers line up. */
+@media (min-width: 1101px) {
+    .mm-wrap .mm-stat-label {
+        min-height: 2.7em;
+    }
+}
+
+@media (max-width: 1100px) {
+    .mm-wrap .mm-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+    .mm-wrap .mm-search-actions {
+        flex-direction: row;
+    }
+
+    .mm-wrap .mm-search-btn,
+    .mm-wrap .mm-reset-btn {
+        flex: 1 1 0;
+        width: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .mm-wrap .mm-back-btn {
+        margin-bottom: 1rem;
+    }
+
+    .mm-wrap .mm-page-head {
+        align-items: stretch;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .mm-wrap .mm-page-main {
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .mm-wrap .mm-page-icon {
+        width: 2.625rem;
+        height: 2.625rem;
+        border-radius: 0.75rem;
+    }
+
+    .mm-wrap .mm-title {
+        font-size: 1.625rem;
+    }
+
+    .mm-wrap .mm-description {
+        font-size: 0.8125rem;
+    }
+
+    .mm-wrap .mm-register-btn {
+        width: 100%;
+    }
+
+    .mm-wrap .mm-stats {
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .mm-wrap .mm-stat {
+        min-height: 0;
+        padding: 0.875rem;
+        border-radius: 0.875rem;
+    }
+
+    .mm-wrap .mm-stat-label {
+        font-size: 0.625rem;
+        letter-spacing: 0.05em;
+    }
+
+    .mm-wrap .mm-stat-value {
+        margin-top: 0.375rem;
+        font-size: 1.625rem;
+    }
+
+    .mm-wrap .mm-stat-description {
+        font-size: 0.6875rem;
+    }
+
+    /* Narrow cards: the decorative icon would squeeze the label to three
+       lines, so it is hidden and two label lines are reserved instead. */
+    .mm-wrap .mm-stat-icon {
+        display: none;
+    }
+
+    .mm-wrap .mm-stat-label {
+        min-height: 2.7em;
+    }
+
+    .mm-wrap .mm-search-head {
+        align-items: flex-start;
+    }
+
+    .mm-wrap .mm-search-card {
+        margin-bottom: 1.25rem;
+        border-radius: 0.875rem;
+    }
+
+    .mm-wrap .mm-search-head,
+    .mm-wrap .mm-search-body {
+        padding: 0.875rem 1rem;
+    }
+
+    .mm-wrap .mm-search-icon {
+        flex-basis: 2.125rem;
+        width: 2.125rem;
+        height: 2.125rem;
+    }
+
+    .mm-wrap .mm-search-title {
+        font-size: 1.0625rem;
+    }
+
+    .mm-wrap .mm-search-input {
+        font-size: 1rem; /* 16px keeps iOS Safari from zooming in on focus */
+    }
+}
+
+@media (max-width: 359px) {
+    .mm-wrap .mm-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* One card per row: room for the icon again, no reserved label line. */
+    .mm-wrap .mm-stat-icon {
+        display: flex;
+        flex-basis: 2rem;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.625rem;
+    }
+
+    .mm-wrap .mm-stat-icon svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .mm-wrap .mm-stat-label {
+        min-height: 0;
+    }
+
+    .mm-wrap .mm-search-btn,
+    .mm-wrap .mm-reset-btn {
+        padding-inline: 0.625rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mm-wrap .mm-stat,
+    .mm-wrap .mm-register-btn {
+        transition: none;
+    }
+}
+
+
+/* =========================================================
+   CARECRADLE — MOTHER REGISTRY: REGISTERED MOTHERS (DESIGN STEP 2)
+   Section header, desktop table, and the existing mobile cards.
+
+   Scoped to .mm-wrap like Step 1. Also overrides unscoped Midwife
+   Management rules that leaked into this table (850px table
+   min-width, pink header row, ringed avatar, amber Edit button,
+   and a nowrap mobile name that pushed the status badge and Edit
+   button outside the card on phones).
+   ========================================================= */
+
+/* ---------- Section header ---------- */
+
+.mm-wrap .mm-registry {
+    border: 1px solid #f3e4ea;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(190, 24, 93, 0.04);
+}
+
+.mm-wrap .mm-registry-head {
+    align-items: center;
+    gap: 1rem;
+    padding: 1.125rem 1.25rem;
+    border-bottom: 1px solid #f8e8ee;
+}
+
+.mm-wrap .mm-registry-title {
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+
+.mm-wrap .mm-registry-description {
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.mm-wrap .mm-record-count {
+    padding: 0.3125rem 0.75rem;
+    color: #be185d;
+    background: #fff1f6;
+    border: 1px solid #fce0ea;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.mm-wrap .mm-filter-bar {
+    padding: 0.75rem 1.25rem;
+    background: #fffafc;
+    border-bottom: 1px solid #f8e8ee;
+}
+
+/* ---------- Desktop table ---------- */
+
+.mm-wrap .mm-table {
+    min-width: 720px;
+    font-size: 0.8125rem;
+}
+
+.mm-wrap .mm-table thead tr {
+    background: #fcf8fa;
+    border-bottom: 1px solid #f3e4ea;
+}
+
+.mm-wrap .mm-table thead th {
+    padding: 0.6875rem 1.25rem;
+    color: #64748b;
+    background: #fcf8fa;
+    border-bottom: 1px solid #f3e4ea;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.mm-wrap .mm-table tbody tr {
+    border-bottom: 0;
+}
+
+.mm-wrap .mm-table tbody td {
+    padding: 0.75rem 1.25rem;
+    color: #334155;
+    border-bottom: 1px solid #f6edf1;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    vertical-align: middle;
+}
+
+.mm-wrap .mm-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.mm-wrap .mm-table tbody tr:hover {
+    background: #fff8fb;
+}
+
+/* Contact numbers: aligned digits, never broken across lines. */
+.mm-wrap .mm-table tbody td:nth-child(4) {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.mm-wrap .mm-code {
+    padding: 0.1875rem 0.5rem;
+    color: #be185d;
+    background: #fff1f6;
+    border: 1px solid #fce0ea;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.mm-wrap .mm-mother {
+    gap: 0.625rem;
+    min-width: 0;
+}
+
+.mm-wrap .mm-avatar {
+    flex: 0 0 2rem;
+    width: 2rem;
+    height: 2rem;
+    color: #be185d;
+    background: #fff1f6;
+    border: 1px solid #fce0ea;
+    border-radius: 999px;
+    box-shadow: none;
+}
+
+.mm-wrap .mm-avatar svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.mm-wrap .mm-mother-name {
+    margin: 0;
+    color: #0f172a;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+/* Status badges keep their existing colours; only the shape is refined. */
+.mm-wrap .mm-status {
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+}
+
+.mm-wrap .mm-actions {
+    justify-content: center;
+    gap: 0.375rem;
+}
+
+.mm-wrap .mm-action {
+    min-height: 2rem;
+    padding: 0.3125rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    filter: none;
+}
+
+.mm-wrap .mm-action:hover {
+    transform: none;
+    filter: none;
+}
+
+.mm-wrap .mm-action svg {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.mm-wrap .mm-action-view {
+    color: #334155;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+}
+
+.mm-wrap .mm-action-view:hover {
+    color: #be185d;
+    background: #fff8fb;
+    border-color: #f9c5d8;
+}
+
+.mm-wrap .mm-action-edit {
+    color: #be185d;
+    background: #fff1f6;
+    border: 1px solid #fce0ea;
+}
+
+.mm-wrap .mm-action-edit:hover {
+    color: #9d174d;
+    background: #ffe4ee;
+    border-color: #f9c5d8;
+}
+
+.mm-wrap .mm-action:focus-visible {
+    outline: 3px solid rgba(236, 72, 153, 0.28);
+    outline-offset: 2px;
+}
+
+/* ---------- Mobile cards (existing layout, ≤ 800px) ---------- */
+
+.mm-wrap .mm-mobile-list {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.mm-wrap .mm-mother-card {
+    min-width: 0;
+    padding: 1rem;
+    background: #ffffff;
+    border: 1px solid #f3e4ea;
+    border-radius: 0.875rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.mm-wrap .mm-mobile-top {
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.mm-wrap .mm-mobile-mother {
+    flex: 1 1 auto;
+    align-items: flex-start;
+    gap: 0.625rem;
+    min-width: 0;
+}
+
+.mm-wrap .mm-mobile-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Long names wrap instead of pushing the status and actions out of the card. */
+.mm-wrap .mm-mobile-name {
+    margin: 0;
+    overflow: visible;
+    color: #0f172a;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: normal;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+}
+
+.mm-wrap .mm-mobile-code {
+    margin-top: 0.1875rem;
+    color: #be185d;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.mm-wrap .mm-mobile-top .mm-status {
+    flex: 0 0 auto;
+    margin-top: 0.0625rem;
+}
+
+.mm-wrap .mm-mobile-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.875rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f6edf1;
+}
+
+.mm-wrap .mm-detail-label {
+    color: #94a3b8;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+
+.mm-wrap .mm-detail-value {
+    margin-top: 0.1875rem;
+    color: #334155;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.mm-wrap .mm-mobile-details > div:nth-child(2) .mm-detail-value {
+    font-variant-numeric: tabular-nums;
+}
+
+.mm-wrap .mm-mobile-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+}
+
+.mm-wrap .mm-mobile-actions .mm-action {
+    width: 100%;
+    min-height: 2.625rem;
+    font-size: 0.8125rem;
+}
+
+/* Use the existing card layout wherever the table would be cramped:
+   up to 899px (no sidebar), and 1024-1199px (sidebar takes ~270px). */
+@media (max-width: 899px), (min-width: 1024px) and (max-width: 1199px) {
+    .mm-wrap .mm-table-wrap {
+        display: none;
+    }
+
+    .mm-wrap .mm-mobile-list {
+        display: grid;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+}
+
+/* Wider card layouts: two cards per row. */
+@media (min-width: 641px) and (max-width: 899px), (min-width: 1024px) and (max-width: 1199px) {
+    .mm-wrap .mm-mobile-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .mm-wrap .mm-registry-head {
+        align-items: flex-start;
+        gap: 0.625rem;
+        padding: 1rem;
+    }
+
+    .mm-wrap .mm-registry-title {
+        font-size: 1.1875rem;
+    }
+
+    .mm-wrap .mm-filter-bar {
+        padding: 0.75rem 1rem;
+    }
+
+    .mm-wrap .mm-mobile-list {
+        gap: 0.625rem;
+        padding: 0.75rem;
+    }
+
+    .mm-wrap .mm-mother-card {
+        padding: 0.875rem;
+    }
+
+    .mm-wrap .mm-detail-value {
+        font-size: 0.8125rem;
+    }
+
+    .mm-wrap .mm-mobile-actions .mm-action {
+        min-height: 2.625rem;
+    }
+}
+
+/* Very small phones: keep the two detail columns (shorter cards),
+   but let the avatar go so the name has room. */
+@media (max-width: 359px) {
+    .mm-wrap .mm-mobile-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mm-wrap .mm-mobile-mother .mm-avatar {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mm-wrap .mm-action,
+    .mm-wrap .mm-table tbody tr {
+        transition: none;
+    }
+}

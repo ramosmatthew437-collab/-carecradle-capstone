@@ -3,11 +3,22 @@ namespace App\Http\Requests;
 
 
 
+use App\Http\Requests\Concerns\NormalizesAccountContact;
+use App\Rules\UniqueEmailInsensitive;
+use App\Rules\UniquePhilippinePhone;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
 class StoreMidwifeRequest extends FormRequest
 {
+    use NormalizesAccountContact;
+
+    /** Email: trimmed + lower-cased. Mobile number: saved as 09XXXXXXXXX. */
+    protected function prepareForValidation(): void
+    {
+        $this->normalizeAccountContact();
+    }
+
     /**
      * Determine if the user is authorized.
      */
@@ -47,16 +58,20 @@ class StoreMidwifeRequest extends FormRequest
                 'max:100',
             ],
 
+            // Optional; a Philippine mobile number not used by another account.
             'contact_number' => [
                 'nullable',
                 'string',
                 'max:20',
+                new UniquePhilippinePhone(),
             ],
 
+            // Optional; unique across accounts regardless of letter case.
             'email' => [
                 'nullable',
                 'email',
-                'unique:users,email',
+                'max:255',
+                new UniqueEmailInsensitive(),
             ],
 
             'password' => [

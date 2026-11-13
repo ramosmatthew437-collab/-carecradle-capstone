@@ -2,13 +2,32 @@
 
     <div class="cc-forgot-password">
 
+        {{-- Recovery progress: step 2 of 3 --}}
+        <ol class="cc-steps" aria-label="Password recovery steps">
+            <li class="cc-step is-done">
+                <span class="cc-step-dot" aria-hidden="true">✓</span>
+                <span class="cc-step-label">Request</span>
+            </li>
+            <li class="cc-step is-current" aria-current="step">
+                <span class="cc-step-dot">2</span>
+                <span class="cc-step-label">Verify</span>
+            </li>
+            <li class="cc-step">
+                <span class="cc-step-dot">3</span>
+                <span class="cc-step-label">New password</span>
+            </li>
+        </ol>
+
         {{-- =========================================================
              HEADER
              ========================================================= --}}
         <div class="cc-forgot-header">
 
             <div class="cc-forgot-icon" aria-hidden="true">
-                🔐
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z" />
+                    <path d="M9 12l2 2 4-4" />
+                </svg>
             </div>
 
             <h2>
@@ -123,7 +142,7 @@
                     class="mt-2 text-sm text-gray-500"
                 >
                     The verification code expires in
-                    <strong>5 minutes</strong>.
+                    <strong>10 minutes</strong>.
                 </p>
 
             </div>

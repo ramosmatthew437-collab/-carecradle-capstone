@@ -1,32 +1,41 @@
 <x-app-layout>
+    @include('infants._styles')
 
-   
     @php
         $totalVaccinations = $infant->vaccinations->count();
         $totalGrowthRecords = $infant->growthMonitorings->count();
 
-        $upcomingVaccinations = $infant->vaccinations->filter(function ($v) {
-            return $v->next_due_date && \Carbon\Carbon::parse($v->next_due_date)->isFuture();
-        });
+        // Next-due status per record, using the Midwife Dashboard's rules
+        // (App\Models\Vaccination::dueStatus): due today counts as upcoming,
+        // and a past due date is only "overdue" when no later dose of the same
+        // vaccine has been recorded for this infant.
+        $vaccinationDueStatus = $infant->vaccinations->mapWithKeys(
+            fn ($v) => [$v->id => $v->dueStatus($infant->vaccinations)]
+        );
 
-        $missedVaccinations = $infant->vaccinations->filter(function ($v) {
-            return $v->next_due_date && \Carbon\Carbon::parse($v->next_due_date)->isPast();
-        });
+        $upcomingVaccinations = $infant->vaccinations->filter(
+            fn ($v) => $vaccinationDueStatus[$v->id] === 'upcoming'
+        );
+
+        $missedVaccinations = $infant->vaccinations->filter(
+            fn ($v) => $vaccinationDueStatus[$v->id] === 'overdue'
+        );
 
         $upcomingVaccinationsCount = $upcomingVaccinations->count();
         $missedVaccinationsCount = $missedVaccinations->count();
 
         // Earliest overdue first (most urgent), then soonest-upcoming first,
-        // then everything else (no next_due_date) in its original
-        // most-recently-given-first order. Presentation-layer only —
-        // the underlying $infant->vaccinations relationship and its
-        // default ordering are untouched.
-        $sortedVaccinations = $infant->vaccinations->sort(function ($a, $b) {
-            $rank = function ($v) {
-                if (!$v->next_due_date) {
-                    return 2;
-                }
-                return \Carbon\Carbon::parse($v->next_due_date)->isPast() ? 0 : 1;
+        // then everything else (no next_due_date, or followed by a later
+        // dose) in its original most-recently-given-first order.
+        // Presentation-layer only: the $infant->vaccinations relationship and
+        // its default ordering are untouched.
+        $sortedVaccinations = $infant->vaccinations->sort(function ($a, $b) use ($vaccinationDueStatus) {
+            $rank = function ($v) use ($vaccinationDueStatus) {
+                return match ($vaccinationDueStatus[$v->id]) {
+                    'overdue' => 0,
+                    'upcoming' => 1,
+                    default => 2,
+                };
             };
 
             $rankA = $rank($a);
@@ -48,885 +57,465 @@
 
         $latestGrowth = $infant->growthMonitorings->sortByDesc('date_measured')->first();
 
-        // Birth-vs-latest comparison for the Growth Monitoring tiles.
-        // Derived from already-loaded birth_weight / birth_length and the
-        // latest growth record — no new query, no new columns.
+        // Birth-vs-latest comparison (already-loaded values, no new query).
         $weightSinceBirth = $latestGrowth ? $latestGrowth->weight - $infant->birth_weight : null;
         $heightSinceBirth = $latestGrowth ? $latestGrowth->height - $infant->birth_length : null;
 
         $ageDiff = \Carbon\Carbon::parse($infant->birth_date)->diff(now());
+        $ageText = $ageDiff->y > 0
+            ? $ageDiff->y . ' ' . Str::plural('year', $ageDiff->y) . ($ageDiff->m ? ', ' . $ageDiff->m . ' ' . Str::plural('month', $ageDiff->m) : '')
+            : ($ageDiff->m > 0
+                ? $ageDiff->m . ' ' . Str::plural('month', $ageDiff->m) . ($ageDiff->d ? ', ' . $ageDiff->d . ' ' . Str::plural('day', $ageDiff->d) : '')
+                : $ageDiff->d . ' ' . Str::plural('day', $ageDiff->d));
+
+        $chartGrowth = $infant->growthMonitorings->sortBy('date_measured')->values();
+        $mother = $infant->mother;
+        $signed = fn ($value) => ($value >= 0 ? '+' : '−') . number_format(abs($value), 2);
     @endphp
 
-    <div class="py-4 sm:py-8">
+    <div class="inf">
+        <div class="inf-container">
 
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
-
-            {{-- ====================================== --}}
-            {{-- SECTION 1 : HERO PROFILE CARD --}}
-            {{-- ====================================== --}}
-
-            <div class="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-cyan-600 via-cyan-600 to-blue-600 shadow-sm">
-
-                <div class="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl"></div>
-                <div class="pointer-events-none absolute -bottom-14 right-24 h-32 w-32 rounded-full bg-white/10 blur-2xl"></div>
-
-                <div class="relative flex flex-col gap-6 p-5 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
-
-                    <div class="flex items-start gap-4 sm:gap-5">
-
-                        <div class="flex h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm">
-
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-7 w-7 sm:h-8 sm:w-8 text-white"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor"
-                                 stroke-width="1.8">
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M15.75 11.25a3.75 3.75 0 1 0-7.5 0v.75A2.25 2.25 0 0 1 6 14.25v1.5A2.25 2.25 0 0 0 8.25 18h7.5A2.25 2.25 0 0 0 18 15.75v-1.5A2.25 2.25 0 0 1 15.75 12v-.75Z" />
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M12 3.75v1.5" />
-
-                            </svg>
-
-                        </div>
-
-                        <div class="min-w-0">
-
-                            <p class="text-xs sm:text-sm font-semibold uppercase tracking-widest text-cyan-100">
-                                Infant Health Record
-                            </p>
-
-                            <h1 class="mt-1 truncate text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                                {{ $infant->first_name }}
-                                {{ $infant->middle_name }}
-                                {{ $infant->last_name }}
-                            </h1>
-
-                            <div class="mt-3 flex flex-wrap items-center gap-2">
-
-                                <span class="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-xs sm:text-sm font-semibold text-white">
-                                    {{ $infant->sex }}
-                                </span>
-
-                                @if($infant->birth_status == 'Alive')
-                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs sm:text-sm font-semibold text-white">
-                                        <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
-                                        Alive
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs sm:text-sm font-semibold text-white">
-                                        <span class="h-2 w-2 rounded-full bg-red-300"></span>
-                                        Stillbirth
-                                    </span>
-                                @endif
-
-                            </div>
-
-                            <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-cyan-50">
-
-                                <span class="inline-flex items-center gap-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/>
-                                    </svg>
-                                    {{ \Carbon\Carbon::parse($infant->birth_date)->format('F d, Y') }}
-                                </span>
-
-                                <span class="inline-flex items-center gap-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0"/>
-                                    </svg>
-                                    @if($ageDiff->y > 0)
-                                        {{ $ageDiff->y }} {{ Str::plural('year', $ageDiff->y) }} {{ $ageDiff->m }} {{ Str::plural('month', $ageDiff->m) }} old
-                                    @else
-                                        {{ $ageDiff->m }} {{ Str::plural('month', $ageDiff->m) }} {{ $ageDiff->d }} {{ Str::plural('day', $ageDiff->d) }} old
-                                    @endif
-                                </span>
-
-                                <span class="inline-flex items-center gap-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 1 0-7.5 0 3.75 3.75 0 0 0 7.5 0ZM4.5 20.118a7.5 7.5 0 0 1 15 0A17.933 17.933 0 0 1 12 21.75a17.933 17.933 0 0 1-7.5-1.632Z"/>
-                                    </svg>
-                                    {{ $infant->mother->first_name }} {{ $infant->mother->last_name }}
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {{-- ====================================== --}}
-            {{-- CLINICAL REMARKS --}}
-            {{-- Promoted directly below the hero. Minimal, low-weight when --}}
-            {{-- empty; visually prominent only when a remark actually exists, --}}
-            {{-- so an empty state doesn't compete for attention with real --}}
-            {{-- clinical flags. Same $infant->remarks field, relocated only. --}}
-            {{-- ====================================== --}}
-
-            @if($infant->remarks)
-                <div class="rounded-2xl border-2 border-amber-300 bg-amber-50 p-5 sm:p-6 shadow-sm">
-                    <div class="flex items-start gap-3">
-                        <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-amber-200 text-amber-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
-                            </svg>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">Clinical Remarks</p>
-                            <p class="mt-1 text-sm leading-6 text-gray-800">{{ $infant->remarks }}</p>
-                        </div>
-                    </div>
-                </div>
-            @else
-                <p class="px-1 text-xs text-gray-400">No clinical remarks on file for this infant.</p>
+            @if ($mother)
+                <a href="{{ route('mothers.show', $mother->id) }}" class="inf-back">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+                    </svg>
+                    Back to Mother Profile
+                </a>
             @endif
 
-            {{-- ====================================== --}}
-            {{-- SECTION 2 : STATISTICS CARDS --}}
-            {{-- ====================================== --}}
-
-            <div class="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-
-                <div class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-500">Vaccinations</p>
-                            <h2 class="mt-2 sm:mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-gray-900">{{ $totalVaccinations }}</h2>
-                            <p class="mt-1 hidden sm:block text-sm text-gray-500">Doses received</p>
-                        </div>
-                        <div class="flex h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-100 text-emerald-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0Z"/>
-                            </svg>
-                        </div>
+            <header class="inf-head">
+                <div style="display: flex; align-items: center; gap: 0.875rem;">
+                    <div class="inf-avatar inf-avatar-lg">
+                        @php
+                            // Photo only when the stored file exists; otherwise, or if it fails
+                            // to load, the initials avatar is shown instead of a broken image.
+                            $infHasPhoto = $infant->photo_path && \Illuminate\Support\Facades\Storage::disk('local')->exists($infant->photo_path);
+                            $infInitials = strtoupper(substr($infant->first_name ?? '', 0, 1) . substr($infant->last_name ?? '', 0, 1));
+                        @endphp
+                        @if ($infHasPhoto)
+                            <img src="{{ route('midwife.infant-photo.show', $infant->id) }}" alt="Photo of {{ $infant->first_name }} {{ $infant->last_name }}" onerror="this.style.display = 'none'; this.nextElementSibling.style.display = '';">
+                            <span aria-hidden="true" style="display: none;">{{ $infInitials }}</span>
+                        @else
+                            <span aria-hidden="true">{{ $infInitials }}</span>
+                        @endif
+                    </div>
+                    <div style="min-width: 0;">
+                        <p class="inf-kicker">Infant Profile</p>
+                        <h1 class="inf-title">{{ trim($infant->first_name . ' ' . $infant->middle_name . ' ' . $infant->last_name) }}</h1>
+                        <p class="inf-subtitle">
+                            <span class="inf-badge inf-badge-pink">{{ $infant->sex }}</span>
+                            <span class="inf-badge {{ $infant->birth_status === 'Stillbirth' ? 'inf-badge-gray' : 'inf-badge-green' }}">{{ $infant->birth_status }}</span>
+                            &nbsp;Born {{ \Carbon\Carbon::parse($infant->birth_date)->format('M d, Y') }} · {{ $ageText }} old
+                        </p>
                     </div>
                 </div>
 
-                <div class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-500">Growth Records</p>
-                            <h2 class="mt-2 sm:mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-gray-900">{{ $totalGrowthRecords }}</h2>
-                            <p class="mt-1 hidden sm:block text-sm text-gray-500">Recorded checkups</p>
-                        </div>
-                        <div class="flex h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-cyan-100 text-cyan-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7.5 15l3-3 2.5 2.5L17 9"/>
+                <div class="inf-head-actions">
+                    <a href="{{ route('infants.edit', $infant->id) }}" class="inf-btn inf-btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z"/>
+                        </svg>
+                        Edit Infant
+                    </a>
+                    <form action="{{ route('infants.destroy', $infant->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="inf-btn inf-btn-danger"
+                                onclick="return confirm('Delete this infant record?')">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
                             </svg>
-                        </div>
-                    </div>
+                            Delete
+                        </button>
+                    </form>
                 </div>
+            </header>
 
-                {{-- Upcoming — now a quick-action link when at least one exists --}}
-                @if($firstUpcomingVaccination)
-                    <a href="#vaccination-item-{{ $firstUpcomingVaccination->id }}"
-                       class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-amber-300">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="min-w-0">
-                                <p class="text-xs sm:text-sm font-medium text-gray-500">Upcoming</p>
-                                <h2 class="mt-2 sm:mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-gray-900">{{ $upcomingVaccinationsCount }}</h2>
-                                <p class="mt-1 hidden sm:block text-sm text-amber-600 font-medium">Vaccinations due &rarr;</p>
-                            </div>
-                            <div class="flex h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-amber-100 text-amber-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0"/>
-                                </svg>
-                            </div>
-                        </div>
+            @if (session('success'))
+                <div class="inf-alert inf-alert-success" role="status">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            {{-- Counts and quick links --}}
+            <div class="inf-stats">
+                <a href="#inf-vaccinations" class="inf-stat">
+                    <p class="inf-stat-label">Vaccinations</p>
+                    <p class="inf-stat-value">{{ $totalVaccinations }}</p>
+                    <p class="inf-stat-note">Doses recorded</p>
+                </a>
+                <a href="#inf-growth" class="inf-stat">
+                    <p class="inf-stat-label">Growth Records</p>
+                    <p class="inf-stat-value">{{ $totalGrowthRecords }}</p>
+                    <p class="inf-stat-note">Measurements</p>
+                </a>
+                @if ($firstUpcomingVaccination)
+                    <a href="#vaccination-item-{{ $firstUpcomingVaccination->id }}" class="inf-stat inf-stat-warn">
+                        <p class="inf-stat-label">Upcoming</p>
+                        <p class="inf-stat-value">{{ $upcomingVaccinationsCount }}</p>
+                        <p class="inf-stat-note">Next due {{ \Carbon\Carbon::parse($firstUpcomingVaccination->next_due_date)->format('M d') }} →</p>
                     </a>
                 @else
-                    <div class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="min-w-0">
-                                <p class="text-xs sm:text-sm font-medium text-gray-500">Upcoming</p>
-                                <h2 class="mt-2 sm:mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-gray-900">{{ $upcomingVaccinationsCount }}</h2>
-                                <p class="mt-1 hidden sm:block text-sm text-gray-500">Vaccinations due</p>
-                            </div>
-                            <div class="flex h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-amber-100 text-amber-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0"/>
-                                </svg>
-                            </div>
-                        </div>
+                    <div class="inf-stat">
+                        <p class="inf-stat-label">Upcoming</p>
+                        <p class="inf-stat-value">{{ $upcomingVaccinationsCount }}</p>
+                        <p class="inf-stat-note">No dose due</p>
                     </div>
                 @endif
-
-                {{-- Missed — quick-action link to the first missed record --}}
-                @if($firstMissedVaccination)
-                    <a href="#vaccination-item-{{ $firstMissedVaccination->id }}"
-                       class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-red-300">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="min-w-0">
-                                <p class="text-xs sm:text-sm font-medium text-gray-500">Missed</p>
-                                <h2 class="mt-2 sm:mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-gray-900">{{ $missedVaccinationsCount }}</h2>
-                                <p class="mt-1 hidden sm:block text-sm text-red-600 font-medium">Past due date &rarr;</p>
-                            </div>
-                            <div class="flex h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-red-100 text-red-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
-                                </svg>
-                            </div>
-                        </div>
+                @if ($firstMissedVaccination)
+                    <a href="#vaccination-item-{{ $firstMissedVaccination->id }}" class="inf-stat inf-stat-alert">
+                        <p class="inf-stat-label">Overdue</p>
+                        <p class="inf-stat-value">{{ $missedVaccinationsCount }}</p>
+                        <p class="inf-stat-note">Past due date →</p>
                     </a>
                 @else
-                    <div class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="min-w-0">
-                                <p class="text-xs sm:text-sm font-medium text-gray-500">Missed</p>
-                                <h2 class="mt-2 sm:mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-gray-900">{{ $missedVaccinationsCount }}</h2>
-                                <p class="mt-1 hidden sm:block text-sm text-gray-500">Past due date</p>
-                            </div>
-                            <div class="flex h-10 w-10 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-red-100 text-red-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
-                                </svg>
-                            </div>
-                        </div>
+                    <div class="inf-stat">
+                        <p class="inf-stat-label">Overdue</p>
+                        <p class="inf-stat-value">{{ $missedVaccinationsCount }}</p>
+                        <p class="inf-stat-note">None overdue</p>
                     </div>
                 @endif
-
             </div>
 
-            {{-- ====================================== --}}
-            {{-- SECTION 3 : INFANT INFORMATION --}}
-            {{-- Full Name, Gender, Age, and Mother Name removed — already --}}
-            {{-- shown once in the Hero. Date of Birth kept per agreed scope. --}}
-            {{-- Mother/guardian facts moved to their own card below. --}}
-            {{-- ====================================== --}}
-
-            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
-                    <div class="flex items-center gap-3 sm:gap-4">
-                        <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-cyan-100 text-cyan-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3-6.72A9 9 0 1 0 3 12a9.094 9.094 0 0 0 3 6.72M9 10.5h6M9 13.5h3"/>
-                            </svg>
-                        </div>
-                        <div class="min-w-0">
-                            <h2 class="text-base sm:text-lg font-semibold text-gray-900">Infant Information</h2>
-                            <p class="mt-0.5 text-xs sm:text-sm text-gray-500">
-                                Birth details recorded during infant registration.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-5 sm:p-6">
-
-                    <div class="grid grid-cols-1 gap-4 sm:gap-5 sm:grid-cols-2 xl:grid-cols-3">
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Date of Birth</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900">
-                                {{ \Carbon\Carbon::parse($infant->birth_date)->format('F d, Y') }}
-                            </p>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Birth Weight</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900">
-                                {{ number_format($infant->birth_weight, 2) }} kg
-                            </p>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Birth Height</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900">
-                                {{ number_format($infant->birth_length, 2) }} cm
-                            </p>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {{-- ====================================== --}}
-            {{-- SECTION 3B : MOTHER INFORMATION --}}
-            {{-- New card — separated from Infant Information because these --}}
-            {{-- are facts about the guardian, not the infant. Includes a --}}
-            {{-- direct link to the Mother Profile so a midwife arriving --}}
-            {{-- here from elsewhere (not from the mother's own page) --}}
-            {{-- doesn't have to scroll to the bottom Action Buttons to get there. --}}
-            {{-- ====================================== --}}
-
-            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                <div class="border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6">
-                    <div class="flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3 sm:gap-4">
-                            <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-pink-100 text-pink-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.499-1.632Z"/>
+            <div class="inf-split">
+                {{-- Infant information --}}
+                <section class="inf-card" aria-labelledby="inf-info-title">
+                    <div class="inf-card-head">
+                        <div class="inf-card-head-main">
+                            <span class="inf-card-icon" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                                 </svg>
-                            </div>
-                            <div class="min-w-0">
-                                <h2 class="text-base sm:text-lg font-semibold text-gray-900">Mother Information</h2>
-                                <p class="mt-0.5 text-xs sm:text-sm text-gray-500">
-                                    Guardian record linked to this infant.
-                                </p>
+                            </span>
+                            <div>
+                                <h2 class="inf-card-title" id="inf-info-title">Infant Information</h2>
+                                <p class="inf-card-sub">Recorded at registration.</p>
                             </div>
                         </div>
+                    </div>
+                    <dl class="inf-dl">
+                        <div><dt>Date of Birth</dt><dd>{{ \Carbon\Carbon::parse($infant->birth_date)->format('M d, Y') }}</dd></div>
+                        <div><dt>Age</dt><dd>{{ $ageText }}</dd></div>
+                        <div><dt>Sex</dt><dd>{{ $infant->sex }}</dd></div>
+                        <div><dt>Birth Weight</dt><dd>{{ number_format($infant->birth_weight, 2) }}<span class="inf-unit">kg</span></dd></div>
+                        <div><dt>Birth Length</dt><dd>{{ number_format($infant->birth_length, 2) }}<span class="inf-unit">cm</span></dd></div>
+                        <div>
+                            <dt>Head Circumference</dt>
+                            <dd>
+                                @if ($infant->head_circumference)
+                                    {{ number_format($infant->head_circumference, 2) }}<span class="inf-unit">cm</span>
+                                @else
+                                    <span class="inf-empty-value">Not recorded</span>
+                                @endif
+                            </dd>
+                        </div>
+                    </dl>
+                </section>
 
-                        <a href="{{ route('mothers.show', $infant->mother->id) }}"
-                           class="hidden sm:inline-flex h-9 flex-shrink-0 items-center gap-1.5 rounded-lg bg-pink-600 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-pink-700">
+                {{-- Mother --}}
+                <section class="inf-card" aria-labelledby="inf-mother-title">
+                    <div class="inf-card-head">
+                        <div class="inf-card-head-main">
+                            <span class="inf-card-icon" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                                </svg>
+                            </span>
+                            <div>
+                                <h2 class="inf-card-title" id="inf-mother-title">Mother</h2>
+                                <p class="inf-card-sub">Linked maternal record.</p>
+                            </div>
+                        </div>
+                    </div>
+                    @if ($mother)
+                        <dl class="inf-dl inf-dl-2">
+                            <div class="inf-span-all"><dt>Name</dt><dd>{{ $mother->first_name }} {{ $mother->last_name }}</dd></div>
+                            <div><dt>Mother Code</dt><dd><span class="inf-code">{{ $mother->mother_code }}</span></dd></div>
+                            <div><dt>Barangay</dt><dd>{{ $mother->barangay ?: '—' }}</dd></div>
+                            <div class="inf-span-all"><dt>Address</dt><dd>{{ $mother->address ?: '—' }}</dd></div>
+                        </dl>
+                        <a href="{{ route('mothers.show', $mother->id) }}" class="inf-btn inf-btn-secondary" style="margin-top: 0.875rem; width: 100%;">
                             View Mother Profile
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        </a>
+                    @else
+                        <p class="inf-hint">The linked mother record is unavailable.</p>
+                    @endif
+                </section>
+            </div>
+
+            {{-- Registration exception (Section 1) and clinical remarks --}}
+            @if ($infant->registrationException())
+                <div style="margin-top: 1rem;">
+                    @include('infants._registration-exception-summary', ['infant' => $infant])
+                </div>
+            @endif
+
+            <section class="inf-card" aria-labelledby="inf-remarks-title">
+                <div class="inf-card-head" style="margin-bottom: 0.75rem;">
+                    <div class="inf-card-head-main">
+                        <div>
+                            <h2 class="inf-card-title" id="inf-remarks-title">Clinical Remarks</h2>
+                        </div>
+                    </div>
+                </div>
+                @if ($infant->clinicalRemarks())
+                    <p class="inf-note">{{ $infant->clinicalRemarks() }}</p>
+                @else
+                    <p class="inf-hint" style="margin: 0;">No clinical remarks on file for this infant.</p>
+                @endif
+            </section>
+
+            {{-- Growth monitoring --}}
+            <section class="inf-card" id="inf-growth" aria-labelledby="inf-growth-title">
+                <div class="inf-card-head">
+                    <div class="inf-card-head-main">
+                        <span class="inf-card-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941"/>
                             </svg>
+                        </span>
+                        <div>
+                            <h2 class="inf-card-title" id="inf-growth-title">Growth Monitoring</h2>
+                            <p class="inf-card-sub">Weight, length, and head circumference over time.</p>
+                        </div>
+                    </div>
+                    <div class="inf-card-actions">
+                        <a href="{{ route('growth-monitorings.create', $infant) }}" class="inf-btn inf-btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                            </svg>
+                            Add Growth Record
                         </a>
                     </div>
                 </div>
 
-                <div class="p-5 sm:p-6">
-
-                    <div class="grid grid-cols-1 gap-4 sm:gap-5 sm:grid-cols-2 xl:grid-cols-3">
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Mother Name</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900 break-words">
-                                {{ $infant->mother->first_name }} {{ $infant->mother->last_name }}
-                            </p>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Mother Code</p>
-                            <p class="mt-2 font-mono text-sm sm:text-base font-semibold text-pink-700">
-                                {{ $infant->mother->mother_code }}
-                            </p>
-                        </div>
-
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5 sm:col-span-2 xl:col-span-1">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Address</p>
-                            <p class="mt-2 text-sm sm:text-base font-semibold text-gray-900 break-words">
-                                {{ $infant->mother->address ?? '-' }}
-                            </p>
-                        </div>
-
+                @if ($infant->growthMonitorings->isEmpty())
+                    <div class="inf-empty">
+                        <strong>No growth records yet</strong>
+                        <p>Add the first measurement to start tracking this infant's growth.</p>
                     </div>
-
-                    <a href="{{ route('mothers.show', $infant->mother->id) }}"
-                       class="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-pink-600 text-sm font-semibold text-white shadow-sm transition hover:bg-pink-700 sm:hidden">
-                        View Mother Profile
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-
-                </div>
-
-            </div>
-
-            {{-- ====================================== --}}
-            {{-- SECTION 4 : GROWTH MONITORING --}}
-            {{-- ====================================== --}}
-
-            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                <div class="flex flex-col gap-4 border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6 md:flex-row md:items-center md:justify-between">
-
-                    <div class="flex items-center gap-3 sm:gap-4">
-                        <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-100 text-emerald-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7.5 15l3-3 2.5 2.5L17 9"/>
-                            </svg>
+                @else
+                    <p class="inf-subhead" style="margin-top: 0;">Latest measurement · {{ \Carbon\Carbon::parse($latestGrowth->date_measured)->format('M d, Y') }}</p>
+                    <div class="inf-metrics">
+                        <div class="inf-metric">
+                            <p class="inf-metric-label">Weight</p>
+                            <p class="inf-metric-value">{{ number_format($latestGrowth->weight, 2) }}<span class="inf-unit">kg</span></p>
+                            <p class="inf-metric-note">{{ $signed($weightSinceBirth) }} kg since birth</p>
                         </div>
-                        <div class="min-w-0">
-                            <h2 class="text-base sm:text-lg font-semibold text-gray-900">Growth Monitoring</h2>
-                            <p class="mt-0.5 text-xs sm:text-sm text-gray-500">
-                                Track the infant's physical growth through regular health assessments.
+                        <div class="inf-metric">
+                            <p class="inf-metric-label">Length / Height</p>
+                            <p class="inf-metric-value">{{ number_format($latestGrowth->height, 2) }}<span class="inf-unit">cm</span></p>
+                            <p class="inf-metric-note">{{ $signed($heightSinceBirth) }} cm since birth</p>
+                        </div>
+                        <div class="inf-metric">
+                            <p class="inf-metric-label">Head Circumference</p>
+                            <p class="inf-metric-value">
+                                @if ($latestGrowth->head_circumference)
+                                    {{ number_format($latestGrowth->head_circumference, 2) }}<span class="inf-unit">cm</span>
+                                @else
+                                    <span class="inf-empty-value" style="font-size: 0.9375rem;">Not recorded</span>
+                                @endif
                             </p>
+                        </div>
+                        <div class="inf-metric">
+                            <p class="inf-metric-label">Age at Measurement</p>
+                            <p class="inf-metric-value">{{ $latestGrowth->age_in_months }}<span class="inf-unit">{{ Str::plural('month', $latestGrowth->age_in_months) }}</span></p>
                         </div>
                     </div>
 
-                    <a
-                        href="{{ route('growth-monitorings.create', $infant) }}"
-                        class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md active:scale-[0.98]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                        </svg>
-                        Add Growth Record
-                    </a>
-
-                </div>
-
-                <div class="p-5 sm:p-6">
-
-                    @if($latestGrowth)
-
-                        <p class="mb-4 text-xs font-semibold uppercase tracking-widest text-gray-400">Latest Measurement</p>
-
-                        <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-
-                            <div class="rounded-2xl border border-cyan-100 bg-cyan-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-cyan-600">Weight</p>
-                                <p class="mt-2 text-xl sm:text-2xl font-bold text-gray-900">{{ number_format($latestGrowth->weight, 2) }}<span class="text-sm font-medium text-gray-500"> kg</span></p>
-                                @if(!is_null($weightSinceBirth))
-                                    <p class="mt-1 text-xs font-medium {{ $weightSinceBirth >= 0 ? 'text-emerald-600' : 'text-red-600' }}">
-                                        {{ $weightSinceBirth >= 0 ? '+' : '' }}{{ number_format($weightSinceBirth, 2) }} kg since birth
-                                    </p>
-                                @endif
-                            </div>
-
-                            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600">Height</p>
-                                <p class="mt-2 text-xl sm:text-2xl font-bold text-gray-900">{{ number_format($latestGrowth->height, 2) }}<span class="text-sm font-medium text-gray-500"> cm</span></p>
-                                @if(!is_null($heightSinceBirth))
-                                    <p class="mt-1 text-xs font-medium {{ $heightSinceBirth >= 0 ? 'text-emerald-600' : 'text-red-600' }}">
-                                        {{ $heightSinceBirth >= 0 ? '+' : '' }}{{ number_format($heightSinceBirth, 2) }} cm since birth
-                                    </p>
-                                @endif
-                            </div>
-
-                            <div class="rounded-2xl border border-blue-100 bg-blue-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-blue-600">Head Circumference</p>
-                                <p class="mt-2 text-xl sm:text-2xl font-bold text-gray-900">
-                                    {{ $latestGrowth->head_circumference ? number_format($latestGrowth->head_circumference, 2) : '-' }}<span class="text-sm font-medium text-gray-500"> cm</span>
-                                </p>
-                            </div>
-
-                            <div class="rounded-2xl border border-amber-100 bg-amber-50 p-4 sm:p-5">
-                                <p class="text-xs font-semibold uppercase tracking-wide text-amber-600">Measured On</p>
-                                <p class="mt-2 text-base sm:text-lg font-bold text-gray-900">
-                                    {{ \Carbon\Carbon::parse($latestGrowth->date_measured)->format('M d, Y') }}
-                                </p>
-                            </div>
-
+                    @if ($infant->growthMonitorings->count() > 1)
+                        <p class="inf-subhead">Growth trend</p>
+                        <div class="inf-chart">
+                            <canvas id="growthChart" role="img" aria-label="Line chart of weight in kilograms and length in centimetres by measurement date"></canvas>
                         </div>
-
+                        <p class="inf-chart-note">Weight (left axis, kg) and length / height (right axis, cm) for every recorded measurement.</p>
                     @endif
-                 @if($infant->growthMonitorings->count() > 1)
 
-<div id="growth-chart" class="mt-6 rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm">
-
-    <div class="mb-4">
-        <h3 class="text-lg font-semibold text-gray-900">
-            Growth Trend Chart
-        </h3>
-
-        <p class="text-sm text-gray-500">
-            Infant growth trends showing weight and height progression over time.
-        </p>
-    </div>
-
-    <div class="relative h-64 sm:h-80 w-full">
-        <canvas id="growthChart"></canvas>
-    </div>
-
-</div>
-
-@endif
-
-                    @if ($infant->growthMonitorings->isEmpty())
-
-                        <div class="px-2 py-10 sm:py-12 text-center">
-                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18"/>
-                                </svg>
-                            </div>
-                            <h3 class="mt-4 text-base sm:text-lg font-semibold text-gray-900">No Growth Records</h3>
-                            <p class="mt-2 text-sm text-gray-500">No growth monitoring records have been recorded yet.</p>
-                        </div>
-
-                    @else
-
-                        <div class="mt-6 -mx-5 sm:mx-0 overflow-x-auto rounded-xl border border-gray-200">
-
-                            <table class="min-w-full">
-
-                                <thead class="bg-gray-50">
-                                    <tr class="border-b border-gray-200">
-                                        <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Date Measured</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Age</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Weight</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Height</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Head Circumference</th>
-                                        <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-600">Action</th>
+                    <p class="inf-subhead">Measurement history</p>
+                    <div class="inf-table-wrap">
+                        <table class="inf-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date Measured</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Weight</th>
+                                    <th scope="col">Length / Height</th>
+                                    <th scope="col">Head Circ.</th>
+                                    <th scope="col" class="inf-cell-action"><span class="inf-sr">Action</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($infant->growthMonitorings as $growth)
+                                    <tr>
+                                        <td class="inf-cell-title" data-label="Date measured">{{ \Carbon\Carbon::parse($growth->date_measured)->format('M d, Y') }}</td>
+                                        <td data-label="Age">{{ $growth->age_in_months }} {{ Str::plural('month', $growth->age_in_months) }}</td>
+                                        <td data-label="Weight">{{ number_format($growth->weight, 2) }} kg</td>
+                                        <td data-label="Length / Height">{{ number_format($growth->height, 2) }} cm</td>
+                                        <td data-label="Head circ.">{{ $growth->head_circumference ? number_format($growth->head_circumference, 2) . ' cm' : '—' }}</td>
+                                        <td class="inf-cell-action">
+                                            <a href="{{ route('growth-monitorings.show', $growth) }}" class="inf-btn inf-btn-quiet inf-btn-sm">
+                                                View<span class="inf-sr"> growth record of {{ \Carbon\Carbon::parse($growth->date_measured)->format('M d, Y') }}</span>
+                                            </a>
+                                        </td>
                                     </tr>
-                                </thead>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </section>
 
-                                <tbody class="divide-y divide-gray-200 bg-white">
-
-                                    @foreach($infant->growthMonitorings as $growth)
-                                        <tr class="transition hover:bg-gray-50">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                {{ \Carbon\Carbon::parse($growth->date_measured)->format('M d, Y') }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                {{ $growth->age_in_months }} month(s)
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {{ number_format($growth->weight, 2) }} kg
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {{ number_format($growth->height, 2) }} cm
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                {{ $growth->head_circumference ? number_format($growth->head_circumference, 2).' cm' : '-' }}
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                <a href="{{ route('growth-monitorings.show', $growth) }}"
-                                                   class="inline-flex items-center justify-center gap-2 rounded-lg bg-cyan-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-700">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1 1 0 010-.644C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.01 9.964 7.178a1 1 0 010 .644C20.577 16.49 16.639 19.5 12 19.5c-4.64 0-8.577-3.01-9.964-7.178Z"/>
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0"/>
-                                                    </svg>
-                                                    View
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    @endif
-
-                </div>
-
-            </div>
-
-            {{-- ====================================== --}}
-            {{-- SECTION 5 : VACCINATION TIMELINE --}}
-            {{-- Reordered: Missed first (most overdue first), then Upcoming --}}
-            {{-- (soonest first), then completed/no-further-dose records in --}}
-            {{-- their original most-recent-first order. Same $infant-> --}}
-            {{-- vaccinations data and routes — order only, computed in the --}}
-            {{-- @php block above via $sortedVaccinations. --}}
-            {{-- ====================================== --}}
-
-            <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                <div class="flex flex-col gap-4 border-b border-gray-200 bg-gray-50 px-5 py-5 sm:px-6 md:flex-row md:items-center md:justify-between">
-
-                    <div class="flex items-center gap-3 sm:gap-4">
-                        <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-blue-100 text-blue-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.5 16.5 4.5m0 0L9 12m7.5-7.5 3 3M9 12l-4.5 4.5M6 18l-1.5 1.5"/>
+            {{-- Vaccinations --}}
+            <section class="inf-card" id="inf-vaccinations" aria-labelledby="inf-vacc-title">
+                <div class="inf-card-head">
+                    <div class="inf-card-head-main">
+                        <span class="inf-card-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/>
                             </svg>
-                        </div>
-                        <div class="min-w-0">
-                            <h2 class="text-base sm:text-lg font-semibold text-gray-900">Vaccination Timeline</h2>
-                            <p class="mt-0.5 text-xs sm:text-sm text-gray-500">
-                                Missed and upcoming doses are shown first, followed by completed records.
-                            </p>
+                        </span>
+                        <div>
+                            <h2 class="inf-card-title" id="inf-vacc-title">Vaccinations</h2>
+                            <p class="inf-card-sub">Overdue and upcoming doses first, then completed records.</p>
                         </div>
                     </div>
-
-                    <a
-                        href="{{ route('vaccinations.create', $infant) }}"
-                        class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md active:scale-[0.98]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                        </svg>
-                        Add Vaccination
-                    </a>
-
+                    <div class="inf-card-actions">
+                        <a href="{{ route('vaccinations.create', $infant) }}" class="inf-btn inf-btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                            </svg>
+                            Add Vaccination
+                        </a>
+                    </div>
                 </div>
 
                 @if ($infant->vaccinations->isEmpty())
-
-                    <div class="px-6 py-10 sm:py-12 text-center">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.5 16.5 4.5m0 0L9 12m7.5-7.5 3 3M9 12l-4.5 4.5M6 18l-1.5 1.5"/>
-                            </svg>
-                        </div>
-                        <h3 class="mt-4 text-base sm:text-lg font-semibold text-gray-900">No Vaccination Records</h3>
-                        <p class="mt-2 text-sm text-gray-500">No vaccination records have been added for this infant.</p>
+                    <div class="inf-empty">
+                        <strong>No vaccination records yet</strong>
+                        <p>Record the first dose given to this infant.</p>
                     </div>
-
                 @else
-
-                    <div class="p-5 sm:p-8">
-
-                        <div class="relative space-y-6 sm:space-y-8 pl-8 sm:pl-10">
-
-                            <div class="absolute bottom-2 left-[9px] top-2 w-px bg-gray-200 sm:left-[11px]"></div>
-
-                            @foreach($sortedVaccinations as $vaccination)
-
-                                @php
-                                    $isPastDue = $vaccination->next_due_date && \Carbon\Carbon::parse($vaccination->next_due_date)->isPast();
-                                    $isUpcoming = $vaccination->next_due_date && \Carbon\Carbon::parse($vaccination->next_due_date)->isFuture();
-                                @endphp
-
-                                <div class="relative" id="vaccination-item-{{ $vaccination->id }}">
-
-                                    <span class="absolute -left-8 top-1 flex h-5 w-5 sm:-left-10 sm:h-6 sm:w-6 items-center justify-center rounded-full border-4 border-white shadow {{ $isPastDue ? 'bg-red-500' : ($isUpcoming ? 'bg-amber-500' : 'bg-blue-500') }}"></span>
-
-                                    <div class="flex flex-col gap-3 rounded-2xl border p-4 sm:p-5 sm:flex-row sm:items-center sm:justify-between {{ $isPastDue ? 'border-red-200 bg-red-50' : ($isUpcoming ? 'border-amber-200 bg-amber-50' : 'border-gray-200 bg-gray-50') }}">
-
-                                        <div class="min-w-0">
-                                            <p class="text-sm sm:text-base font-semibold text-gray-900">
-                                                {{ $vaccination->vaccine_name }}
-                                                <span class="ml-1 text-xs font-medium text-gray-500">· Dose {{ $vaccination->dose }}</span>
-                                            </p>
-
-                                            <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-600">
-                                                <span class="inline-flex items-center gap-1.5">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0Z"/>
-                                                    </svg>
-                                                    Given {{ \Carbon\Carbon::parse($vaccination->date_given)->format('M d, Y') }}
-                                                </span>
-
-                                                @if($vaccination->next_due_date)
-                                                    <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-semibold {{ $isPastDue ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' }}">
-                                                        {{ $isPastDue ? 'Past due' : 'Next due' }}: {{ \Carbon\Carbon::parse($vaccination->next_due_date)->format('M d, Y') }}
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <a href="{{ route('vaccinations.show', $vaccination) }}"
-                                           class="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition hover:bg-blue-700">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1 1 0 010-.644C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.01 9.964 7.178a1 1 0 010 .644C20.577 16.49 16.639 19.5 12 19.5c-4.64 0-8.577-3.01-9.964-7.178Z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0"/>
-                                            </svg>
-                                            View
-                                        </a>
-
+                    <ul class="inf-timeline">
+                        @foreach ($sortedVaccinations as $vaccination)
+                            @php
+                                $dueStatus = $vaccinationDueStatus[$vaccination->id] ?? null;
+                                $isPastDue = $dueStatus === 'overdue';
+                                $isUpcoming = $dueStatus === 'upcoming';
+                            @endphp
+                            <li class="inf-dose {{ $isPastDue ? 'inf-dose-overdue' : ($isUpcoming ? 'inf-dose-upcoming' : 'inf-dose-done') }}" id="vaccination-item-{{ $vaccination->id }}">
+                                <div class="inf-dose-main">
+                                    <p class="inf-dose-name">
+                                        {{ $vaccination->vaccine_name }} <span>· {{ $vaccination->dose }}</span>
+                                        @if ($vaccination->isCustomVaccine() || $vaccination->isCustomDose())
+                                            <span class="inf-badge inf-badge-amber" title="Not part of the approved schedule">Custom</span>
+                                        @endif
+                                    </p>
+                                    <div class="inf-dose-meta">
+                                        <span>Given {{ \Carbon\Carbon::parse($vaccination->date_given)->format('M d, Y') }}</span>
+                                        @if ($vaccination->next_due_date)
+                                            @if ($dueStatus === 'superseded')
+                                                {{-- Past due date already followed by a later dose: history, not overdue --}}
+                                                <span class="inf-badge inf-badge-gray">Was due {{ \Carbon\Carbon::parse($vaccination->next_due_date)->format('M d, Y') }} · later dose recorded</span>
+                                            @elseif ($isPastDue)
+                                                <span class="inf-badge inf-badge-red">Overdue · was due {{ \Carbon\Carbon::parse($vaccination->next_due_date)->format('M d, Y') }}</span>
+                                            @else
+                                                <span class="inf-badge inf-badge-amber">Next due {{ \Carbon\Carbon::parse($vaccination->next_due_date)->format('M d, Y') }}</span>
+                                            @endif
+                                        @endif
                                     </div>
-
                                 </div>
-
-                            @endforeach
-
-                        </div>
-
-                    </div>
-
+                                <a href="{{ route('vaccinations.show', $vaccination) }}" class="inf-btn inf-btn-quiet inf-btn-sm">
+                                    View<span class="inf-sr"> {{ $vaccination->vaccine_name }} {{ $vaccination->dose }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
                 @endif
-
-            </div>
-
-            {{-- ====================================== --}}
-            {{-- SECTION 6 : ACTION BUTTONS --}}
-            {{-- ====================================== --}}
-
-            <div class="rounded-2xl border border-gray-200 bg-white shadow-sm">
-
-                <div class="flex flex-col gap-4 px-5 py-6 sm:px-6 sm:flex-row sm:items-center sm:justify-between">
-
-                    <div>
-                        <h3 class="text-base sm:text-lg font-semibold text-gray-900">Record Management</h3>
-                        <p class="mt-1 text-xs sm:text-sm text-gray-500">
-                            Manage this infant's medical profile and return to the linked maternal record.
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:flex-wrap">
-
-                        {{-- Add Growth Record --}}
-                        <a href="{{ route('growth-monitorings.create', $infant) }}"
-                           class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 sm:px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md active:scale-[0.98]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                            </svg>
-                            Growth Record
-                        </a>
-
-                        {{-- Add Vaccination Record --}}
-                        <a href="{{ route('vaccinations.create', $infant) }}"
-                           class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 sm:px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md active:scale-[0.98]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                            </svg>
-                            Vaccination
-                        </a>
-
-                        {{-- Edit Infant --}}
-                        <a href="{{ route('infants.edit', $infant->id) }}"
-                           class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 sm:px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600 hover:shadow-md active:scale-[0.98]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487a2.25 2.25 0 1 1 3.182 3.182L7.5 20.25 3 21l.75-4.5L16.862 4.487Z"/>
-                            </svg>
-                            Edit
-                        </a>
-
-                        {{-- Back to Mother --}}
-                        <a href="{{ route('mothers.show', $infant->mother->id) }}"
-                           class="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 sm:px-5 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 hover:shadow-md active:scale-[0.98]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
-                            </svg>
-                            Mother
-                        </a>
-
-                        {{-- Delete Infant --}}
-                        <form action="{{ route('infants.destroy', $infant->id) }}" method="POST" class="col-span-2 sm:col-span-1">
-                            @csrf
-                            @method('DELETE')
-
-                            <button
-                                onclick="return confirm('Delete this infant record?')"
-                                class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-4 sm:px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 hover:shadow-md active:scale-[0.98]">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 7.5h12M9.75 7.5V6a2.25 2.25 0 0 1 2.25-2.25h0A2.25 2.25 0 0 1 14.25 6v1.5m2.25 0v10.125A2.625 2.625 0 0 1 13.875 20.25h-3.75A2.625 2.625 0 0 1 7.5 17.625V7.5m3 3v5.25m3-5.25v5.25"/>
-                                </svg>
-                                Delete
-                            </button>
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
+            </section>
 
         </div>
-
     </div>
 
-   @if($infant->growthMonitorings->count() > 1)
+    @if ($infant->growthMonitorings->count() > 1)
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var ctx = document.getElementById('growthChart');
+                if (!ctx || typeof Chart === 'undefined') return;
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                var isMobile = window.matchMedia('(max-width: 639px)').matches;
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    const ctx = document.getElementById('growthChart');
-
-    if (!ctx) return;
-
-    const isMobile = window.matchMedia('(max-width: 639px)').matches;
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [
-                @foreach($infant->growthMonitorings->sortBy('date_measured') as $growth)
-                    "{{ \Carbon\Carbon::parse($growth->date_measured)->format('M d, Y') }}",
-                @endforeach
-            ],
-
-            datasets: [
-                {
-                    label: 'Weight (kg)',
-                    data: [
-                        @foreach($infant->growthMonitorings->sortBy('date_measured') as $growth)
-                            {{ $growth->weight }},
-                        @endforeach
-                    ],
-                    yAxisID: 'y',
-                    borderColor: '#0891b2',
-                    backgroundColor: '#0891b2',
-                    borderWidth: 2.5,
-                    pointRadius: isMobile ? 2 : 3,
-                    tension: 0.4,
-                    fill: false
-                },
-
-                {
-                    label: 'Height (cm)',
-                    data: [
-                        @foreach($infant->growthMonitorings->sortBy('date_measured') as $growth)
-                            {{ $growth->height }},
-                        @endforeach
-                    ],
-                    yAxisID: 'y1',
-                    borderColor: '#10b981',
-                    backgroundColor: '#10b981',
-                    borderWidth: 2.5,
-                    pointRadius: isMobile ? 2 : 3,
-                    tension: 0.4,
-                    fill: false
-                }
-            ]
-        },
-
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-
-            interaction: {
-                mode: 'index',
-                intersect: false
-            },
-
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        boxWidth: 12,
-                        padding: 12,
-                        font: {
-                            size: isMobile ? 11 : 13
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: @json($chartGrowth->map(fn ($g) => \Carbon\Carbon::parse($g->date_measured)->format('M d, Y'))),
+                        datasets: [
+                            {
+                                label: 'Weight (kg)',
+                                data: @json($chartGrowth->map(fn ($g) => (float) $g->weight)),
+                                yAxisID: 'y',
+                                borderColor: '#be185d',
+                                backgroundColor: '#be185d',
+                                borderWidth: 2.5,
+                                pointRadius: isMobile ? 2.5 : 3.5,
+                                tension: 0.3,
+                                fill: false
+                            },
+                            {
+                                label: 'Length / height (cm)',
+                                data: @json($chartGrowth->map(fn ($g) => (float) $g->height)),
+                                yAxisID: 'y1',
+                                borderColor: '#0f766e',
+                                backgroundColor: '#0f766e',
+                                borderWidth: 2.5,
+                                pointRadius: isMobile ? 2.5 : 3.5,
+                                pointStyle: 'rectRot',
+                                tension: 0.3,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { boxWidth: 12, padding: 12, usePointStyle: true, font: { size: isMobile ? 11 : 12 } }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                position: 'left',
+                                ticks: { font: { size: isMobile ? 10 : 11 } },
+                                title: { display: true, text: 'Weight (kg)', font: { size: isMobile ? 10 : 11 } }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                grid: { drawOnChartArea: false },
+                                ticks: { font: { size: isMobile ? 10 : 11 } },
+                                title: { display: true, text: 'Length (cm)', font: { size: isMobile ? 10 : 11 } }
+                            },
+                            x: {
+                                ticks: {
+                                    font: { size: isMobile ? 10 : 11 },
+                                    maxRotation: 0,
+                                    autoSkip: true,
+                                    maxTicksLimit: isMobile ? 3 : 8
+                                }
+                            }
                         }
                     }
-                },
-                tooltip: {
-                    titleFont: { size: isMobile ? 11 : 13 },
-                    bodyFont: { size: isMobile ? 11 : 13 }
-                }
-            },
-
-            scales: {
-                y: {
-                    type: 'linear',
-                    position: 'left',
-                    ticks: {
-                        font: { size: isMobile ? 10 : 12 }
-                    },
-                    title: {
-                        display: !isMobile,
-                        text: 'Weight (kg)'
-                    }
-                },
-
-                y1: {
-                    type: 'linear',
-                    position: 'right',
-                    grid: {
-                        drawOnChartArea: false
-                    },
-                    ticks: {
-                        font: { size: isMobile ? 10 : 12 }
-                    },
-                    title: {
-                        display: !isMobile,
-                        text: 'Height (cm)'
-                    }
-                },
-
-                x: {
-                    ticks: {
-                        font: { size: isMobile ? 9 : 11 },
-                        maxRotation: isMobile ? 60 : 0,
-                        minRotation: isMobile ? 60 : 0,
-                        autoSkip: true,
-                        maxTicksLimit: isMobile ? 5 : 10
-                    },
-                    title: {
-                        display: !isMobile,
-                        text: 'Measurement Date'
-                    }
-                }
-            }
-        }
-    });
-
-});
-</script>
-
-@endif
-
+                });
+            });
+        </script>
+    @endif
 </x-app-layout>

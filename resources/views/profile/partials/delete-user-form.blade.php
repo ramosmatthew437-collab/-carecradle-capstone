@@ -1,21 +1,20 @@
 
-<section class="space-y-6">
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Delete Account') }}
-        </h2>
+<section>
+    {{-- Card title is provided by profile/edit; behaviour unchanged. --}}
+    <p class="prf-hint" style="margin-top: 0; font-size: 0.8125rem;">
+        {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+    </p>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
-        </p>
-    </header>
-
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >
-        {{ __('Delete Account') }}
-    </x-danger-button>
+    <div class="prf-actions" style="border-top: 0; padding-top: 0;">
+        <span></span>
+        <div class="prf-actions-buttons">
+            <button type="button" class="prf-btn prf-btn-danger"
+                    x-data=""
+                    x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
+                {{ __('Delete Account') }}
+            </button>
+        </div>
+    </div>
 
     <x-modal
         name="confirm-user-deletion"

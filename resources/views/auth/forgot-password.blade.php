@@ -5,183 +5,10 @@
            CARECRADLE — FORGOT PASSWORD
            ========================================================= */
 
-        .cc-forgot-password {
-            width: 100%;
-        }
-
-        /* ---------------------------------------------------------
-           Header
-           --------------------------------------------------------- */
-
-        .cc-forgot-header {
-            text-align: center;
-            margin-bottom: 1.75rem;
-        }
-
-        .cc-forgot-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #fdf2f8;
-            border: 1px solid #fbcfe8;
-            border-radius: 1rem;
-            color: #be185d;
-            box-shadow:
-                0 4px 12px rgba(236, 72, 153, 0.08);
-        }
-
-        .cc-forgot-icon svg {
-            width: 1.65rem;
-            height: 1.65rem;
-        }
-
-        .cc-forgot-header h2 {
-            margin: 0 0 0.4rem;
-            font-family: 'DM Serif Display', Georgia, serif;
-            font-size: 1.7rem;
-            font-weight: 400;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-            color: #1e293b;
-        }
-
-        .cc-forgot-header p {
-            margin: 0;
-            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            font-size: 0.875rem;
-            line-height: 1.55;
-            color: #64748b;
-        }
-
-        /* ---------------------------------------------------------
-           Status / Error
-           --------------------------------------------------------- */
-
-        .cc-forgot-status {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.7rem;
-            margin-bottom: 1.25rem;
-            padding: 0.8rem 1rem;
-            background: #fdf2f8;
-            border: 1px solid #fbcfe8;
-            border-radius: 0.8rem;
-            color: #9d174d;
-            font-size: 0.84rem;
-            line-height: 1.45;
-        }
-
-        .cc-forgot-status > span {
-            width: 1.3rem;
-            height: 1.3rem;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #ec4899;
-            color: #fff;
-            font-size: 0.72rem;
-            font-weight: 700;
-        }
-
-        .cc-forgot-error {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.7rem;
-            margin-bottom: 1.25rem;
-            padding: 0.8rem 1rem;
-            background: #fff1f2;
-            border: 1px solid #fecdd3;
-            border-radius: 0.8rem;
-            color: #be123c;
-            font-size: 0.84rem;
-            line-height: 1.45;
-        }
-
-        .cc-forgot-error > span {
-            width: 1.3rem;
-            height: 1.3rem;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #e11d48;
-            color: #fff;
-            font-size: 0.72rem;
-            font-weight: 700;
-        }
-
-        /* ---------------------------------------------------------
-           Field
-           --------------------------------------------------------- */
-
-        .cc-forgot-field {
-            margin-bottom: 1.25rem;
-        }
-
-        .cc-forgot-field label {
-            display: block;
-            margin-bottom: 0.45rem;
-            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: #334155;
-        }
-
-        .cc-forgot-input-wrap {
-            position: relative;
-        }
-
-        .cc-forgot-input-icon {
-            position: absolute;
-            left: 0.9rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1.1rem;
-            height: 1.1rem;
-            color: #94a3b8;
-            pointer-events: none;
-            transition: color 0.18s ease;
-        }
-
-        .cc-forgot-input-wrap:focus-within
-        .cc-forgot-input-icon {
-            color: #ec4899;
-        }
-
-        .cc-forgot-input {
-            display: block;
-            width: 100%;
-            padding: 0.72rem 1rem 0.72rem 2.7rem !important;
-            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            font-size: 0.9375rem;
-            color: #0f172a;
-            background: #f8fafc;
-            border: 1.5px solid #cbd5e1 !important;
-            border-radius: 0.75rem !important;
-            outline: none !important;
-            box-shadow: none !important;
-            transition:
-                border-color 0.18s ease,
-                box-shadow 0.18s ease,
-                background 0.18s ease;
-        }
-
-        .cc-forgot-input:focus {
-            background: #fff;
-            border-color: #ec4899 !important;
-            box-shadow:
-                0 0 0 3px rgba(236, 72, 153, 0.12) !important;
-        }
-
-        .cc-forgot-input::placeholder {
-            color: #94a3b8;
-        }
+        /* Shared header, status, field, submit, spinner and back-link
+           styles now live in layouts/guest.blade.php so the verify and
+           reset pages use them too. Only the delivery-method cards
+           are specific to this page. */
 
         /* ---------------------------------------------------------
            Delivery Method
@@ -357,110 +184,6 @@
         }
 
         /* ---------------------------------------------------------
-           Submit
-           --------------------------------------------------------- */
-
-        .cc-forgot-submit {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.55rem;
-            padding: 0.78rem 1.25rem;
-            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #fff;
-            background: linear-gradient(
-                135deg,
-                #be185d 0%,
-                #db2777 100%
-            );
-            border: none;
-            border-radius: 0.8rem;
-            box-shadow:
-                0 2px 12px rgba(219, 39, 119, 0.28),
-                0 1px 3px rgba(0, 0, 0, 0.06);
-            cursor: pointer;
-            transition:
-                filter 0.18s ease,
-                box-shadow 0.18s ease,
-                transform 0.12s ease,
-                opacity 0.18s ease;
-        }
-
-        .cc-forgot-submit:hover {
-            filter: brightness(1.05);
-            box-shadow:
-                0 4px 18px rgba(219, 39, 119, 0.34),
-                0 1px 4px rgba(0, 0, 0, 0.08);
-        }
-
-        .cc-forgot-submit:active {
-            transform: translateY(1px);
-        }
-
-        .cc-forgot-submit:focus-visible {
-            outline: 3px solid rgba(236, 72, 153, 0.28);
-            outline-offset: 2px;
-        }
-
-        .cc-forgot-submit.is-loading {
-            cursor: wait;
-            opacity: 0.82;
-        }
-
-        .cc-forgot-submit:disabled {
-            cursor: wait;
-        }
-
-        /* ---------------------------------------------------------
-           Spinner
-           --------------------------------------------------------- */
-
-        .cc-submit-spinner {
-            width: 1rem;
-            height: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.35);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: cc-forgot-spin 0.7s linear infinite;
-        }
-
-        @keyframes cc-forgot-spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* ---------------------------------------------------------
-           Back Link
-           --------------------------------------------------------- */
-
-        .cc-forgot-back {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 1.15rem;
-            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            font-size: 0.82rem;
-            font-weight: 500;
-            color: #64748b;
-            text-decoration: none;
-            transition: color 0.15s ease;
-        }
-
-        .cc-forgot-back:hover {
-            color: #be185d;
-        }
-
-        .cc-forgot-back:focus-visible {
-            outline: 2px solid #ec4899;
-            outline-offset: 3px;
-            border-radius: 0.35rem;
-        }
-
-        /* ---------------------------------------------------------
            Responsive
            --------------------------------------------------------- */
 
@@ -479,6 +202,22 @@
 
 
     <div class="cc-forgot-password">
+
+        {{-- Recovery progress: step 1 of 3 --}}
+        <ol class="cc-steps" aria-label="Password recovery steps">
+            <li class="cc-step is-current" aria-current="step">
+                <span class="cc-step-dot">1</span>
+                <span class="cc-step-label">Request</span>
+            </li>
+            <li class="cc-step">
+                <span class="cc-step-dot">2</span>
+                <span class="cc-step-label">Verify</span>
+            </li>
+            <li class="cc-step">
+                <span class="cc-step-dot">3</span>
+                <span class="cc-step-label">New password</span>
+            </li>
+        </ol>
 
         {{-- =====================================================
              HEADER

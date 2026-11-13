@@ -1,125 +1,119 @@
 {{-- ============================= --}}
 {{-- 1. PERSONAL INFORMATION --}}
 {{-- ============================= --}}
-<section class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+<section class="adm-form-section">
 
     {{-- Header --}}
-    <div class="border-b border-gray-100 bg-gray-50 px-5 py-5 sm:px-6">
-        <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-50 text-pink-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
-                </svg>
-            </div>
-            <div class="min-w-0">
-                <h2 class="text-base sm:text-lg font-semibold text-gray-900">Personal Information</h2>
-                <p class="mt-0.5 text-sm text-gray-500">The midwife's legal name and contact details.</p>
-            </div>
+    <div class="adm-form-section-head">
+        <div class="adm-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+            </svg>
+        </div>
+        <div class="min-w-0">
+            <h2 class="adm-form-section-title">Personal Information</h2>
+            <p class="adm-form-section-sub">The midwife's legal name and contact details.</p>
         </div>
     </div>
 
     {{-- Body --}}
-    <div class="p-5 sm:p-6">
+    <div class="adm-form-grid adm-form-grid-2">
 
-        <div class="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2">
+        {{-- First Name --}}
+        <div class="adm-field">
+            <label for="first_name">
+                First Name <span class="adm-required">*</span>
+            </label>
 
-            {{-- First Name --}}
-            <div>
-                <label for="first_name" class="mb-2 block text-sm font-semibold text-gray-700">
-                    First Name <span class="text-red-500">*</span>
-                </label>
+            <input
+                id="first_name"
+                type="text"
+                name="first_name"
+                value="{{ old('first_name', $midwife->first_name ?? '') }}"
+                placeholder="Enter first name"
+                class="adm-input"
+                required>
 
-                <input
-                    id="first_name"
-                    type="text"
-                    name="first_name"
-                    value="{{ old('first_name', $midwife->first_name ?? '') }}"
-                    placeholder="Enter first name"
-                    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
-                    required>
+            @error('first_name')
+                <p class="adm-field-error">{{ $message }}</p>
+            @enderror
+        </div>
 
-                @error('first_name')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
+        {{-- Middle Name --}}
+        <div class="adm-field">
+            <label for="middle_name">
+                Middle Name
+            </label>
 
-            {{-- Middle Name --}}
-            <div>
-                <label for="middle_name" class="mb-2 block text-sm font-semibold text-gray-700">
-                    Middle Name
-                </label>
+            <input
+                id="middle_name"
+                type="text"
+                name="middle_name"
+                value="{{ old('middle_name', $midwife->middle_name ?? '') }}"
+                placeholder="Enter middle name"
+                class="adm-input">
 
-                <input
-                    id="middle_name"
-                    type="text"
-                    name="middle_name"
-                    value="{{ old('middle_name', $midwife->middle_name ?? '') }}"
-                    placeholder="Enter middle name"
-                    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100">
+            @error('middle_name')
+                <p class="adm-field-error">{{ $message }}</p>
+            @enderror
+        </div>
 
-                @error('middle_name')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
+        {{-- Last Name --}}
+        <div class="adm-field">
+            <label for="last_name">
+                Last Name <span class="adm-required">*</span>
+            </label>
 
-            {{-- Last Name --}}
-            <div>
-                <label for="last_name" class="mb-2 block text-sm font-semibold text-gray-700">
-                    Last Name <span class="text-red-500">*</span>
-                </label>
+            <input
+                id="last_name"
+                type="text"
+                name="last_name"
+                value="{{ old('last_name', $midwife->last_name ?? '') }}"
+                placeholder="Enter last name"
+                class="adm-input"
+                required>
 
-                <input
-                    id="last_name"
-                    type="text"
-                    name="last_name"
-                    value="{{ old('last_name', $midwife->last_name ?? '') }}"
-                    placeholder="Enter last name"
-                    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
-                    required>
+            @error('last_name')
+                <p class="adm-field-error">{{ $message }}</p>
+            @enderror
+        </div>
 
-                @error('last_name')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
+        {{-- Contact Number --}}
+        <div class="adm-field">
+            <label for="contact_number">
+                Contact Number
+            </label>
 
-            {{-- Contact Number --}}
-            <div>
-                <label for="contact_number" class="mb-2 block text-sm font-semibold text-gray-700">
-                    Contact Number
-                </label>
+            <input
+                id="contact_number"
+                type="text"
+                name="contact_number"
+                value="{{ old('contact_number', $midwife->contact_number ?? '') }}"
+                placeholder="09XXXXXXXXX"
+                class="adm-input">
 
-                <input
-                    id="contact_number"
-                    type="text"
-                    name="contact_number"
-                    value="{{ old('contact_number', $midwife->contact_number ?? '') }}"
-                    placeholder="09XXXXXXXXX"
-                    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100">
+            @error('contact_number')
+                <p class="adm-field-error">{{ $message }}</p>
+            @enderror
+        </div>
 
-                @error('contact_number')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
+        {{-- Email --}}
+        <div class="adm-field adm-span-2">
+            <label for="email">
+                Email
+            </label>
 
-            {{-- Email --}}
-            <div class="md:col-span-2">
-                <label for="email" class="mb-2 block text-sm font-semibold text-gray-700">
-                    Email
-                </label>
+            <input
+                id="email"
+                type="email"
+                name="email"
+                value="{{ old('email', $midwife->email ?? '') }}"
+                placeholder="name@example.com"
+                class="adm-input">
 
-                <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    value="{{ old('email', $midwife->email ?? '') }}"
-                    placeholder="name@example.com"
-                    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100">
-
-                @error('email')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
+            @error('email')
+                <p class="adm-field-error">{{ $message }}</p>
+            @enderror
         </div>
 
     </div>
@@ -129,129 +123,156 @@
 {{-- ============================= --}}
 {{-- 2. ACCOUNT INFORMATION --}}
 {{-- ============================= --}}
-<section class="mt-6 sm:mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white">
+<section class="adm-form-section">
 
     {{-- Header --}}
-    <div class="border-b border-gray-100 bg-gray-50 px-5 py-5 sm:px-6">
-        <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-xl bg-pink-50 text-pink-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-1.5 0h12a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-12A1.5 1.5 0 014.5 19.5V12a1.5 1.5 0 011.5-1.5z"/>
-                </svg>
-            </div>
-            <div class="min-w-0">
-                <h2 class="text-base sm:text-lg font-semibold text-gray-900">Account Information</h2>
-                <p class="mt-0.5 text-sm text-gray-500">
-                    @if(!isset($midwife))
-                        Login credentials for accessing the CareCradle system.
-                    @else
-                        The midwife's system login username.
-                    @endif
-                </p>
-            </div>
+    <div class="adm-form-section-head">
+        <div class="adm-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-1.5 0h12a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-12A1.5 1.5 0 014.5 19.5V12a1.5 1.5 0 011.5-1.5z"/>
+            </svg>
+        </div>
+        <div class="min-w-0">
+            <h2 class="adm-form-section-title">Account Information</h2>
+            <p class="adm-form-section-sub">
+                @if(!isset($midwife))
+                    Login credentials for accessing the CareCradle system.
+                @else
+                    The midwife's system login username.
+                @endif
+            </p>
         </div>
     </div>
 
     {{-- Body --}}
-    <div class="p-5 sm:p-6">
+    <div class="adm-form-grid adm-form-grid-2">
 
-        <div class="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2">
+        {{-- Username --}}
+        <div class="adm-field {{ !isset($midwife) ? '' : 'adm-span-2' }}">
+            <label for="username">
+                Username <span class="adm-required">*</span>
+            </label>
 
-            {{-- Username --}}
-            <div class="{{ !isset($midwife) ? '' : 'md:col-span-2' }}">
-                <label for="username" class="mb-2 block text-sm font-semibold text-gray-700">
-                    Username <span class="text-red-500">*</span>
+            {{-- On Edit the username is read-only: `readonly` (not `disabled`)
+                 so the existing value is still submitted, which the current
+                 update validation requires. --}}
+            <input
+                id="username"
+                type="text"
+                name="username"
+                value="{{ old('username', $midwife->username ?? '') }}"
+                placeholder="Enter username"
+                class="adm-input"
+                @isset($midwife) readonly aria-readonly="true" aria-describedby="username-help" @endisset
+                required>
+
+            @isset($midwife)
+                <p class="adm-field-help" id="username-help">
+                    The username is the midwife's login ID and cannot be changed here.
+                </p>
+            @endisset
+
+            @error('username')
+                <p class="adm-field-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        @if(isset($midwife))
+
+            {{-- Password is never shown or edited on this form. --}}
+            <div class="adm-field adm-span-2">
+                <div class="adm-note" role="note">
+                    <span class="adm-note-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="10.5" width="16" height="10" rx="2"/>
+                            <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <p class="adm-note-title">Password</p>
+                        <p class="adm-note-text">
+                            For security, passwords are never displayed or changed on this page.
+                            Password resets are handled separately through account security.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        @endif
+
+        @if(!isset($midwife))
+
+            {{-- Password --}}
+            <div class="adm-field">
+                <label for="password">
+                    Password <span class="adm-required">*</span>
                 </label>
 
-                <input
-                    id="username"
-                    type="text"
-                    name="username"
-                    value="{{ old('username', $midwife->username ?? '') }}"
-                    placeholder="Enter username"
-                    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
-                    required>
+                <div class="adm-input-wrap">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        class="adm-input"
+                        required>
 
-                @error('username')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    <button
+                        type="button"
+                        data-password-toggle="password"
+                        aria-label="Show password"
+                        aria-pressed="false"
+                        class="adm-input-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+
+                @error('password')
+                    <p class="adm-field-error">{{ $message }}</p>
                 @enderror
             </div>
 
-            @if(!isset($midwife))
+            {{-- Confirm Password --}}
+            <div class="adm-field">
+                <label for="password_confirmation">
+                    Confirm Password <span class="adm-required">*</span>
+                </label>
 
-                {{-- Password --}}
-                <div>
-                    <label for="password" class="mb-2 block text-sm font-semibold text-gray-700">
-                        Password <span class="text-red-500">*</span>
-                    </label>
+                <div class="adm-input-wrap">
+                    <input
+                        id="password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        placeholder="Re-enter password"
+                        class="adm-input"
+                        required>
 
-                    <div class="relative">
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            placeholder="Enter password"
-                            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 pr-12 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
-                            required>
-
-                        <button
-                            type="button"
-                            data-password-toggle="password"
-                            aria-label="Show password"
-                            aria-pressed="false"
-                            class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    @error('password')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <button
+                        type="button"
+                        data-password-toggle="password_confirmation"
+                        aria-label="Show confirm password"
+                        aria-pressed="false"
+                        class="adm-input-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
                 </div>
 
-                {{-- Confirm Password --}}
-                <div>
-                    <label for="password_confirmation" class="mb-2 block text-sm font-semibold text-gray-700">
-                        Confirm Password <span class="text-red-500">*</span>
-                    </label>
+                @error('password_confirmation')
+                    <p class="adm-field-error">{{ $message }}</p>
+                @enderror
+            </div>
 
-                    <div class="relative">
-                        <input
-                            id="password_confirmation"
-                            type="password"
-                            name="password_confirmation"
-                            placeholder="Re-enter password"
-                            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 pr-12 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-100"
-                            required>
-
-                        <button
-                            type="button"
-                            data-password-toggle="password_confirmation"
-                            aria-label="Show confirm password"
-                            aria-pressed="false"
-                            class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    @error('password_confirmation')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-            @endif
-
-        </div>
+        @endif
 
     </div>
 

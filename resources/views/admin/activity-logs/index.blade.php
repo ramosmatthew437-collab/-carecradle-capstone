@@ -1,844 +1,427 @@
 <x-app-layout>
 
-   <link rel="stylesheet" href="{{ asset('css/activity-logs.css') }}">
-    <x-slot name="header">
-<div class="al-header-shell">
+    {{-- Styles: resources/css/activity-logs.css, loaded through Vite in layouts/app.blade.php.
+         Every rule in that file is scoped to .al-page, so it only affects this page. --}}
 
-    <div class="al-page-heading">
+    @php
+        // Display helpers only (no data changes).
+        $actionBadgeClass = fn (?string $value) => match (strtolower((string) $value)) {
+            'created', 'activated' => 'al-badge-success',
+            'updated' => 'al-badge-info',
+            'deleted', 'deactivated' => 'al-badge-danger',
+            'viewed', 'searched' => 'al-badge-pink',
+            'print_requested', 'pdf_export_requested' => 'al-badge-violet',
+            'historical_import' => 'al-badge-historical',
+            default => 'al-badge-neutral',
+        };
 
-        <div class="al-page-heading-main">
+        $initials = function (string $name): string {
+            $words = preg_split('/[^\pL\pN]+/u', $name, -1, PREG_SPLIT_NO_EMPTY);
+            $letters = array_map(fn ($word) => mb_strtoupper(mb_substr($word, 0, 1)), array_slice($words, 0, 2));
 
-            <span class="al-page-heading-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M8 6h13M8 12h13M8 18h13"/>
-                    <path d="M3 6h.01M3 12h.01M3 18h.01"/>
-                </svg>
-            </span>
+            return implode('', $letters) ?: '?';
+        };
+    @endphp
 
-            <div>
-                <h1 class="al-page-heading-title">Activity Logs</h1>
+    <div class="al-page">
+        <div class="al-container">
 
-                <p class="al-page-heading-subtitle">
-                    Track staff actions and system record changes.
-                </p>
-            </div>
+            {{-- ====================================== --}}
+            {{-- PAGE HEADER --}}
+            {{-- ====================================== --}}
 
-        </div>
+            <header class="al-header" aria-labelledby="al-page-title">
 
-        <div class="al-page-heading-actions">
+                <div class="al-header-main">
+                    <span class="al-header-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 6h13M8 12h13M8 18h13"/>
+                            <path d="M3 6h.01M3 12h.01M3 18h.01"/>
+                        </svg>
+                    </span>
 
-            <span class="al-page-heading-badge">
-                <span class="al-page-heading-dot" aria-hidden="true"></span>
-                Audit Trail
-            </span>
+                    <div class="al-header-copy">
+                        <p class="al-eyebrow">CareCradle Audit</p>
+                        <h1 class="al-title" id="al-page-title">Activity Logs</h1>
+                        <p class="al-subtitle">Track staff actions and system record changes.</p>
+                    </div>
+                </div>
 
-            <a href="{{ route('dashboard') }}" class="al-back-button">
-                <svg width="17" height="17" viewBox="0 0 24 24"
-                     fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round"
-                     aria-hidden="true">
-                    <path d="M19 12H5"/>
-                    <path d="m12 19-7-7 7-7"/>
-                </svg>
-                <span>Back to Dashboard</span>
-            </a>
+                <div class="al-header-actions">
+                    <span class="al-audit-badge">
+                        <span class="al-audit-dot" aria-hidden="true"></span>
+                        Audit Trail
+                    </span>
 
-        </div>
+                    <a href="{{ route('dashboard') }}" class="al-btn al-btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M19 12H5"/>
+                            <path d="m12 19-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Dashboard</span>
+                    </a>
+                </div>
 
-    </div>
+            </header>
 
-</div>
-
-    </x-slot>
-
-    <div class="py-8">
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-
+            {{-- ====================================== --}}
             {{-- SUMMARY CARDS --}}
+            {{-- ====================================== --}}
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <section class="al-stats" aria-label="Activity summary">
 
-                <div class="rounded-2xl border border-pink-100 bg-white p-5 shadow-sm">
-
-                    <div class="flex items-center justify-between">
-
-                        <p class="text-sm font-medium text-gray-500">All Activities</p>
-
-                        <span class="rounded-xl p-2" style="background:#fff0f6;color:#db5790;">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
-
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-
+                <div class="al-stat">
+                    <div class="al-stat-top">
+                        <p class="al-stat-label">All Activities</p>
+                        <span class="al-stat-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-
                                 <path d="M8 6h13M8 12h13M8 18h13"/>
-
                                 <path d="M3 6h.01M3 12h.01M3 18h.01"/>
-
                             </svg>
-
                         </span>
-
                     </div>
-
-                    <p class="mt-3 text-3xl font-bold text-gray-800">
-
-                        {{ number_format($totalLogs) }}
-
-                    </p>
-
-                    <p class="mt-1 text-xs text-gray-400">Recorded since tracking began</p>
-
+                    <p class="al-stat-value">{{ number_format($totalLogs) }}</p>
+                    <p class="al-stat-caption">Recorded since tracking began</p>
                 </div>
 
-                <div class="rounded-2xl border border-pink-100 bg-white p-5 shadow-sm">
-
-                    <div class="flex items-center justify-between">
-
-                        <p class="text-sm font-medium text-gray-500">Today</p>
-
-                        <span class="rounded-xl p-2" style="background:#fce7f3;color:#be185d;">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
-
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-
+                <div class="al-stat">
+                    <div class="al-stat-top">
+                        <p class="al-stat-label">Today</p>
+                        <span class="al-stat-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-
                                 <rect x="3" y="5" width="18" height="16" rx="2"/>
-
                                 <path d="M16 3v4M8 3v4M3 11h18"/>
-
                             </svg>
-
                         </span>
-
                     </div>
-
-                    <p class="mt-3 text-3xl font-bold text-gray-800">
-
-                        {{ number_format($todayLogs) }}
-
-                    </p>
-
-                    <p class="mt-1 text-xs text-gray-400">{{ now()->format('F j, Y') }}</p>
-
+                    <p class="al-stat-value">{{ number_format($todayLogs) }}</p>
+                    <p class="al-stat-caption">{{ now()->format('F j, Y') }}</p>
                 </div>
 
-                <div class="rounded-2xl border border-pink-100 bg-white p-5 shadow-sm">
-
-                    <div class="flex items-center justify-between">
-
-                        <p class="text-sm font-medium text-gray-500">Yesterday</p>
-
-                        <span class="rounded-xl p-2" style="background:#fff7ed;color:#c2410c;">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
-
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-
+                <div class="al-stat">
+                    <div class="al-stat-top">
+                        <p class="al-stat-label">Yesterday</p>
+                        <span class="al-stat-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-
                                 <circle cx="12" cy="12" r="9"/>
-
                                 <path d="M12 7v5l3 2"/>
-
                             </svg>
-
                         </span>
-
                     </div>
-
-                    <p class="mt-3 text-3xl font-bold text-gray-800">
-
-                        {{ number_format($yesterdayLogs) }}
-
-                    </p>
-
-                    <p class="mt-1 text-xs text-gray-400">Activity from the previous day</p>
-
+                    <p class="al-stat-value">{{ number_format($yesterdayLogs) }}</p>
+                    <p class="al-stat-caption">Activity from the previous day</p>
                 </div>
 
-                <div class="rounded-2xl border border-pink-100 bg-white p-5 shadow-sm">
-
-                    <div class="flex items-center justify-between">
-
-                        <p class="text-sm font-medium text-gray-500">Matching Results</p>
-
-                        <span class="rounded-xl p-2" style="background:#fdf2f8;color:#9d174d;">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
-
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-
+                <div class="al-stat al-stat-highlight">
+                    <div class="al-stat-top">
+                        <p class="al-stat-label">Matching Results</p>
+                        <span class="al-stat-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-
                                 <circle cx="11" cy="11" r="7"/>
-
                                 <path d="m20 20-4-4"/>
-
                             </svg>
-
                         </span>
-
                     </div>
-
-                    <p class="mt-3 text-3xl font-bold text-gray-800">
-
-                        {{ number_format($matchingLogs) }}
-
-                    </p>
-
-                    <p class="mt-1 text-xs text-gray-400">Based on your current filters</p>
-
+                    <p class="al-stat-value">{{ number_format($matchingLogs) }}</p>
+                    <p class="al-stat-caption">Based on your current filters</p>
                 </div>
 
-            </div>
+            </section>
 
+            {{-- ====================================== --}}
             {{-- FILTER PANEL --}}
+            {{-- ====================================== --}}
 
-            <div class="rounded-2xl border border-pink-100 bg-white shadow-sm overflow-hidden">
+            <section class="al-card" aria-labelledby="al-filter-title">
 
-                <div class="px-5 py-4 sm:px-6 border-b border-pink-100"
-
-                     style="background:linear-gradient(110deg,#fff1f6,#ffffff);">
-
-                    <h3 class="text-base font-semibold text-gray-800">Find an Activity</h3>
-
-                    <p class="text-sm text-gray-500 mt-1">
-
-                        Filter by date, staff member, module, or action.
-
-                    </p>
-
+                <div class="al-card-head">
+                    <div class="al-card-head-main">
+                        <span class="al-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 5h18l-7 8v6l-4 2v-8L3 5z"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="al-card-title" id="al-filter-title">Find an Activity</h2>
+                            <p class="al-card-sub">Filter by date, staff member, module, or action.</p>
+                        </div>
+                    </div>
                 </div>
 
                 <form method="GET"
-
                       action="{{ route('admin.activity-logs.index') }}"
+                      class="al-filter-form">
 
-                      class="p-5 sm:p-6 space-y-5">
+                    <div class="al-filter-grid">
 
-                    {{-- DATE PRESET --}}
+                        {{-- DATE PRESET --}}
+                        <div class="al-field">
+                            <label for="date_preset">Date Range</label>
+                            <select id="date_preset" name="date_preset" class="al-input">
+                                <option value="today" @selected($datePreset === 'today')>Today</option>
+                                <option value="yesterday" @selected($datePreset === 'yesterday')>Yesterday</option>
+                                <option value="last_7_days" @selected($datePreset === 'last_7_days')>Last 7 Days</option>
+                                <option value="last_30_days" @selected($datePreset === 'last_30_days')>Last 30 Days</option>
+                                <option value="custom" @selected($datePreset === 'custom')>Custom Date Range</option>
+                                <option value="all_time" @selected($datePreset === 'all_time')>All Time</option>
+                            </select>
+                        </div>
 
-                    <div>
+                        {{-- CUSTOM DATE RANGE (shown only for "Custom Date Range") --}}
+                        <div id="custom-date-fields"
+                             class="al-custom-dates {{ $datePreset === 'custom' ? '' : 'hidden' }}">
 
-                        <label for="date_preset"
+                            <div class="al-field">
+                                <label for="from_date">From</label>
+                                <input type="date" id="from_date" name="from_date"
+                                       value="{{ $fromDate }}" class="al-input">
+                            </div>
 
-                               class="block text-sm font-semibold text-gray-700 mb-2">
-
-                            Date Range
-
-                        </label>
-
-                        <select id="date_preset"
-
-                                name="date_preset"
-
-                                class="w-full rounded-xl border-gray-200 text-sm focus:border-pink-400 focus:ring-pink-200">
-
-                            <option value="today"
-
-                                @selected($datePreset === 'today')>
-
-                                Today
-
-                            </option>
-
-                            <option value="yesterday"
-
-                                @selected($datePreset === 'yesterday')>
-
-                                Yesterday
-
-                            </option>
-
-                            <option value="last_7_days"
-
-                                @selected($datePreset === 'last_7_days')>
-
-                                Last 7 Days
-
-                            </option>
-
-                            <option value="last_30_days"
-
-                                @selected($datePreset === 'last_30_days')>
-
-                                Last 30 Days
-
-                            </option>
-
-                            <option value="custom"
-
-                                @selected($datePreset === 'custom')>
-
-                                Custom Date Range
-
-                            </option>
-
-                            <option value="all_time"
-
-                                @selected($datePreset === 'all_time')>
-
-                                All Time
-
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    {{-- CUSTOM DATE RANGE --}}
-
-                    <div id="custom-date-fields"
-
-                         class="{{ $datePreset === 'custom' ? '' : 'hidden' }} grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                        <div>
-
-                            <label for="from_date"
-
-                                   class="block text-sm font-medium text-gray-700 mb-2">
-
-                                From
-
-                            </label>
-
-                            <input type="date"
-
-                                   id="from_date"
-
-                                   name="from_date"
-
-                                   value="{{ $fromDate }}"
-
-                                   class="w-full rounded-xl border-gray-200 text-sm focus:border-pink-400 focus:ring-pink-200">
+                            <div class="al-field">
+                                <label for="to_date">To</label>
+                                <input type="date" id="to_date" name="to_date"
+                                       value="{{ $toDate }}" class="al-input">
+                            </div>
 
                         </div>
 
-                        <div>
-
-                            <label for="to_date"
-
-                                   class="block text-sm font-medium text-gray-700 mb-2">
-
-                                To
-
-                            </label>
-
-                            <input type="date"
-
-                                   id="to_date"
-
-                                   name="to_date"
-
-                                   value="{{ $toDate }}"
-
-                                   class="w-full rounded-xl border-gray-200 text-sm focus:border-pink-400 focus:ring-pink-200">
-
+                        {{-- SEARCH --}}
+                        <div class="al-field al-field-search">
+                            <label for="search">Search</label>
+                            <div class="al-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="7"/>
+                                    <path d="m20 20-4-4"/>
+                                </svg>
+                                <input type="search" id="search" name="search"
+                                       value="{{ $search }}"
+                                       placeholder="Name, username, description, record ID..."
+                                       class="al-input">
+                            </div>
                         </div>
 
-                    </div>
-
-                    {{-- SEARCH AND OTHER FILTERS --}}
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-
-                        <div class="xl:col-span-2">
-
-                            <label for="search"
-
-                                   class="block text-sm font-medium text-gray-700 mb-2">
-
-                                Search
-
-                            </label>
-
-                            <input type="search"
-
-                                   id="search"
-
-                                   name="search"
-
-                                   value="{{ $search }}"
-
-                                   placeholder="Name, username, description, record ID..."
-
-                                   class="w-full rounded-xl border-gray-200 text-sm focus:border-pink-400 focus:ring-pink-200">
-
-                        </div>
-
-                        <div>
-
-                            <label for="actor"
-
-                                   class="block text-sm font-medium text-gray-700 mb-2">
-
-                                Staff Member
-
-                            </label>
-
-                            <select id="actor"
-
-                                    name="actor"
-
-                                    class="w-full rounded-xl border-gray-200 text-sm focus:border-pink-400 focus:ring-pink-200">
-
+                        {{-- STAFF MEMBER --}}
+                        <div class="al-field">
+                            <label for="actor">Staff Member</label>
+                            <select id="actor" name="actor" class="al-input">
                                 <option value="">All Staff</option>
-
                                 @foreach ($actors as $staff)
-
                                     <option value="{{ $staff->actor_username }}"
-
                                         @selected($actor === $staff->actor_username)>
-
                                         {{ $staff->actor_name ?: $staff->actor_username }}
-
                                         ({{ '@' . $staff->actor_username }})
-
                                     </option>
-
                                 @endforeach
-
                             </select>
-
                         </div>
 
-                        <div>
-
-                            <label for="module"
-
-                                   class="block text-sm font-medium text-gray-700 mb-2">
-
-                                Module
-
-                            </label>
-
-                            <select id="module"
-
-                                    name="module"
-
-                                    class="w-full rounded-xl border-gray-200 text-sm focus:border-pink-400 focus:ring-pink-200">
-
+                        {{-- MODULE --}}
+                        <div class="al-field">
+                            <label for="module">Module</label>
+                            <select id="module" name="module" class="al-input">
                                 <option value="">All Modules</option>
-
                                 @foreach ($modules as $moduleOption)
-
                                     <option value="{{ $moduleOption }}"
-
                                         @selected($module === $moduleOption)>
-
                                         {{ $moduleOption }}
-
                                     </option>
-
                                 @endforeach
-
                             </select>
-
                         </div>
 
-                        <div>
-
-                            <label for="action"
-
-                                   class="block text-sm font-medium text-gray-700 mb-2">
-
-                                Action
-
-                            </label>
-
-                            <select id="action"
-
-                                    name="action"
-
-                                    class="w-full rounded-xl border-gray-200 text-sm focus:border-pink-400 focus:ring-pink-200">
-
+                        {{-- ACTION --}}
+                        <div class="al-field">
+                            <label for="action">Action</label>
+                            <select id="action" name="action" class="al-input">
                                 <option value="">All Actions</option>
-
                                 @foreach ($actions as $actionOption)
-
                                     <option value="{{ $actionOption }}"
-
                                         @selected($action === $actionOption)>
-
                                         {{ \Illuminate\Support\Str::headline($actionOption) }}
-
                                     </option>
-
                                 @endforeach
-
                             </select>
-
                         </div>
 
                     </div>
 
                     {{-- FILTER BUTTONS --}}
-
-                    <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
-
-                        <a href="{{ route('admin.activity-logs.index') }}"
-
-                           class="inline-flex items-center justify-center rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">
-
+                    <div class="al-filter-actions">
+                        <a href="{{ route('admin.activity-logs.index') }}" class="al-btn al-btn-secondary">
                             Reset Filters
-
                         </a>
 
-                        <button type="submit"
-
-                                class="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
-
-                                style="background:linear-gradient(135deg,#ec4899,#be185d);">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
-
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
+                        <button type="submit" class="al-btn al-btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <circle cx="11" cy="11" r="7"/>
-
                                 <path d="m20 20-4-4"/>
-
                             </svg>
-
                             Apply Filters
-
                         </button>
-
                     </div>
 
                 </form>
 
-            </div>
+            </section>
 
-            {{-- ACTIVITY TABLE --}}
+            {{-- ====================================== --}}
+            {{-- ACTIVITY HISTORY --}}
+            {{-- ====================================== --}}
 
-            <div class="rounded-2xl border border-pink-100 bg-white shadow-sm overflow-hidden">
+            <section class="al-card al-card-clip" aria-labelledby="al-history-title">
 
-                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between px-5 py-4 sm:px-6 border-b border-pink-100">
-
-                    <div>
-
-                        <h3 class="text-base font-semibold text-gray-800">
-
-                            Activity History
-
-                        </h3>
-
-                        <p class="text-sm text-gray-500 mt-1">
-
-                            Showing {{ $logs->firstItem() ?? 0 }}–{{ $logs->lastItem() ?? 0 }}
-
-                            of {{ number_format($logs->total()) }} matching activities
-
-                        </p>
-
+                <div class="al-card-head">
+                    <div class="al-card-head-main">
+                        <span class="al-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path d="M12 7v5l3 2"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="al-card-title" id="al-history-title">Activity History</h2>
+                            <p class="al-card-sub">
+                                Showing {{ $logs->firstItem() ?? 0 }}–{{ $logs->lastItem() ?? 0 }}
+                                of {{ number_format($logs->total()) }} matching activities
+                            </p>
+                        </div>
                     </div>
 
-                    <span class="text-xs font-semibold rounded-full px-3 py-1.5 self-start sm:self-auto"
-
-                          style="background:#fff0f6;color:#be185d;">
-
-                        Newest First
-
-                    </span>
-
+                    <span class="al-pill">Newest First</span>
                 </div>
 
                 @if ($logs->isEmpty())
 
                     {{-- EMPTY STATE --}}
-
-                    <div class="px-6 py-16 text-center">
-
-                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl"
-
-                             style="background:#fff0f6;color:#db5790;">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
-
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-
+                    <div class="al-empty">
+                        <span class="al-empty-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-
                                 <circle cx="11" cy="11" r="7"/>
-
                                 <path d="m20 20-4-4"/>
-
                             </svg>
-
-                        </div>
-
-                        <h4 class="mt-4 font-semibold text-gray-800">
-
-                            No activities found
-
-                        </h4>
-
-                        <p class="mt-1 text-sm text-gray-500">
-
-                            Try another date range or remove some filters.
-
-                        </p>
-
-                        <a href="{{ route('admin.activity-logs.index') }}"
-
-                           class="inline-block mt-4 text-sm font-semibold"
-
-                           style="color:#be185d;">
-
+                        </span>
+                        <h3 class="al-empty-title">No activities found</h3>
+                        <p class="al-empty-desc">Try another date range or remove some filters.</p>
+                        <a href="{{ route('admin.activity-logs.index') }}" class="al-btn al-btn-secondary">
                             Clear all filters
-
                         </a>
-
                     </div>
 
                 @else
 
-                    {{-- RESULTS TABLE --}}
-
-                    <div class="overflow-x-auto">
-
-                        <table class="min-w-full divide-y divide-gray-100">
-
-                            <thead style="background:#fff8fb;">
-
+                    {{-- RESULTS TABLE (stacks into labelled cards on narrow screens) --}}
+                    <div class="al-table-wrap">
+                        <table class="al-table">
+                            <thead>
                                 <tr>
-
-                                    <th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-500 whitespace-nowrap">
-
-                                        Date &amp; Time
-
-                                    </th>
-
-                                    <th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-
-                                        Performed By
-
-                                    </th>
-
-                                    <th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-
-                                        Action
-
-                                    </th>
-
-                                    <th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-
-                                        Module
-
-                                    </th>
-
-                                    <th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-500 min-w-64">
-
-                                        Activity Details
-
-                                    </th>
-
-                                    <th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-
-                                        Record ID
-
-                                    </th>
-
-                                    <th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-
-                                        IP Address
-
-                                    </th>
-
+                                    <th scope="col">Date &amp; Time</th>
+                                    <th scope="col">Performed By</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Module</th>
+                                    <th scope="col">Activity Details</th>
+                                    <th scope="col">Record ID</th>
+                                    <th scope="col">IP Address</th>
                                 </tr>
-
                             </thead>
 
-                            <tbody class="divide-y divide-gray-100">
-
+                            <tbody>
                                 @foreach ($logs as $log)
-
                                     @php
-
                                         $displayName = $log->actor_name
-
                                             ?: ($log->user?->name ?: 'Deleted / system user');
 
                                         $displayUsername = $log->actor_username
-
                                             ?: $log->user?->username;
-
-                                        $actionStyle = match (strtolower($log->action)) {
-
-                                            'created', 'activated' => 'background:#dcfce7;color:#166534;',
-
-                                            'updated' => 'background:#dbeafe;color:#1d4ed8;',
-
-                                            'deleted', 'deactivated' => 'background:#fee2e2;color:#b91c1c;',
-
-                                            default => 'background:#f3f4f6;color:#374151;',
-
-                                        };
-
                                     @endphp
 
-                                    <tr class="hover:bg-pink-50/40 transition-colors">
+                                    <tr data-al-row>
 
                                         {{-- DATE AND TIME --}}
-
-                                        <td class="px-5 py-4 whitespace-nowrap">
-
-                                            <p class="text-sm font-semibold text-gray-800">
-
-                                                {{ $log->created_at->format('M d, Y') }}
-
-                                            </p>
-
-                                            <p class="text-xs text-gray-400 mt-1">
-
-                                                {{ $log->created_at->format('h:i:s A') }}
-
-                                            </p>
-
+                                        <td class="al-col-date" data-label="Date &amp; Time">
+                                            <p class="al-date">{{ $log->created_at->format('M d, Y') }}</p>
+                                            <p class="al-time">{{ $log->created_at->format('h:i:s A') }}</p>
                                         </td>
 
                                         {{-- STAFF --}}
-
-                                        <td class="px-5 py-4">
-
-                                            <p class="text-sm font-semibold text-gray-800">
-
-                                                {{ $displayName }}
-
-                                            </p>
-
-                                            @if ($displayUsername)
-
-                                                <p class="text-xs text-gray-500 mt-1">
-
-                                                    {{ '@' . $displayUsername }}
-
-                                                </p>
-
-                                            @else
-
-                                                <p class="text-xs text-gray-400 mt-1">
-
-                                                    Identity not recorded
-
-                                                </p>
-
-                                            @endif
-
+                                        <td class="al-col-actor" data-label="Performed By">
+                                            <div class="al-actor">
+                                                <span class="al-avatar {{ $displayUsername ? '' : 'al-avatar-muted' }}" aria-hidden="true">{{ $initials($displayName) }}</span>
+                                                <div class="al-actor-text">
+                                                    <p class="al-actor-name">{{ $displayName }}</p>
+                                                    @if ($displayUsername)
+                                                        <p class="al-actor-username">{{ '@' . $displayUsername }}</p>
+                                                    @else
+                                                        <p class="al-actor-unknown">Identity not recorded</p>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </td>
 
                                         {{-- ACTION --}}
-
-                                        <td class="px-5 py-4 whitespace-nowrap">
-
-                                            <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
-
-                                                  style="{{ $actionStyle }}">
-
+                                        <td class="al-col-action" data-label="Action">
+                                            <span class="al-badge {{ $actionBadgeClass($log->action) }}">
                                                 {{ \Illuminate\Support\Str::headline($log->action) }}
-
                                             </span>
-
                                         </td>
 
                                         {{-- MODULE --}}
-
-                                        <td class="px-5 py-4 whitespace-nowrap">
-
-                                            <span class="text-sm font-medium text-gray-700">
-
-                                                {{ $log->module }}
-
-                                            </span>
-
+                                        <td class="al-col-module" data-label="Module">
+                                            <span class="al-module">{{ $log->module }}</span>
                                         </td>
 
                                         {{-- DESCRIPTION --}}
-
-                                        <td class="px-5 py-4">
-
-                                            <p class="text-sm text-gray-700 leading-6">
-
-                                                {{ $log->description }}
-
-                                            </p>
-
+                                        <td class="al-col-details" data-label="Activity Details">
+                                            <p class="al-details">{{ $log->description }}</p>
                                         </td>
 
                                         {{-- RECORD ID --}}
-
-                                        <td class="px-5 py-4 whitespace-nowrap">
-
+                                        <td class="al-col-record" data-label="Record ID">
                                             @if ($log->record_id)
-
-                                                <span class="inline-flex rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-mono text-gray-600">
-
-                                                    #{{ $log->record_id }}
-
-                                                </span>
-
+                                                <span class="al-code">#{{ $log->record_id }}</span>
                                             @else
-
-                                                <span class="text-sm text-gray-400">—</span>
-
+                                                <span class="al-dash">—</span>
                                             @endif
-
                                         </td>
 
                                         {{-- IP ADDRESS --}}
-
-                                        <td class="px-5 py-4 whitespace-nowrap">
-
-                                            <span class="text-xs font-mono text-gray-500">
-
-                                                {{ $log->ip_address ?: '—' }}
-
-                                            </span>
-
+                                        <td class="al-col-ip" data-label="IP Address">
+                                            <span class="al-ip">{{ $log->ip_address ?: '—' }}</span>
                                         </td>
 
                                     </tr>
-
                                 @endforeach
-
                             </tbody>
-
                         </table>
-
                     </div>
 
-                    {{-- PAGINATION --}}
-
-                    <div class="border-t border-gray-100 px-5 py-4 sm:px-6">
-
-                        {{ $logs->links() }}
-
-                    </div>
+                    {{-- PAGINATION (Laravel's links keep the current filters) --}}
+                    @if ($logs->hasPages())
+                        <div class="al-pagination">
+                            {{ $logs->links() }}
+                        </div>
+                    @endif
 
                 @endif
 
-            </div>
+            </section>
 
-            <p class="text-xs text-gray-400 text-center">
-
+            <p class="al-footnote">
                 Activity history is intended for authorized administrative review.
-
                 Historical records may not contain actor details if they were created before identity tracking was added.
-
             </p>
 
         </div>
-
     </div>
 
     {{-- DATE RANGE INTERACTION --}}

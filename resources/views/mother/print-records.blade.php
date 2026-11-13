@@ -1,1313 +1,521 @@
-
 <x-app-layout>
-    <style>
-        .cc-print-page {
-            --print-pink: #d94682;
-            --print-dark: #3f2433;
-            --print-muted: #776675;
-            --print-border: #f0d9e4;
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 30px 24px 56px;
-            color: var(--print-dark);
-        }
-
-        .cc-print-page * {
-            box-sizing: border-box;
-        }
-
-        .cc-print-heading {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 26px;
-        }
-
-        .cc-print-eyebrow {
-            margin: 0 0 7px;
-            color: var(--print-pink);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: .16em;
-            text-transform: uppercase;
-        }
-
-        .cc-print-heading h1 {
-            margin: 0;
-            color: var(--print-dark);
-            font-family: "DM Serif Display", Georgia, serif;
-            font-size: clamp(29px, 4vw, 40px);
-            line-height: 1.15;
-        }
-
-        .cc-print-heading p {
-            margin: 9px 0 0;
-            color: var(--print-muted);
-            font-size: 14px;
-            line-height: 1.65;
-        }
-
-        .cc-print-heading-icon {
-            display: grid;
-            width: 58px;
-            height: 58px;
-            flex-shrink: 0;
-            place-items: center;
-            border: 1px solid #f4c6da;
-            border-radius: 18px;
-            background: #fff0f6;
-            color: var(--print-pink);
-        }
-
-        .cc-print-heading-icon svg {
-            width: 28px;
-            height: 28px;
-        }
-
-        .cc-print-card {
-            margin-bottom: 22px;
-            padding: 24px;
-            border: 1px solid var(--print-border);
-            border-radius: 20px;
-            background: #fff;
-            box-shadow: 0 8px 25px rgba(111, 44, 78, .045);
-        }
-
-        .cc-print-card h2 {
-            margin: 0;
-            color: var(--print-dark);
-            font-size: 17px;
-            font-weight: 800;
-        }
-
-        .cc-print-card-intro {
-            margin: 7px 0 20px;
-            color: var(--print-muted);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .cc-print-category-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .cc-print-category {
-            display: flex;
-            align-items: flex-start;
-            gap: 11px;
-            padding: 15px;
-            border: 1px solid var(--print-border);
-            border-radius: 13px;
-            background: #fffafd;
-            cursor: pointer;
-            transition: border-color .2s, background .2s;
-        }
-
-        .cc-print-category:hover {
-            border-color: #e9a3c2;
-            background: #fff3f8;
-        }
-
-        .cc-print-category input {
-            width: 17px;
-            height: 17px;
-            margin-top: 2px;
-            accent-color: var(--print-pink);
-            flex-shrink: 0;
-        }
-
-        .cc-print-category strong {
-            display: block;
-            color: var(--print-dark);
-            font-size: 13px;
-        }
-
-        .cc-print-category small {
-            display: block;
-            margin-top: 4px;
-            color: var(--print-muted);
-            font-size: 12px;
-            line-height: 1.45;
-        }
-
-        .cc-print-field-label {
-            display: block;
-            margin: 20px 0 8px;
-            color: var(--print-dark);
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .cc-print-select {
-            width: 100%;
-            max-width: 500px;
-            min-height: 46px;
-            padding: 10px 13px;
-            border: 1px solid var(--print-border);
-            border-radius: 11px;
-            background: #fff;
-            color: var(--print-dark);
-            font-size: 14px;
-        }
-
-        .cc-print-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .cc-print-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            min-height: 44px;
-            padding: 11px 17px;
-            border: 1px solid transparent;
-            border-radius: 11px;
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .cc-print-button svg {
-            width: 17px;
-            height: 17px;
-        }
-        .cc-print-selection-tools {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.cc-print-selection-tools > span {
-    color: var(--print-dark);
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.cc-print-selection-tools > div {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.cc-print-selection-tools button {
-    padding: 7px 12px;
-    border: 1px solid var(--print-border);
-    border-radius: 8px;
-    background: #fff;
-    color: var(--print-pink);
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all .2s ease;
-}
-
-.cc-print-selection-tools button:hover {
-    border-color: var(--print-pink);
-    background: #fff0f6;
-}
-
-        .cc-print-button-primary {
-            background: var(--print-pink);
-            color: #fff;
-        }
-
-        .cc-print-button-primary:hover {
-            background: #be326d;
-        }
-
-        .cc-print-button-secondary {
-            border-color: var(--print-border);
-            background: #fff;
-            color: var(--print-dark);
-        }
-
-        .cc-print-preview-note {
-            margin: 14px 0 0;
-            color: var(--print-muted);
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        /* The document shown below the controls is the printable output. */
-        .cc-print-document {
-            padding: 34px;
-            border: 1px solid var(--print-border);
-            border-radius: 18px;
-            background: #fff;
-        }
-
-        .cc-print-document-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e9a0bf;
-        }
-
-        .cc-print-logo-mark {
-            display: grid;
-            width: 55px;
-            height: 55px;
-            flex-shrink: 0;
-            place-items: center;
-            border-radius: 15px;
-            background: #fff0f6;
-            color: var(--print-pink);
-        }
-
-        .cc-print-logo-mark svg {
-            width: 30px;
-            height: 30px;
-        }
-
-        .cc-print-brand-name {
-            margin: 0;
-            color: #bd326f;
-            font-family: "DM Serif Display", Georgia, serif;
-            font-size: 25px;
-            line-height: 1.2;
-        }
-
-        .cc-print-rhu-name {
-            margin: 5px 0 0;
-            color: #493440;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: .09em;
-        }
-
-        .cc-print-document-subtitle {
-            margin: 4px 0 0;
-            color: var(--print-muted);
-            font-size: 11px;
-        }
-
-        .cc-print-document-title {
-            margin: 23px 0 6px;
-            color: var(--print-dark);
-            font-family: "DM Serif Display", Georgia, serif;
-            font-size: 24px;
-        }
-
-        .cc-print-generated {
-            margin: 0 0 22px;
-            color: var(--print-muted);
-            font-size: 11px;
-        }
-
-        .cc-print-record-section {
-            margin-top: 24px;
-            break-inside: auto;
-        }
-
-        .cc-print-record-section h3 {
-            margin: 0 0 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--print-border);
-            color: #bd326f;
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-        .cc-print-data-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0 22px;
-        }
-
-        .cc-print-data-item {
-            min-width: 0;
-            padding: 10px 0;
-            border-bottom: 1px solid #f4e8ee;
-            overflow-wrap: anywhere;
-        }
-
-        .cc-print-data-label {
-            display: block;
-            margin-bottom: 4px;
-            color: var(--print-muted);
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .cc-print-data-value {
-            display: block;
-            color: var(--print-dark);
-            font-size: 12px;
-            line-height: 1.55;
-        }
-
-        .cc-print-empty {
-            padding: 12px 14px;
-            border: 1px dashed var(--print-border);
-            border-radius: 9px;
-            color: var(--print-muted);
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        .cc-print-table-wrap {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .cc-print-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
-
-        .cc-print-table th {
-            padding: 10px 8px;
-            border-bottom: 1px solid #e9a0bf;
-            background: #fff3f8;
-            color: #66334c;
-            text-align: left;
-            font-weight: 800;
-        }
-
-        .cc-print-table td {
-            padding: 9px 8px;
-            border-bottom: 1px solid #f1e3ea;
-            color: var(--print-dark);
-            vertical-align: top;
-            overflow-wrap: anywhere;
-        }
-
-        .cc-print-document-footer {
-            margin-top: 32px;
-            padding-top: 13px;
-            border-top: 1px solid var(--print-border);
-            color: var(--print-muted);
-            font-size: 10px;
-            line-height: 1.6;
-            text-align: center;
-        }
-
-        .cc-print-screen-only {
-            display: block;
-        }
-
-        @media (max-width: 640px) {
-            .cc-print-page {
-                padding: 22px 14px 40px;
-            }
-
-            .cc-print-card,
-            .cc-print-document {
-                padding: 18px;
-            }
-
-            .cc-print-category-grid,
-            .cc-print-data-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cc-print-heading {
-                gap: 12px;
-            }
-
-            .cc-print-heading-icon {
-                width: 46px;
-                height: 46px;
-                border-radius: 14px;
-            }
-        }
-
-        @page {
-            size: A4;
-            margin: 14mm;
-        }
-
-        @media print {
-            body {
-                background: #fff !important;
-                color: #222 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            body * {
-                visibility: hidden !important;
-            }
-
-            .cc-print-document,
-            .cc-print-document * {
-                visibility: visible !important;
-            }
-
-            .cc-print-page {
-                width: 100% !important;
-                max-width: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-
-            .cc-print-screen-only,
-            .cc-print-card,
-            .cc-print-heading,
-            .cc-print-no-data {
-                display: none !important;
-            }
-
-            .cc-print-document {
-                display: block !important;
-                position: absolute !important;
-                inset: 0 auto auto 0 !important;
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border: 0 !important;
-                border-radius: 0 !important;
-                box-shadow: none !important;
-                background: #fff !important;
-            }
-
-            .cc-print-document-header {
-                break-inside: avoid;
-            }
-            .cc-print-prenatal-detail {
-    break-inside: avoid;
-    page-break-inside: avoid;
-    margin-top: 14px;
-    padding-top: 2px;
-}
-
-            .cc-print-record-section h3 {
-                break-after: avoid;
-            }
-
-            .cc-print-data-item,
-            .cc-print-table tr {
-                break-inside: avoid;
-            }
-
-            .cc-print-table-wrap {
-                overflow: visible !important;
-            }
-
-            .cc-print-table {
-                font-size: 10px;
-            }
-
-            .cc-print-document-footer {
-                margin-top: 25px;
-            }
-        }
-    </style>
+    {{--
+        Mother Portal: Print My Records.
+        A self-printed summary of the signed-in mother's own records (browser
+        print / Save as PDF). Data from MotherPrintRecordsController; staff-only
+        fields (administered by, vaccination remarks, infant remarks, maternal
+        condition, prenatal notes) are not loaded or shown. The document uses
+        the approved letterhead (CareCradle primary, Irosin RHU secondary) and
+        the 4% RHU watermark; no signature lines (not a certified document).
+        Screen styles: resources/css/mother-dashboard-polish.css
+        ("Print My Records" section). The page information line is set here.
+    --}}
 
     @php
-        $categoryLabels = [
-            'personal' => 'Personal Information',
-            'maternal' => 'Maternal Information',
-            'emergency' => 'Emergency Contact',
-            'infant' => 'Infant Health Record',
-            'vaccinations' => 'Vaccination Records',
+        $categoryInfo = [
+            'personal' => ['Personal Information', 'Name, date of birth, contact details, address, and father\'s information.'],
+            'maternal' => ['Maternal Information', 'Pregnancy status, blood type, and pregnancy details.'],
+            'prenatal' => ['Prenatal Visit Records', 'Visit dates, measurements, and recommended follow-up dates.'],
+            'infant' => ['Infant Health Record', 'Your child\'s birth details and growth history.'],
+            'vaccinations' => ['Vaccination Records', 'Vaccine names, doses, dates given, and next due dates.'],
         ];
 
-        $motherFullName = trim(
-            ($mother->first_name ?? '') . ' ' .
-            ($mother->middle_name ?? '') . ' ' .
-            ($mother->last_name ?? '')
-        );
-
-        $motherFullName = $motherFullName ?: 'Not provided';
+        $motherFullName = trim(implode(' ', array_filter([$mother->first_name, $mother->middle_name, $mother->last_name]))) ?: 'Not provided';
+        $infantFullName = fn ($child) => trim(implode(' ', array_filter([$child->first_name, $child->middle_name, $child->last_name])));
 
         $dateValue = function ($value, $format = 'F d, Y') {
             if (!$value) {
                 return 'Not provided';
             }
-
             try {
                 return \Illuminate\Support\Carbon::parse($value)->format($format);
             } catch (\Throwable $exception) {
                 return (string) $value;
             }
         };
-
-        $displayValue = function ($value) {
-            if ($value === null || $value === '') {
-                return 'Not provided';
+        $shortDate = fn ($value) => $value ? $dateValue($value, 'M d, Y') : 'Not recorded';
+        $displayValue = fn ($value) => ($value === null || $value === '') ? 'Not provided' : (string) $value;
+        $number = fn ($value) => rtrim(rtrim(number_format((float) $value, 2, '.', ''), '0'), '.');
+        $measure = fn ($value, $unit) => ($value === null || $value === '') ? 'Not recorded' : $number($value) . ' ' . $unit;
+        $recorded = fn ($value) => ($value === null || $value === '') ? 'Not recorded' : (string) $value;
+        $bloodPressure = function ($systolic, $diastolic) use ($number) {
+            $hasSystolic = $systolic !== null && $systolic !== '';
+            $hasDiastolic = $diastolic !== null && $diastolic !== '';
+            if (!$hasSystolic && !$hasDiastolic) {
+                return 'Not recorded';
             }
-
-            if (is_bool($value)) {
-                return $value ? 'Yes' : 'No';
+            return ($hasSystolic ? $number($systolic) : '—') . '/' . ($hasDiastolic ? $number($diastolic) : '—') . ' mmHg';
+        };
+        // Age at a growth check: the stored value is completed months (whole number).
+        $growthAge = function ($months) {
+            if ($months === null || $months === '') {
+                return 'Not recorded';
             }
-
-            return (string) $value;
+            $months = (int) $months;
+            if ($months < 1) {
+                return 'Under 1 month';
+            }
+            if ($months < 24) {
+                return $months . ' ' . ($months === 1 ? 'month' : 'months');
+            }
+            $years = (int) floor($months / 12);
+            return $years . ' ' . ($years === 1 ? 'year' : 'years');
         };
 
-        $hasEmergencyInformation =
-            filled($mother->emergency_contact_name ?? null) ||
-            filled($mother->emergency_contact_number ?? null);
+        $has = fn ($key) => in_array($key, $selectedCategories, true);
+        $isPregnant = $mother->status === 'Pregnant';
+        $pregnancyStatus = $mother->pregnancyStatusLabel() . ($mother->isReferred() ? ' (Referred)' : '');
+
+        $logoSrc = is_file(public_path('images/system.logo.png')) ? asset('images/system.logo.png') : null;
+        $rhuLogoSrc = is_file(public_path('images/irosin-rhu-logo.jpg')) ? asset('images/irosin-rhu-logo.jpg') : null;
+
+        // Page information line for the printed pages (CSS string, escaped).
+        $cssString = fn ($value) => '"' . str_replace(['\\', '"', "\r", "\n", '<'], ['\\\\', '\\"', ' ', ' ', '\\3C '], (string) $value) . '"';
+        $pageInfo = $motherFullName . ' · Mother code ' . ($mother->mother_code ?: 'not recorded');
+
+        $section = 0;
     @endphp
 
-    <div class="cc-print-page">
+    {{-- Printed page information: mother's name and code, page numbers. --}}
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 16mm 14mm 18mm;
 
-        {{-- SCREEN-ONLY PAGE HEADER --}}
-        <div class="cc-print-heading cc-print-screen-only">
-            <div>
-                <p class="cc-print-eyebrow">Mother Portal / Records</p>
-                <h1>Print My Records</h1>
-                <p>
-                    Choose the information you want to include in your
-                    CareCradle record summary.
-                </p>
+            @bottom-left {
+                content: {!! $cssString($pageInfo) !!};
+                font-family: "Inter", Arial, sans-serif;
+                font-size: 7.5pt;
+                color: #6b6470;
+            }
+
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: "Inter", Arial, sans-serif;
+                font-size: 7.5pt;
+                color: #6b6470;
+            }
+        }
+    </style>
+
+    <div class="mdb apx prx">
+        <div class="mdb-container">
+
+            {{-- ================= PAGE HEADER (screen only) ================= --}}
+            <div class="apx-head prx-screen">
+                <a href="{{ route('mother.dashboard') }}" class="apx-back" aria-label="Back to dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+                <div class="apx-head-copy">
+                    <p class="apx-eyebrow">Records</p>
+                    <h1 class="apx-title">Print My Records</h1>
+                    <p class="apx-lead">Choose what to include in your CareCradle record summary, then print it or save it as a PDF.</p>
+                </div>
             </div>
 
-            <div class="cc-print-heading-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.7">
-                    <path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-                    <path d="M7 14h10v7H7zM17 11h.01"/>
-                </svg>
-            </div>
-        </div>
 
-        {{-- SELECTION CONTROLS: NOT INCLUDED IN PRINT --}}
-        <section class="cc-print-card cc-print-screen-only">
-            <h2>Select your record categories</h2>
-            <p class="cc-print-card-intro">
-                Only checked categories will appear in the printed document.
-                You can change your selection before printing.
-            </p>
+            {{-- ================= SELECTION (screen only) ================= --}}
+            <section class="mdb-card prx-select prx-screen" aria-labelledby="prx-select-title">
+                <header class="mdb-card-head">
+                    <span class="mdb-card-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/></svg>
+                    </span>
+                    <h2 class="mdb-card-title" id="prx-select-title">What to print</h2>
+                </header>
 
-            <form
-                id="cc-print-selection-form"
-                method="GET"
-                action="{{ route('mother.print-records') }}"
-            >
-            <div class="cc-print-selection-tools">
-    <span>Select record categories</span>
+                <form id="prx-form" method="GET" action="{{ route('mother.print-records') }}"
+                      data-rendered-categories="{{ implode(',', $selectedCategories) }}"
+                      data-rendered-infant="{{ $selectedInfant?->id }}">
 
-    <div>
-        <button type="button" id="cc-select-all">
-            Select All
-        </button>
+                    {{-- Keeps an empty selection distinct from the first visit (all categories). --}}
+                    <input type="hidden" name="categories[]" value="">
+                    <input type="hidden" name="print" value="1" id="prx-print-flag" disabled>
 
-        <button type="button" id="cc-deselect-all">
-            Deselect All
-        </button>
-    </div>
-</div>
-                <div class="cc-print-category-grid">
-                    <label class="cc-print-category">
-                        <input
-                            type="checkbox"
-                            name="categories[]"
-                            value="personal"
-                            @checked(in_array('personal', $selectedCategories, true))
-                        >
-                        <span>
-                            <strong>Personal Information</strong>
-                            <small>Name, date of birth, contact details and address.</small>
-                        </span>
-                    </label>
-
-                    <label class="cc-print-category">
-                        <input
-                            type="checkbox"
-                            name="categories[]"
-                            value="maternal"
-                            @checked(in_array('maternal', $selectedCategories, true))
-                        >
-                        <span>
-                            <strong>Maternal Information</strong>
-                            <small>Pregnancy details and available maternal health information.</small>
-                        </span>
-                    </label>
-
-                    <label class="cc-print-category">
-                        <input
-                            type="checkbox"
-                            name="categories[]"
-                            value="emergency"
-                            @checked(in_array('emergency', $selectedCategories, true))
-                        >
-                        <span>
-                            <strong>Emergency Contact</strong>
-                            <small>Recorded emergency contact name and phone number.</small>
-                        </span>
-                    </label>
-
-
-                    <label class="cc-print-category">
-    <input
-        type="checkbox"
-        name="categories[]"
-        value="prenatal"
-        @checked(in_array('prenatal', $selectedCategories, true))
-    >
-    <span>
-        <strong>Prenatal Visit Records</strong>
-        <small>Visit dates, blood pressure, weight, fetal monitoring and clinical notes.</small>
-    </span>
-</label>
-
-                    <label class="cc-print-category">
-                        <input
-                            type="checkbox"
-                            name="categories[]"
-                            value="infant"
-                            @checked(in_array('infant', $selectedCategories, true))
-                        >
-                        <span>
-                            <strong>Infant Health Record</strong>
-                            <small>Infant details, birth measurements and growth history.</small>
-                        </span>
-                    </label>
-
-                    <label class="cc-print-category">
-                        <input
-                            type="checkbox"
-                            name="categories[]"
-                            value="vaccinations"
-                            @checked(in_array('vaccinations', $selectedCategories, true))
-                        >
-                        <span>
-                            <strong>Vaccination Records</strong>
-                            <small>Vaccine names, doses, dates and next scheduled dates.</small>
-                        </span>
-                    </label>
-                </div>
-
-                <label class="cc-print-field-label" for="cc-print-infant">
-                    Infant whose records you want to print
-                </label>
-
-                <select
-                    id="cc-print-infant"
-                    name="infant"
-                    class="cc-print-select"
-                >
-                    @forelse ($infants as $infantOption)
-                        <option
-                            value="{{ $infantOption->id }}"
-                            @selected(
-                                $selectedInfant &&
-                                (int) $selectedInfant->id === (int) $infantOption->id
-                            )
-                        >
-                            {{ trim(($infantOption->first_name ?? '') . ' ' . ($infantOption->last_name ?? '')) }}
-                            @if ($infantOption->birth_date)
-                                — {{ $dateValue($infantOption->birth_date) }}
-                            @endif
-                        </option>
-                    @empty
-                        <option value="">No infant records available</option>
-                    @endforelse
-                </select>
-
-                <div class="cc-print-actions">
-                    <button
-                        type="submit"
-                        class="cc-print-button cc-print-button-secondary"
-                    >
-                        Update Selection
-                    </button>
-
-                    <button
-                        type="button"
-                        id="cc-print-submit"
-                        class="cc-print-button cc-print-button-primary"
-                    >
-                        <svg viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="1.8"
-                             aria-hidden="true">
-                            <path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-                            <path d="M7 14h10v7H7z"/>
-                        </svg>
-                        Print Selected Records
-                    </button>
-                </div>
-
-                <p class="cc-print-preview-note">
-                    Printing opens your browser's print dialog. You can print
-                    on paper or choose “Save as PDF” as the destination.
-                </p>
-            </form>
-        </section>
-
-        {{-- PRINTABLE DOCUMENT --}}
-        <article class="cc-print-document" id="cc-print-document">
-
-            <header class="cc-print-document-header">
-                <div class="cc-print-logo-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="1.6">
-                        <path d="M12 21s-8-4.7-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.3-8 11-8 11Z"/>
-                        <path d="M8 12h2.5l1.5-3 2 5 1.2-2H17"/>
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="cc-print-brand-name">CareCradle</p>
-                    <p class="cc-print-rhu-name">IROSIN RURAL HEALTH UNIT</p>
-                    <p class="cc-print-document-subtitle">
-                        Maternal and Infant Health Records
-                    </p>
-                </div>
-            </header>
-
-            <h2 class="cc-print-document-title">
-                Mother's Health Record Summary
-            </h2>
-
-            <p class="cc-print-generated">
-                Patient: {{ $motherFullName }}
-                &nbsp; | &nbsp;
-                Generated: {{ now()->format('F d, Y h:i A') }}
-            </p>
-
-            @if (in_array('personal', $selectedCategories, true))
-                <section class="cc-print-record-section">
-                    <h3>1. Personal Information</h3>
-
-                    <div class="cc-print-data-grid">
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Full Name</span>
-                            <span class="cc-print-data-value">{{ $motherFullName }}</span>
+                    <fieldset class="prx-fieldset">
+                        <div class="prx-fieldset-head">
+                            <legend class="prx-legend">Record categories</legend>
+                            <div class="prx-quick">
+                                <button type="button" class="prx-link-btn" id="prx-all">Select all</button>
+                                <button type="button" class="prx-link-btn" id="prx-none">Clear</button>
+                            </div>
                         </div>
 
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Mother Code</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->mother_code) }}</span>
+                        <div class="prx-categories">
+                            @foreach($allowedCategories as $key)
+                                <label class="prx-category">
+                                    <input type="checkbox" name="categories[]" value="{{ $key }}" @checked($has($key))>
+                                    <span>
+                                        <strong>{{ $categoryInfo[$key][0] }}</strong>
+                                        <small>{{ $categoryInfo[$key][1] }}</small>
+                                    </span>
+                                </label>
+                            @endforeach
                         </div>
+                    </fieldset>
 
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Date of Birth</span>
-                            <span class="cc-print-data-value">{{ $dateValue($mother->birth_date) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Age</span>
-                            <span class="cc-print-data-value">
-                                @if ($mother->birth_date)
-                                    {{ \Illuminate\Support\Carbon::parse($mother->birth_date)->age }} years old
-                                @else
-                                    Not provided
+                    <div class="prx-field">
+                        <label class="prx-legend" for="prx-infant">Child's records to include</label>
+                        @if($infants->isNotEmpty())
+                            <select id="prx-infant" name="infant" class="prx-selectbox">
+                                @if(!$selectedInfant)
+                                    <option value="" selected>Choose a child</option>
                                 @endif
-                            </span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Contact Number</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->contact_number) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Address</span>
-                            <span class="cc-print-data-value">
-                                {{ trim(($mother->address ?? '') . (filled($mother->barangay ?? null) ? ', ' . $mother->barangay : '')) ?: 'Not provided' }}
-                            </span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Civil Status</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->civil_status) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Occupation</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->occupation) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">PhilHealth Number</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->philhealth_number) }}</span>
-                        </div>
-
-                        
-                        {{-- Father's Information --}}
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Father's Full Name</span>
-                            <span class="cc-print-data-value">
-                                {{ trim(
-                                    ($mother->father_first_name ?? '') . ' ' .
-                                    ($mother->father_middle_name ?? '') . ' ' .
-                                    ($mother->father_last_name ?? '')
-                                ) ?: 'Not provided' }}
-                            </span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Father's Birth Date</span>
-                            <span class="cc-print-data-value">
-                                {{ $dateValue($mother->father_birth_date ?? null) }}
-                            </span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Father's Contact Number</span>
-                            <span class="cc-print-data-value">
-                                {{ $displayValue($mother->father_contact_number ?? null) }}
-                            </span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Father's Occupation</span>
-                            <span class="cc-print-data-value">
-                                {{ $displayValue($mother->father_occupation ?? null) }}
-                            </span>
-                        </div>
-
+                                @foreach($infants as $infantOption)
+                                    <option value="{{ $infantOption->id }}" @selected($selectedInfant && (int) $selectedInfant->id === (int) $infantOption->id)>
+                                        {{ $infantFullName($infantOption) }}@if($infantOption->birth_date) — born {{ $dateValue($infantOption->birth_date, 'M d, Y') }}@endif
+                                    </option>
+                                @endforeach
+                            </select>
+                            <p class="prx-hint">Used for the Infant Health Record and the child's vaccinations.</p>
+                        @else
+                            <p class="prx-hint">No children are registered to your record yet.</p>
+                        @endif
                     </div>
-                </section>
-            @endif
 
-            @if (in_array('maternal', $selectedCategories, true))
-                <section class="cc-print-record-section">
-                    <h3>2. Maternal Information</h3>
+                    <p class="prx-error" id="prx-error" role="alert" tabindex="-1" hidden>Please choose at least one record category to print.</p>
 
-                    <div class="cc-print-data-grid">
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Blood Type</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->blood_type) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Expected Delivery Date</span>
-                            <span class="cc-print-data-value">{{ $dateValue($mother->expected_delivery_date) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Last Menstrual Period</span>
-                            <span class="cc-print-data-value">{{ $dateValue($mother->last_menstrual_period) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Pregnancy Number</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->pregnancy_number) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Height</span>
-                            <span class="cc-print-data-value">
-                                {{ $mother->height !== null && $mother->height !== '' ? $mother->height . ' cm' : 'Not provided' }}
-                            </span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Weight</span>
-                            <span class="cc-print-data-value">
-                                {{ $mother->weight !== null && $mother->weight !== '' ? $mother->weight . ' kg' : 'Not provided' }}
-                            </span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Pregnancy Week</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->pregnancy_week ?? null) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Trimester</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->trimester ?? null) }}</span>
-                        </div>
-
-                        <div class="cc-print-data-item">
-                            <span class="cc-print-data-label">Risk Status</span>
-                            <span class="cc-print-data-value">{{ $displayValue($mother->risk_status ?? null) }}</span>
-                        </div>
+                    <div class="prx-actions">
+                        <button type="button" class="mdb-btn mdb-btn-primary prx-print-btn" id="prx-print">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/></svg>
+                            Print selected records
+                        </button>
+                        <button type="submit" class="mdb-btn mdb-btn-outline">Update preview</button>
                     </div>
-                </section>
+
+                    <p class="prx-hint">Printing opens your browser's print window. Choose your printer, or "Save as PDF" to keep a copy.</p>
+                </form>
+            </section>
+
+            @if($infantNotice)
+                <div class="prx-notice prx-screen" role="alert">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg>
+                    <span>{{ $infantNotice }}</span>
+                </div>
             @endif
 
-            @if (in_array('emergency', $selectedCategories, true))
-                <section class="cc-print-record-section">
-                    <h3>3. Emergency Contact</h3>
-
-                    @if ($hasEmergencyInformation)
-                        <div class="cc-print-data-grid">
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Contact Name</span>
-                                <span class="cc-print-data-value">
-                                    {{ $displayValue($mother->emergency_contact_name ?? null) }}
-                                </span>
-                            </div>
-
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Contact Number</span>
-                                <span class="cc-print-data-value">
-                                    {{ $displayValue($mother->emergency_contact_number ?? null) }}
-                                </span>
-                            </div>
-                        </div>
-                    @else
-                        <div class="cc-print-empty">
-                            No emergency contact information is available in the
-                            current mother record.
-                        </div>
-                    @endif
-                </section>
-            @endif
+            <p class="prx-preview-label prx-screen">Document preview</p>
 
 
-            
-            {{-- PRENATAL VISIT RECORDS --}}
-            @if (in_array('prenatal', $selectedCategories, true))
-                <section class="cc-print-record-section">
-                    <h3>4. Prenatal Visit Records</h3>
+            {{-- ================= PRINTABLE DOCUMENT ================= --}}
+            <article class="prx-doc" id="prx-document" aria-label="Record summary">
 
-                    @if ($prenatalCheckups->isNotEmpty())
-                        <div class="cc-print-table-wrap">
-                            <table class="cc-print-table">
-                                <thead>
-                                    <tr>
-                                        <th>Visit Date</th>
-                                        <th>Gestational Age</th>
-                                        <th>Weight</th>
-                                        <th>Blood Pressure</th>
-                                        <th>Fundal Height</th>
-                                        <th>Fetal Heart Rate</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($prenatalCheckups as $checkup)
-                                        <tr>
-                                            <td>{{ $dateValue($checkup->visit_date) }}</td>
-                                            <td>{{ $displayValue($checkup->gestational_age_weeks) }} weeks</td>
-                                            <td>{{ $displayValue($checkup->weight) }}</td>
-                                            <td>
-                                                {{ $displayValue($checkup->systolic_bp) }}/{{ $displayValue($checkup->diastolic_bp) }}
-                                            </td>
-                                            <td>{{ $displayValue($checkup->fundal_height) }}</td>
-                                            <td>{{ $displayValue($checkup->fetal_heart_rate) }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                @if($rhuLogoSrc)
+                    <div class="prx-watermark" aria-hidden="true"><img src="{{ $rhuLogoSrc }}" alt=""></div>
+                @endif
 
-                        @foreach ($prenatalCheckups as $checkup)
-                            <div class="cc-print-prenatal-detail" style="margin-top: 14px;">
-                                <strong style="color: #be185d; font-size: 12px;">
-                                    Additional Visit Details — {{ $dateValue($checkup->visit_date) }}
-                                </strong>
+                {{-- Letterhead (approved: CareCradle primary, Irosin RHU secondary). --}}
+                <table class="prx-letterhead" role="presentation">
+                    <tr>
+                        <td class="prx-letterhead-logo">
+                            @if($logoSrc)
+                                <img src="{{ $logoSrc }}" alt="CareCradle logo">
+                            @endif
+                        </td>
+                        <td class="prx-letterhead-text">
+                            <div class="prx-municipality">Municipality of Irosin</div>
+                            <div class="prx-office">Rural Health Unit</div>
+                            <div class="prx-system">CareCradle Maternal and Infant Health Monitoring System</div>
+                        </td>
+                        <td class="prx-letterhead-logo prx-letterhead-logo-rhu">
+                            @if($rhuLogoSrc)
+                                <img src="{{ $rhuLogoSrc }}" alt="Irosin Rural Health Unit logo" class="prx-rhu-logo">
+                            @endif
+                        </td>
+                    </tr>
+                </table>
 
-                                <table class="cc-print-table" style="margin-top: 6px;">
-                                    <tbody>
-                                        <tr>
-                                            <th>Fetal Movement</th>
-                                            <td>{{ $displayValue($checkup->fetal_movement) }}</td>
-                                            <th>Urine Protein</th>
-                                            <td>{{ $displayValue($checkup->urine_protein) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Urine Glucose</th>
-                                            <td>{{ $displayValue($checkup->urine_glucose) }}</td>
-                                            <th>Maternal Condition</th>
-                                            <td>{{ $displayValue($checkup->maternal_condition) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Next Visit</th>
-                                            <td colspan="3">{{ $dateValue($checkup->next_visit_date) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Notes</th>
-                                            <td colspan="3">{{ $displayValue($checkup->notes) }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="cc-print-empty">
-                            No prenatal visit records are available.
-                        </div>
-                    @endif
-                </section>
-            @endif
+                <h2 class="prx-doc-title">Mother's Health Record Summary</h2>
 
+                <table class="prx-id">
+                    <tr>
+                        <th scope="row">Mother</th>
+                        <td>{{ $motherFullName }}</td>
+                        <th scope="row">Mother code</th>
+                        <td class="prx-nowrap">{{ $displayValue($mother->mother_code) }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Generated</th>
+                        <td colspan="3">{{ now()->format('F d, Y h:i A') }}</td>
+                    </tr>
+                </table>
 
-            @if (in_array('infant', $selectedCategories, true))
-                <section class="cc-print-record-section">
-                  <h3>5. Infant Health Record</h3>
+                @if(count($selectedCategories) === 0)
+                    <div class="prx-empty prx-empty-strong">
+                        No record categories are selected. Choose at least one category on the Print My Records page to create a summary.
+                    </div>
+                @endif
 
-                    @if ($selectedInfant)
-                        <div class="cc-print-data-grid">
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Infant Name</span>
-                                <span class="cc-print-data-value">
-                                    {{ trim(($selectedInfant->first_name ?? '') . ' ' . ($selectedInfant->middle_name ?? '') . ' ' . ($selectedInfant->last_name ?? '')) ?: 'Not provided' }}
-                                </span>
-                            </div>
+                {{-- ---------- Personal Information ---------- --}}
+                @if($has('personal'))
+                    <section class="prx-section">
+                        <h3 class="prx-h3">{{ ++$section }}. Personal Information</h3>
+                        <dl class="prx-data">
+                            <div><dt>Full name</dt><dd>{{ $motherFullName }}</dd></div>
+                            <div><dt>Mother code</dt><dd>{{ $displayValue($mother->mother_code) }}</dd></div>
+                            <div><dt>Date of birth</dt><dd>{{ $dateValue($mother->birth_date) }}</dd></div>
+                            <div><dt>Age</dt><dd>{{ $mother->birth_date ? \Illuminate\Support\Carbon::parse($mother->birth_date)->age . ' years old' : 'Not provided' }}</dd></div>
+                            <div><dt>Contact number</dt><dd>{{ $displayValue($mother->contact_number) }}</dd></div>
+                            <div><dt>Address</dt><dd>{{ trim(($mother->address ?? '') . (filled($mother->barangay ?? null) ? ', ' . $mother->barangay : '')) ?: 'Not provided' }}</dd></div>
+                            <div><dt>Civil status</dt><dd>{{ $displayValue($mother->civil_status) }}</dd></div>
+                            <div><dt>Occupation</dt><dd>{{ $displayValue($mother->occupation) }}</dd></div>
+                            <div><dt>PhilHealth number</dt><dd>{{ $displayValue($mother->philhealth_number) }}</dd></div>
+                            <div><dt>Father's full name</dt><dd>{{ trim(implode(' ', array_filter([$mother->father_first_name, $mother->father_middle_name, $mother->father_last_name]))) ?: 'Not provided' }}</dd></div>
+                            <div><dt>Father's birth date</dt><dd>{{ $dateValue($mother->father_birth_date) }}</dd></div>
+                            <div><dt>Father's contact number</dt><dd>{{ $displayValue($mother->father_contact_number) }}</dd></div>
+                            <div><dt>Father's occupation</dt><dd>{{ $displayValue($mother->father_occupation) }}</dd></div>
+                        </dl>
+                    </section>
+                @endif
 
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Sex</span>
-                                <span class="cc-print-data-value">{{ $displayValue($selectedInfant->sex) }}</span>
-                            </div>
+                {{-- ---------- Maternal Information ---------- --}}
+                @if($has('maternal'))
+                    <section class="prx-section">
+                        <h3 class="prx-h3">{{ ++$section }}. Maternal Information</h3>
+                        <dl class="prx-data">
+                            <div><dt>Pregnancy status</dt><dd>{{ $displayValue($pregnancyStatus) }}</dd></div>
+                            <div><dt>Blood type</dt><dd>{{ $displayValue($mother->blood_type) }}</dd></div>
+                            <div><dt>Pregnancy number</dt><dd>{{ $displayValue($mother->pregnancy_number) }}</dd></div>
+                            <div><dt>Height (at registration)</dt><dd>{{ $measure($mother->height, 'cm') }}</dd></div>
+                            <div><dt>Weight (at registration)</dt><dd>{{ $measure($mother->weight, 'kg') }}</dd></div>
+                            @if($isPregnant)
+                                <div><dt>Last menstrual period</dt><dd>{{ $dateValue($mother->last_menstrual_period) }}</dd></div>
+                                <div><dt>Expected delivery date</dt><dd>{{ $dateValue($mother->expected_delivery_date) }}</dd></div>
+                            @endif
+                        </dl>
+                        @unless($isPregnant)
+                            <p class="prx-note">Last menstrual period and expected delivery date are included only while the pregnancy status is Pregnant.</p>
+                        @endunless
+                    </section>
+                @endif
 
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Date of Birth</span>
-                                <span class="cc-print-data-value">{{ $dateValue($selectedInfant->birth_date) }}</span>
-                            </div>
-
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Birth Weight</span>
-                                <span class="cc-print-data-value">
-                                    {{ $selectedInfant->birth_weight !== null && $selectedInfant->birth_weight !== '' ? $selectedInfant->birth_weight . ' kg' : 'Not provided' }}
-                                </span>
-                            </div>
-
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Birth Length</span>
-                                <span class="cc-print-data-value">
-                                    {{ $selectedInfant->birth_length !== null && $selectedInfant->birth_length !== '' ? $selectedInfant->birth_length . ' cm' : 'Not provided' }}
-                                </span>
-                            </div>
-
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Head Circumference at Birth</span>
-                                <span class="cc-print-data-value">
-                                    {{ $selectedInfant->head_circumference !== null && $selectedInfant->head_circumference !== '' ? $selectedInfant->head_circumference . ' cm' : 'Not provided' }}
-                                </span>
-                            </div>
-
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Birth Status</span>
-                                <span class="cc-print-data-value">{{ $displayValue($selectedInfant->birth_status) }}</span>
-                            </div>
-
-                            <div class="cc-print-data-item">
-                                <span class="cc-print-data-label">Remarks</span>
-                                <span class="cc-print-data-value">{{ $displayValue($selectedInfant->remarks) }}</span>
-                            </div>
-                        </div>
-
-                        <h4 style="margin: 22px 0 10px; font-size: 12px; font-weight: 800;">
-                            Growth Monitoring History
-                        </h4>
-
-                        @if ($growthRecords->isNotEmpty())
-                            <div class="cc-print-table-wrap">
-                                <table class="cc-print-table">
+                {{-- ---------- Prenatal Visit Records ---------- --}}
+                @if($has('prenatal'))
+                    <section class="prx-section">
+                        <h3 class="prx-h3">{{ ++$section }}. Prenatal Visit Records</h3>
+                        @if($prenatalCheckups->isNotEmpty())
+                            <div class="prx-table-wrap">
+                                <table class="prx-table prx-table-prenatal">
                                     <thead>
                                         <tr>
-                                            <th>Date Measured</th>
-                                            <th>Age (Months)</th>
-                                            <th>Weight (kg)</th>
-                                            <th>Height (cm)</th>
-                                            <th>Head Circumference (cm)</th>
-                                            <th>Remarks</th>
+                                            <th scope="col">Visit date</th>
+                                            <th scope="col">Gestational age</th>
+                                            <th scope="col">Weight</th>
+                                            <th scope="col">Blood pressure</th>
+                                            <th scope="col">Fundal height</th>
+                                            <th scope="col">Fetal heart rate</th>
+                                            <th scope="col">Fetal movement</th>
+                                            <th scope="col">Urine protein / glucose</th>
+                                            <th scope="col">Recommended follow-up date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($growthRecords as $growth)
+                                        @foreach($prenatalCheckups as $checkup)
                                             <tr>
-                                                <td>{{ $dateValue($growth->date_measured) }}</td>
-                                                <td>{{ $displayValue($growth->age_in_months) }}</td>
-                                                <td>{{ $displayValue($growth->weight) }}</td>
-                                                <td>{{ $displayValue($growth->height) }}</td>
-                                                <td>{{ $displayValue($growth->head_circumference) }}</td>
-                                                <td>{{ $displayValue($growth->remarks) }}</td>
+                                                <td>{{ $shortDate($checkup->visit_date) }}</td>
+                                                <td>{{ $measure($checkup->gestational_age_weeks, 'weeks') }}</td>
+                                                <td>{{ $measure($checkup->weight, 'kg') }}</td>
+                                                <td>{{ $bloodPressure($checkup->systolic_bp, $checkup->diastolic_bp) }}</td>
+                                                <td>{{ $measure($checkup->fundal_height, 'cm') }}</td>
+                                                <td>{{ $measure($checkup->fetal_heart_rate, 'bpm') }}</td>
+                                                <td>{{ $recorded($checkup->fetal_movement) }}</td>
+                                                <td>{{ $recorded($checkup->urine_protein) }} / {{ $recorded($checkup->urine_glucose) }}</td>
+                                                <td>{{ $shortDate($checkup->next_visit_date) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         @else
-                            <div class="cc-print-empty">
-                                No growth monitoring records are available for this infant.
-                            </div>
+                            <div class="prx-empty">No prenatal visit records are available.</div>
                         @endif
-                    @else
-                        <div class="cc-print-empty">
-                            No infant is linked to this mother record yet.
-                        </div>
-                    @endif
-                </section>
-            @endif
+                    </section>
+                @endif
 
-@if (in_array('vaccinations', $selectedCategories, true))
-    <section class="cc-print-record-section">
-       <h3>6. Vaccination Records</h3>
+                {{-- ---------- Infant Health Record ---------- --}}
+                @if($has('infant'))
+                    <section class="prx-section">
+                        <h3 class="prx-h3">{{ ++$section }}. Infant Health Record</h3>
+                        @if($selectedInfant)
+                            <dl class="prx-data">
+                                <div><dt>Infant name</dt><dd>{{ $infantFullName($selectedInfant) ?: 'Not provided' }}</dd></div>
+                                <div><dt>Sex</dt><dd>{{ $displayValue($selectedInfant->sex) }}</dd></div>
+                                <div><dt>Date of birth</dt><dd>{{ $dateValue($selectedInfant->birth_date) }}</dd></div>
+                                <div><dt>Birth status</dt><dd>{{ $displayValue($selectedInfant->birth_status) }}</dd></div>
+                                <div><dt>Birth weight</dt><dd>{{ $measure($selectedInfant->birth_weight, 'kg') }}</dd></div>
+                                <div><dt>Birth length</dt><dd>{{ $measure($selectedInfant->birth_length, 'cm') }}</dd></div>
+                                <div><dt>Head circumference at birth</dt><dd>{{ $measure($selectedInfant->head_circumference, 'cm') }}</dd></div>
+                            </dl>
 
-        {{-- MATERNAL VACCINATIONS --}}
-        <h4 style="margin: 16px 0 10px; color: #be185d; font-size: 13px;">
-            Maternal Vaccination History
-        </h4>
+                            <h4 class="prx-h4">Growth monitoring history</h4>
+                            @if($growthRecords->isNotEmpty())
+                                <div class="prx-table-wrap">
+                                    <table class="prx-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Date measured</th>
+                                                <th scope="col">Age</th>
+                                                <th scope="col">Weight</th>
+                                                <th scope="col">Height / length</th>
+                                                <th scope="col">Head circumference</th>
+                                                <th scope="col">Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($growthRecords as $growth)
+                                                <tr>
+                                                    <td>{{ $shortDate($growth->date_measured) }}</td>
+                                                    <td>{{ $growthAge($growth->age_in_months) }}</td>
+                                                    <td>{{ $measure($growth->weight, 'kg') }}</td>
+                                                    <td>{{ $measure($growth->height, 'cm') }}</td>
+                                                    <td>{{ $measure($growth->head_circumference, 'cm') }}</td>
+                                                    <td>{{ $growth->remarks ?: '—' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <div class="prx-empty">No growth monitoring records are available for this child.</div>
+                            @endif
+                        @elseif($infantNotice)
+                            <div class="prx-empty">{{ $infantNotice }}</div>
+                        @else
+                            <div class="prx-empty">No child is linked to this mother record yet.</div>
+                        @endif
+                    </section>
+                @endif
 
-        @if ($maternalVaccinations->isNotEmpty())
-            <div class="cc-print-table-wrap">
-                <table class="cc-print-table">
-                    <thead>
-                        <tr>
-                            <th>Vaccine</th>
-                            <th>Dose</th>
-                            <th>Date Given</th>
-                            <th>Next Due Date</th>
-                            <th>Administered By</th>
-                            <th>Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($maternalVaccinations as $maternalVaccination)
-                            <tr>
-                                <td>{{ $displayValue($maternalVaccination->vaccine_name) }}</td>
-                                <td>{{ $displayValue($maternalVaccination->dose) }}</td>
-                                <td>{{ $dateValue($maternalVaccination->date_given) }}</td>
-                                <td>{{ $dateValue($maternalVaccination->next_due_date) }}</td>
-                                <td>{{ $displayValue($maternalVaccination->administered_by) }}</td>
-                                <td>{{ $displayValue($maternalVaccination->remarks) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="cc-print-empty">
-                No maternal vaccination records are available.
-            </div>
-        @endif
+                {{-- ---------- Vaccination Records (approved columns; no staff names or remarks) ---------- --}}
+                @if($has('vaccinations'))
+                    <section class="prx-section">
+                        <h3 class="prx-h3">{{ ++$section }}. Vaccination Records</h3>
 
-        {{-- INFANT VACCINATIONS --}}
-        <h4 style="margin: 22px 0 10px; color: #be185d; font-size: 13px;">
-            Infant Vaccination History
-        </h4>
+                        <h4 class="prx-h4">Maternal vaccination history</h4>
+                        @if($maternalVaccinations->isNotEmpty())
+                            <div class="prx-table-wrap">
+                                <table class="prx-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Vaccine</th>
+                                            <th scope="col">Dose</th>
+                                            <th scope="col">Date given</th>
+                                            <th scope="col">Next due date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($maternalVaccinations as $maternalVaccination)
+                                            <tr>
+                                                <td>{{ $displayValue($maternalVaccination->vaccine_name) }}</td>
+                                                <td>{{ $displayValue($maternalVaccination->dose) }}</td>
+                                                <td>{{ $shortDate($maternalVaccination->date_given) }}</td>
+                                                <td>{{ $shortDate($maternalVaccination->next_due_date) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <div class="prx-empty">No maternal vaccination records are available.</div>
+                        @endif
 
-        @if ($selectedInfant)
-            <p style="margin: 0 0 12px; color: #776675; font-size: 11px;">
-                Infant:
-                {{ trim(($selectedInfant->first_name ?? '') . ' ' . ($selectedInfant->last_name ?? '')) }}
-            </p>
+                        <h4 class="prx-h4">Infant vaccination history</h4>
+                        @if($selectedInfant)
+                            <p class="prx-note">Child: {{ $infantFullName($selectedInfant) }}</p>
+                            @if($vaccinations->isNotEmpty())
+                                <div class="prx-table-wrap">
+                                    <table class="prx-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Vaccine</th>
+                                                <th scope="col">Dose</th>
+                                                <th scope="col">Date given</th>
+                                                <th scope="col">Next due date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($vaccinations as $vaccination)
+                                                <tr>
+                                                    <td>{{ $displayValue($vaccination->vaccine_name) }}</td>
+                                                    <td>{{ $displayValue($vaccination->dose) }}</td>
+                                                    <td>{{ $shortDate($vaccination->date_given) }}</td>
+                                                    <td>{{ $shortDate($vaccination->next_due_date) }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <div class="prx-empty">No vaccination records are available for this child.</div>
+                            @endif
+                        @elseif($infantNotice)
+                            <div class="prx-empty">{{ $infantNotice }}</div>
+                        @else
+                            <div class="prx-empty">No child is linked to this mother record yet.</div>
+                        @endif
+                    </section>
+                @endif
 
-            @if ($vaccinations->isNotEmpty())
-                <div class="cc-print-table-wrap">
-                    <table class="cc-print-table">
-                        <thead>
-                            <tr>
-                                <th>Vaccine</th>
-                                <th>Dose</th>
-                                <th>Date Given</th>
-                                <th>Next Due Date</th>
-                                <th>Administered By</th>
-                                <th>Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($vaccinations as $vaccination)
-                                <tr>
-                                    <td>{{ $displayValue($vaccination->vaccine_name) }}</td>
-                                    <td>{{ $displayValue($vaccination->dose) }}</td>
-                                    <td>{{ $dateValue($vaccination->date_given) }}</td>
-                                    <td>{{ $dateValue($vaccination->next_due_date) }}</td>
-                                    <td>{{ $displayValue($vaccination->administered_by) }}</td>
-                                    <td>{{ $displayValue($vaccination->remarks) }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                {{-- Disclaimer (existing text). --}}
+                <div class="prx-doc-footer">
+                    CareCradle · Irosin Rural Health Unit<br>
+                    Generated from the CareCradle Mother Portal. This is a
+                    system-generated record summary, not a certification of medical records.
                 </div>
-            @else
-                <div class="cc-print-empty">
-                    No vaccination records are available for this infant.
-                </div>
-            @endif
-        @else
-            <div class="cc-print-empty">
-                No infant is linked to this mother record yet.
-            </div>
-        @endif
-    </section>
-@endif
+            </article>
 
-
-            @if (count($selectedCategories) === 0)
-                <div class="cc-print-empty cc-print-no-data">
-                    No categories have been selected. Return to the selection panel
-                    and choose at least one category.
-                </div>
-            @endif
-
-            <footer class="cc-print-document-footer">
-                CareCradle · Irosin Rural Health Unit<br>
-                Generated from the CareCradle Mother Portal. This is a
-                system-generated record summary, not a certification of medical records.
-            </footer>
-        </article>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('cc-print-selection-form');
-            const printButton = document.getElementById('cc-print-submit');
-
-            const selectAllButton = document.getElementById('cc-select-all');
-const deselectAllButton = document.getElementById('cc-deselect-all');
-
-const categoryCheckboxes = form
-    ? form.querySelectorAll('input[name="categories[]"]')
-    : [];
-
-            if (!form || !printButton) {
+            const form = document.getElementById('prx-form');
+            if (!form) {
                 return;
             }
-            if (selectAllButton) {
-    selectAllButton.addEventListener('click', function () {
-        categoryCheckboxes.forEach(checkbox => {
-            checkbox.checked = true;
-        });
-    });
-}
 
-if (deselectAllButton) {
-    deselectAllButton.addEventListener('click', function () {
-        categoryCheckboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
-    });
-}
+            const boxes = Array.from(form.querySelectorAll('input[type="checkbox"][name="categories[]"]'));
+            const infant = document.getElementById('prx-infant');
+            const error = document.getElementById('prx-error');
+            const printFlag = document.getElementById('prx-print-flag');
 
-            printButton.addEventListener('click', function () {
-                const selected = form.querySelectorAll(
-                    'input[name="categories[]"]:checked'
-                );
+            const checked = () => boxes.filter((box) => box.checked).map((box) => box.value);
+            const hideError = () => { error.hidden = true; };
 
+            document.getElementById('prx-all').addEventListener('click', () => { boxes.forEach((box) => { box.checked = true; }); hideError(); });
+            document.getElementById('prx-none').addEventListener('click', () => { boxes.forEach((box) => { box.checked = false; }); });
+            boxes.forEach((box) => box.addEventListener('change', hideError));
+
+            // One click: print the preview if it already matches the selection;
+            // otherwise apply the selection and print once the page reloads.
+            document.getElementById('prx-print').addEventListener('click', function () {
+                const selected = checked();
                 if (selected.length === 0) {
-                    alert('Please select at least one record category before printing.');
+                    error.hidden = false;
+                    error.focus?.();
                     return;
                 }
 
-                const currentCategories = Array.from(selected).map(
-                    checkbox => checkbox.value
-                );
+                const sameCategories = selected.join(',') === form.dataset.renderedCategories;
+                const sameInfant = !infant || infant.value === (form.dataset.renderedInfant || '');
 
-                const currentUrl = new URL(window.location.href);
-                const params = new URLSearchParams();
-
-                currentCategories.forEach(category => {
-                    params.append('categories[]', category);
-                });
-
-                const infantSelect = document.getElementById('cc-print-infant');
-
-                if (infantSelect && infantSelect.value) {
-                    params.set('infant', infantSelect.value);
-                }
-
-                const desiredUrl =
-                    currentUrl.pathname + '?' + params.toString();
-
-                if (
-                    currentUrl.pathname + currentUrl.search !== desiredUrl
-                ) {
-                    window.location.href = desiredUrl;
+                if (sameCategories && sameInfant) {
+                    window.print();
                     return;
                 }
 
-                window.print();
+                printFlag.disabled = false;
+                form.submit();
             });
+
+            // Requested print after applying a new selection.
+            const url = new URL(window.location.href);
+            if (url.searchParams.get('print') === '1') {
+                url.searchParams.delete('print');
+                window.history.replaceState(null, '', url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : ''));
+                if (form.dataset.renderedCategories !== '') {
+                    window.addEventListener('load', () => setTimeout(() => window.print(), 250));
+                }
+            }
         });
     </script>
 </x-app-layout>

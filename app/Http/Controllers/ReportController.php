@@ -173,8 +173,12 @@ class ReportController extends Controller
             });
         }
 
+        // Pregnancy status filter; "Referred" means currently referred
+        // (active referral, or an older Referred record).
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $request->status === 'Referred'
+                ? $query->referred()
+                : $query->where('status', $request->status);
         }
 
         if ($request->filled('barangay')) {
@@ -182,6 +186,7 @@ class ReportController extends Controller
         }
 
         $mothers = $query
+            ->withReferralFlag()
             ->orderBy('last_name')
             ->orderBy('first_name')
             ->get();
@@ -189,7 +194,7 @@ class ReportController extends Controller
         $totalMothers = $mothers->count();
         $pregnant = $mothers->where('status', 'Pregnant')->count();
         $delivered = $mothers->where('status', 'Delivered')->count();
-        $referred = $mothers->where('status', 'Referred')->count();
+        $referred = $mothers->filter(fn ($m) => $m->isReferred())->count();
 
         $barangays = Mother::whereNotNull('barangay')
             ->where('barangay', '!=', '')
@@ -222,8 +227,12 @@ class ReportController extends Controller
             });
         }
 
+        // Pregnancy status filter; "Referred" means currently referred
+        // (active referral, or an older Referred record).
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $request->status === 'Referred'
+                ? $query->referred()
+                : $query->where('status', $request->status);
         }
 
         if ($request->filled('barangay')) {
@@ -231,6 +240,7 @@ class ReportController extends Controller
         }
 
         $mothers = $query
+            ->withReferralFlag()
             ->orderBy('last_name')
             ->orderBy('first_name')
             ->get();
@@ -238,7 +248,7 @@ class ReportController extends Controller
         $totalMothers = $mothers->count();
         $pregnant = $mothers->where('status', 'Pregnant')->count();
         $delivered = $mothers->where('status', 'Delivered')->count();
-        $referred = $mothers->where('status', 'Referred')->count();
+        $referred = $mothers->filter(fn ($m) => $m->isReferred())->count();
 
         $pdf = Pdf::loadView('reports.pdf.mothers', [
             'mothers' => $mothers,

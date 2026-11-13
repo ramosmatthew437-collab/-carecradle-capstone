@@ -14,6 +14,12 @@
                     ? 'adminDrawerOpen = true'
                     : 'open = ! open'));
 
+        // Administrator only: tie the hamburger to the drawer for assistive technology.
+        // Empty for every other role, so their markup is unchanged.
+        $adminMenuButtonA11y = $user->isAdministrator()
+            ? ' aria-controls="cc-admin-drawer" :aria-expanded="adminDrawerOpen ? \'true\' : \'false\'"'
+            : '';
+
         // Shared drawer styling so all three portals look and behave identically.
         $drawerLinkBase = 'group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-100';
         $drawerLinkActive = 'bg-pink-50 text-pink-700';
@@ -53,6 +59,8 @@
                         <button
                             @click="adminDrawerOpen = true"
                             type="button"
+                            aria-controls="cc-admin-drawer"
+                            :aria-expanded="adminDrawerOpen ? 'true' : 'false'"
                             class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-600 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-100 transition"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -129,7 +137,7 @@
                 <button
                     @click="{{ $hamburgerClick }}"
                     type="button"
-                    aria-label="Open navigation menu"
+                    aria-label="Open navigation menu"{!! $adminMenuButtonA11y !!}
                     class="inline-flex h-11 w-11 items-center justify-center rounded-xl text-slate-600 hover:bg-pink-50 hover:text-pink-600 focus:bg-pink-50 focus:text-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-100 transition duration-150 ease-in-out"
                 >
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -146,30 +154,31 @@
     {{-- ========================================= --}}
     @if ($user->isAdministrator())
         @php
+            // Icons match the Administrator desktop sidebar (layouts/admin-sidebar.blade.php).
             $adminNavLinks = [
                 [
                     'label' => 'Dashboard',
                     'route' => 'dashboard',
                     'active' => request()->routeIs('dashboard'),
-                    'icon' => 'M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25',
+                    'icon' => 'M3 10.5 12 3l9 7.5M5.25 9v11.25h13.5V9M9 20.25v-6h6v6',
                 ],
                 [
                     'label' => 'Midwife Management',
                     'route' => 'midwives.index',
                     'active' => request()->routeIs('midwives.*'),
-                    'icon' => 'M18 7.5V6a3 3 0 10-6 0v1.5m-3 0h9m-9 0A1.5 1.5 0 007.5 9v9A1.5 1.5 0 009 19.5h9A1.5 1.5 0 0019.5 18V9A1.5 1.5 0 0018 7.5Zm-9 0V6a6 6 0 1112 0v1.5',
+                    'icon' => 'M16 19h6v-2a4 4 0 0 0-6.5-3.1M16 19H8m8 0v-2a4 4 0 0 0-8 0v2m0 0H2v-2a4 4 0 0 1 6.5-3.1M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
                 ],
                 [
                     'label' => 'Reports',
                     'route' => 'reports.index',
                     'active' => request()->routeIs('reports.*'),
-                    'icon' => 'M9 17v-2m3 2v-4m3 4V7m5 12H4.5A2.25 2.25 0 012.25 16.75V4.5A2.25 2.25 0 014.5 2.25h15A2.25 2.25 0 0121.75 4.5v12.25A2.25 2.25 0 0119.5 19Z',
+                    'icon' => 'M4 19V5m0 14h16M8 15v-4m4 4V7m4 8V9',
                 ],
                 [
                     'label' => 'Activity Logs',
                     'route' => 'admin.activity-logs.index',
                     'active' => request()->routeIs('admin.activity-logs.*'),
-                    'icon' => 'M3 3v18h18M7 14l4-4 4 4 6-7',
+                    'icon' => 'M4 5h16M4 12h16M4 19h10',
                 ],
             ];
         @endphp
@@ -198,6 +207,74 @@
             x-transition:leave-start="translate-x-0"
             x-transition:leave-end="-translate-x-full"
             @keydown.escape.window="adminDrawerOpen = false"
+            id="cc-admin-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Administrator navigation menu"
+            x-init="
+                {{-- Accessibility: focus moves into the drawer, the page behind cannot scroll,
+                     and focus returns to the menu button however the drawer closes
+                     (Escape, Close button, overlay, or a navigation link). --}}
+                let ccAdminDrawerTrigger = null;
+
+                $watch('adminDrawerOpen', (isOpen) => {
+                    if (isOpen) {
+                        ccAdminDrawerTrigger = document.activeElement;
+                        document.documentElement.style.overflow = 'hidden';
+
+                        // x-show reveals the drawer on the next animation frame, so keep trying
+                        // briefly until the Close button can actually receive focus.
+                        let attempts = 0;
+                        const focusClose = () => {
+                            const closeButton = document.querySelector('#cc-admin-drawer [data-cc-admin-drawer-close]');
+                            if (! adminDrawerOpen || ! closeButton) return;
+                            closeButton.focus();
+                            if (document.activeElement !== closeButton && attempts++ < 60) {
+                                setTimeout(focusClose, 25);
+                            }
+                        };
+                        setTimeout(focusClose, 0);
+                        return;
+                    }
+
+                    document.documentElement.style.overflow = '';
+
+                    // Some browsers do not focus a clicked button; fall back to the visible menu button.
+                    let target = ccAdminDrawerTrigger && ccAdminDrawerTrigger.matches && ccAdminDrawerTrigger.matches('[aria-controls=cc-admin-drawer]')
+                        ? ccAdminDrawerTrigger
+                        : [...document.querySelectorAll('[aria-controls=cc-admin-drawer]')].find((el) => el.offsetParent !== null);
+
+                    if (target) {
+                        target.focus();
+                    }
+
+                    ccAdminDrawerTrigger = null;
+                });
+            "
+            @keydown.tab.window="
+                {{-- Focus trap: Tab / Shift+Tab cycle through the drawer's controls while it is open. --}}
+                if (! adminDrawerOpen) return;
+
+                const focusable = [...$el.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex=\'-1\'])')]
+                    .filter((el) => el.offsetParent !== null);
+
+                if (! focusable.length) return;
+
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (! $el.contains(document.activeElement)) {
+                    $event.preventDefault();
+                    ($event.shiftKey ? last : first).focus();
+                } else if ($event.shiftKey && document.activeElement === first) {
+                    $event.preventDefault();
+                    last.focus();
+                } else if (! $event.shiftKey && document.activeElement === last) {
+                    $event.preventDefault();
+                    first.focus();
+                }
+            "
+            @resize.window="if (adminDrawerOpen && window.innerWidth >= 1024) adminDrawerOpen = false"
             class="fixed inset-y-0 left-0 z-50 flex w-[280px] sm:w-[320px] flex-col bg-white shadow-2xl shadow-pink-200/40"
             style="display: none;"
         >
@@ -212,6 +289,7 @@
 
                 <button
                     @click="adminDrawerOpen = false"
+                    data-cc-admin-drawer-close
                     type="button"
                     class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-slate-500 hover:bg-pink-50 hover:text-pink-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-100 transition"
                     aria-label="Close menu"
@@ -249,8 +327,9 @@
                     @if ($profileActive) aria-current="page" @endif
                     class="{{ $drawerLinkBase }} {{ $profileActive ? $drawerLinkActive : $drawerLinkInactive }}"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} {{ $profileActive ? $drawerIconActive : $drawerIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} {{ $profileActive ? $drawerIconActive : $drawerIconInactive }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 21a8 8 0 0 1 16 0"/>
                     </svg>
                     Profile
                 </a>
@@ -262,8 +341,9 @@
                         onclick="return confirm('Are you sure you want to log out?');"
                         class="{{ $drawerLinkBase }} w-full text-left {{ $drawerLogoutHover }}"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} text-slate-400 group-hover:text-rose-500 group-focus-visible:text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="{{ $drawerIconBase }} text-slate-400 group-hover:text-rose-500 group-focus-visible:text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M10 17l5-5-5-5M15 12H3"/>
+                            <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>
                         </svg>
                         Log Out
                     </button>
@@ -426,6 +506,12 @@
                     'route' => 'mother.prenatal-records',
                     'active' => request()->routeIs('mother.prenatal-records'),
                     'icon' => 'M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z',
+                ],
+                [
+                    'label' => 'My Referrals',
+                    'route' => 'mother.referrals',
+                    'active' => request()->routeIs('mother.referrals'),
+                    'icon' => 'M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5',
                 ],
                 [
                     'label' => 'Infant Records',

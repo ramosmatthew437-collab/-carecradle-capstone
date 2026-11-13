@@ -10,6 +10,14 @@
     <div class="apvd-page">
         <div class="apvd-container">
 
+            {{-- Shown when deletion is refused (e.g. its SMS reminder is being sent). --}}
+            @if (session('error'))
+                <div role="alert" style="display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:1rem;padding:0.875rem 1rem;color:#9f1239;background:#fff1f2;border:1px solid #fecdd3;border-radius:0.875rem;font-size:0.875rem;line-height:1.5;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:0 0 auto;width:1.25rem;height:1.25rem;margin-top:0.0625rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+                    <div><strong style="display:block;font-weight:600;">Not deleted</strong>{{ session('error') }}</div>
+                </div>
+            @endif
+
             @php
                 $statusClasses = match($appointment->status) {
                     'Scheduled' => 'apvd-status-scheduled',

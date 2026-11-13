@@ -1,1114 +1,3754 @@
-
 /* =========================================================
-   CARECRADLE — MOTHER DASHBOARD POLISH
-   Oula-inspired layout refinement
-   Pink healthcare theme with RHU photo hero
-   Scoped to Mother Dashboard classes only
+   CARECRADLE — MOTHER PORTAL DESIGN (Dashboard, Appointments,
+   Prenatal Records)
+   Approved Mother Portal identity: warm ivory page, white cards,
+   CareCradle rose accent (#be185d), deep burgundy headings,
+   DM Serif Display + Inter. The tokens on .mdb are shared by every
+   Mother Portal page that uses this stylesheet.
+
+   The official Irosin RHU building photo appears only in the hero;
+   every card holding personal or clinical information sits on a
+   clean ivory background.
    ========================================================= */
 
-/* =========================================================
-   1. DASHBOARD LAYOUT
-   ========================================================= */
+.mdb {
+    --mdb-bg: #fcf7f6;
+    --mdb-surface: #ffffff;
+    --mdb-line: #f0e4e8;
+    --mdb-line-strong: #e6d2d9;
+    --mdb-ink: #2b2730;
+    --mdb-muted: #6b6470;
+    --mdb-heading: #4a1d33;
+    --mdb-rose: #be185d;
+    --mdb-rose-dark: #9d174d;
+    --mdb-rose-soft: #fdf2f7;
+    --mdb-rose-line: #f5d0e0;
+    --mdb-amber-bg: #fdf6e7;
+    --mdb-amber-line: #f0dcae;
+    --mdb-amber-ink: #8a5a00;
+    --mdb-radius: 16px;
+    --mdb-shadow: 0 1px 2px rgba(43, 24, 32, 0.04), 0 6px 18px rgba(43, 24, 32, 0.045);
+    --mdb-serif: 'DM Serif Display', Georgia, serif;
+    --mdb-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-.mth-wrap {
-    width: 100%;
     min-width: 0;
+    min-height: 100vh;
+    padding: 1.75rem 0 3rem;
+    color: var(--mdb-ink);
+    font-family: var(--mdb-sans);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    background: var(--mdb-bg);
+    -webkit-font-smoothing: antialiased;
 }
 
-
-
-.mth-hero,
-.mth-appointment,
-.mth-empty,
-.mth-vax,
-.mth-infant,
-.mth-actions {
-    min-width: 0;
-    border-radius: 20px;
+.mdb *,
+.mdb *::before,
+.mdb *::after {
+    box-sizing: border-box;
 }
 
-.mth-hero,
-.mth-appointment,
-.mth-infant {
-    box-shadow: 0 8px 28px rgba(157, 23, 77, 0.055);
+.mdb p {
+    margin: 0;
 }
 
-/* =========================================================
-   2. HERO — RHU PHOTO AND BALANCED PINK DETAILS
-   ========================================================= */
+.mdb-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: min(1180px, calc(100% - 2.5rem));
+    margin: 0 auto;
+}
 
-.mth-wrap .mth-hero {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
+/* ---------- Shared pieces ---------- */
+.mdb-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    background: #f6f2f3;
+    border: 1px solid var(--mdb-line);
+    border-radius: 999px;
+}
+
+.mdb-chip-rose {
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-rose-soft);
+    border-color: var(--mdb-rose-line);
+}
+
+.mdb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    min-height: 40px;
+    padding: 0.55rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.mdb-btn svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+}
+
+.mdb-btn-primary {
+    color: #ffffff;
+    background: var(--mdb-rose);
+    border: 1px solid var(--mdb-rose);
+}
+
+.mdb-btn-primary:hover {
+    background: var(--mdb-rose-dark);
+    border-color: var(--mdb-rose-dark);
+}
+
+.mdb-btn-outline {
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-rose-line);
+}
+
+.mdb-btn-outline:hover {
+    background: var(--mdb-rose-soft);
+}
+
+.mdb a:focus-visible {
+    outline: 2px solid var(--mdb-rose);
+    outline-offset: 2px;
+}
+
+/* ---------- Hero (RHU building photo, soft rose-white veil) ---------- */
+.mdb-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1rem 1.5rem;
     min-width: 0;
-
-    border: 1px solid rgba(240, 182, 211, 0.65);
-    border-radius: 1.5rem;
-    padding: clamp(1.5rem, 2.5vw, 2.25rem);
-
+    padding: clamp(1.4rem, 2.6vw, 2.1rem) clamp(1.25rem, 2.8vw, 2.25rem) clamp(1rem, 1.8vw, 1.35rem);
     background:
         linear-gradient(
-            100deg,
-            rgba(255, 255, 255, 0.97) 0%,
-            rgba(255, 255, 255, 0.91) 42%,
-            rgba(255, 255, 255, 0.63) 72%,
-            rgba(255, 255, 255, 0.35) 100%
-        ),
-       var(--cc-rhu-image, none) center 45% / cover no-repeat;
-
-    color: #1e293b;
-
-    box-shadow:
-        0 16px 38px rgba(131, 24, 67, 0.07),
-        0 3px 10px rgba(15, 23, 42, 0.03);
-}
-
-.mth-wrap .mth-hero-glow,
-.mth-wrap .mth-floating-circle,
-.mth-wrap .mth-infant-shape {
-    display: none;
-}
-
-.mth-hero-inner {
-    gap: 1.5rem;
-}
-
-.mth-hero-content,
-.mth-infant-text,
-.mth-action-copy {
-    min-width: 0;
-}
-
-.mth-wrap .mth-hero-title,
-.mth-wrap .mth-appointment-date,
-.mth-wrap .mth-infant-text h2,
-.mth-wrap .mth-empty h3,
-.mth-wrap .mth-section-heading h2 {
-    font-family: 'DM Serif Display', Georgia, serif;
-    color: #0f172a;
-}
-
-.mth-hero-title {
-    overflow-wrap: anywhere;
-    line-height: 1.12;
-}
-
-.mth-wrap .mth-eyebrow {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #fce7f3;
-    color: #be185d;
-    backdrop-filter: none;
-}
-
-.mth-wrap .mth-eyebrow-dot {
-    background: #db2777;
-    box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.1);
-    animation: none;
-}
-
-.mth-wrap .mth-meta-row,
-.mth-wrap .mth-progress-top {
-    color: #475569;
-}
-
-.mth-meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.mth-wrap .mth-pregnancy-badge,
-.mth-wrap .mth-progress-top strong {
-    background: #fdf2f8;
-    border: 1px solid #fbcfe8;
-    color: #9d174d;
-}
-
-.mth-progress-wrap {
-    width: 100%;
-    max-width: 560px;
-}
-
-.mth-progress-top {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-}
-
-.mth-wrap .mth-progress-track {
-    overflow: hidden;
-    border-radius: 999px;
-    background: #e2e8f0;
-    border-color: #cbd5e1;
-}
-
-.mth-wrap .mth-progress-fill {
-    background: linear-gradient(90deg, #f9a8d4, #db2777);
-    box-shadow: none;
-}
-
-.mth-wrap .mth-avatar-inner {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid #fbcfe8;
-    color: #9d174d;
-    box-shadow: none;
-    backdrop-filter: none;
-}
-
-/* =========================================================
-   3. APPOINTMENT CARD
-   ========================================================= */
-
-.mth-wrap .mth-appointment,
-.mth-wrap .mth-empty,
-.mth-wrap .mth-infant,
-.mth-wrap .mth-action-card {
-    border-color: #e2e8f0;
-    border-radius: 1rem;
-    background-color: #fff;
-    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
-}
-
-
-.mth-wrap .mth-appointment {
-    position: relative;
-    overflow: hidden;
-    padding: 1.125rem 1.25rem;
-}
-
-
-.mth-wrap .mth-appointment::before {
-    height: 3px;
-    background: #db2777;
-}
-
-.mth-appointment-top {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-}
-
-.mth-appointment-date {
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-}
-
-.mth-appointment-details {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.mth-wrap .mth-appointment-label,
-.mth-wrap .mth-countdown {
-    background: #f8fafc;
-    border-color: #e2e8f0;
-    color: #475569;
-    box-shadow: none;
-}
-
-.mth-wrap .mth-appointment-type,
-.mth-wrap .mth-section-heading span {
-    color: #be185d;
-}
-
-.mth-wrap .mth-time,
-.mth-wrap .mth-infant-description,
-.mth-wrap .mth-section-heading p,
-.mth-wrap .mth-action-copy p {
-    color: #64748b;
-}
-
-/* =========================================================
-   4. VACCINATION REMINDER
-   ========================================================= */
-
-.mth-vax {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.mth-vax-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.mth-vax-title,
-.mth-vax-label {
-    overflow-wrap: anywhere;
-}
-
-/* =========================================================
-   5. INFANT AND CHILD RECORDS
-   ========================================================= */
-
-.mth-infant-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.mth-infant-text h2 {
-    line-height: 1.25;
-    overflow-wrap: anywhere;
-}
-
-.mth-infant-description {
-    line-height: 1.65;
-}
-
-.mth-infant-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.mth-wrap .mth-empty-icon,
-.mth-wrap .mth-infant-icon {
-    background: #fdf2f8;
-    border-color: #fce7f3;
-    color: #db2777;
-    box-shadow: none;
-}
-
-.mth-wrap .mth-infant-name {
-    color: #64748b;
-}
-
-.mth-wrap .mth-infant-tags span {
-    background: #f8fafc;
-    border-color: #e2e8f0;
-    color: #475569;
-}
-
-/* =========================================================
-   6. QUICK ACTIONS
-   ========================================================= */
-
-.mth-actions {
-    width: 100%;
-}
-
-.mth-action-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-}
-
-.mth-wrap .mth-action-card {
-    min-width: 0;
-    height: 100%;
-    transition:
-        transform 180ms ease,
-        box-shadow 180ms ease,
-        border-color 180ms ease;
-}
-
-.mth-wrap .mth-action-icon,
-.mth-wrap .mth-action-pink,
-.mth-wrap .mth-action-fuchsia,
-.mth-wrap .mth-action-rose {
-    background: #f8fafc;
-    color: #db2777;
-}
-
-.mth-wrap .mth-action-card:hover {
-    border-color: #f0b6d3;
-    transform: translateY(-2px);
-    box-shadow: 0 9px 22px rgba(15, 23, 42, 0.065);
-}
-
-.mth-wrap .mth-action-card:hover .mth-action-copy h3 {
-    color: #be185d;
-}
-
-.mth-action-copy h3,
-.mth-action-copy p {
-    overflow-wrap: anywhere;
-}
-
-/* =========================================================
-   7. BUTTONS AND KEYBOARD ACCESSIBILITY
-   ========================================================= */
-
-.mth-wrap .mth-white-btn,
-.mth-wrap .mth-primary-btn {
-    background: #db2777;
-    color: #fff;
-    box-shadow: none;
-    border-radius: 0.75rem;
-}
-
-.mth-wrap .mth-white-btn:hover,
-.mth-wrap .mth-primary-btn:hover {
-    background: #be185d;
-}
-
-.mth-wrap .mth-action-card:focus-visible,
-.mth-wrap .mth-white-btn:focus-visible,
-.mth-wrap .mth-primary-btn:focus-visible,
-.mth-wrap .mth-vax-arrow:focus-visible {
-    outline: 3px solid rgba(219, 39, 119, 0.35);
-    outline-offset: 3px;
-}
-
-/* =========================================================
-   8. TABLET RESPONSIVENESS
-   ========================================================= */
-
-@media (max-width: 900px) {
-    .mth-action-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .mth-container {
-        padding: 1.25rem;
-    }
-}
-
-/* =========================================================
-   9. MOBILE RESPONSIVENESS
-   ========================================================= */
-
-@media (max-width: 767px) {
-    .mth-container {
-        width: 100%;
-        padding: 1rem;
-        gap: 1rem;
-    }
-
-    .mth-hero,
-    .mth-appointment,
-    .mth-empty,
-    .mth-vax,
-    .mth-infant,
-    .mth-actions {
-        border-radius: 16px;
-    }
-
-    .mth-wrap .mth-hero {
-        padding: 1.2rem;
-        background-position: center;
-    }
-
-    .mth-hero-inner {
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .mth-wrap .mth-avatar-inner {
-        width: 52px;
-        height: 52px;
-        font-size: 1rem;
-    }
-
-    .mth-appointment-top {
-        align-items: flex-start;
-    }
-
-    .mth-infant-content {
-        gap: 0.85rem;
-    }
-
-    .mth-wrap .mth-section-heading {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .mth-action-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 0.75rem;
-    }
-
-    .mth-action-card {
-        min-height: 76px;
-    }
-}
-
-/* =========================================================
-   10. EXTRA-SMALL PHONES
-   ========================================================= */
-
-@media (max-width: 380px) {
-    .mth-container {
-        padding: 0.75rem;
-    }
-
-    .mth-wrap .mth-hero,
-    .mth-wrap .mth-appointment,
-    .mth-wrap .mth-infant {
-        padding: 1rem;
-    }
-
-    .mth-infant-content {
-        flex-direction: column;
-    }
-
-    .mth-infant-icon {
-        flex-shrink: 0;
-    }
-
-    .mth-wrap .mth-hero-title {
-        font-size: 1.7rem;
-    }
-}
-
-/* =========================================================
-   11. REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-    .mth-action-card {
-        transition: none;
-    }
-
-    .mth-action-card:hover {
-        transform: none;
-    }
-
-    .mth-wrap *,
-    .mth-wrap *::before,
-    .mth-wrap *::after {
-        animation: none !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-
-
-/* =========================================================
-   12. BALANCED RHU PHOTO AND FINAL SPACING REFINEMENTS
-   ========================================================= */
-
-.mth-wrap .mth-container {
-    gap: 1.125rem;
-}
-
-.mth-wrap section.mth-hero {
-    padding: clamp(1.5rem, 2.5vw, 2.25rem);
-}
-
-/* Keep appointment and infant cards from overflowing */
-.mth-wrap .mth-appointment,
-.mth-wrap .mth-infant {
-    min-width: 0;
-}
-
-
-/* CARECRADLE — FULL DASHBOARD RHU BACKGROUND */
-.mth-wrap {
-    background-image:
-        linear-gradient(
-            rgba(255, 255, 255, 0.76),
-            rgba(255, 255, 255, 0.76)
-        ),
-        var(--cc-rhu-image, none);
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    min-height: 100vh;
-}
-
-/* Keep the hero photo visible across its own card */
-.mth-wrap section.mth-hero {
-    background-image:
-        linear-gradient(
             90deg,
-            rgba(255, 255, 255, 0.38) 0%,
-            rgba(255, 255, 255, 0.18) 38%,
-            rgba(255, 255, 255, 0.02) 100%
+            rgba(255, 251, 250, 0.98) 0%,
+            rgba(255, 249, 250, 0.95) 48%,
+            rgba(253, 243, 247, 0.84) 60%,
+            rgba(253, 243, 247, 0.34) 82%,
+            rgba(253, 243, 247, 0.12) 100%
         ),
-        var(--cc-rhu-image, none);
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
+        var(--cc-rhu-image, none) center 35% / cover no-repeat,
+        var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-radius: var(--mdb-radius);
+    box-shadow: var(--mdb-shadow);
 }
 
+.mdb-hero-body {
+    min-width: 0;
+    max-width: 580px;
+}
 
+.mdb-hero-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.5rem;
+    margin-bottom: 0.45rem !important;
+}
 
+.mdb-greeting {
+    color: var(--mdb-rose-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
 
+.mdb-hero-sep {
+    color: var(--mdb-line-strong);
+}
 
+.mdb-hero-date {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+}
 
+.mdb-hero-name {
+    margin: 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
+}
 
+.mdb-hero-lead {
+    max-width: 52ch;
+    margin-top: 0.45rem !important;
+    color: var(--mdb-muted);
+    font-size: 0.9375rem;
+}
 
+/* Pregnancy panel (only rendered while the status is Pregnant). */
+.mdb-pregnancy {
+    margin-top: 1.05rem;
+    padding: 0.85rem 1rem 0.8rem;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid var(--mdb-line);
+    border-radius: 14px;
+}
 
-
-
-
-/* =========================================================
-   CARECRADLE — COMPACT APPOINTMENT CARD
-   ========================================================= */
-
-.mth-wrap .mth-appointment-top {
+.mdb-pregnancy-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.3rem 1rem;
     margin-bottom: 0.65rem;
 }
 
-.mth-wrap .mth-appointment-type {
-    margin: 0 0 0.35rem;
-    line-height: 1.35;
-}
-
-.mth-wrap .mth-appointment-date {
-    margin: 0 0 0.55rem;
+.mdb-pregnancy-week {
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.25rem;
     line-height: 1.2;
 }
 
-.mth-wrap .mth-appointment-details {
-    margin: 0 0 0.65rem;
-}
-
-.mth-wrap .mth-appointment .mth-white-btn {
-    margin-top: 0;
-}
-
-@media (max-width: 767px) {
-    .mth-wrap .mth-appointment {
-        padding: 1rem;
-    }
-
-    .mth-wrap .mth-appointment-top {
-        gap: 0.5rem;
-        margin-bottom: 0.6rem;
-    }
-}
-
-/* =========================================================
-   13. SUBTLE INTERACTIONS — DASHBOARD DESIGN POLISH
-   Scoped to Mother Dashboard only; no backend or layout changes.
-   ========================================================= */
-
-.mth-wrap .mth-hero,
-.mth-wrap .mth-appointment,
-.mth-wrap .mth-infant,
-.mth-wrap .mth-vax,
-.mth-wrap .mth-empty,
-.mth-wrap .mth-action-card {
-    transition:
-        box-shadow 220ms ease,
-        border-color 220ms ease,
-        background-color 220ms ease;
-}
-
-/* Gentle entrance: keeps the existing card positions and dimensions. */
-@keyframes mth-dashboard-enter {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.mth-wrap .mth-hero {
-    animation: mth-dashboard-enter 480ms ease-out both;
-}
-
-.mth-wrap .mth-appointment {
-    animation: mth-dashboard-enter 480ms 70ms ease-out both;
-}
-
-.mth-wrap .mth-infant {
-    animation: mth-dashboard-enter 480ms 140ms ease-out both;
-}
-
-.mth-wrap .mth-vax,
-.mth-wrap .mth-empty,
-.mth-wrap .mth-actions {
-    animation: mth-dashboard-enter 480ms 200ms ease-out both;
-}
-
-/* Make interactive cards feel responsive without moving on touch screens. */
-@media (hover: hover) and (pointer: fine) {
-    .mth-wrap .mth-appointment:hover,
-    .mth-wrap .mth-infant:hover,
-    .mth-wrap .mth-vax:hover,
-    .mth-wrap .mth-empty:hover {
-        border-color: #f3bfd8;
-        box-shadow: 0 10px 26px rgba(157, 23, 77, 0.085);
-    }
-
-    .mth-wrap .mth-hero:hover {
-        box-shadow:
-            0 19px 42px rgba(131, 24, 67, 0.10),
-            0 4px 12px rgba(15, 23, 42, 0.035);
-    }
-
-    .mth-wrap .mth-primary-btn:hover,
-    .mth-wrap .mth-white-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 5px 14px rgba(219, 39, 119, 0.18);
-    }
-}
-
-.mth-wrap .mth-primary-btn,
-.mth-wrap .mth-white-btn,
-.mth-wrap .mth-vax-arrow {
-    transition:
-        background-color 180ms ease,
-        color 180ms ease,
-        box-shadow 180ms ease,
-        border-color 180ms ease,
-        transform 180ms ease;
-}
-
-.mth-wrap .mth-primary-btn:active,
-.mth-wrap .mth-white-btn:active {
-    transform: translateY(0) scale(0.985);
-}
-
-/* Keep text and controls above the photographic background. */
-.mth-wrap .mth-hero-inner,
-.mth-wrap .mth-hero-content {
-    position: relative;
-    z-index: 1;
-}
-
-/* Honor the user's motion preferences. */
-@media (prefers-reduced-motion: reduce) {
-    .mth-wrap .mth-hero,
-    .mth-wrap .mth-appointment,
-    .mth-wrap .mth-infant,
-    .mth-wrap .mth-vax,
-    .mth-wrap .mth-empty,
-    .mth-wrap .mth-actions,
-    .mth-wrap .mth-action-card,
-    .mth-wrap .mth-primary-btn,
-    .mth-wrap .mth-white-btn,
-    .mth-wrap .mth-vax-arrow {
-        animation: none !important;
-        transition: none !important;
-        transform: none !important;
-    }
-}
-
-
-/* =========================================================
-   14. TYPOGRAPHY REFINEMENT — MOTHER DASHBOARD
-   Scoped overrides only; preserves existing layout and colors.
-   ========================================================= */
-
-.mth-wrap {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-}
-
-.mth-wrap .mth-hero-title {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: clamp(2rem, 3.2vw, 3rem);
-    font-weight: 400;
-    line-height: 1.08;
-    letter-spacing: -0.025em;
-    margin-block: 0.35rem 0.6rem;
-}
-
-.mth-wrap .mth-appointment-date,
-.mth-wrap .mth-infant-text h2,
-.mth-wrap .mth-empty h3,
-.mth-wrap .mth-section-heading h2 {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-weight: 400;
-    letter-spacing: -0.012em;
-}
-
-.mth-wrap .mth-appointment-date {
-    font-size: clamp(1.45rem, 2.2vw, 1.85rem);
-    line-height: 1.18;
-}
-
-.mth-wrap .mth-infant-text h2,
-.mth-wrap .mth-section-heading h2 {
-    font-size: clamp(1.35rem, 2vw, 1.65rem);
-    line-height: 1.22;
-}
-
-.mth-wrap .mth-empty h3 {
-    font-size: 1.4rem;
-    line-height: 1.25;
-}
-
-.mth-wrap .mth-eyebrow,
-.mth-wrap .mth-appointment-label,
-.mth-wrap .mth-countdown,
-.mth-wrap .mth-appointment-type,
-.mth-wrap .mth-progress-top,
-.mth-wrap .mth-pregnancy-badge,
-.mth-wrap .mth-vax-label,
-.mth-wrap .mth-section-heading > div > span {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1.4;
-    letter-spacing: 0.015em;
-}
-
-.mth-wrap .mth-meta-row {
+.mdb-pregnancy-week span {
+    color: var(--mdb-muted);
+    font-family: var(--mdb-sans);
     font-size: 0.8125rem;
-    line-height: 1.55;
     font-weight: 500;
 }
 
-.mth-wrap .mth-progress-top strong {
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.mth-wrap .mth-appointment-type {
+.mdb-pregnancy-edd {
+    color: var(--mdb-muted);
     font-size: 0.8125rem;
-    font-weight: 700;
 }
 
-.mth-wrap .mth-time,
-.mth-wrap .mth-status,
-.mth-wrap .mth-infant-tags span {
-    font-size: 0.75rem;
-    line-height: 1.45;
+.mdb-pregnancy-edd strong {
+    color: var(--mdb-ink);
     font-weight: 600;
 }
 
-.mth-wrap .mth-infant-name {
-    font-size: 1rem;
-    line-height: 1.45;
-    font-weight: 750;
+.mdb-progress {
+    height: 8px;
+    overflow: hidden;
+    background: #f3e6eb;
+    border-radius: 999px;
 }
 
-.mth-wrap .mth-infant-name span {
+.mdb-progress span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #ec8db3, var(--mdb-rose));
+    border-radius: inherit;
+}
+
+.mdb-progress-scale {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.4rem;
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.mdb-hero-side {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mdb-avatar {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.35rem;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--mdb-line-strong);
+    border-radius: 50%;
+    box-shadow: 0 4px 14px rgba(43, 24, 32, 0.08);
+}
+
+/* Secondary institutional identity: small, quiet, never larger than the
+   CareCradle brand in the sidebar. Whole logo, original proportions. */
+.mdb-hero-institution {
+    display: inline-flex;
+    grid-column: 1 / -1;
+    justify-self: end;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid var(--mdb-line);
+    border-radius: 999px;
+}
+
+.mdb-hero-logo {
+    display: block;
+    width: 26px;
+    height: 26px;
+    padding: 1px;
+    object-fit: contain;
+    background: #ffffff;
+    border: 1px solid var(--mdb-line);
+    border-radius: 50%;
+}
+
+/* ---------- Current referral notice ---------- */
+.mdb-referral {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1.1rem;
+    color: var(--mdb-ink);
+    font-size: 0.875rem;
+    line-height: 1.45;
+    text-decoration: none;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-left: 4px solid var(--mdb-rose);
+    border-radius: 12px;
+    box-shadow: var(--mdb-shadow);
+}
+
+.mdb-referral:hover {
+    background: #fffafb;
+}
+
+.mdb-referral-icon {
+    display: grid;
+    flex: 0 0 36px;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    color: var(--mdb-rose);
+    background: var(--mdb-rose-soft);
+    border-radius: 10px;
+}
+
+.mdb-referral-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.mdb-referral-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: var(--mdb-muted);
+    overflow-wrap: anywhere;
+}
+
+.mdb-referral-text strong {
+    display: block;
+    color: var(--mdb-heading);
+    font-weight: 600;
+}
+
+.mdb-referral-link {
+    flex: 0 0 auto;
+    color: var(--mdb-rose-dark);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------- Card grid ---------- */
+.mdb-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+}
+
+.mdb-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+    padding: 1.25rem 1.35rem 1.35rem;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-radius: var(--mdb-radius);
+    box-shadow: var(--mdb-shadow);
+}
+
+.mdb-card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+}
+
+.mdb-card-icon {
+    display: grid;
+    flex: 0 0 34px;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    color: var(--mdb-rose);
+    background: var(--mdb-rose-soft);
+    border-radius: 10px;
+}
+
+.mdb-card-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.mdb-card-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.mdb-card-chip {
+    flex: 0 0 auto;
+}
+
+/* Equal-height cards in the two-column grid: keep each card's action
+   button at the bottom instead of leaving a gap beneath it. */
+.mdb-card > .mdb-btn:last-child {
+    margin-top: auto;
+}
+
+.mdb-more {
+    color: var(--mdb-muted);
     font-size: 0.8125rem;
     font-weight: 500;
 }
 
-.mth-wrap .mth-infant-description,
-.mth-wrap .mth-section-heading p,
-.mth-wrap .mth-action-copy p,
-.mth-wrap .mth-empty p {
+.mdb-empty {
+    padding: 0.9rem 1rem;
+    background: #fcfaf9;
+    border: 1px dashed var(--mdb-line-strong);
+    border-radius: 12px;
+}
+
+.mdb-empty-title {
+    color: var(--mdb-ink);
+    font-weight: 600;
+}
+
+.mdb-empty-text {
+    margin-top: 0.2rem !important;
+    color: var(--mdb-muted);
+    font-size: 0.875rem;
+}
+
+/* ---------- Next appointment ---------- */
+.mdb-appt {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.mdb-datetile {
+    display: flex;
+    flex: 0 0 76px;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.25rem 0.55rem;
+    background: var(--mdb-rose-soft);
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 12px;
+}
+
+.mdb-datetile-month,
+.mdb-datetile-dow {
+    color: var(--mdb-rose-dark);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.mdb-datetile-day {
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.9rem;
+    line-height: 1.05;
+}
+
+.mdb-appt-info {
+    min-width: 0;
+}
+
+.mdb-appt-type {
+    color: var(--mdb-rose-dark);
     font-size: 0.8125rem;
-    line-height: 1.7;
+    font-weight: 600;
+}
+
+.mdb-appt-date {
+    color: var(--mdb-ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.mdb-appt-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    margin-top: 0.35rem !important;
+}
+
+.mdb-appt-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--mdb-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.mdb-appt-time svg {
+    width: 15px;
+    height: 15px;
+    color: var(--mdb-rose);
+}
+
+/* ---------- Dashboard card grid ----------
+   Desktop: next appointment and children on the wider left, vaccination
+   reminders and the summary on the right. Cards keep their natural
+   height (no stretched empty space). */
+.mdb-home-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.mdb-card-count {
+    flex: 0 0 auto;
+    min-width: 1.75rem;
+    padding: 0.1rem 0.55rem;
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-align: center;
+    background: #f7f1f3;
+    border-radius: 999px;
+}
+
+/* ---------- Vaccination reminders ---------- */
+.mdb-vax-list,
+.mdb-children {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mdb-vax-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.mdb-vax-who {
+    max-width: 7.5rem;
+    padding: 0.2rem 0.55rem;
+    overflow: hidden;
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #ffffff;
+    border: 1px solid var(--mdb-line-strong);
+    border-radius: 999px;
+}
+
+.mdb-vax-who.is-you {
+    color: var(--mdb-rose-dark);
+    border-color: var(--mdb-rose-line);
+}
+
+.mdb-vax-main {
+    min-width: 0;
+}
+
+.mdb-vax-name {
+    color: var(--mdb-ink);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.mdb-vax-sub {
+    color: var(--mdb-muted);
+    font-size: 0.78rem;
+}
+
+.mdb-vax-when {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.1rem;
+    color: var(--mdb-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* State label with a small dot: text first, colour second. */
+.mdb-vax-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.mdb-vax-state::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+.mdb-vax-item.is-soon .mdb-vax-when {
+    color: var(--mdb-rose-dark);
+}
+
+.mdb-vax-item.is-overdue {
+    background: #fffaf1;
+    border-color: #f1e0bd;
+}
+
+.mdb-vax-item.is-overdue .mdb-vax-when {
+    color: var(--mdb-amber-ink);
+}
+
+/* ---------- Children ---------- */
+.mdb-child {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    padding: 0.65rem 0.8rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.mdb-child-initial {
+    display: grid;
+    flex: 0 0 38px;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    color: var(--mdb-rose-dark);
+    font-family: var(--mdb-serif);
+    font-size: 1.05rem;
+    background: var(--mdb-rose-soft);
+    border-radius: 50%;
+}
+
+.mdb-child-main {
+    min-width: 0;
+}
+
+.mdb-child-name {
+    color: var(--mdb-ink);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.mdb-child-sub {
+    color: var(--mdb-ink);
+    font-size: 0.8125rem;
+}
+
+.mdb-child-birth {
+    color: var(--mdb-muted);
+    font-size: 0.78rem;
+}
+
+/* ---------- At a glance ---------- */
+.mdb-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+}
+
+.mdb-stat {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 0.7rem;
+    align-items: center;
+    min-width: 0;
+    min-height: 64px;
+    padding: 0.75rem 0.85rem;
+    color: inherit;
+    text-decoration: none;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.mdb-stat:hover {
+    background: #ffffff;
+    border-color: var(--mdb-rose-line);
+}
+
+.mdb-stat-icon {
+    display: grid;
+    grid-row: 1 / span 2;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    color: var(--mdb-rose);
+    background: var(--mdb-rose-soft);
+    border-radius: 10px;
+}
+
+.mdb-stat-icon svg {
+    width: 17px;
+    height: 17px;
+}
+
+.mdb-stat-value {
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.45rem;
+    line-height: 1.05;
+}
+
+.mdb-stat-label {
+    color: var(--mdb-muted);
+    font-size: 0.78rem;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Quick actions ---------- */
+.mdb-section-title {
+    margin: 0.25rem 0 0.75rem;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.3rem;
     font-weight: 400;
 }
 
-.mth-wrap .mth-vax-title {
-    font-size: 0.875rem;
-    line-height: 1.45;
-    font-weight: 700;
+.mdb-action-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
 }
 
-.mth-wrap .mth-action-copy h3 {
-    font-size: 0.875rem;
-    line-height: 1.4;
-    font-weight: 700;
-    letter-spacing: -0.01em;
+.mdb-action {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+    min-height: 64px;
+    padding: 0.9rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-radius: 14px;
+    box-shadow: var(--mdb-shadow);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
-.mth-wrap .mth-action-copy p {
-    margin-top: 0.2rem;
-    font-size: 0.75rem;
-    line-height: 1.55;
+.mdb-action:hover {
+    border-color: var(--mdb-rose-line);
+    box-shadow: 0 1px 2px rgba(43, 24, 32, 0.05), 0 10px 24px rgba(157, 23, 77, 0.07);
+    transform: translateY(-1px);
 }
 
-.mth-wrap .mth-white-btn,
-.mth-wrap .mth-primary-btn {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+.mdb-action-icon {
+    display: grid;
+    flex: 0 0 42px;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    color: var(--mdb-rose);
+    background: var(--mdb-rose-soft);
+    border-radius: 12px;
+}
+
+.mdb-action-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mdb-action-copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.mdb-action-title {
+    color: var(--mdb-ink);
+    font-weight: 600;
+}
+
+.mdb-action-desc {
+    color: var(--mdb-muted);
     font-size: 0.8125rem;
-    line-height: 1.35;
-    font-weight: 700;
-    letter-spacing: 0.005em;
+    line-height: 1.45;
 }
 
+.mdb-action-arrow {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    color: #c2b2b8;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.mdb-action:hover .mdb-action-arrow {
+    color: var(--mdb-rose);
+    transform: translateX(2px);
+}
+
+/* ---------- Responsive ---------- */
+
+/* Desktop: two-column cards, three quick actions in a row. Below this
+   width (sidebar + narrower content) the cards stack in one column. */
+@media (min-width: 1200px) {
+    .mdb-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Each card keeps its natural height; the spanning cards let the two
+       columns stack independently without empty gaps (DOM order, and so
+       keyboard / screen-reader order, is unchanged). */
+    .mdb-home-grid {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        grid-template-areas:
+            "appt vax"
+            "children vax"
+            "children glance";
+    }
+
+    .mdb-home-appt { grid-area: appt; }
+    .mdb-home-vax { grid-area: vax; }
+    .mdb-home-children { grid-area: children; }
+    .mdb-home-glance { grid-area: glance; }
+
+    .mdb-action-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Laptop and tablet: the hero text spans more of the card, so the veil
+   stays strong further across before revealing the building. */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .mdb-hero {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(255, 251, 250, 0.98) 0%,
+                rgba(255, 249, 250, 0.95) 62%,
+                rgba(253, 243, 247, 0.86) 76%,
+                rgba(253, 243, 247, 0.42) 92%,
+                rgba(253, 243, 247, 0.26) 100%
+            ),
+            var(--cc-rhu-image, none) center 35% / cover no-repeat,
+            var(--mdb-surface);
+    }
+}
+
+/* Tablet and mobile: heavier vertical veil over the photo. */
 @media (max-width: 767px) {
-    .mth-wrap .mth-hero-title {
-        font-size: clamp(1.75rem, 7vw, 2.25rem);
-        line-height: 1.12;
+    .mdb {
+        padding: 1rem 0 2.25rem;
     }
 
-    .mth-wrap .mth-appointment-date {
-        font-size: 1.45rem;
+    .mdb-container {
+        gap: 1rem;
+        width: calc(100% - 2rem);
     }
 
-    .mth-wrap .mth-infant-text h2,
-    .mth-wrap .mth-section-heading h2 {
-        font-size: 1.35rem;
+    .mdb-hero {
+        background:
+            linear-gradient(
+                180deg,
+                rgba(255, 251, 250, 0.96) 0%,
+                rgba(255, 249, 250, 0.93) 60%,
+                rgba(253, 243, 247, 0.90) 100%
+            ),
+            var(--cc-rhu-image, none) 60% 35% / cover no-repeat,
+            var(--mdb-surface);
     }
 
-    .mth-wrap .mth-meta-row {
-        font-size: 0.75rem;
+    .mdb-avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
     }
 
-    .mth-wrap .mth-action-copy h3 {
-        font-size: 0.875rem;
+    .mdb-hero-institution {
+        justify-self: start;
+    }
+
+    .mdb-card {
+        padding: 1.1rem 1.1rem 1.2rem;
+    }
+
+    /* Comfortable touch targets on phones (at least 44px tall). */
+    .mdb-btn {
+        min-height: 44px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 420px) {
+    .mdb-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.85rem;
+        padding: 1.2rem 1rem;
+    }
+
+    .mdb-hero-side {
+        display: none;
+    }
+
+    .mdb-pregnancy {
+        padding: 0.75rem 0.8rem;
+    }
+
+    /* Narrow stat tiles: icon above the number so labels never break
+       mid-word. */
+    .mdb-stat {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0.35rem;
+    }
+
+    .mdb-stat-icon {
+        grid-row: auto;
+        width: 30px;
+        height: 30px;
+    }
+
+    .mdb-stat-label {
+        overflow-wrap: normal;
+    }
+
+    .mdb-vax-item {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .mdb-vax-who {
+        grid-column: 1 / -1;
+        justify-self: start;
+        max-width: 100%;
+    }
+
+    .mdb-btn {
+        align-self: stretch;
+    }
+
+    .mdb-appt {
+        align-items: flex-start;
+    }
+
+    .mdb-datetile {
+        flex-basis: 64px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .mth-wrap .mth-hero-title,
-    .mth-wrap .mth-appointment-date,
-    .mth-wrap .mth-infant-text h2,
-    .mth-wrap .mth-section-heading h2 {
-        scroll-behavior: auto;
+    .mdb *,
+    .mdb *::before,
+    .mdb *::after {
+        transition: none !important;
+    }
+
+    .mdb-action:hover,
+    .mdb-action:hover .mdb-action-arrow {
+        transform: none;
+    }
+}
+
+/* =========================================================
+   MOTHER PORTAL — MY APPOINTMENTS (.mdb.apx)
+   Reuses the dashboard cards, chips, buttons, date tile, and
+   empty states above; adds only the page-specific pieces.
+   Status colours: Scheduled muted rose, Completed green,
+   Missed amber, Cancelled neutral grey — always with a text
+   label and a distinct icon, so colour is never the only cue.
+   ========================================================= */
+
+.apx .mdb-container {
+    width: min(960px, calc(100% - 2.5rem));
+}
+
+/* ---------- Header ---------- */
+.apx-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+}
+
+.apx-back {
+    display: grid;
+    flex: 0 0 44px;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-top: 0.15rem;
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-radius: 50%;
+    box-shadow: var(--mdb-shadow);
+    transition: border-color 0.15s ease;
+}
+
+.apx-back:hover {
+    border-color: var(--mdb-rose-line);
+}
+
+.apx-back svg {
+    width: 18px;
+    height: 18px;
+}
+
+.apx-head-copy {
+    min-width: 0;
+}
+
+.apx-eyebrow {
+    color: var(--mdb-rose-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.apx-title {
+    margin: 0.15rem 0 0.35rem;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: clamp(1.8rem, 3vw, 2.3rem);
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.apx-lead {
+    color: var(--mdb-muted);
+    font-size: 0.9rem;
+}
+
+.apx-lead-count {
+    white-space: nowrap;
+}
+
+/* ---------- Summary tiles ---------- */
+.apx-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.apx-tile {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 0.75rem;
+    align-items: center;
+    min-width: 0;
+    min-height: 64px;
+    padding: 0.85rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-radius: 14px;
+    box-shadow: var(--mdb-shadow);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Summary tiles jump to their list. */
+.apx-tile:hover {
+    border-color: var(--mdb-rose-line);
+    box-shadow: 0 1px 2px rgba(43, 24, 32, 0.05), 0 10px 24px rgba(157, 23, 77, 0.07);
+}
+
+.apx-tile-icon {
+    display: grid;
+    grid-row: 1 / span 2;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+}
+
+.apx-tile-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.apx-tile-value {
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.55rem;
+    line-height: 1.05;
+}
+
+.apx-tile-label {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+/* ---------- Status badge ---------- */
+.apx-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-radius: 999px;
+}
+
+.apx-status svg {
+    width: 13px;
+    height: 13px;
+    flex: 0 0 auto;
+}
+
+.apx-status.is-scheduled,
+.apx-tile.is-scheduled .apx-tile-icon {
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-rose-soft);
+    border-color: var(--mdb-rose-line);
+}
+
+.apx-status.is-completed,
+.apx-tile.is-completed .apx-tile-icon {
+    color: #1f6b46;
+    background: #ecf7f0;
+    border-color: #cfe8d9;
+}
+
+.apx-status.is-missed,
+.apx-tile.is-missed .apx-tile-icon {
+    color: #8a5a00;
+    background: #fdf6e7;
+    border-color: #f0dcae;
+}
+
+.apx-status.is-cancelled,
+.apx-status.is-other,
+.apx-tile.is-cancelled .apx-tile-icon {
+    color: #5b5560;
+    background: #f2f0f1;
+    border-color: #e2dde0;
+}
+
+/* ---------- Month groups (Appointments page) ---------- */
+.apx-month-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.apx-month-group + .apx-month-group {
+    margin-top: 0.35rem;
+}
+
+.apx-month {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.apx-month::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--mdb-line);
+}
+
+.apx-row-countdown {
+    color: var(--mdb-rose-dark);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Shared by My Appointments and Prenatal Records. */
+.apx-details:hover {
+    border-color: var(--mdb-rose-line);
+}
+
+/* Comfortable pagination tap targets on phones (Laravel pagination links). */
+@media (max-width: 767px) {
+    .apx-pagination .inline-flex {
+        min-height: 44px;
+    }
+}
+
+/* ---------- Appointment rows (expandable) ---------- */
+.apx-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.apx-details {
+    background: #fcfaf9;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+    transition: border-color 0.15s ease;
+}
+
+.apx-details[open] {
+    background: var(--mdb-surface);
+    border-color: var(--mdb-rose-line);
+}
+
+.apx-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.85rem;
+    min-height: 56px;
+    padding: 0.7rem 0.9rem;
+    cursor: pointer;
+    list-style: none;
+    border-radius: 12px;
+}
+
+.apx-row::-webkit-details-marker {
+    display: none;
+}
+
+.apx-row:focus-visible {
+    outline: 2px solid var(--mdb-rose);
+    outline-offset: 2px;
+}
+
+.apx-mini-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    padding: 0.3rem 0;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line-strong);
+    border-radius: 10px;
+}
+
+.apx-mini-date span {
+    color: var(--mdb-rose-dark);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.apx-mini-date strong {
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.05;
+}
+
+.apx-row-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.apx-row-type {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--mdb-ink);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.apx-next-chip {
+    font-size: 0.6875rem;
+}
+
+.apx-row-sub {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+}
+
+.apx-awaiting {
+    color: var(--mdb-amber-ink);
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.apx-chevron {
+    width: 16px;
+    height: 16px;
+    color: #b9aab0;
+    transition: transform 0.15s ease;
+}
+
+.apx-details[open] .apx-chevron {
+    transform: rotate(90deg);
+}
+
+.apx-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 1rem;
+    margin: 0;
+    padding: 0.2rem 1rem 1rem calc(0.9rem + 48px + 0.85rem);
+}
+
+.apx-facts dt {
+    color: var(--mdb-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.apx-facts dd {
+    margin: 0.1rem 0 0;
+    color: var(--mdb-ink);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.apx-pagination {
+    margin-top: 0.25rem;
+}
+
+.apx-empty-page {
+    align-items: flex-start;
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 1024px) {
+    .apx-summary {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .apx .mdb-container {
+        width: calc(100% - 2rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .apx-row {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 0.4rem 0.75rem;
+    }
+
+    .apx-row .apx-status {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+    }
+
+    .apx-chevron {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .apx-mini-date {
+        grid-row: 1 / span 2;
+        align-self: start;
+    }
+
+    .apx-facts {
+        grid-template-columns: minmax(0, 1fr);
+        padding-left: 1rem;
+    }
+}
+
+/* Very small phones: keep summary labels clear of the tile edge. */
+@media (max-width: 360px) {
+    .apx-tile {
+        column-gap: 0.55rem;
+        padding: 0.75rem 0.7rem;
+    }
+
+    .apx-tile-icon {
+        width: 32px;
+        height: 32px;
     }
 }
 
 
 /* =========================================================
-   CARECRADLE — MOTHER DASHBOARD QUICK ACTIONS REFINEMENT
-   Three focused actions: Profile, Vaccinations, Health Tips
+   MOTHER PORTAL — PRENATAL RECORDS (.mdb.apx.pnx)
+   Reuses the dashboard cards and the Appointments page header,
+   expandable rows, and pagination; adds only what this page
+   needs. Values are shown exactly as recorded, in neutral
+   styling (no colour-coded clinical judgement). Missing values
+   read "Not recorded" in muted italics.
    ========================================================= */
 
-.mth-wrap .mth-actions {
-    padding: clamp(1.1rem, 2.4vw, 1.65rem);
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid #fce7f3;
-    box-shadow: 0 12px 32px rgba(157, 23, 77, 0.055);
+.pnx-visit-date {
+    color: var(--mdb-ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
 }
 
-.mth-wrap .mth-section-heading {
-    margin-bottom: 1.15rem;
-    align-items: flex-end;
-    gap: 0.8rem;
+.pnx-subhead {
+    margin: 0 0 0.55rem;
+    color: var(--mdb-heading);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
-.mth-wrap .mth-section-heading h2 {
-    margin-top: 0.2rem;
-    font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+.pnx-measures {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.pnx-measure {
+    min-width: 0;
+    padding: 0.75rem 0.85rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.pnx-measures dt,
+.pnx-findings dt {
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.pnx-measures dd {
+    margin: 0.15rem 0 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.3rem;
     line-height: 1.2;
-    letter-spacing: -0.035em;
 }
 
-.mth-wrap .mth-section-heading p {
-    color: #7c6471;
+.pnx-findings {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem 1rem;
+    margin: 0;
+    padding: 0.8rem 0.9rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.pnx-findings dd {
+    margin: 0.1rem 0 0;
+    color: var(--mdb-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.pnx .is-missing,
+.pnx-measures dd.is-missing,
+.pnx-findings dd.is-missing,
+.pnx-facts dd.is-missing {
+    color: var(--mdb-muted);
+    font-family: var(--mdb-sans);
+    font-size: 0.875rem;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.pnx-history-note {
+    padding-top: 0.75rem;
+    color: var(--mdb-muted);
+    font-size: 0.875rem;
+    border-top: 1px solid var(--mdb-line);
+}
+
+.pnx-history-note strong {
+    color: var(--mdb-ink);
+    font-weight: 600;
+}
+
+.pnx-muted {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+}
+
+.pnx-grid-single {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.pnx-followup-date {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.7rem;
+    color: var(--mdb-ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
+}
+
+/* A recommendation, not a booking: dashed outline and an explicit label. */
+.pnx-followup {
+    background: #fffdfd;
+    border-style: dashed;
+    border-color: var(--mdb-line-strong);
+    box-shadow: none;
+}
+
+.pnx-followup-flag {
+    padding: 0.15rem 0.6rem;
+    color: var(--mdb-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #f7f1f3;
+    border: 1px solid var(--mdb-line);
+    border-radius: 999px;
+}
+
+/* ---------- Laboratory documents ---------- */
+.pnx-doc-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pnx-docs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pnx-doc {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.75rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+    transition: border-color 0.15s ease;
+}
+
+.pnx-doc:hover {
+    border-color: var(--mdb-rose-line);
+}
+
+.pnx-doc-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.pnx-doc-thumb,
+.pnx-doc-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    color: var(--mdb-rose);
+    background: var(--mdb-rose-soft);
+    border: 1px solid var(--mdb-line);
+    border-radius: 10px;
+}
+
+.pnx-doc-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.pnx-doc-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.pnx-doc-name {
+    color: var(--mdb-ink);
+    font-size: 0.9rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.pnx-doc-meta {
+    color: var(--mdb-muted);
+    font-size: 0.78rem;
+}
+
+.pnx-doc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: flex-end;
+}
+
+.pnx-doc-btn {
+    min-height: 36px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8125rem;
+}
+
+/* ---------- Previous checkups ---------- */
+.pnx-doc-chip {
+    font-size: 0.6875rem;
+}
+
+.pnx-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--mdb-rose-dark);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 768px) {
+    .pnx-measures {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1200px) {
+    .pnx-measures {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .pnx-doc-btn {
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pnx-findings {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pnx-doc {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .pnx-doc-actions {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+    }
+
+    .pnx-doc-btn {
+        flex: 1 1 0;
+    }
+
+    .pnx-row .pnx-doc-chip {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+    }
+}
+
+
+/* =========================================================
+   MOTHER PORTAL — MY REFERRALS (.mdb.apx.rfx)
+   Reuses the shared cards, page header, and date tiles; adds only
+   the referral pieces. Read-only: facility, referral date, status,
+   and the date a follow-up was recorded. Status badges always have
+   a text label and an icon (Current: rose; Closed: neutral grey).
+   ========================================================= */
+
+.rfx-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.rfx-facility {
+    margin: 0;
+    color: var(--mdb-ink);
+    font-family: var(--mdb-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.rfx-meta {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+}
+
+.rfx-meta strong {
+    color: var(--mdb-ink);
+    font-weight: 600;
+}
+
+.rfx-muted {
+    font-style: italic;
+}
+
+/* ---------- Status badge ---------- */
+.rfx-status {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-radius: 999px;
+}
+
+.rfx-status svg {
+    width: 13px;
+    height: 13px;
+}
+
+.rfx-status.is-current {
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-rose-soft);
+    border-color: var(--mdb-rose-line);
+}
+
+.rfx-status.is-closed {
+    color: #5b5560;
+    background: #f2f0f1;
+    border-color: #e2dde0;
+}
+
+/* ---------- Current referral ---------- */
+.rfx-current {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.9rem 1rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-left: 4px solid var(--mdb-rose);
+    border-radius: 12px;
+}
+
+.rfx-current-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 0.75rem;
+}
+
+.rfx-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.7rem 0.85rem;
+    color: var(--mdb-rose-dark);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    background: var(--mdb-rose-soft);
+    border-radius: 12px;
+}
+
+.rfx-help svg,
+.rfx-footnote svg,
+.rfx-legacy-icon svg {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin-top: 0.05rem;
+}
+
+/* ---------- Past referrals ---------- */
+.rfx-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.9rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.rfx-row-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+/* ---------- Legacy "Referred" notice ---------- */
+.rfx-legacy {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.95rem 1.1rem;
+    color: #6b4a00;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background: #fffaf1;
+    border: 1px solid #f1e0bd;
+    border-radius: var(--mdb-radius);
+}
+
+.rfx-legacy-icon {
+    display: grid;
+    flex: 0 0 34px;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    color: var(--mdb-amber-ink);
+    background: #fdf1d8;
+    border-radius: 10px;
+}
+
+.rfx-legacy-title {
+    margin: 0 0 0.15rem;
+    color: #5a3d00;
+    font-family: var(--mdb-sans);
+    font-size: 0.9375rem;
+    font-weight: 700;
+}
+
+/* ---------- Guidance (shown once at the bottom) ---------- */
+.rfx-footnote {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    color: var(--mdb-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+    .rfx-row {
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 0.4rem 0.75rem;
+    }
+
+    .rfx-row .rfx-status {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .rfx-row .apx-mini-date {
+        grid-row: 1 / span 2;
+        align-self: start;
+    }
+}
+
+
+/* =====================================================================
+   MOTHER PORTAL — INFANT RECORDS (.mdb.apx.ifx)
+   Child profile, latest growth check, vaccinations, growth history.
+   Builds on the shared Appointments / Prenatal / Referrals pieces.
+   ===================================================================== */
+
+/* ---------- Header with print button ---------- */
+.ifx-head {
+    flex-wrap: wrap;
+}
+
+.ifx-head .apx-head-copy {
+    flex: 1 1 260px;
+}
+
+.ifx-print {
+    align-self: center;
+    min-height: 44px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ---------- Child switcher ---------- */
+.ifx-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ifx-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.35rem 0.95rem 0.35rem 0.4rem;
+    color: var(--mdb-ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line-strong);
+    border-radius: 999px;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.ifx-switch:hover {
+    background: var(--mdb-rose-soft);
+    border-color: var(--mdb-rose-line);
+}
+
+.ifx-switch-initial {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    color: var(--mdb-rose-dark);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    background: var(--mdb-rose-soft);
+    border-radius: 999px;
+}
+
+.ifx-switch.is-selected {
+    color: #ffffff;
+    background: var(--mdb-rose);
+    border-color: var(--mdb-rose);
+}
+
+.ifx-switch.is-selected .ifx-switch-initial {
+    color: var(--mdb-rose-dark);
+    background: #ffffff;
+}
+
+/* ---------- Child profile ---------- */
+.ifx-profile {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 1.5rem;
+}
+
+.ifx-photo-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 132px;
+}
+
+.ifx-photo {
+    display: block;
+    width: 112px;
+    height: 112px;
+    object-fit: cover;
+    border: 3px solid #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 0 0 1px var(--mdb-rose-line), var(--mdb-shadow);
+}
+
+.ifx-photo-initial {
+    display: grid;
+    place-items: center;
+    color: var(--mdb-rose-dark);
+    font-family: var(--mdb-serif);
+    font-size: 2.6rem;
+    background: var(--mdb-rose-soft);
+}
+
+.ifx-photo-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    width: 100%;
+}
+
+.ifx-photo-actions form {
+    display: flex;
+    margin: 0;
+}
+
+.ifx-photo-btn {
+    display: inline-flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0.35rem 0.75rem;
+    color: var(--mdb-rose-dark);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 10px;
+    transition: background-color 0.15s ease;
+}
+
+.ifx-photo-btn:hover {
+    background: var(--mdb-rose-soft);
+}
+
+.ifx-photo-form:focus-within .ifx-photo-btn,
+.ifx-photo-btn:focus-visible {
+    outline: 2px solid var(--mdb-rose);
+    outline-offset: 2px;
+}
+
+.ifx-photo-remove {
+    color: var(--mdb-muted);
+    border-color: var(--mdb-line-strong);
+}
+
+.ifx-profile-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    min-width: 0;
+}
+
+.ifx-profile-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+}
+
+.ifx-name {
+    margin: 0.15rem 0 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.ifx-chip-warning {
+    color: var(--mdb-amber-ink);
+    background: var(--mdb-amber-bg);
+    border-color: var(--mdb-amber-line);
+}
+
+.ifx-details {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem 1rem;
+    margin: 0;
+    padding: 0.8rem 0.9rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.ifx-details dt,
+.ifx-measure dt {
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.ifx-details dd {
+    margin: 0.1rem 0 0;
+    color: var(--mdb-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.ifx-date-warning {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--mdb-amber-ink);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ---------- Measurement tiles (birth + latest growth) ---------- */
+.ifx-birth,
+.ifx-growth-measures {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.ifx-measure {
+    min-width: 0;
+    padding: 0.75rem 0.85rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.ifx-measure dd {
+    margin: 0.15rem 0 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+
+.ifx .is-missing,
+.ifx-measure dd.is-missing,
+.ifx-details dd.is-missing {
+    color: var(--mdb-muted);
+    font-family: var(--mdb-sans);
+    font-size: 0.875rem;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.ifx-growth-when {
+    color: var(--mdb-muted);
+    font-size: 0.9375rem;
+}
+
+.ifx-growth-when strong {
+    color: var(--mdb-ink);
+    font-weight: 600;
+}
+
+/* ---------- Vaccinations ---------- */
+.ifx-dose {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.8rem 0.95rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.ifx-dose-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.ifx-dose-name {
+    min-width: 0;
+    color: var(--mdb-ink);
+    font-size: 0.9875rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.ifx-dose-name span {
+    color: var(--mdb-muted);
+    font-weight: 500;
+}
+
+.rfx-status.ifx-given {
+    color: #2f6b4f;
+    background: #eef7f2;
+    border-color: #cfe6da;
+}
+
+.ifx-dose-meta {
+    color: var(--mdb-muted);
     font-size: 0.875rem;
 }
 
-.mth-wrap .mth-action-grid {
+.ifx-next {
+    align-self: flex-start;
+    margin-top: 0.2rem;
+    padding: 0.3rem 0.6rem;
+    color: var(--mdb-ink);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    background: #f6f2f3;
+    border-radius: 8px;
+}
+
+.ifx-next-state {
+    font-weight: 700;
+}
+
+.ifx-next.is-overdue {
+    color: var(--mdb-amber-ink);
+    background: var(--mdb-amber-bg);
+    box-shadow: inset 0 0 0 1px var(--mdb-amber-line);
+}
+
+.ifx-next.is-soon {
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-rose-soft);
+    box-shadow: inset 0 0 0 1px var(--mdb-rose-line);
+}
+
+.ifx-next.is-given,
+.ifx-next.is-upcoming {
+    color: #4f4a55;
+}
+
+.ifx-next.is-none {
+    color: var(--mdb-muted);
+    font-style: italic;
+    background: transparent;
+    padding-left: 0;
+}
+
+.ifx-next.is-none .ifx-next-state {
+    font-weight: 500;
+}
+
+/* ---------- Growth history ---------- */
+/* Date + age on the first line, the measurements underneath (all widths). */
+.ifx-growth-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.4rem 0.85rem;
+}
+
+.ifx-growth-row .apx-mini-date {
+    grid-row: 1 / span 2;
+    align-self: start;
+}
+
+.ifx-growth-values {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.3rem 0.4rem;
+}
+
+.ifx-growth-values span {
+    padding: 0.15rem 0.5rem;
+    color: var(--mdb-ink);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-radius: 999px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 767px) {
+    .ifx-profile {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.1rem;
+    }
+
+    .ifx-photo-column {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .ifx-photo {
+        flex: 0 0 auto;
+        width: 88px;
+        height: 88px;
+    }
+
+    .ifx-photo-initial {
+        font-size: 2.1rem;
+    }
+
+    .ifx-photo-actions {
+        flex: 1 1 auto;
+        width: auto;
+    }
+
+    .ifx-photo-btn {
+        min-height: 44px;
+    }
+
+    .ifx-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .ifx-name {
+        font-size: 1.5rem;
+    }
+
+    .ifx-print {
+        width: 100%;
+    }
+
+    .ifx-birth,
+    .ifx-growth-measures,
+    .ifx-details {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ifx-dose-top {
+        flex-wrap: wrap;
+    }
+}
+
+/* ---------- Print: a clean record of the selected child ---------- */
+@media print {
+    body:has(.ifx) .cc-mother-sidebar,
+    body:has(.ifx) .cc-mother-mobile-nav {
+        display: none !important;
+    }
+
+    body:has(.ifx) .cc-mother-main,
+    body:has(.ifx) .cc-mother-layout {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body:has(.ifx) {
+        background: #ffffff !important;
+    }
+
+    .mdb.ifx {
+        padding: 0 !important;
+        background: #ffffff !important;
+    }
+
+    /* carecradle.css hides every <header> in print; keep this page's
+       title and card headings on the printed record. */
+    .mdb.ifx header.apx-head,
+    .mdb.ifx header.mdb-card-head {
+        display: flex !important;
+    }
+
+    .ifx .apx-back,
+    .ifx-switcher,
+    .ifx-print,
+    .ifx-photo-actions,
+    .ifx .mdb-btn {
+        display: none !important;
+    }
+
+    .ifx .mdb-card {
+        box-shadow: none !important;
+    }
+
+    .ifx-profile,
+    .ifx .mdb-card-head,
+    .ifx-dose,
+    .ifx-growth-row,
+    .ifx-measure {
+        break-inside: avoid;
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .ifx .mdb-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+
+/* =====================================================================
+   MOTHER PORTAL — MY VACCINATIONS (.mdb.apx.vxx)
+   Overview: maternal Td/TT history and series progress, then each
+   child's vaccinations. Builds on the shared Mother Portal pieces.
+   ===================================================================== */
+
+/* ---------- Summary ---------- */
+.vxx-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.vxx-summary-card {
+    gap: 0.35rem;
+}
+
+.vxx-summary-main {
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.45rem;
+    line-height: 1.2;
+}
+
+.vxx-summary-sub {
+    color: var(--mdb-muted);
+    font-size: 0.875rem;
+}
+
+.vxx-counts {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 0.5rem;
+    margin: 0.6rem 0 0;
 }
 
-.mth-wrap .mth-action-card {
-    position: relative;
+.vxx-counts > div {
+    min-width: 0;
+    padding: 0.6rem 0.7rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.vxx-counts dt {
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.vxx-counts dd {
+    margin: 0.15rem 0 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.35rem;
+    line-height: 1.1;
+}
+
+.vxx-counts > div.is-overdue {
+    background: var(--mdb-amber-bg);
+    border-color: var(--mdb-amber-line);
+}
+
+.vxx-counts > div.is-overdue dt,
+.vxx-counts > div.is-overdue dd {
+    color: var(--mdb-amber-ink);
+}
+
+.vxx-counts > div.is-soon {
+    background: var(--mdb-rose-soft);
+    border-color: var(--mdb-rose-line);
+}
+
+.vxx-counts > div.is-soon dt,
+.vxx-counts > div.is-soon dd {
+    color: var(--mdb-rose-dark);
+}
+
+/* ---------- Td/TT series progress ---------- */
+.vxx-series {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    min-width: 0;
-    min-height: 205px;
-    padding: 1.25rem;
-    gap: 1rem;
-    overflow: hidden;
-    border: 1px solid #fce7f3;
-    border-radius: 1.2rem;
-    background: linear-gradient(145deg, #fff 0%, #fff8fb 100%);
-    box-shadow: 0 8px 24px rgba(157, 23, 77, 0.045);
-    text-decoration: none;
-    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    background: var(--mdb-rose-soft);
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 12px;
 }
 
-.mth-wrap .mth-action-card::after {
-    content: "";
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    right: -38px;
-    bottom: -42px;
-    border-radius: 50%;
-    background: rgba(251, 207, 232, 0.24);
-    pointer-events: none;
-}
-
-.mth-wrap .mth-action-card:hover {
-    transform: translateY(-4px);
-    border-color: #f9a8d4;
-    box-shadow: 0 16px 32px rgba(190, 24, 93, 0.11);
-}
-
-.mth-wrap .mth-action-card:focus-visible {
-    outline: 3px solid rgba(219, 39, 119, 0.32);
-    outline-offset: 3px;
-}
-
-.mth-wrap .mth-action-icon {
+.vxx-series-top {
     display: flex;
-    flex: 0 0 52px;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+}
+
+.vxx-series-title {
+    color: var(--mdb-heading);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.vxx-series-next {
+    color: var(--mdb-rose-dark);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.vxx-meter {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.vxx-meter li {
+    display: grid;
+    place-items: center;
+    height: 28px;
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #ffffff;
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 8px;
+}
+
+.vxx-meter li.is-done {
+    color: #ffffff;
+    background: var(--mdb-rose);
+    border-color: var(--mdb-rose);
+}
+
+.vxx-series-note {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+}
+
+/* ---------- Dose rows ---------- */
+.vxx-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.vxx-dose {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.8rem 0.95rem;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+}
+
+.vxx-dose-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.vxx-dose-name {
+    min-width: 0;
+    color: var(--mdb-ink);
+    font-size: 0.9875rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.vxx-dose-name span {
+    color: var(--mdb-muted);
+    font-weight: 500;
+}
+
+.vxx-given {
+    display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
-    justify-content: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(190, 24, 93, 0.07);
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    color: #2f6b4f;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    background: #eef7f2;
+    border: 1px solid #cfe6da;
+    border-radius: 999px;
 }
 
-.mth-wrap .mth-action-icon svg {
-    width: 25px;
-    height: 25px;
+.vxx-given svg {
+    width: 13px;
+    height: 13px;
 }
 
-.mth-wrap .mth-action-pink {
-    color: #be185d;
-    background: #fce7f3;
+.vxx-dose-meta {
+    color: var(--mdb-muted);
+    font-size: 0.875rem;
 }
 
-.mth-wrap .mth-action-fuchsia {
-    color: #a21caf;
-    background: #fae8ff;
+.vxx-next {
+    align-self: flex-start;
+    margin-top: 0.2rem;
+    padding: 0.3rem 0.6rem;
+    color: #4f4a55;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    background: #f6f2f3;
+    border-radius: 8px;
 }
 
-.mth-wrap .mth-action-rose {
-    color: #be123c;
-    background: #ffe4e6;
+.vxx-next strong {
+    font-weight: 700;
 }
 
-.mth-wrap .mth-action-copy {
-    position: relative;
-    z-index: 1;
-    flex: 1;
+.vxx-next.is-overdue {
+    color: var(--mdb-amber-ink);
+    background: var(--mdb-amber-bg);
+    box-shadow: inset 0 0 0 1px var(--mdb-amber-line);
+}
+
+.vxx-next.is-today,
+.vxx-next.is-soon {
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-rose-soft);
+    box-shadow: inset 0 0 0 1px var(--mdb-rose-line);
+}
+
+.vxx-next.is-none {
+    padding-left: 0;
+    color: var(--mdb-muted);
+    font-style: italic;
+    background: transparent;
+}
+
+.vxx-next.is-none strong {
+    font-weight: 500;
+}
+
+.vxx-dose-flag {
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+/* ---------- Child cards ---------- */
+.vxx-child-head {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
     min-width: 0;
 }
 
-.mth-wrap .mth-action-eyebrow {
-    display: block;
-    margin-bottom: 0.4rem;
-    color: #be185d;
-    font-family: Inter, sans-serif;
-    font-size: 0.64rem;
-    font-weight: 750;
-    letter-spacing: 0.095em;
-    line-height: 1.4;
+.vxx-child-initial {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--mdb-rose-dark);
+    font-family: var(--mdb-serif);
+    font-size: 1.25rem;
+    background: var(--mdb-rose-soft);
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 999px;
 }
 
-.mth-wrap .mth-action-copy h3 {
-    margin: 0;
-    color: #382532;
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: clamp(1.18rem, 1.55vw, 1.42rem);
+.vxx-child-copy {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.vxx-child-name {
+    margin: 0.1rem 0 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.35rem;
     font-weight: 400;
-    letter-spacing: -0.025em;
     line-height: 1.2;
     overflow-wrap: anywhere;
 }
 
-.mth-wrap .mth-action-copy p {
-    margin-top: 0.45rem;
-    color: #796775;
-    font-family: Inter, sans-serif;
-    font-size: 0.82rem;
-    line-height: 1.6;
+.vxx-child-born {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
 }
 
-.mth-wrap .mth-action-arrow {
-    position: absolute;
-    z-index: 1;
-    top: 1.25rem;
-    right: 1.15rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #fce7f3;
-    border-radius: 50%;
-    color: #be185d;
-    background: rgba(255, 255, 255, 0.9);
-    transition: transform 180ms ease, background 180ms ease;
+.vxx-child-link {
+    min-height: 44px;
 }
 
-.mth-wrap .mth-action-arrow svg {
-    width: 15px;
-    height: 15px;
-}
-
-.mth-wrap .mth-action-card:hover .mth-action-arrow {
-    transform: translate(2px, -2px);
-    background: #fce7f3;
-}
-
-@media (max-width: 900px) {
-    .mth-wrap .mth-action-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .mth-wrap .mth-action-card:last-child {
-        grid-column: 1 / -1;
-        min-height: 165px;
-    }
-}
-
-@media (max-width: 600px) {
-    .mth-wrap .mth-actions {
-        padding: 1rem;
-        border-radius: 1.15rem;
-    }
-
-    .mth-wrap .mth-section-heading {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 0.35rem;
-    }
-
-    .mth-wrap .mth-action-grid {
+/* ---------- Responsive ---------- */
+@media (max-width: 767px) {
+    .vxx-summary {
         grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .vxx-child-link {
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 400px) {
+    .vxx-counts {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .vxx-counts > div {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
         gap: 0.75rem;
     }
 
-    .mth-wrap .mth-action-card,
-    .mth-wrap .mth-action-card:last-child {
-        display: grid;
-        grid-template-columns: 48px minmax(0, 1fr);
-        align-items: center;
-        min-height: 0;
-        grid-column: auto;
-        padding: 1rem 3rem 1rem 1rem;
-        gap: 0.85rem;
-        border-radius: 1rem;
+    .vxx-counts dd {
+        margin: 0;
     }
 
-    .mth-wrap .mth-action-icon {
-        width: 48px;
-        height: 48px;
-        flex-basis: 48px;
-        border-radius: 14px;
-    }
-
-    .mth-wrap .mth-action-copy h3 {
-        font-size: 1.18rem;
-    }
-
-    .mth-wrap .mth-action-copy p {
-        font-size: 0.78rem;
-        line-height: 1.5;
-    }
-
-    .mth-wrap .mth-action-arrow {
-        top: 50%;
-        right: 0.85rem;
-        transform: translateY(-50%);
-    }
-
-    .mth-wrap .mth-action-card:hover .mth-action-arrow {
-        transform: translate(2px, calc(-50% - 2px));
+    .vxx-dose-top {
+        flex-wrap: wrap;
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .mth-wrap .mth-action-card,
-    .mth-wrap .mth-action-arrow {
-        transition: none;
+
+/* =====================================================================
+   MOTHER PORTAL — PRINT MY RECORDS (.mdb.apx.prx)
+   Selection screen in the Mother Portal design, plus the printable
+   A4 record summary (.prx-doc): approved letterhead, 4% RHU watermark.
+   The page information line (@page margin boxes) is set in the view.
+   ===================================================================== */
+
+/* ---------- Selection ---------- */
+.prx-select form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.prx-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.prx-fieldset-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.6rem;
+}
+
+.prx-legend {
+    display: block;
+    padding: 0;
+    color: var(--mdb-heading);
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.prx-quick {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.prx-link-btn {
+    min-height: 36px;
+    padding: 0.35rem 0.8rem;
+    color: var(--mdb-rose-dark);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 10px;
+}
+
+.prx-link-btn:hover {
+    background: var(--mdb-rose-soft);
+}
+
+.prx-categories {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+}
+
+.prx-category {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0.8rem 0.9rem;
+    cursor: pointer;
+    background: #fdfafa;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.prx-category:hover {
+    border-color: var(--mdb-rose-line);
+}
+
+.prx-category:has(input:checked) {
+    background: var(--mdb-rose-soft);
+    border-color: var(--mdb-rose-line);
+}
+
+.prx-category input {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin: 0.1rem 0 0;
+    /* Rose checkbox: the forms plugin paints checked boxes with currentColor. */
+    color: var(--mdb-rose);
+    accent-color: var(--mdb-rose);
+    border-color: var(--mdb-line-strong);
+    border-radius: 4px;
+    --tw-ring-color: var(--mdb-rose-line);
+}
+
+.prx-category input:focus-visible,
+.prx-selectbox:focus-visible,
+.prx-link-btn:focus-visible,
+.prx .mdb-btn:focus-visible {
+    outline: 2px solid var(--mdb-rose);
+    outline-offset: 2px;
+}
+
+.prx-category span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.prx-category strong {
+    color: var(--mdb-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.prx-category small {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.prx-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.prx-selectbox {
+    width: 100%;
+    min-height: 46px;
+    padding: 0.6rem 2.25rem 0.6rem 0.85rem;
+    color: var(--mdb-ink);
+    font-family: inherit;
+    font-size: 0.9375rem;
+    white-space: normal;
+    text-overflow: ellipsis;
+    background-color: var(--mdb-surface);
+    border: 1px solid var(--mdb-line-strong);
+    border-radius: 12px;
+}
+
+.prx-hint {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+.prx-error {
+    padding: 0.65rem 0.85rem;
+    color: var(--mdb-amber-ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: var(--mdb-amber-bg);
+    border: 1px solid var(--mdb-amber-line);
+    border-radius: 10px;
+}
+
+.prx-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.prx .prx-actions .mdb-btn {
+    min-height: 44px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.prx-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    color: var(--mdb-amber-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    background: var(--mdb-amber-bg);
+    border: 1px solid var(--mdb-amber-line);
+    border-radius: 12px;
+}
+
+.prx-notice svg {
+    flex: 0 0 auto;
+    margin-top: 1px;
+}
+
+.prx-preview-label {
+    margin-bottom: -0.5rem;
+    color: var(--mdb-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ---------- Printable document (screen preview: an A4-like sheet) ---------- */
+.prx-doc {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    max-width: 210mm;
+    padding: 14mm 13mm;
+    color: #222222;
+    font-family: var(--mdb-sans);
+    font-size: 10pt;
+    line-height: 1.45;
+    background: #ffffff;
+    border: 1px solid var(--mdb-line);
+    border-radius: 12px;
+    box-shadow: var(--mdb-shadow);
+}
+
+/* Official RHU watermark: very faint, original proportions. */
+.prx-watermark {
+    position: absolute;
+    top: 60mm;
+    left: 50%;
+    z-index: -1;
+    width: 110mm;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.prx-watermark img {
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 0.04;
+}
+
+.prx-letterhead {
+    width: 100%;
+    border-collapse: collapse;
+    border-bottom: 2px solid #9d174d;
+}
+
+.prx-letterhead td {
+    padding: 0 0 8px;
+    vertical-align: middle;
+}
+
+.prx-letterhead-logo {
+    width: 64px;
+}
+
+.prx-letterhead-logo img {
+    display: block;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+}
+
+/* Official RHU logo: original 1228x1281 proportions, no rounding or recolouring. */
+.prx-letterhead-logo-rhu {
+    text-align: right;
+}
+
+.prx-letterhead-logo img.prx-rhu-logo {
+    width: 56px;
+    height: auto;
+    margin-left: auto;
+    border-radius: 0;
+}
+
+.prx-letterhead-text {
+    text-align: center;
+}
+
+.prx-municipality {
+    font-size: 10pt;
+    letter-spacing: 0.04em;
+}
+
+.prx-office {
+    color: #9d174d;
+    font-family: var(--mdb-serif);
+    font-size: 15pt;
+    line-height: 1.2;
+}
+
+.prx-system {
+    color: #555555;
+    font-size: 8.5pt;
+}
+
+.prx-doc-title {
+    margin: 14px 0 8px;
+    color: #4a1d33;
+    font-family: var(--mdb-serif);
+    font-size: 17pt;
+    font-weight: 400;
+    text-align: center;
+}
+
+.prx-id {
+    width: 100%;
+    margin-bottom: 6px;
+    border-collapse: collapse;
+    font-size: 9pt;
+}
+
+.prx-id th,
+.prx-id td {
+    padding: 5px 7px;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid #ead7de;
+}
+
+.prx-id th {
+    width: 16%;
+    color: #6b4a59;
+    font-weight: 600;
+    background: #fdf2f7;
+}
+
+.prx-id td {
+    overflow-wrap: anywhere;
+}
+
+.prx-id td.prx-nowrap {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.prx-section {
+    margin-top: 16px;
+}
+
+.prx-h3 {
+    margin: 0 0 8px;
+    padding-bottom: 4px;
+    color: #9d174d;
+    font-size: 11.5pt;
+    font-weight: 700;
+    border-bottom: 1px solid #ead7de;
+}
+
+.prx-h4 {
+    margin: 12px 0 6px;
+    color: #4a1d33;
+    font-size: 9.5pt;
+    font-weight: 700;
+}
+
+.prx-data {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 18px;
+    margin: 0;
+}
+
+.prx-data > div {
+    min-width: 0;
+    padding: 6px 0;
+    border-bottom: 1px solid #f2e6eb;
+}
+
+.prx-data dt {
+    color: #6b6470;
+    font-size: 8pt;
+    font-weight: 600;
+}
+
+.prx-data dd {
+    margin: 1px 0 0;
+    color: #222222;
+    overflow-wrap: anywhere;
+}
+
+.prx-note {
+    margin-top: 6px;
+    color: #6b6470;
+    font-size: 8.5pt;
+    font-style: italic;
+}
+
+.prx-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.prx-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+}
+
+.prx-table th,
+.prx-table td {
+    padding: 5px 6px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #f0e2e8;
+}
+
+.prx-table thead th {
+    color: #6b4a59;
+    font-weight: 700;
+    background: #fdf2f7;
+    border-bottom: 1px solid #e8c9d6;
+}
+
+.prx-table td {
+    overflow-wrap: anywhere;
+}
+
+.prx-table-prenatal {
+    min-width: 560px;
+    font-size: 8pt;
+}
+
+.prx-empty {
+    padding: 8px 10px;
+    color: #6b6470;
+    font-size: 9pt;
+    border: 1px dashed #ead7de;
+    border-radius: 6px;
+}
+
+.prx-empty-strong {
+    margin-top: 14px;
+    color: #8a5a00;
+    background: #fdf6e7;
+    border-color: #f0dcae;
+}
+
+.prx-doc-footer {
+    margin-top: 22px;
+    padding-top: 8px;
+    color: #6b6470;
+    font-size: 8pt;
+    text-align: center;
+    border-top: 1px solid #ead7de;
+}
+
+/* ---------- Responsive (screen) ---------- */
+/* On screen the faint watermark stays inside the sheet (printing repeats it per page). */
+@media screen {
+    .prx-doc {
+        overflow: hidden;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .prx-link-btn {
+        min-height: 44px;
     }
 
-    .mth-wrap .mth-action-card:hover {
-        transform: none;
+    .prx-watermark {
+        width: 80%;
     }
+
+    .prx-categories {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .prx-actions .mdb-btn {
+        flex: 1 1 100%;
+    }
+
+    .prx-doc {
+        padding: 18px 14px;
+        font-size: 9.5pt;
+    }
+
+    .prx-data {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .prx-letterhead-logo {
+        width: 48px;
+    }
+
+    .prx-letterhead-logo img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .prx-letterhead-logo img.prx-rhu-logo {
+        width: 40px;
+        height: auto;
+    }
+
+    .prx-office {
+        font-size: 13pt;
+    }
+
+    /* Identification table: labels above values on narrow screens. */
+    .prx-id,
+    .prx-id tbody,
+    .prx-id tr,
+    .prx-id th,
+    .prx-id td,
+    .prx-id td.prx-nowrap {
+        display: block;
+        width: auto;
+    }
+
+    .prx-id tr + tr th,
+    .prx-id td + th {
+        border-top: 0;
+    }
+
+    .prx-id td {
+        border-top: 0;
+    }
+}
+
+/* ---------- Print: the record summary only, on A4 ---------- */
+@media print {
+    body:has(.prx) {
+        background: #ffffff !important;
+    }
+
+    body:has(.prx) .cc-mother-sidebar,
+    body:has(.prx) .cc-mother-mobile-nav,
+    .prx .prx-screen {
+        display: none !important;
+    }
+
+    body:has(.prx) .cc-mother-main,
+    body:has(.prx) .cc-mother-layout {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .mdb.prx,
+    .prx .mdb-container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+    }
+
+    .prx-doc {
+        max-width: none;
+        padding: 0;
+        font-size: 9.5pt;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Repeats on every printed page. */
+    .prx-watermark {
+        position: fixed;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .prx-table-wrap {
+        overflow: visible;
+    }
+
+    .prx-table-prenatal {
+        min-width: 0;
+        font-size: 7.5pt;
+    }
+
+    .prx-table-prenatal th,
+    .prx-table-prenatal td {
+        padding: 4px 4px;
+    }
+
+    .prx-table-prenatal td:first-child,
+    .prx-table-prenatal td:nth-child(4),
+    .prx-table-prenatal td:last-child {
+        white-space: nowrap;
+    }
+
+    .prx-letterhead,
+    .prx-id,
+    .prx-data > div,
+    .prx-table tr,
+    .prx-empty {
+        break-inside: avoid;
+    }
+
+    .prx-h3,
+    .prx-h4 {
+        break-after: avoid;
+    }
+
+    .prx-table thead {
+        display: table-header-group;
+    }
+
+    .prx-doc-footer {
+        break-inside: avoid;
+    }
+}
+
+/* =====================================================================
+   MOTHER PORTAL — SMS HISTORY (.mdb.apx.shx)
+   Messages actually sent to the mother, grouped by sent date.
+   The message text is shown word for word inside a message panel.
+   ===================================================================== */
+
+/* ---------- Header + summary ---------- */
+.shx-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.1rem 1.25rem;
+    background: linear-gradient(135deg, #ffffff 0%, #fff7fa 100%);
+    border: 1px solid var(--mdb-line);
+    border-radius: var(--mdb-radius);
+    box-shadow: var(--mdb-shadow);
+}
+
+.shx-head-main {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.9rem 1rem;
+}
+
+.shx-back.apx-back {
+    margin-top: 0;
+}
+
+.shx-head-copy {
+    min-width: 0;
+}
+
+.shx-title {
+    margin: 0.05rem 0 0.2rem;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.9rem;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.shx-lead {
+    color: var(--mdb-muted);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+}
+
+.shx-count {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 6.5rem;
+    padding: 0.55rem 0.9rem;
+    text-align: center;
+    background: var(--mdb-rose-soft);
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 14px;
+}
+
+.shx-count strong {
+    color: var(--mdb-rose-dark);
+    font-family: var(--mdb-serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.05;
+}
+
+.shx-count span {
+    color: var(--mdb-rose-dark);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.shx-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 1.5rem;
+    margin: 0;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--mdb-line);
+}
+
+.shx-legend > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.shx-legend dt {
+    flex: 0 0 auto;
+}
+
+.shx-legend dd {
+    margin: 0;
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+/* ---------- Status badges ---------- */
+.shx-badge {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-radius: 999px;
+}
+
+.shx-badge svg {
+    width: 12px;
+    height: 12px;
+}
+
+.shx-badge.is-sent {
+    color: var(--mdb-rose-dark);
+    background: var(--mdb-rose-soft);
+    border-color: var(--mdb-rose-line);
+}
+
+.shx-badge.is-delivered {
+    color: #2f6b4f;
+    background: #eef7f2;
+    border-color: #cfe6da;
+}
+
+/* ---------- Date groups ---------- */
+.shx-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.shx-group-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0.2rem 0 0;
+    color: var(--mdb-heading);
+    font-family: var(--mdb-serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.shx-group-title::after {
+    flex: 1 1 auto;
+    height: 1px;
+    content: "";
+    background: var(--mdb-line-strong);
+}
+
+.shx-group-count {
+    order: 2;
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    padding: 0 0.45rem;
+    color: var(--mdb-muted);
+    font-family: var(--mdb-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #f6f2f3;
+    border-radius: 999px;
+}
+
+.shx-group-title::after {
+    order: 1;
+}
+
+/* ---------- Message card ---------- */
+.shx-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.shx-message {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1.1rem;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-line);
+    border-radius: var(--mdb-radius);
+    box-shadow: var(--mdb-shadow);
+}
+
+.shx-message-top {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.shx-message-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    color: var(--mdb-rose);
+    background: var(--mdb-rose-soft);
+    border-radius: 12px;
+}
+
+.shx-message-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.shx-message-meta {
+    min-width: 0;
+}
+
+.shx-message-type {
+    color: var(--mdb-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.shx-message-time {
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+}
+
+/* Message panel (incoming-message style) */
+.shx-bubble {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-left: calc(38px + 0.75rem);
+    padding: 0.85rem 1rem;
+    color: var(--mdb-ink);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    background: #fdf6f9;
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 4px 16px 16px 16px;
+    overflow-wrap: anywhere;
+}
+
+.shx-text {
+    margin: 0;
+}
+
+.shx-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.shx-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+    padding: 0.45rem 0.75rem;
+    background: var(--mdb-surface);
+    border: 1px solid var(--mdb-rose-line);
+    border-radius: 10px;
+}
+
+.shx-field svg {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    color: var(--mdb-rose);
+}
+
+.shx-field dt {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    color: var(--mdb-muted);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.shx-field dd {
+    min-width: 0;
+    margin: 0;
+    color: var(--mdb-heading);
+    font-size: 0.9375rem;
+    font-weight: 700;
+}
+
+.shx-sign {
+    margin: 0;
+    color: var(--mdb-rose-dark);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.shx-delivered-note {
+    margin-left: calc(38px + 0.75rem);
+    color: #2f6b4f;
+    font-size: 0.8125rem;
+}
+
+/* ---------- Empty state ---------- */
+.shx-empty {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.85rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 767px) {
+    .shx-head {
+        padding: 1rem;
+    }
+
+    .shx-head-main {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .shx-count {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: flex-start;
+        gap: 0.4rem;
+        min-width: 0;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .shx-count strong {
+        font-size: 1.35rem;
+    }
+
+    .shx-title {
+        font-size: 1.6rem;
+    }
+
+    .shx-legend {
+        flex-direction: column;
+        gap: 0.45rem;
+    }
+
+    .shx-bubble,
+    .shx-delivered-note {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 400px) {
+    .shx-message {
+        padding: 0.9rem;
+    }
+
+    .shx-legend > div {
+        align-items: flex-start;
+    }
+
+    .shx-field {
+        flex: 1 1 100%;
+    }
+}
+
+/* Narrow phones: the status badge moves under the title. */
+@media (max-width: 360px) {
+    .shx-message-top {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .shx-message-top .shx-badge {
+        grid-column: 2;
+        justify-self: start;
+    }
+}
+
+/* =====================================================================
+   MOTHER DASHBOARD — PORTAL EYEBROW ("Mother Portal" above the greeting)
+   Same convention as the Midwife / Administrator welcome headers.
+   ===================================================================== */
+.mdb-hero .mdb-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.4rem !important;
+    color: var(--mdb-rose);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.mdb-hero .mdb-hero-eyebrow::before {
+    width: 22px;
+    height: 2px;
+    content: "";
+    background: #f472b6;
+    border-radius: 2px;
 }

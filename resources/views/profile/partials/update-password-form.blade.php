@@ -1,102 +1,45 @@
-<section class="space-y-5">
-    <header class="space-y-1">
-        <h2 class="text-base font-semibold text-slate-800">
-            {{ __('Change Password') }}
-        </h2>
+{{--
+    Change password (PUT password.change, error bag "updatePassword").
+    Fields and security rules are unchanged (Auth\PasswordController).
+--}}
+@php
+    $pwBag = $errors->updatePassword;
+    $pwHas = fn (string $field) => $pwBag->has($field) ? ' has-error' : '';
+@endphp
 
-        <p class="text-sm leading-6 text-slate-500">
-            {{ __('Use a strong, unique password to help protect your account.') }}
-        </p>
-    </header>
+<form method="post" action="{{ route('password.change') }}">
+    @csrf
+    @method('put')
 
-    <form method="post"
-          action="{{ route('password.change') }}"
-          class="space-y-5">
-        @csrf
-        @method('put')
-
-        <div>
-            <x-input-label
-                for="update_password_current_password"
-                :value="__('Current Password')"
-            />
-
-            <x-text-input
-                id="update_password_current_password"
-                name="current_password"
-                type="password"
-                class="mt-1.5 block w-full rounded-xl border-slate-200
-                       bg-white px-4 py-3 text-sm shadow-sm
-                       focus:border-pink-400 focus:ring-pink-200"
-                autocomplete="current-password"
-            />
-
-            <x-input-error
-                :messages="$errors->updatePassword->get('current_password')"
-                class="mt-2"
-            />
+    <div class="prf-grid">
+        <div class="prf-field prf-span-all{{ $pwHas('current_password') }}" style="max-width: 26rem;">
+            <label for="update_password_current_password" class="prf-label">Current Password <span class="prf-req">*</span></label>
+            <input id="update_password_current_password" name="current_password" type="password" class="prf-input" autocomplete="current-password" required
+                   @if ($pwBag->has('current_password')) aria-invalid="true" aria-describedby="current_password_error" @endif>
+            @if ($pwBag->has('current_password')) <p class="prf-error" id="current_password_error">{{ $pwBag->first('current_password') }}</p> @endif
         </div>
 
-        <div>
-            <x-input-label
-                for="update_password_password"
-                :value="__('New Password')"
-            />
-
-            <x-text-input
-                id="update_password_password"
-                name="password"
-                type="password"
-                class="mt-1.5 block w-full rounded-xl border-slate-200
-                       bg-white px-4 py-3 text-sm shadow-sm
-                       focus:border-pink-400 focus:ring-pink-200"
-                autocomplete="new-password"
-            />
-
-            <x-input-error
-                :messages="$errors->updatePassword->get('password')"
-                class="mt-2"
-            />
+        <div class="prf-field{{ $pwHas('password') }}">
+            <label for="update_password_password" class="prf-label">New Password <span class="prf-req">*</span></label>
+            <input id="update_password_password" name="password" type="password" class="prf-input" autocomplete="new-password" required
+                   @if ($pwBag->has('password')) aria-invalid="true" aria-describedby="password_error" @endif>
+            @if ($pwBag->has('password')) <p class="prf-error" id="password_error">{{ $pwBag->first('password') }}</p> @endif
         </div>
 
-        <div>
-            <x-input-label
-                for="update_password_password_confirmation"
-                :value="__('Confirm Password')"
-            />
-
-            <x-text-input
-                id="update_password_password_confirmation"
-                name="password_confirmation"
-                type="password"
-                class="mt-1.5 block w-full rounded-xl border-slate-200
-                       bg-white px-4 py-3 text-sm shadow-sm
-                       focus:border-pink-400 focus:ring-pink-200"
-                autocomplete="new-password"
-            />
-
-            <x-input-error
-                :messages="$errors->updatePassword->get('password_confirmation')"
-                class="mt-2"
-            />
+        <div class="prf-field{{ $pwHas('password_confirmation') }}">
+            <label for="update_password_password_confirmation" class="prf-label">Confirm New Password <span class="prf-req">*</span></label>
+            <input id="update_password_password_confirmation" name="password_confirmation" type="password" class="prf-input" autocomplete="new-password" required>
+            @if ($pwBag->has('password_confirmation')) <p class="prf-error">{{ $pwBag->first('password_confirmation') }}</p> @endif
         </div>
+    </div>
 
-        <div class="flex flex-wrap items-center gap-3 border-t border-slate-100 pt-5">
-            <x-primary-button>
-                {{ __('Update Password') }}
-            </x-primary-button>
-
-            @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm font-medium text-emerald-700"
-                >
-                    {{ __('Password updated.') }}
-                </p>
-            @endif
+    <div class="prf-actions">
+        <p class="prf-actions-note">You stay signed in after changing your password.</p>
+        <div class="prf-actions-buttons">
+            <button type="submit" class="prf-btn prf-btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
+                Update Password
+            </button>
         </div>
-    </form>
-</section>
+    </div>
+</form>

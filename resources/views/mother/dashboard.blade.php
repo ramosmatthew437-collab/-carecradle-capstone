@@ -1,681 +1,384 @@
 <x-app-layout>
 
-    <div class="mth-wrap" style="--cc-rhu-image: url('{{ asset('images/irosin-rhu.png') }}');">
-
-        <div class="mth-container">
-
-            {{-- ====================================== --}}
-            {{-- GREETING + PREGNANCY OVERVIEW --}}
-            {{-- ====================================== --}}
-
-            <section class="mth-hero">
-
-                <div class="mth-hero-glow mth-hero-glow-a" aria-hidden="true"></div>
-                <div class="mth-hero-glow mth-hero-glow-b" aria-hidden="true"></div>
-
-                <div class="mth-hero-inner">
-
-                    <div class="mth-hero-content">
-
-                        <div class="mth-eyebrow">
-                            <span class="mth-eyebrow-dot"></span>
-
-                            <span>
-                                @if(now()->hour < 12)
-                                    Good morning
-                                @elseif(now()->hour < 18)
-                                    Good afternoon
-                                @else
-                                    Good evening
-                                @endif
-                            </span>
-                        </div>
-
-                        <h1 class="mth-hero-title">
-                            {{ $mother->first_name }} {{ $mother->last_name }}
-                        </h1>
-
-                        <div class="mth-meta-row">
-
-                            <span>
-                                {{ now()->format('l, F d, Y') }}
-                            </span>
-
-                            @if($pregnancyWeek)
-                                <span class="mth-meta-dot">•</span>
-
-                                <span class="mth-pregnancy-badge">
-                                    Week {{ $pregnancyWeek }} · {{ $trimester }} trimester
-                                </span>
-                            @endif
-
-                        </div>
-
-                        @if($pregnancyWeek)
-
-                            <div class="mth-progress-wrap">
-
-                                <div class="mth-progress-top">
-
-                                    <span>
-                                        Pregnancy Journey
-                                    </span>
-
-                                    <strong>
-                                        Week {{ $pregnancyWeek }} of 40
-                                    </strong>
-
-                                </div>
-
-                                <div
-                                    class="mth-progress-track"
-                                    role="progressbar"
-                                    aria-valuenow="{{ $pregnancyWeek }}"
-                                    aria-valuemin="0"
-                                    aria-valuemax="40"
-                                    aria-label="Pregnancy progress: week {{ $pregnancyWeek }} of 40"
-                                >
-                                    <div
-                                        class="mth-progress-fill"
-                                        style="width: {{ min(100, round(($pregnancyWeek / 40) * 100)) }}%"
-                                    ></div>
-                                </div>
-
-                            </div>
-
-                        @endif
-
-                    </div>
-
-                    <div class="mth-avatar">
-
-                        <div
-                            class="mth-avatar-inner"
-                            role="img"
-                            aria-label="{{ $mother->first_name }} {{ $mother->last_name }}"
-                        >
-                            {{ strtoupper(substr($mother->first_name, 0, 1) . substr($mother->last_name, 0, 1)) }}
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            {{-- ====================================== --}}
-            {{-- NEXT APPOINTMENT --}}
-            {{-- ====================================== --}}
-
-            @if($nextAppointment)
-
-@php
-    $appointmentDate = \Carbon\Carbon::parse(
-        $nextAppointment->appointment_date
-    )->startOfDay();
-
-    $today = now()->startOfDay();
-
-    if ($appointmentDate->equalTo($today)) {
-        $countdownLabel = 'Today';
-    } elseif ($appointmentDate->equalTo($today->copy()->addDay())) {
-        $countdownLabel = 'Tomorrow';
-    } elseif ($appointmentDate->greaterThan($today)) {
-        $countdownLabel = $today->diffInDays($appointmentDate) . ' days remaining';
-    } else {
-        $countdownLabel = 'Past appointment';
-    }
-@endphp
-
-
-                <section class="mth-appointment">
-
-                    <div class="mth-floating-circle mth-floating-circle-a" aria-hidden="true"></div>
-                    <div class="mth-floating-circle mth-floating-circle-b" aria-hidden="true"></div>
-
-                    <div class="mth-appointment-top">
-
-                        <div class="mth-appointment-label">
-                            <svg
-                                aria-hidden="true"
-                                focusable="false"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
-                                />
-                            </svg>
-
-                            Next Appointment
-                        </div>
-
-                        <span class="mth-countdown">
-                            {{ $countdownLabel }}
-                        </span>
-
-                    </div>
-
-                    @if(isset($nextAppointment->appointment_type))
-
-                        <p class="mth-appointment-type">
-                            {{ $nextAppointment->appointment_type }}
-                        </p>
-
-                    @endif
-
-                    <h2 class="mth-appointment-date">
-                        {{ $appointmentDate->format('F d, Y') }}
-                    </h2>
-
-                    <div class="mth-appointment-details">
-
-                        <span class="mth-time">
-
-                            <svg
-                                aria-hidden="true"
-                                focusable="false"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0Z"
-                                />
-                            </svg>
-
-                            {{ \Carbon\Carbon::parse($nextAppointment->appointment_time)->format('g:i A') }}
-
-                        </span>
-
-                        @if(isset($nextAppointment->status))
-
-                            <span class="mth-status">
-                                {{ $nextAppointment->status }}
-                            </span>
-
-                        @endif
-
-                    </div>
-
-                    <a
-                        href="{{ route('mother.appointments') }}"
-                        class="mth-white-btn"
-                    >
-                        View Details
-
-                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9 5l7 7-7 7"
-                            />
-                        </svg>
-                    </a>
-
-                </section>
-
-            @else
-
-                <section class="mth-empty">
-
-                    <div class="mth-empty-icon">
-
-                        <svg
-                                aria-hidden="true"
-                                focusable="false"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <h3>
-                        No Upcoming Appointments
-                    </h3>
-
-                    <p>
-                        You're all caught up! Your next clinic visit will automatically appear here once scheduled by your midwife.
+    @php
+        $greeting = now()->hour < 12 ? 'Good morning' : (now()->hour < 18 ? 'Good afternoon' : 'Good evening');
+        $initials = strtoupper(mb_substr((string) $mother->first_name, 0, 1) . mb_substr((string) $mother->last_name, 0, 1));
+        $plural = fn (int $n, string $word) => $n . ' ' . $word . ($n === 1 ? '' : 's');
+        $isDelivered = $mother->status === 'Delivered';
+
+        // Welcome line that matches the mother's recorded status. It never
+        // implies an ongoing pregnancy unless the status is Pregnant.
+        $welcomeLine = match (true) {
+            $isPregnant => 'Here is an overview of your pregnancy care and your family\'s health records.',
+            $isDelivered => 'Wishing you and your little one good health. Your maternal and child health records are here whenever you need them.',
+            default => 'Here is an overview of your maternal and child health records.',
+        };
+
+        // Age of a child from the recorded birth date.
+        $childAge = function ($birthDate) use ($plural) {
+            $born = \Carbon\Carbon::parse($birthDate)->startOfDay();
+            $days = (int) $born->diffInDays(today());
+            $months = (int) $born->diffInMonths(today());
+
+            return match (true) {
+                $days < 30 => $plural($days, 'day') . ' old',
+                $months < 24 => $plural($months, 'month') . ' old',
+                default => $plural((int) $born->diffInYears(today()), 'year') . ' old',
+            };
+        };
+
+        $childrenShown = 3;
+        $number = fn ($value) => rtrim(rtrim(number_format((float) $value, 2, '.', ''), '0'), '.');
+    @endphp
+
+    <div class="mdb mdb-home" style="--cc-rhu-image: url('{{ asset('images/irosin-rhu-building.png') }}');">
+
+        <div class="mdb-container">
+
+            {{-- ================= HERO ================= --}}
+            <section class="mdb-hero" aria-labelledby="mdb-hero-name">
+
+                <div class="mdb-hero-body">
+
+                    <p class="mdb-hero-eyebrow">Mother Portal</p>
+
+                    <p class="mdb-hero-top">
+                        <span class="mdb-greeting">{{ $greeting }}</span>
+                        <span class="mdb-hero-sep" aria-hidden="true">·</span>
+                        <span class="mdb-hero-date">{{ now()->format('l, F d, Y') }}</span>
                     </p>
 
-                    <a
-                        href="{{ route('mother.appointments') }}"
-                        class="mth-primary-btn"
-                    >
-                        View Appointments History
+                    <h1 class="mdb-hero-name" id="mdb-hero-name">
+                        {{ $mother->first_name }} {{ $mother->last_name }}
+                    </h1>
 
-                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9 5l7 7-7 7"
-                            />
-                        </svg>
-                    </a>
+                    <p class="mdb-hero-lead">{{ $welcomeLine }}</p>
 
-                </section>
+                    {{-- Pregnancy details: only while the recorded status is Pregnant. --}}
+                    @if($isPregnant && ($pregnancyWeek || $expectedDeliveryDate))
+                        <div class="mdb-pregnancy">
 
-            @endif
+                            <div class="mdb-pregnancy-meta">
+                                @if($pregnancyWeek)
+                                    <span class="mdb-pregnancy-week">Week {{ $pregnancyWeek }} <span>· {{ $trimester }} trimester</span></span>
+                                @endif
 
+                                @if($expectedDeliveryDate)
+                                    <span class="mdb-pregnancy-edd">
+                                        Expected delivery <strong>{{ $expectedDeliveryDate->format('M d, Y') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
 
-            {{-- ====================================== --}}
-            {{-- VACCINATION REMINDER --}}
-            {{-- ====================================== --}}
-
-            @if($nextVaccination)
-
-                @php
-                    $vaxDaysRemaining = now()
-                        ->startOfDay()
-                        ->diffInDays(
-                            \Carbon\Carbon::parse($nextVaccination->next_due_date)->startOfDay(),
-                            false
-                        );
-
-                    $isOverdue = $vaxDaysRemaining < 0;
-
-                    $vaxLabel = match(true) {
-                        $isOverdue =>
-                            abs($vaxDaysRemaining) .
-                            ' day' .
-                            (abs($vaxDaysRemaining) === 1 ? '' : 's') .
-                            ' overdue',
-
-                        $vaxDaysRemaining === 0 => 'Due today',
-                        $vaxDaysRemaining === 1 => 'Due tomorrow',
-
-                        default => 'Due in ' . $vaxDaysRemaining . ' days',
-                    };
-                @endphp
-
-                <section class="mth-vax {{ $isOverdue ? 'mth-vax-overdue' : '' }}">
-
-                    <div class="mth-vax-icon">
-
-                        <svg
-                                aria-hidden="true"
-                                focusable="false"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <div class="mth-vax-content">
-
-                        <p class="mth-vax-title">
-                            {{ $nextVaccination->vaccine_name }} Vaccination
-                        </p>
-
-                        <p class="mth-vax-label">
-                            {{ $vaxLabel }}
-                        </p>
-
-                    </div>
-
-                    <a
-                        href="{{ route('mother.infant-records') }}"
-                        class="mth-vax-arrow"
-                        aria-label="View vaccination details for {{ $nextVaccination->vaccine_name }}"
-                    >
-                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9 5l7 7-7 7"
-                            />
-                        </svg>
-                    </a>
-
-                </section>
-
-            @endif
-
-
-            {{-- ====================================== --}}
-            {{-- INFANT RECORDS --}}
-            {{-- ====================================== --}}
-
-            <section class="mth-infant">
-
-                <div class="mth-infant-shape mth-infant-shape-a" aria-hidden="true"></div>
-                <div class="mth-infant-shape mth-infant-shape-b" aria-hidden="true"></div>
-
-                <div class="mth-infant-content">
-
-                    <div class="mth-infant-icon">
-
-                        <svg
-                                aria-hidden="true"
-                                focusable="false"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M12 3.75c-2.5 0-4.5 2-4.5 4.5v1.5H6.75A2.25 2.25 0 004.5 12v3.75A4.5 4.5 0 009 20.25h6A4.5 4.5 0 0019.5 15.75V12a2.25 2.25 0 00-2.25-2.25H16.5v-1.5c0-2.5-2-4.5-4.5-4.5Z"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <div class="mth-infant-text">
-
-                        <h2>
-                            Infant & Child Records
-                        </h2>
-
-                        @if($infant)
-
-                            @php
-                                $ageInDays = (int) \Carbon\Carbon::parse($infant->birth_date)->diffInDays(now());
-
-                                if ($ageInDays < 30) {
-                                    $infantAgeText =
-                                        $ageInDays .
-                                        ' day' .
-                                        ($ageInDays === 1 ? '' : 's') .
-                                        ' old';
-                                } else {
-                                    $ageInMonths = (int) floor($ageInDays / 30.44);
-
-                                    $infantAgeText =
-                                        $ageInMonths .
-                                        ' month' .
-                                        ($ageInMonths === 1 ? '' : 's') .
-                                        ' old';
-                                }
-                            @endphp
-
-                            <p class="mth-infant-name">
-                                {{ $infant->first_name }}
-
-                                <span>
-                                    · {{ $infantAgeText }}
-                                </span>
-                            </p>
-
-                            <p class="mth-infant-description">
-                                Monitor vaccinations, growth charts, and clinic assessments in one place.
-                            </p>
-
-                            @if($infant->sex || $infant->birth_weight)
-
-                                <div class="mth-infant-tags">
-
-                                    @if($infant->sex)
-
-                                        <span>
-                                            {{ ucfirst($infant->sex) }}
-                                        </span>
-
-                                    @endif
-
-                                    @if($infant->birth_weight)
-
-                                        <span>
-                                            {{ $infant->birth_weight }} kg at birth
-                                        </span>
-
-                                    @endif
-
+                            @if($pregnancyWeek)
+                                <div class="mdb-progress"
+                                     role="progressbar"
+                                     aria-valuenow="{{ $pregnancyWeek }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="40"
+                                     aria-label="Pregnancy progress: week {{ $pregnancyWeek }} of 40">
+                                    <span style="width: {{ min(100, round(($pregnancyWeek / 40) * 100)) }}%"></span>
                                 </div>
 
+                                <div class="mdb-progress-scale">
+                                    <span>Pregnancy journey</span>
+                                    <span>Week {{ $pregnancyWeek }} of 40</span>
+                                </div>
                             @endif
 
-                        @else
-
-                            <p class="mth-infant-description">
-                                Access infant profile details, vaccination logs, growth monitoring, and official WHO growth charts—all in one place.
-                            </p>
-
-                        @endif
-
-                    </div>
+                        </div>
+                    @endif
 
                 </div>
 
-                <a
-                    href="{{ route('mother.infant-records') }}"
-                    class="mth-white-btn"
-                >
-                    View Infant Records
+                <div class="mdb-hero-side">
+                    <div class="mdb-avatar" role="img" aria-label="{{ $mother->first_name }} {{ $mother->last_name }}">
+                        {{ $initials }}
+                    </div>
+                </div>
 
-                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M9 5l7 7-7 7"
-                        />
-                    </svg>
-                </a>
+                {{-- Secondary institutional identity (CareCradle stays primary in the sidebar). --}}
+                <p class="mdb-hero-institution">
+                    <img class="mdb-hero-logo" src="{{ asset('images/irosin-rhu-logo.jpg') }}" alt="Irosin Rural Health Unit logo" width="26" height="26">
+                    <span>Irosin Rural Health Unit</span>
+                </p>
 
             </section>
 
 
-            {{-- ====================================== --}}
-            {{-- QUICK ACTIONS --}}
-            {{-- ====================================== --}}
+            {{-- ================= CURRENT REFERRAL (facility and date only) ================= --}}
+            @if($currentReferral)
+                <a href="{{ route('mother.referrals') }}" class="mdb-referral">
+                    <span class="mdb-referral-icon" aria-hidden="true">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                    </span>
+                    <span class="mdb-referral-text">
+                        <strong>You have a current referral</strong>
+                        To {{ $currentReferral->receiving_facility }} since {{ \Illuminate\Support\Carbon::parse($currentReferral->referred_at)->format('F d, Y') }}.
+                    </span>
+                    <span class="mdb-referral-link">View <span aria-hidden="true">&rarr;</span></span>
+                </a>
+            @endif
 
+
+            <div class="mdb-home-grid">
+
+                {{-- ================= NEXT APPOINTMENT ================= --}}
+                <section class="mdb-card mdb-home-appt" aria-labelledby="mdb-appt-title">
+
+                    <header class="mdb-card-head">
+                        <span class="mdb-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/></svg>
+                        </span>
+                        <h2 class="mdb-card-title" id="mdb-appt-title">Next appointment</h2>
+
+                        @if($nextAppointment)
+                            @php
+                                $appointmentDate = \Carbon\Carbon::parse($nextAppointment->appointment_date)->startOfDay();
+                                $daysAway = (int) today()->diffInDays($appointmentDate, false);
+                                $countdownLabel = match (true) {
+                                    $daysAway === 0 => 'Today',
+                                    $daysAway === 1 => 'Tomorrow',
+                                    default => 'In ' . $daysAway . ' days',
+                                };
+                            @endphp
+                            <span class="mdb-chip mdb-chip-rose mdb-card-chip">{{ $countdownLabel }}</span>
+                        @endif
+                    </header>
+
+                    @if($nextAppointment)
+                        <div class="mdb-appt">
+                            <div class="mdb-datetile" aria-hidden="true">
+                                <span class="mdb-datetile-month">{{ $appointmentDate->format('M') }}</span>
+                                <span class="mdb-datetile-day">{{ $appointmentDate->format('d') }}</span>
+                                <span class="mdb-datetile-dow">{{ $appointmentDate->format('D') }}</span>
+                            </div>
+
+                            <div class="mdb-appt-info">
+                                <p class="mdb-appt-type">{{ $nextAppointment->appointment_type }}</p>
+                                <p class="mdb-appt-date">{{ $appointmentDate->format('l, F d, Y') }}</p>
+                                <p class="mdb-appt-meta">
+                                    <span class="mdb-appt-time">
+                                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0Z"/></svg>
+                                        {{ \Carbon\Carbon::parse($nextAppointment->appointment_time)->format('g:i A') }}
+                                    </span>
+                                    <span class="mdb-chip">{{ $nextAppointment->status }}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('mother.appointments') }}" class="mdb-btn mdb-btn-primary">
+                            View appointment details
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    @else
+                        <div class="mdb-empty">
+                            <p class="mdb-empty-title">No upcoming appointments</p>
+                            <p class="mdb-empty-text">You're all caught up. Your next clinic visit will appear here once your midwife schedules it.</p>
+                        </div>
+
+                        <a href="{{ route('mother.appointments') }}" class="mdb-btn mdb-btn-outline">
+                            View appointment history
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    @endif
+
+                </section>
+
+
+                {{-- ================= VACCINATION REMINDERS (you + your children) ================= --}}
+                <section class="mdb-card mdb-home-vax" aria-labelledby="mdb-vax-title">
+
+                    <header class="mdb-card-head">
+                        <span class="mdb-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m14 4 6 6M12.5 5.5l6 6M4 20l5.5-1.5L20 8a2.12 2.12 0 0 0-3-3L6.5 15.5 4 20Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m8 14 2 2M6.5 16.5l2 2"/></svg>
+                        </span>
+                        <h2 class="mdb-card-title" id="mdb-vax-title">Vaccination reminders</h2>
+
+                        @if($vaccinationReminderTotal > 0)
+                            <span class="mdb-card-count">{{ $vaccinationReminderTotal }}</span>
+                        @endif
+                    </header>
+
+                    @if($vaccinationReminders->isNotEmpty())
+                        <ul class="mdb-vax-list">
+                            @foreach($vaccinationReminders as $reminder)
+                                @php
+                                    // Presentation only: overdue, due soon (within 7 days), or upcoming.
+                                    [$stateClass, $stateLabel, $whenLabel] = match (true) {
+                                        $reminder['overdue'] => ['is-overdue', 'Overdue', $plural(abs($reminder['days']), 'day') . ' overdue'],
+                                        $reminder['days'] === 0 => ['is-soon', 'Due soon', 'Due today'],
+                                        $reminder['days'] === 1 => ['is-soon', 'Due soon', 'Due tomorrow'],
+                                        $reminder['days'] <= 7 => ['is-soon', 'Due soon', 'In ' . $reminder['days'] . ' days'],
+                                        default => ['is-upcoming', 'Upcoming', 'In ' . $reminder['days'] . ' days'],
+                                    };
+                                @endphp
+                                <li class="mdb-vax-item {{ $stateClass }}">
+                                    <span class="mdb-vax-who {{ $reminder['maternal'] ? 'is-you' : '' }}">{{ $reminder['who'] }}</span>
+                                    <div class="mdb-vax-main">
+                                        <p class="mdb-vax-name">{{ $reminder['vaccine'] }}</p>
+                                        <p class="mdb-vax-sub">
+                                            Due {{ $reminder['due']->format('M d, Y') }} · next dose after {{ $reminder['lastDose'] }}
+                                        </p>
+                                    </div>
+                                    <span class="mdb-vax-when">
+                                        <span class="mdb-vax-state">{{ $stateLabel }}</span>
+                                        {{ $whenLabel }}
+                                    </span>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        @if($vaccinationReminderTotal > $vaccinationReminders->count())
+                            <p class="mdb-more">+ {{ $plural($vaccinationReminderTotal - $vaccinationReminders->count(), 'more reminder') }}</p>
+                        @endif
+                    @else
+                        <div class="mdb-empty">
+                            <p class="mdb-empty-title">No vaccinations due</p>
+                            <p class="mdb-empty-text">When your midwife records a vaccination with a next due date for you or your child, the reminder will appear here.</p>
+                        </div>
+                    @endif
+
+                    <a href="{{ route('mother.vaccinations') }}" class="mdb-btn mdb-btn-outline">
+                        View my vaccinations
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+
+                </section>
+
+
+                {{-- ================= INFANT & CHILD RECORDS ================= --}}
+                <section class="mdb-card mdb-home-children" aria-labelledby="mdb-children-title">
+
+                    <header class="mdb-card-head">
+                        <span class="mdb-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75c-2.5 0-4.5 2-4.5 4.5v1.5H6.75A2.25 2.25 0 004.5 12v3.75A4.5 4.5 0 009 20.25h6A4.5 4.5 0 0019.5 15.75V12a2.25 2.25 0 00-2.25-2.25H16.5v-1.5c0-2.5-2-4.5-4.5-4.5Z"/></svg>
+                        </span>
+                        <h2 class="mdb-card-title" id="mdb-children-title">Infant &amp; child records</h2>
+
+                        @if($infantCount > 0)
+                            <span class="mdb-card-count">{{ $infantCount }}</span>
+                        @endif
+                    </header>
+
+                    @if($infants->isNotEmpty())
+                        <ul class="mdb-children">
+                            @foreach($infants->take($childrenShown) as $child)
+                                <li class="mdb-child">
+                                    <span class="mdb-child-initial" aria-hidden="true">{{ strtoupper(mb_substr((string) $child->first_name, 0, 1)) }}</span>
+                                    <div class="mdb-child-main">
+                                        <p class="mdb-child-name">{{ $child->first_name }} {{ $child->last_name }}</p>
+                                        <p class="mdb-child-sub">
+                                            {{ $childAge($child->birth_date) }}@if($child->sex) · {{ ucfirst($child->sex) }}@endif
+                                        </p>
+                                        <p class="mdb-child-birth">
+                                            Born {{ \Carbon\Carbon::parse($child->birth_date)->format('M d, Y') }}@if($child->birth_weight) · {{ $number($child->birth_weight) }} kg at birth @endif
+                                        </p>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        @if($infants->count() > $childrenShown)
+                            <p class="mdb-more">+ {{ $plural($infants->count() - $childrenShown, 'more child record') }}</p>
+                        @endif
+
+                        <a href="{{ route('mother.infant-records') }}" class="mdb-btn mdb-btn-outline">
+                            {{ $infants->count() > 1 ? 'View all ' . $infants->count() . ' child records' : 'View infant records' }}
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    @else
+                        <div class="mdb-empty">
+                            <p class="mdb-empty-title">No child records yet</p>
+                            <p class="mdb-empty-text">Your baby's profile, vaccinations, growth monitoring, and WHO growth charts will appear here once your midwife registers them.</p>
+                        </div>
+
+                        <a href="{{ route('mother.infant-records') }}" class="mdb-btn mdb-btn-outline">
+                            View infant records
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    @endif
+
+                </section>
+
+
+                {{-- ================= AT A GLANCE (actual record counts) ================= --}}
+                <section class="mdb-card mdb-home-glance" aria-labelledby="mdb-glance-title">
+
+                    <header class="mdb-card-head">
+                        <span class="mdb-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125Z"/></svg>
+                        </span>
+                        <h2 class="mdb-card-title" id="mdb-glance-title">At a glance</h2>
+                    </header>
+
+                    @php
+                        $stats = [
+                            ['route' => 'mother.appointments', 'count' => $appointmentCount, 'label' => $appointmentCount === 1 ? 'Appointment' : 'Appointments', 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z'],
+                            ['route' => 'mother.prenatal-records', 'count' => $prenatalCount, 'label' => $prenatalCount === 1 ? 'Prenatal visit' : 'Prenatal visits', 'icon' => 'M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M8.25 8.25H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z'],
+                            ['route' => 'mother.infant-records', 'count' => $infantCount, 'label' => $infantCount === 1 ? 'Child' : 'Children', 'icon' => 'M12 3.75c-2.5 0-4.5 2-4.5 4.5v1.5H6.75A2.25 2.25 0 004.5 12v3.75A4.5 4.5 0 009 20.25h6A4.5 4.5 0 0019.5 15.75V12a2.25 2.25 0 00-2.25-2.25H16.5v-1.5c0-2.5-2-4.5-4.5-4.5Z'],
+                            ['route' => 'mother.sms-history', 'count' => $smsCount, 'label' => $smsCount === 1 ? 'SMS message' : 'SMS messages', 'icon' => 'M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0Zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0Zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z'],
+                        ];
+                    @endphp
+
+                    <div class="mdb-stats">
+                        @foreach($stats as $stat)
+                            <a href="{{ route($stat['route']) }}" class="mdb-stat">
+                                <span class="mdb-stat-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $stat['icon'] }}"/></svg>
+                                </span>
+                                <span class="mdb-stat-value">{{ $stat['count'] }}</span>
+                                <span class="mdb-stat-label">{{ $stat['label'] }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            {{-- ================= QUICK ACTIONS ================= --}}
             @php
-                $navLinks = [
+                $quickActions = [
                     [
                         'title' => 'My Profile',
                         'description' => 'View your personal and maternal information.',
                         'route' => 'mother.profile',
-                        'icon' => 'profile',
-                        'theme' => 'pink',
-                        'eyebrow' => 'YOUR INFORMATION',
+                        'icon' => 'M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.5-1.632Z',
                     ],
                     [
                         'title' => 'My Vaccinations',
                         'description' => 'Review vaccination records and upcoming doses.',
                         'route' => 'mother.vaccinations',
-                        'icon' => 'vaccinations',
-                        'theme' => 'fuchsia',
-                        'eyebrow' => 'MOTHER & INFANT CARE',
+                        'icon' => 'm14 4 6 6M12.5 5.5l6 6M4 20l5.5-1.5L20 8a2.12 2.12 0 0 0-3-3L6.5 15.5 4 20Z',
                     ],
                     [
                         'title' => 'Featured Health Tips',
-                        'description' => 'Explore practical guidance for a healthy pregnancy and baby.',
+                        'description' => 'Practical guidance for a healthy pregnancy and baby.',
                         'route' => 'mother.health-tips',
-                        'icon' => 'health-tips',
-                        'theme' => 'rose',
-                        'eyebrow' => 'HEALTH & WELLNESS',
+                        'icon' => 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z',
                     ],
                 ];
             @endphp
 
+            <section class="mdb-actions" aria-labelledby="mdb-actions-title">
+                <h2 class="mdb-section-title" id="mdb-actions-title">Quick actions</h2>
 
-            <section class="mth-actions">
-
-                <div class="mth-section-heading">
-
-                    <div>
-                        <span>CareCradle</span>
-                        <h2>Quick Actions</h2>
-                    </div>
-
-                    <p>
-                        Access your care tools
-                    </p>
-
-                </div>
-
-
-                <div class="mth-action-grid">
-
-                    @foreach($navLinks as $link)
-
-                        <a
-                            href="{{ route($link['route']) }}"
-                            class="mth-action-card"
-                        >
-
-                            <div class="mth-action-icon mth-action-{{ $link['theme'] }}">
-
-                                @switch($link['icon'])
-
-                                    @case('profile')
-
-                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75a17.933 17.933 0 01-7.5-1.632Z"
-                                            />
-                                        </svg>
-
-                                        @break
-
-                                    @case('vaccinations')
-
-                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m14 4 6 6M12.5 5.5l6 6M4 20l5.5-1.5L20 8a2.12 2.12 0 0 0-3-3L6.5 15.5 4 20Z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m8 14 2 2M6.5 16.5l2 2"/>
-                                        </svg>
-
-                                        @break
-
-                                    @case('health-tips')
-
-                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h2l1.2-2.5L13 15l1.2-3H16"/>
-                                        </svg>
-
-                                        @break
-
-                                    @case('calendar')
-
-                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
-                                            />
-                                        </svg>
-
-                                        @break
-
-                                    @case('heartbeat')
-
-                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                            />
-                                        </svg>
-
-                                        @break
-
-                                    @case('sms')
-
-                                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M21.75 6.75v10.5A2.25 2.25 0 0119.5 19.5H4.5A2.25 2.25 0 012.25 17.25V6.75A2.25 2.25 0 014.5 4.5h15A2.25 2.25 0 0121.75 6.75Z"
-                                            />
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="m3 7.5 8.291 5.527a1.25 1.25 0 001.418 0L21 7.5"
-                                            />
-                                        </svg>
-
-                                        @break
-                                        @case('print-records')
-    <svg
-        aria-hidden="true"
-        focusable="false"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.8"
-    >
-        <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
-        />
-        <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M7 14h10v7H7zM17 11h.01"
-        />
-    </svg>
-    @break
-
-                                @endswitch
-
-                            </div>
-
-                            <div class="mth-action-copy">
-
-                                <span class="mth-action-eyebrow">
-                                    {{ $link['eyebrow'] }}
-                                </span>
-
-                                <h3>
-                                    {{ $link['title'] }}
-                                </h3>
-
-                                <p>
-                                    {{ $link['description'] }}
-                                </p>
-
-                            </div>
-
-                            <div class="mth-action-arrow">
-
-                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
-
-                            </div>
-
+                <div class="mdb-action-grid">
+                    @foreach($quickActions as $action)
+                        <a href="{{ route($action['route']) }}" class="mdb-action">
+                            <span class="mdb-action-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $action['icon'] }}"/></svg>
+                            </span>
+                            <span class="mdb-action-copy">
+                                <span class="mdb-action-title">{{ $action['title'] }}</span>
+                                <span class="mdb-action-desc">{{ $action['description'] }}</span>
+                            </span>
+                            <svg class="mdb-action-arrow" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                         </a>
-
                     @endforeach
-
                 </div>
-
             </section>
 
         </div>

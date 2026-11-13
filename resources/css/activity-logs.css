@@ -1,647 +1,992 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* =========================================================
-   CARECRADLE — ACTIVITY LOGS
-   Clean alignment, responsive layout, existing pink theme
+   CARECRADLE — ACTIVITY LOGS (Administrator)
+   Loaded on every page through Vite (layouts/app.blade.php),
+   so EVERY selector below is scoped to .al-page and affects
+   only the Activity Logs page.
    ========================================================= */
 
-:root {
-    --al-pink: #ec4899;
-    --al-pink-dark: #be185d;
-    --al-pink-deep: #9d174d;
-    --al-pink-soft: #fff0f6;
-    --al-border: #fce7f3;
-    --al-text: #1e293b;
+/* ---------- Page and design tokens ---------- */
+.al-page {
+    --al-pink: #db2777;
+    --al-rose: #be185d;
+    --al-deep: #9d174d;
+    --al-plum: #4a0d2a;
+    --al-blush: #fdf2f8;
+    --al-blush-2: #fce7f3;
+    --al-line: #f6d9e7;
+    --al-ink: #1e293b;
     --al-muted: #64748b;
-    --al-content-width: 1280px;
+    --al-soft: #94a3b8;
+    --al-radius: 18px;
+    --al-shadow: 0 2px 6px rgba(131, 24, 67, 0.04), 0 10px 28px rgba(131, 24, 67, 0.06);
+    --al-serif: "DM Serif Display", Georgia, serif;
+    --al-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    min-height: 100%;
+    padding-block: clamp(1.25rem, 3vw, 2rem);
+    color: var(--al-ink);
+    font-family: var(--al-sans);
+    background:
+        radial-gradient(1200px 520px at 100% -10%, rgba(252, 231, 243, 0.85), transparent 60%),
+        radial-gradient(900px 480px at -10% 30%, rgba(253, 242, 248, 0.9), transparent 60%),
+        linear-gradient(180deg, #fffafc 0%, #fff7fb 100%);
 }
 
-/* Shared header slot: align its inner content with the page container */
-.al-header-shell {
-    width: 100%;
-    max-width: var(--al-content-width);
-    margin-inline: auto;
-    padding: .25rem 1.5rem;
+.al-page *,
+.al-page *::before,
+.al-page *::after {
     box-sizing: border-box;
 }
 
-.al-page-heading {
+.al-page p,
+.al-page h1,
+.al-page h2,
+.al-page h3 {
+    margin: 0;
+}
+
+.al-page svg {
+    flex-shrink: 0;
+}
+
+.al-page .al-container {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.1rem, 2.2vw, 1.5rem);
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 2.2vw, 2rem);
+}
+
+/* ---------- Page header (compact) ---------- */
+.al-page .al-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.25rem;
-    width: 100%;
-    min-width: 0;
+    gap: 1rem 1.25rem;
+    flex-wrap: wrap;
+    padding: clamp(1rem, 2.2vw, 1.35rem) clamp(1rem, 2.4vw, 1.6rem);
+    background: linear-gradient(110deg, #ffffff 0%, #ffffff 60%, #fff4f9 100%);
+    border: 1px solid var(--al-line);
+    border-radius: calc(var(--al-radius) + 2px);
+    box-shadow: var(--al-shadow);
 }
 
-.al-page-heading-main {
+.al-page .al-header-main {
     display: flex;
     align-items: center;
-    gap: .875rem;
-    flex: 1 1 auto;
+    gap: 0.9rem;
+    min-width: 0;
+    flex: 1 1 320px;
+}
+
+.al-page .al-header-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    color: var(--al-rose);
+    background: var(--al-blush);
+    border: 1px solid #fbcfe8;
+    border-radius: 14px;
+}
+
+.al-page .al-header-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.al-page .al-header-copy {
     min-width: 0;
 }
 
-.al-page-heading-icon {
-    display: inline-flex;
+.al-page .al-eyebrow {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    flex: 0 0 44px;
-    width: 44px;
-    height: 44px;
-    border: 1px solid #fbcfe8;
-    border-radius: .875rem;
-    background: #fdf2f8;
-    color: var(--al-pink-dark);
+    gap: 0.45rem;
+    margin-bottom: 0.15rem;
+    color: var(--al-pink);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
 }
 
-.al-page-heading-main > div { min-width: 0; }
+.al-page .al-eyebrow::before {
+    content: "";
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+}
 
-.al-page-heading-title {
-    margin: 0;
-    color: var(--al-pink-deep);
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: clamp(1.5rem, 2.3vw, 1.875rem);
+.al-page .al-title {
+    color: var(--al-plum);
+    font-family: var(--al-serif);
+    font-size: clamp(1.55rem, 2.6vw, 1.95rem);
     font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: -.015em;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
 }
 
-.al-page-heading-subtitle {
-    margin: .25rem 0 0;
+.al-page .al-subtitle {
+    margin-top: 0.2rem;
     color: var(--al-muted);
-    font-size: .8125rem;
-    line-height: 1.6;
+    font-size: 0.85rem;
+    line-height: 1.55;
 }
 
-.al-page-heading-badge {
+.al-page .al-header-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.al-page .al-audit-badge {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: .4rem;
-    flex: 0 0 auto;
-    padding: .45rem .875rem;
+    gap: 0.45rem;
+    padding: 0.45rem 0.85rem;
+    color: var(--al-rose);
+    background: var(--al-blush);
     border: 1px solid #fbcfe8;
-    border-radius: 9999px;
-    background: var(--al-pink-soft);
-    color: var(--al-pink-dark);
-    font-size: .75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
     font-weight: 700;
     white-space: nowrap;
 }
 
-.al-page-heading-dot {
+.al-page .al-audit-dot {
     width: 7px;
     height: 7px;
-    flex: 0 0 7px;
-    border-radius: 50%;
     background: var(--al-pink);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
 }
 
-/* Main content width and centering. Do not offset this by the sidebar width:
-   app.blade.php already positions the authenticated content area. */
-.py-8 > .max-w-7xl {
-    width: 100%;
-    max-width: var(--al-content-width);
-    margin-inline: auto;
-    box-sizing: border-box;
-}
-
-/* Cards share equal heights and consistent internal alignment */
-.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 { align-items: stretch; }
-.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
-    min-width: 0;
-    height: 100%;
-    box-sizing: border-box;
-}
-.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex.items-center.justify-between {
-    align-items: center;
-    gap: .75rem;
-}
-.grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex.items-center.justify-between > span {
+/* ---------- Buttons ---------- */
+.al-page .al-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 auto;
-}
-
-/* Filter form fields line up to a shared control height */
-form[action*="activity-logs"] { min-width: 0; }
-form[action*="activity-logs"] label {
-    display: block;
-    line-height: 1.4;
-}
-form[action*="activity-logs"] input,
-form[action*="activity-logs"] select {
-    display: block;
-    width: 100%;
-    min-width: 0;
+    gap: 0.5rem;
     min-height: 42px;
-    box-sizing: border-box;
-}
-#custom-date-fields { align-items: start; }
-form[action*="activity-logs"] .sm\:justify-end {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: .75rem;
-}
-form[action*="activity-logs"] .sm\:justify-end > a,
-form[action*="activity-logs"] .sm\:justify-end > button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5rem;
-    min-height: 42px;
-    margin: 0;
-    box-sizing: border-box;
-    white-space: nowrap;
-}
-
-/* Table sizing and vertical alignment */
-.overflow-x-auto { width: 100%; max-width: 100%; overflow-x: auto; }
-table.min-w-full {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-table.min-w-full th,
-table.min-w-full td { vertical-align: middle; }
-table.min-w-full th { line-height: 1.4; }
-table.min-w-full td p { overflow-wrap: anywhere; }
-
-/* Pagination: retain Laravel's own pagination layout */
-.border-t.border-gray-100.px-5.py-4.sm\:px-6 { box-sizing: border-box; }
-
-@media (min-width: 1280px) {
-    .al-header-shell { padding-inline: 1.5rem; }
-}
-
-@media (max-width: 1023px) {
-    .al-header-shell { padding-inline: 1.5rem; }
-    .py-8 > .max-w-7xl { max-width: 100%; }
-}
-
-@media (max-width: 639px) {
-    .al-header-shell { padding: .25rem 1rem; }
-    .al-page-heading {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: .875rem;
-    }
-    .al-page-heading-main {
-        align-items: flex-start;
-        width: 100%;
-        gap: .75rem;
-    }
-    .al-page-heading-icon {
-        flex-basis: 40px;
-        width: 40px;
-        height: 40px;
-        border-radius: .75rem;
-    }
-    .al-page-heading-badge { align-self: flex-start; }
-    .py-8 > .max-w-7xl { padding-inline: 1rem; }
-    form[action*="activity-logs"] .sm\:justify-end {
-        align-items: stretch;
-        flex-direction: column;
-    }
-    form[action*="activity-logs"] .sm\:justify-end > a,
-    form[action*="activity-logs"] .sm\:justify-end > button { width: 100%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .transition, .transition-colors { transition: none !important; }
-}
-
-
-
-
-
-
-
-
-
-
-/* =========================================================
-   ACTIVITY LOGS — HEADER ACTIONS
-   ========================================================= */
-
-.al-page-heading-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: .625rem;
-    flex: 0 0 auto;
-}
-
-.al-back-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5rem;
-    min-height: 40px;
-    padding: .6rem .95rem;
-    border: 1px solid #e2e8f0;
-    border-radius: .75rem;
-    background: #ffffff;
-    color: #475569;
-    font-family: 'Inter', sans-serif;
-    font-size: .8rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-family: var(--al-sans);
+    font-size: 0.82rem;
     font-weight: 700;
+    line-height: 1.2;
     text-decoration: none;
     white-space: nowrap;
-    transition: background .18s ease, color .18s ease,
-                border-color .18s ease;
+    cursor: pointer;
+    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.al-back-button:hover {
-    background: #fdf2f8;
-    color: #be185d;
+.al-page .al-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.al-page .al-btn-primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--al-pink) 0%, var(--al-rose) 100%);
+    box-shadow: 0 6px 14px rgba(219, 39, 119, 0.22);
+}
+
+.al-page .al-btn-primary:hover {
+    box-shadow: 0 8px 18px rgba(219, 39, 119, 0.3);
+}
+
+.al-page .al-btn-secondary {
+    color: #475569;
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+.al-page .al-btn-secondary:hover {
+    color: var(--al-rose);
+    background: var(--al-blush);
     border-color: #f9a8d4;
 }
 
-.al-back-button:focus-visible {
-    outline: 3px solid rgba(236, 72, 153, .3);
-    outline-offset: 3px;
+.al-page .al-btn:focus-visible,
+.al-page .al-input:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, 0.3);
+    outline-offset: 2px;
 }
 
-@media (max-width: 639px) {
-    .al-page-heading-actions {
-        width: 100%;
-        justify-content: flex-start;
-        padding-left: 3.25rem;
-    }
-
-    .al-back-button {
-        width: 100%;
-    }
+/* ---------- Statistic cards ---------- */
+.al-page .al-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.9rem;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .al-back-button {
-        transition: none;
-    }
-}
-
-
-
-
-
-
-
-
-
-/* =========================================================
-   CARECRADLE — ACTIVITY LOGS VISUAL POLISH
-   UI styling only — no backend or Blade changes
-   ========================================================= */
-
-/* Main page spacing */
-.py-8 > .max-w-7xl {
-    padding-top: 0.25rem;
-    padding-bottom: 1.5rem;
-}
-
-.py-8 > .max-w-7xl.space-y-6 {
-    --tw-space-y-reverse: 0;
-    --tw-space-y-reverse: 0;
-}
-
-.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 {
-    gap: 1rem;
-}
-
-/* Summary cards */
-.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
+.al-page .al-stat {
     position: relative;
-    min-height: 142px;
-    padding: 1.35rem 1.4rem;
-    border: 1px solid #f9d9e9;
-    border-radius: 1.1rem;
-    background: linear-gradient(145deg, #ffffff 65%, #fff7fb);
-    box-shadow: 0 3px 12px rgba(157, 23, 77, 0.035);
-    transition: transform .2s ease, box-shadow .2s ease,
-                border-color .2s ease;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1.05rem 1.15rem 1rem;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--al-line);
+    border-radius: var(--al-radius);
+    box-shadow: var(--al-shadow);
 }
 
-.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:hover {
-    transform: translateY(-3px);
-    border-color: #f5b7d3;
-    box-shadow: 0 9px 22px rgba(190, 24, 93, 0.09);
+.al-page .al-stat::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--al-pink), rgba(244, 114, 182, 0.35));
 }
 
-.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex p {
-    color: #64748b;
-    font-size: .82rem;
+.al-page .al-stat-highlight {
+    background: linear-gradient(145deg, #ffffff 40%, #fff1f7 100%);
+    border-color: #f5c6dc;
+}
+
+.al-page .al-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.al-page .al-stat-label {
+    color: var(--al-muted);
+    font-size: 0.8rem;
     font-weight: 600;
+    line-height: 1.35;
 }
 
-.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > p.text-3xl {
-    margin-top: 1rem;
-    color: #263449;
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -.045em;
-    line-height: 1.1;
+.al-page .al-stat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    color: var(--al-pink);
+    background: var(--al-blush);
+    border-radius: 12px;
 }
 
-.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > p:last-child {
-    margin-top: .45rem;
-    color: #94a3b8;
-    font-size: .72rem;
+.al-page .al-stat-icon svg {
+    width: 19px;
+    height: 19px;
 }
 
-.py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > .flex > span {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
+.al-page .al-stat-value {
+    margin-top: 0.55rem;
+    color: var(--al-plum);
+    font-family: var(--al-serif);
+    font-size: clamp(1.75rem, 2.4vw, 2.15rem);
+    font-weight: 400;
+    line-height: 1.05;
 }
 
-/* Filter panel */
-.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden {
-    border: 1px solid #f8dce9;
-    border-radius: 1.15rem;
+.al-page .al-stat-caption {
+    margin-top: 0.3rem;
+    color: var(--al-soft);
+    font-size: 0.74rem;
+    line-height: 1.4;
+}
+
+/* ---------- Cards ---------- */
+.al-page .al-card {
+    min-width: 0;
     background: #ffffff;
-    box-shadow: 0 4px 16px rgba(157, 23, 77, 0.045);
+    border: 1px solid var(--al-line);
+    border-radius: var(--al-radius);
+    box-shadow: var(--al-shadow);
 }
 
-/* Filter panel heading */
-.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child {
-    padding: 0.9rem 1.1rem;
-    background: linear-gradient(110deg, #fff0f6, #fffafd 70%, #ffffff) !important;
-    border-bottom: 1px solid #fce7f3;
+.al-page .al-card-clip {
+    overflow: hidden;
 }
 
-.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child h3 {
-    color: #9d174d;
-    font-size: .98rem;
-    font-weight: 750;
+.al-page .al-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    flex-wrap: wrap;
+    padding: 0.95rem 1.25rem;
+    background: linear-gradient(110deg, #fff5f9 0%, #ffffff 70%);
+    border-bottom: 1px solid var(--al-line);
+    border-radius: var(--al-radius) var(--al-radius) 0 0;
 }
 
-.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child p {
-    color: #7c8798;
-    font-size: .8rem;
+.al-page .al-card-head-main {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
 }
 
-/* Form spacing and controls */
-.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden form {
-    padding: 1.5rem;
-    background: #ffffff;
+.al-page .al-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    color: var(--al-pink);
+    background: var(--al-blush);
+    border-radius: 11px;
 }
 
-.py-8 > .max-w-7xl form label {
-    margin-bottom: .5rem;
-    color: #475569;
-    font-size: .78rem;
+.al-page .al-card-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.al-page .al-card-title {
+    color: var(--al-plum);
+    font-family: var(--al-serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.al-page .al-card-sub {
+    margin-top: 0.15rem;
+    color: var(--al-muted);
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+.al-page .al-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    color: var(--al-rose);
+    background: var(--al-blush);
+    border: 1px solid #fbcfe8;
+    border-radius: 999px;
+    font-size: 0.72rem;
     font-weight: 700;
+    white-space: nowrap;
 }
 
-.py-8 > .max-w-7xl form input,
-.py-8 > .max-w-7xl form select {
-    min-height: 43px;
-    border: 1px solid #e5e7eb;
-    border-radius: .7rem;
-    background-color: #ffffff;
-    color: #334155;
-    font-size: .82rem;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, .025);
-    transition: border-color .18s ease, box-shadow .18s ease;
+/* ---------- Filter form ---------- */
+.al-page .al-filter-form {
+    container: alfilters / inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.2rem 1.25rem 1.25rem;
 }
 
-.py-8 > .max-w-7xl form input:focus,
-.py-8 > .max-w-7xl form select:focus {
-    border-color: #ec4899;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, .11);
+.al-page .al-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.9rem 1rem;
+    align-items: end;
 }
 
-/* Keep all five filters on one row on wide screens */
-@media (min-width: 1280px) {
-    .py-8 > .max-w-7xl form > .grid.md\:grid-cols-2.xl\:grid-cols-4 {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 1rem;
-    }
+/* The custom From / To fields join the same grid when visible. */
+.al-page .al-custom-dates {
+    display: contents;
+}
 
-    .py-8 > .max-w-7xl form > .grid.md\:grid-cols-2.xl\:grid-cols-4 > div.xl\:col-span-2 {
+.al-page .al-custom-dates.hidden {
+    display: none;
+}
+
+@container alfilters (min-width: 760px) {
+    .al-page .al-field-search {
         grid-column: span 2;
     }
 }
 
-/* Filter action buttons */
-.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row {
-    padding-top: .25rem;
+.al-page .al-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
 }
 
-.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > a,
-.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > button {
-    min-height: 43px;
-    padding-inline: 1.2rem;
-    border-radius: .7rem;
-    font-size: .8rem;
+.al-page .al-field label {
+    color: #475569;
+    font-size: 0.78rem;
     font-weight: 700;
-    transition: transform .18s ease, box-shadow .18s ease,
-                background .18s ease;
+    line-height: 1.3;
 }
 
-.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > a:hover {
+.al-page .al-input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 0.55rem 0.8rem;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 11px;
+    font-family: var(--al-sans);
+    font-size: 0.84rem;
+    line-height: 1.35;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.al-page select.al-input {
+    padding-right: 2.25rem;
+}
+
+.al-page .al-input:focus {
+    border-color: #ec4899;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.13);
+}
+
+.al-page .al-input::placeholder {
+    color: var(--al-soft);
+}
+
+.al-page .al-input-icon {
+    position: relative;
+}
+
+.al-page .al-input-icon svg {
+    position: absolute;
+    top: 50%;
+    left: 0.8rem;
+    width: 16px;
+    height: 16px;
+    color: var(--al-soft);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.al-page .al-input-icon .al-input {
+    padding-left: 2.35rem;
+}
+
+.al-page .al-filter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    padding-top: 0.95rem;
+    border-top: 1px dashed var(--al-line);
+}
+
+/* ---------- Activity table ---------- */
+.al-page .al-table-wrap {
+    container: altable / inline-size;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.al-page .al-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.84rem;
+}
+
+.al-page .al-table thead th {
+    padding: 0.8rem 0.8rem;
+    color: var(--al-deep);
     background: #fff5f9;
-    border-color: #f5b7d3;
-    color: #be185d;
-}
-
-.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > button {
-    box-shadow: 0 4px 10px rgba(190, 24, 93, .16);
-}
-
-.py-8 > .max-w-7xl form > .flex.flex-col.sm\:flex-row > button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(190, 24, 93, .22);
-}
-
-/* Activity history panel */
-.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden:last-of-type {
-    border-color: #f8dce9;
-    border-radius: 1.15rem;
-    box-shadow: 0 4px 16px rgba(157, 23, 77, .045);
-}
-
-.py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div.flex.flex-col {
-    padding: 1.2rem 1.5rem;
-    background: linear-gradient(110deg, #fffafd, #ffffff);
-    border-bottom-color: #fce7f3;
-}
-
-.py-8 > .max-w-7xl h3.text-base.font-semibold.text-gray-800 {
-    color: #263449;
-    font-weight: 750;
-}
-
-/* Table */
-.py-8 > .max-w-7xl table.min-w-full thead {
-    background: #fff5f9 !important;
-}
-
-.py-8 > .max-w-7xl table.min-w-full th {
-    padding: .9rem 1.1rem;
-    color: #9d174d;
-    font-size: .68rem;
+    border-bottom: 1px solid var(--al-line);
+    font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: .065em;
-    border-bottom: 1px solid #fce7f3;
+    letter-spacing: 0.07em;
+    line-height: 1.35;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
-.py-8 > .max-w-7xl table.min-w-full td {
-    padding: 1rem 1.1rem;
-    border-bottom: 1px solid #f1f5f9;
+.al-page .al-table tbody td {
+    padding: 0.95rem 0.8rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f3eef1;
 }
 
-.py-8 > .max-w-7xl table.min-w-full tbody tr {
-    transition: background .15s ease;
+.al-page .al-table tbody tr {
+    transition: background-color 0.15s ease;
 }
 
-.py-8 > .max-w-7xl table.min-w-full tbody tr:hover {
-    background: #fff7fb;
+.al-page .al-table tbody tr:hover {
+    background: #fff8fb;
 }
 
-.py-8 > .max-w-7xl table.min-w-full tbody tr:last-child td {
+.al-page .al-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Empty state */
-.py-8 > .max-w-7xl .px-6.py-16.text-center {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
+.al-page .al-col-date,
+.al-page .al-col-record,
+.al-page .al-col-ip {
+    white-space: nowrap;
 }
 
-.py-8 > .max-w-7xl .px-6.py-16.text-center h4 {
+.al-page .al-col-actor {
+    min-width: 215px;
+}
+
+.al-page .al-col-details {
+    min-width: 220px;
+}
+
+/* Long module names and action labels wrap instead of widening the table. */
+.al-page .al-col-module .al-module {
+    max-width: 9.5rem;
+    white-space: normal;
+}
+
+.al-page .al-col-action .al-badge {
+    max-width: 8.5rem;
+    white-space: normal;
+}
+
+.al-page .al-date {
+    color: var(--al-ink);
+    font-weight: 700;
+}
+
+.al-page .al-time {
+    margin-top: 0.2rem;
+    color: var(--al-soft);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.al-page .al-actor {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.al-page .al-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    color: var(--al-rose);
+    background: var(--al-blush-2);
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.al-page .al-avatar-muted {
+    color: #64748b;
+    background: #f1f5f9;
+}
+
+.al-page .al-actor-text {
+    min-width: 0;
+}
+
+.al-page .al-actor-name {
+    color: var(--al-ink);
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.al-page .al-actor-username {
+    margin-top: 0.1rem;
+    color: var(--al-muted);
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+}
+
+.al-page .al-actor-unknown {
+    margin-top: 0.1rem;
+    color: var(--al-soft);
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+.al-page .al-module {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.6rem;
+    color: #475569;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.al-page .al-details {
     color: #334155;
-    font-size: 1rem;
-    font-weight: 750;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
 }
 
-.py-8 > .max-w-7xl .px-6.py-16.text-center p {
-    color: #94a3b8;
-    font-size: .82rem;
+.al-page .al-code {
+    display: inline-flex;
+    padding: 0.2rem 0.5rem;
+    color: #475569;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.74rem;
 }
 
-/* Responsive refinements */
-@media (max-width: 767px) {
-    .py-8 > .max-w-7xl form {
-        padding: 0.9rem;
+.al-page .al-dash {
+    color: var(--al-soft);
+}
+
+.al-page .al-ip {
+    color: var(--al-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.74rem;
+}
+
+/* ---------- Action badges (by recorded action value) ---------- */
+.al-page .al-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.al-page .al-badge-success {
+    color: #166534;
+    background: #dcfce7;
+    border-color: #bbf7d0;
+}
+
+.al-page .al-badge-info {
+    color: #1d4ed8;
+    background: #dbeafe;
+    border-color: #bfdbfe;
+}
+
+.al-page .al-badge-danger {
+    color: #b91c1c;
+    background: #fee2e2;
+    border-color: #fecaca;
+}
+
+.al-page .al-badge-pink {
+    color: var(--al-rose);
+    background: var(--al-blush);
+    border-color: #fbcfe8;
+}
+
+.al-page .al-badge-violet {
+    color: #6d28d9;
+    background: #f3e8ff;
+    border-color: #e9d5ff;
+}
+
+.al-page .al-badge-historical {
+    color: #475569;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+}
+
+.al-page .al-badge-neutral {
+    color: #374151;
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+}
+
+/* ---------- Narrow screens: each row becomes a labelled card ---------- */
+@container altable (max-width: 990px) {
+    .al-page .al-table,
+    .al-page .al-table tbody,
+    .al-page .al-table tr,
+    .al-page .al-table td {
+        display: block;
+        width: 100%;
     }
 
-    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
-        min-height: 125px;
+    /* Column headings are kept for screen readers; each cell shows its own label. */
+    .al-page .al-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
     }
 
-    .py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div:first-child,
-    .py-8 > .max-w-7xl > div.rounded-2xl.border.border-pink-100.bg-white.shadow-sm.overflow-hidden > div.flex.flex-col {
-        padding-inline: 1.1rem;
+    .al-page .al-table tbody tr {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem 1rem;
+        padding: 1rem 1.15rem;
+        border-bottom: 1px solid var(--al-line);
+    }
+
+    .al-page .al-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .al-page .al-table tbody td {
+        min-width: 0;
+        padding: 0;
+        border-bottom: none;
+        white-space: normal;
+    }
+
+    .al-page .al-table tbody td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 0.3rem;
+        color: var(--al-deep);
+        font-size: 0.64rem;
+        font-weight: 800;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    .al-page .al-col-actor,
+    .al-page .al-col-details {
+        grid-column: 1 / -1;
+        min-width: 0;
+    }
+
+    .al-page .al-table tbody td.al-col-details {
+        padding: 0.7rem 0.8rem;
+        background: #fffafc;
+        border: 1px solid #f8e3ed;
+        border-radius: 12px;
+    }
+
+    .al-page .al-module {
+        white-space: normal;
+    }
+}
+
+@container altable (max-width: 420px) {
+    .al-page .al-table tbody tr {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ---------- Pagination (Laravel's default links, restyled) ---------- */
+.al-page .al-pagination {
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid var(--al-line);
+}
+
+.al-page .al-pagination nav {
+    font-family: var(--al-sans);
+}
+
+.al-page .al-pagination nav p {
+    color: var(--al-muted);
+    font-size: 0.8rem;
+}
+
+.al-page .al-pagination nav p .font-medium {
+    color: var(--al-ink);
+    font-weight: 700;
+}
+
+.al-page .al-pagination nav .shadow-sm {
+    gap: 0.3rem;
+    box-shadow: none;
+}
+
+.al-page .al-pagination nav a,
+.al-page .al-pagination nav span[aria-current="page"] > span,
+.al-page .al-pagination nav span[aria-disabled="true"] > span,
+.al-page .al-pagination nav span.cursor-not-allowed {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    min-height: 36px;
+    margin: 0;
+    padding: 0.35rem 0.7rem;
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid var(--al-line);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.al-page .al-pagination nav a:hover {
+    color: var(--al-rose);
+    background: var(--al-blush);
+    border-color: #f9a8d4;
+}
+
+.al-page .al-pagination nav a:focus-visible {
+    outline: 3px solid rgba(219, 39, 119, 0.3);
+    outline-offset: 2px;
+}
+
+.al-page .al-pagination nav span[aria-current="page"] > span {
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--al-pink) 0%, var(--al-rose) 100%);
+    border-color: transparent;
+    font-weight: 700;
+}
+
+.al-page .al-pagination nav span[aria-disabled="true"] > span,
+.al-page .al-pagination nav span.cursor-not-allowed {
+    color: #cbd5e1;
+    background: #fafafa;
+    cursor: not-allowed;
+}
+
+.al-page .al-pagination nav svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ---------- Empty state ---------- */
+.al-page .al-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 3rem 1.25rem;
+    text-align: center;
+}
+
+.al-page .al-empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 0.4rem;
+    color: var(--al-pink);
+    background: var(--al-blush);
+    border-radius: 16px;
+}
+
+.al-page .al-empty-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.al-page .al-empty-title {
+    color: var(--al-plum);
+    font-family: var(--al-serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.al-page .al-empty-desc {
+    margin-bottom: 0.6rem;
+    color: var(--al-muted);
+    font-size: 0.84rem;
+}
+
+/* ---------- Footnote ---------- */
+.al-page .al-footnote {
+    max-width: 760px;
+    margin: 0 auto;
+    color: var(--al-soft);
+    font-size: 0.74rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+    .al-page .al-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .al-page .al-header-main {
+        align-items: flex-start;
+        flex-basis: 100%;
+    }
+
+    .al-page .al-header-icon {
+        flex-basis: 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+    }
+
+    .al-page .al-header-actions {
+        width: 100%;
+    }
+
+    .al-page .al-header-actions .al-btn {
+        flex: 1 1 auto;
+    }
+
+    .al-page .al-stats {
+        gap: 0.65rem;
+    }
+
+    .al-page .al-stat {
+        padding: 0.9rem 0.95rem 0.85rem;
+    }
+
+    .al-page .al-stat-icon {
+        flex-basis: 34px;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+    }
+
+    .al-page .al-card-head,
+    .al-page .al-filter-form,
+    .al-page .al-pagination {
+        padding-inline: 1rem;
+    }
+
+    .al-page .al-filter-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .al-page .al-filter-actions .al-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 340px) {
+    .al-page .al-stats {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div,
-    .py-8 > .max-w-7xl form button,
-    .py-8 > .max-w-7xl form a {
+    .al-page .al-btn,
+    .al-page .al-input,
+    .al-page .al-table tbody tr,
+    .al-page .al-pagination nav a {
         transition: none;
-    }
-}
-
-
-
-
-/* Activity Logs — compact mobile header actions */
-@media (max-width: 639px) {
-    .al-page-heading-actions {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: nowrap;
-        gap: .5rem;
-        width: 100%;
-        padding-left: 3.25rem;
-    }
-
-    .al-page-heading-badge {
-        flex: 0 0 auto;
-    }
-
-    .al-back-button {
-        flex: 1 1 auto;
-        width: auto;
-        min-width: 0;
-        padding-inline: .5rem;
-        font-size: .73rem;
-    }
-}
-
-
-
-
-
-
-/* Activity Logs — remove separate white header strip */
-header:has(.al-header-shell) {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-header:has(.al-header-shell) > div {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-}
-
-.al-header-shell {
-    background: transparent !important;
-}
-
-.al-page-heading {
-    background: transparent !important;
-}
-
-
-
-
-
-/* =========================================================
-   ACTIVITY LOGS — COMPACT MOBILE STATISTICS
-   ========================================================= */
-
-@media (max-width: 639px) {
-    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
-    }
-
-    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
-        min-width: 0;
-        min-height: 112px;
-        padding: 1rem;
-        border-radius: 1rem;
-    }
-
-    .py-8 > .max-w-7xl > .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > p.text-3xl {
-        margin-top: 0.75rem;
-        font-size: 1.75rem;
-    }
-}
-
-
-
-
-
-/* Activity Logs — reduce mobile top spacing */
-
-@media (max-width: 639px) {
-    .py-8 {
-        padding-top: 0.5rem !important;
     }
 }

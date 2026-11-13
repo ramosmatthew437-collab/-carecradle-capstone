@@ -1,484 +1,209 @@
 <x-app-layout>
-
-    {{-- Google Font: Inter — matches the CareCradle design system --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <div class="mother-vaccinations-page py-6 sm:py-8">
-
-    <div class="max-w-2xl lg:max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {{-- ====================================== --}}
-        {{-- PAGE HEADER --}}
-        {{-- ====================================== --}}
-
-        <div class="mv-page-header">
-
-            <button
-                type="button"
-                onclick="history.back()"
-                aria-label="Go back"
-                class="mv-back-button"
-            >
-                <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    aria-hidden="true"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19l-7-7 7-7"
-                    />
-                </svg>
-            </button>
-
-            <div>
-                <h1 class="mv-page-title">
-                    Vaccination records
-                </h1>
-
-                <p class="mv-page-subtitle">
-                    Immunization history & upcoming doses
-                </p>
-            </div>
-
-        </div>
-
-     
-            @if($vaccinations->count() || $maternalVaccinations->count())
-
-                @php
-                    // Non-diagnostic status cue, presentation-layer only — derived from the
-                    // existing next_due_date column already present on each record.
-                    // No new columns, no schema changes. "Due Soon" uses a 30-day window,
-                    // a presentation assumption only (no such threshold exists in the schema).
-                    $vaccinationStatus = function ($nextDueDate) {
-                        if (!$nextDueDate) {
-                            return ['label' => 'Completed', 'dot' => 'bg-emerald-500', 'bg' => 'bg-emerald-50', 'text' => 'text-emerald-700'];
-                        }
-
-                        $due = \Carbon\Carbon::parse($nextDueDate);
-                        $daysRemaining = now()->startOfDay()->diffInDays($due->copy()->startOfDay(), false);
-
-                        if ($daysRemaining < 0) {
-                            return ['label' => 'Overdue', 'dot' => 'bg-rose-500', 'bg' => 'bg-rose-50', 'text' => 'text-rose-600'];
-                        }
-
-                        if ($daysRemaining <= 30) {
-                            return ['label' => 'Due Soon', 'dot' => 'bg-amber-500', 'bg' => 'bg-amber-50', 'text' => 'text-amber-700'];
-                        }
-
-                        return ['label' => 'Completed', 'dot' => 'bg-emerald-500', 'bg' => 'bg-emerald-50', 'text' => 'text-emerald-700'];
-                    };
-
-                    
-/*
- * Summary includes maternal records and the infant records
- * currently displayed on this page.
- */
-$allSummaryVaccinations = $vaccinations
-    ->getCollection()
-    ->concat($maternalVaccinations);
-
-$totalCount = $allSummaryVaccinations->count();
-
-$completedCount = $allSummaryVaccinations
-    ->filter(fn($v) => $vaccinationStatus($v->next_due_date)['label'] === 'Completed')
-    ->count();
-
-$dueSoonCount = $allSummaryVaccinations
-    ->filter(fn($v) => $vaccinationStatus($v->next_due_date)['label'] === 'Due Soon')
-    ->count();
-
-$overdueCount = $allSummaryVaccinations
-    ->filter(fn($v) => $vaccinationStatus($v->next_due_date)['label'] === 'Overdue')
-    ->count();
-
-                    // Only show a per-card infant name tag if this page's records actually
-                    // span more than one infant — keeps the single-infant case unchanged.
-                    $distinctInfantIds = $vaccinations->pluck('infant_id')->unique();
-                    $showInfantName = $distinctInfantIds->count() > 1;
-                @endphp
-
-
-{{-- ====================================== --}}
-{{-- HERO --}}
-{{-- ====================================== --}}
-
-<div class="mv-hero">
-
-    <div class="mv-hero-decoration mv-hero-decoration-one" aria-hidden="true"></div>
-    <div class="mv-hero-decoration mv-hero-decoration-two" aria-hidden="true"></div>
-
-    <div class="mv-hero-content">
-
-        <div class="mv-hero-icon">
-            <svg
-                class="h-7 w-7 sm:h-8 sm:w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="1.6"
-                aria-hidden="true"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M18.75 5.25l-9 9m9-9l1.5 1.5m-1.5-1.5l-1.5-1.5m-7.5 10.5l-3.75 3.75M9.75 14.25L7.5 12m2.25 2.25L12 16.5m-2.25-2.25l-2.25 2.25m9-11.25l-3 3"
-                />
-            </svg>
-        </div>
-
-        <div class="mv-hero-text">
-            <p class="mv-hero-label">
-                Vaccination Records
-            </p>
-
-            <h2 class="mv-hero-title">
-                Immunization history
-            </h2>
-
-            <p class="mv-hero-description">
-                View your maternal and infant vaccination history and upcoming immunizations.
-            </p>
-        </div>
-
-    </div>
-
-    <div class="mv-stats">
-
-        <div class="mv-stat">
-            <p class="mv-stat-label">Completed</p>
-            <p class="mv-stat-value">{{ $completedCount }}</p>
-        </div>
-
-        <div class="mv-stat">
-            <p class="mv-stat-label">Due soon</p>
-            <p class="mv-stat-value">{{ $dueSoonCount }}</p>
-        </div>
-
-        <div class="mv-stat">
-            <p class="mv-stat-label">Overdue</p>
-            <p class="mv-stat-value">{{ $overdueCount }}</p>
-        </div>
-
-    </div>
-
-    <p class="mv-hero-footnote">
-        {{ $totalCount }} {{ Str::plural('record', $totalCount) }} on this page
-    </p>
-
-</div>
-
-{{-- ====================================== --}}
-{{-- MATERNAL VACCINATION RECORDS --}}
-{{-- ====================================== --}}
-
-<div class="mv-card mt-6">
-
-    {{-- SECTION HEADER --}}
-    <div class="mv-card-header">
-
-        <div class="mv-card-heading">
-
-            <div class="mv-card-icon">
-                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 5v14m-7-7h14"/>
-                </svg>
-            </div>
-
-            <div>
-                <h3 class="mv-card-title">
-                    My Vaccinations
-                </h3>
-
-                <p class="mv-card-description">
-                    Your personal maternal immunization history
-                </p>
-            </div>
-
-        </div>
-
-        <span class="mv-count">
-            {{ $maternalVaccinations->count() }}
-            {{ Str::plural('record', $maternalVaccinations->count()) }}
-        </span>
-
-    </div>
-
-    {{-- VACCINATION RECORDS --}}
-    @if($maternalVaccinations->isNotEmpty())
-
-        <div class="space-y-3">
-
-            @foreach($maternalVaccinations as $maternalVaccination)
-
-                <div class="mv-record">
-
-                    <div class="mv-record-top">
-
-                        <div class="min-w-0">
-
-                            <h4 class="mv-record-name">
-                                {{ $maternalVaccination->vaccine_name }}
-                            </h4>
-
-                            <p class="mv-record-dose">
-                                Dose: {{ $maternalVaccination->dose }}
-                            </p>
-
-                        </div>
-
-                        <span class="mv-vaccine-badge">
-                            Maternal vaccine
-                        </span>
-
-                    </div>
-
-                    <div class="mv-record-details">
-
-                        <div class="mv-detail">
-                            <span class="mv-detail-label">Date given</span>
-                            <span class="mv-detail-value">
-                                {{ $maternalVaccination->date_given?->format('F d, Y') ?? 'Not specified' }}
-                            </span>
-                        </div>
-
-                        <div class="mv-detail">
-                            <span class="mv-detail-label">Next due</span>
-                            <span class="mv-detail-value">
-                                {{ $maternalVaccination->next_due_date?->format('F d, Y') ?? 'Not scheduled' }}
-                            </span>
-                        </div>
-
-                        <div class="mv-detail">
-                            <span class="mv-detail-label">Administered by</span>
-                            <span class="mv-detail-value">
-                                {{ $maternalVaccination->administered_by }}
-                            </span>
-                        </div>
-
-                        @if($maternalVaccination->remarks)
-                            <div class="mv-detail mv-detail-full">
-                                <span class="mv-detail-label">Remarks</span>
-                                <span class="mv-detail-value">
-                                    {{ $maternalVaccination->remarks }}
-                                </span>
-                            </div>
+    {{--
+        Mother Portal: My Vaccinations (overview).
+        Data from MotherVaccinationController: the signed-in mother's own
+        maternal records and her children's complete vaccination histories.
+        Statuses come from the model rules (isSupersededWithin / dueStatus)
+        and the 7-day dashboard window. Dates are shown exactly as recorded;
+        no schedule guidance is added. Staff-only fields (administered by,
+        remarks) are not loaded. Styles: resources/css/mother-dashboard-polish.css
+        ("My Vaccinations" section).
+    --}}
+
+    @php
+        $date = fn ($value) => \Carbon\Carbon::parse($value)->format('F d, Y');
+        $plural = fn (int $n, string $word) => $n . ' ' . $word . ($n === 1 ? '' : 's');
+        $fullName = fn ($child) => trim(implode(' ', array_filter([$child->first_name, $child->middle_name, $child->last_name])));
+        $initialOf = fn ($child) => strtoupper(mb_substr((string) $child->first_name, 0, 1));
+        $hasChildren = $infants->isNotEmpty();
+    @endphp
+
+    <div class="mdb apx vxx">
+        <div class="mdb-container">
+
+            {{-- ================= PAGE HEADER ================= --}}
+            <header class="apx-head">
+                <a href="{{ route('mother.dashboard') }}" class="apx-back" aria-label="Back to dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+                <div class="apx-head-copy">
+                    <p class="apx-eyebrow">Immunizations</p>
+                    <h1 class="apx-title">My Vaccinations</h1>
+                    <p class="apx-lead">Vaccinations recorded for you and your children at the Irosin Rural Health Unit, with the dates exactly as recorded.</p>
+                </div>
+            </header>
+
+
+            {{-- ================= SUMMARY (complete records; maternal and infant kept separate) ================= --}}
+            <section class="vxx-summary" aria-label="Vaccination summary">
+
+                <article class="mdb-card vxx-summary-card">
+                    <p class="apx-eyebrow">Your vaccinations</p>
+                    <p class="vxx-summary-main">
+                        @if($seriesNextDose === null)
+                            Td/TT series complete
+                        @elseif($seriesRecorded === 0)
+                            No Td/TT doses yet
+                        @else
+                            Dose {{ $seriesRecorded }} of {{ $seriesTotal }} recorded
                         @endif
+                    </p>
+                    <p class="vxx-summary-sub">{{ $plural($maternalSummary['doses'], 'maternal record') }}</p>
+                    <dl class="vxx-counts">
+                        <div class="{{ $maternalSummary['overdue'] ? 'is-overdue' : '' }}"><dt>Overdue</dt><dd>{{ $maternalSummary['overdue'] }}</dd></div>
+                        <div class="{{ $maternalSummary['soon'] ? 'is-soon' : '' }}"><dt>Due within 7 days</dt><dd>{{ $maternalSummary['soon'] }}</dd></div>
+                        <div><dt>Upcoming</dt><dd>{{ $maternalSummary['upcoming'] }}</dd></div>
+                    </dl>
+                </article>
 
-                    </div>
+                <article class="mdb-card vxx-summary-card">
+                    <p class="apx-eyebrow">Your {{ $infantSummary['children'] === 1 ? "child's" : "children's" }} vaccinations</p>
+                    <p class="vxx-summary-main">{{ $plural($infantSummary['doses'], 'dose') }} recorded</p>
+                    <p class="vxx-summary-sub">
+                        {{ $hasChildren ? $infantSummary['children'] . ' ' . ($infantSummary['children'] === 1 ? 'child' : 'children') : 'No children registered yet' }}
+                    </p>
+                    <dl class="vxx-counts">
+                        <div class="{{ $infantSummary['overdue'] ? 'is-overdue' : '' }}"><dt>Overdue</dt><dd>{{ $infantSummary['overdue'] }}</dd></div>
+                        <div class="{{ $infantSummary['soon'] ? 'is-soon' : '' }}"><dt>Due within 7 days</dt><dd>{{ $infantSummary['soon'] }}</dd></div>
+                        <div><dt>Upcoming</dt><dd>{{ $infantSummary['upcoming'] }}</dd></div>
+                    </dl>
+                </article>
 
-                </div>
+            </section>
 
-            @endforeach
 
-        </div>
+            {{-- ================= MATERNAL Td/TT ================= --}}
+            <section class="mdb-card" id="maternal-vaccinations" aria-labelledby="vxx-maternal-title">
+                <header class="mdb-card-head">
+                    <span class="mdb-card-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7.5-4.6-9.4-9.2C1.2 8.4 3.2 4.5 6.9 4.5c2 0 3.4 1.1 5.1 3 1.7-1.9 3.1-3 5.1-3 3.7 0 5.7 3.9 4.3 7.3C19.5 16.4 12 21 12 21Z"/></svg>
+                    </span>
+                    <h2 class="mdb-card-title" id="vxx-maternal-title">Your vaccinations (Td/TT)</h2>
+                    <span class="mdb-card-count">{{ $maternalVaccinations->count() }}</span>
+                </header>
 
-    @else
-
-        {{-- EMPTY STATE --}}
-        <div class="mv-empty">
-
-            <div class="mv-empty-icon">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 5v14m-7-7h14"/>
-                </svg>
-            </div>
-
-            <p class="mv-empty-title">
-                No maternal vaccination records yet
-            </p>
-
-            <p class="mv-empty-description">
-                Your maternal vaccination records will appear here when recorded by your healthcare worker.
-            </p>
-
-        </div>
-
-    @endif
-
-</div>
-{{-- ====================================== --}}
-{{-- VACCINATION TIMELINE --}}
-{{-- ====================================== --}}
-
-<div class="mv-card mt-6">
-
-    {{-- SECTION HEADER --}}
-    <div class="mv-card-header">
-
-        <div class="mv-card-heading">
-
-            <div class="mv-card-icon">
-                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M18.75 5.25l-9 9m9-9l1.5 1.5m-1.5-1.5l-1.5-1.5m-7.5 10.5l-3.75 3.75M9.75 14.25L7.5 12m2.25 2.25L12 16.5m-2.25-2.25l-2.25 2.25m9-11.25l-3 3"/>
-                </svg>
-            </div>
-
-            <div>
-                <h3 class="mv-card-title">
-                    Vaccination timeline
-                </h3>
-
-                <p class="mv-card-description">
-                    Your infant's immunization history and upcoming doses
-                </p>
-            </div>
-
-        </div>
-
-        <span class="mv-count">
-            {{ $vaccinations->total() }} {{ Str::plural('dose', $vaccinations->total()) }}
-        </span>
-
-    </div>
-
-    {{-- VACCINATION TIMELINE --}}
-    <div class="mv-timeline">
-
-        @forelse($vaccinations as $vaccination)
-
-            @php
-                $status = $vaccinationStatus($vaccination->next_due_date);
-            @endphp
-
-            <div class="mv-timeline-item">
-
-                <div class="mv-timeline-marker">
-
-                    <div class="mv-timeline-dot {{ $status['dot'] }} {{ $status['bg'] }}"
-                        aria-hidden="true">
-                    </div>
-
-                    @unless($loop->last)
-                        <div class="mv-timeline-line" aria-hidden="true"></div>
-                    @endunless
-
-                </div>
-
-                <div class="mv-timeline-content">
-
-                    <div class="mv-timeline-top">
-
-                        <div class="min-w-0">
-
-                            <h4 class="mv-timeline-name">
-                                {{ $vaccination->vaccine_name }}
-                            </h4>
-
-                            <p class="mv-record-dose">
-                                Dose {{ $vaccination->dose }}
-                            </p>
-
-                        </div>
-
-                        <span class="mv-status {{ $status['bg'] }} {{ $status['text'] }}">
-                            <span class="mv-status-dot {{ $status['dot'] }}"
-                                aria-hidden="true">
-                            </span>
-
-                            {{ $status['label'] }}
-                        </span>
-
-                    </div>
-
-                    @if($showInfantName && $vaccination->infant)
-                        <p class="mv-infant-name">
-                            {{ $vaccination->infant->first_name }}
+                {{-- Series progress: existing nextEligibleDose() rule; no dates implied. --}}
+                <div class="vxx-series">
+                    <div class="vxx-series-top">
+                        <p class="vxx-series-title">
+                            @if($seriesNextDose === null)
+                                Series complete · Dose {{ $seriesTotal }} of {{ $seriesTotal }} recorded
+                            @elseif($seriesRecorded === 0)
+                                No Td/TT doses recorded yet
+                            @else
+                                Dose {{ $seriesRecorded }} of {{ $seriesTotal }} recorded
+                            @endif
                         </p>
+                        @if($seriesNextDose !== null)
+                            <p class="vxx-series-next">Next in the series: {{ $seriesNextDose }}</p>
+                        @endif
+                    </div>
+                    <ol class="vxx-meter" role="img" aria-label="{{ $seriesRecorded }} of {{ $seriesTotal }} doses of the Td/TT series recorded">
+                        @for($i = 1; $i <= $seriesTotal; $i++)
+                            <li class="{{ $i <= $seriesRecorded ? 'is-done' : '' }}"><span>{{ $i }}</span></li>
+                        @endfor
+                    </ol>
+                    <p class="vxx-series-note">Td and TT doses count toward one series that continues across pregnancies.</p>
+                </div>
+
+                @if($maternalVaccinations->isNotEmpty())
+                    <ul class="vxx-list">
+                        @foreach($maternalVaccinations as $dose)
+                            @php $next = $maternalStatus[$dose->id]; @endphp
+                            <li class="vxx-dose">
+                                <div class="vxx-dose-top">
+                                    <p class="vxx-dose-name">{{ $dose->vaccine_name }} <span>· {{ $dose->dose }}</span></p>
+                                    <span class="vxx-given">
+                                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                                        Given
+                                    </span>
+                                </div>
+                                <p class="vxx-dose-meta">Given on {{ $date($dose->date_given) }}</p>
+                                <p class="vxx-next is-{{ $next['key'] }}">
+                                    @if($next['due'])
+                                        Next dose date {{ $next['due']->format('F d, Y') }} ·
+                                    @endif
+                                    <strong>{{ $next['label'] }}</strong>
+                                </p>
+                                @unless($dose->isSeriesRecord())
+                                    <p class="vxx-dose-flag">Recorded as entered · not counted in the Td/TT series</p>
+                                @endunless
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <div class="mdb-empty">
+                        <p class="mdb-empty-title">No maternal vaccinations recorded yet</p>
+                        <p class="mdb-empty-text">Td or TT doses given to you at the RHU will appear here.</p>
+                    </div>
+                @endif
+            </section>
+
+
+            {{-- ================= INFANT VACCINATIONS, GROUPED BY CHILD ================= --}}
+            @forelse($infants as $infant)
+                <section class="mdb-card vxx-child" id="child-{{ $infant->id }}" aria-labelledby="vxx-child-{{ $infant->id }}">
+                    <header class="vxx-child-head">
+                        <span class="vxx-child-initial" aria-hidden="true">{{ $initialOf($infant) }}</span>
+                        <div class="vxx-child-copy">
+                            <p class="apx-eyebrow">Child's vaccinations</p>
+                            <h2 class="vxx-child-name" id="vxx-child-{{ $infant->id }}">{{ $fullName($infant) }}</h2>
+                            @if($infant->birth_date)
+                                <p class="vxx-child-born">Born {{ $date($infant->birth_date) }}</p>
+                            @endif
+                        </div>
+                        <span class="mdb-card-count" aria-label="{{ $plural($infant->vaccinations->count(), 'dose') }}">{{ $infant->vaccinations->count() }}</span>
+                    </header>
+
+                    @if($infant->vaccinations->isNotEmpty())
+                        <ul class="vxx-list">
+                            @foreach($infant->vaccinations as $dose)
+                                @php $next = $infantStatus[$dose->id]; @endphp
+                                <li class="vxx-dose">
+                                    <div class="vxx-dose-top">
+                                        <p class="vxx-dose-name">{{ $dose->vaccine_name }} <span>· {{ $dose->dose }}</span></p>
+                                        <span class="vxx-given">
+                                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                                            Given
+                                        </span>
+                                    </div>
+                                    <p class="vxx-dose-meta">Given on {{ $date($dose->date_given) }}</p>
+                                    <p class="vxx-next is-{{ $next['key'] }}">
+                                        @if($next['due'])
+                                            Next dose date {{ $next['due']->format('F d, Y') }} ·
+                                        @endif
+                                        <strong>{{ $next['label'] }}</strong>
+                                    </p>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <div class="mdb-empty">
+                            <p class="mdb-empty-title">No vaccinations recorded for {{ $infant->first_name }} yet</p>
+                            <p class="mdb-empty-text">Doses given to {{ $infant->first_name }} at the RHU will appear here.</p>
+                        </div>
                     @endif
 
-                    <div class="mv-timeline-dates">
-
-                        <p class="mv-timeline-date">
-                            <span>Given</span>
-                            {{ \Carbon\Carbon::parse($vaccination->date_given)->format('F d, Y') }}
-                        </p>
-
-                        @if($vaccination->next_due_date)
-                            <p class="mv-timeline-date">
-                                <span>Next due</span>
-                                {{ \Carbon\Carbon::parse($vaccination->next_due_date)->format('F d, Y') }}
-                            </p>
-                        @endif
-
+                    <a href="{{ route('mother.infant-records', ['infant' => $infant->id]) }}" class="mdb-btn mdb-btn-outline vxx-child-link">
+                        View {{ $infant->first_name }}'s Infant Records
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                </section>
+            @empty
+                <section class="mdb-card" aria-labelledby="vxx-nochild-title">
+                    <h2 class="mdb-card-title" id="vxx-nochild-title">Your children's vaccinations</h2>
+                    <div class="mdb-empty">
+                        <p class="mdb-empty-title">No children registered yet</p>
+                        <p class="mdb-empty-text">Once your midwife registers your baby, their vaccinations will appear here.</p>
                     </div>
+                </section>
+            @endforelse
 
-                </div>
+            <p class="rfx-footnote">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.75Z"/></svg>
+                <span>Dates are shown as recorded by the Irosin Rural Health Unit. For questions about a dose, please ask your midwife.</span>
+            </p>
 
-            </div>
-
-        @empty
-
-            <div class="mv-empty">
-                <p class="mv-empty-title">
-                    No infant vaccination records yet
-                </p>
-
-                <p class="mv-empty-description">
-                    Your infant's immunization records will appear here when recorded by your healthcare worker.
-                </p>
-            </div>
-
-        @endforelse
-
-    </div>
-
-</div>
-{{-- ====================================== --}}
-{{-- PAGINATION --}}
-{{-- ====================================== --}}
-
-<div class="mv-pagination mt-6">
-    {{ $vaccinations->links() }}
-</div>
-
-@else
-
-    {{-- ====================================== --}}
-    {{-- NO VACCINATION RECORDS --}}
-    {{-- ====================================== --}}
-
-    <div class="mv-empty mt-6">
-
-        <div class="mv-empty-icon">
-            <svg
-                class="h-8 w-8 sm:h-9 sm:w-9"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="1.6"
-                aria-hidden="true"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M18.75 5.25l-9 9m9-9l1.5 1.5m-1.5-1.5l-1.5-1.5m-7.5 10.5l-3.75 3.75M9.75 14.25L7.5 12m2.25 2.25L12 16.5m-2.25-2.25l-2.25 2.25m9-11.25l-3 3"
-                />
-            </svg>
         </div>
-
-        <h3 class="mv-empty-title">
-            No vaccination records
-        </h3>
-
-        <p class="mv-empty-description">
-            No vaccination records found.
-        </p>
-
     </div>
-
-@endif
 </x-app-layout>

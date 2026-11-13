@@ -193,10 +193,17 @@
                                             name="appointment_type"
                                             class="ae-input ae-select">
 
-                                            @foreach(['Prenatal Checkup', 'Vaccination', 'Postpartum Checkup'] as $type)
+                                            {{-- Values match the appointments.appointment_type column;
+                                                 labels are unchanged ("Postpartum Checkup" stores "Postpartum"). --}}
+                                            @foreach([
+                                                'Prenatal Checkup' => 'Prenatal Checkup',
+                                                'Vaccination' => 'Vaccination',
+                                                'Postpartum' => 'Postpartum Checkup',
+                                                'Infant Checkup' => 'Infant Checkup',
+                                            ] as $type => $typeLabel)
                                                 <option value="{{ $type }}"
                                                     {{ old('appointment_type', $appointment->appointment_type) == $type ? 'selected' : '' }}>
-                                                    {{ $type }}
+                                                    {{ $typeLabel }}
                                                 </option>
                                             @endforeach
 

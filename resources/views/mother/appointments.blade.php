@@ -1,606 +1,251 @@
 <x-app-layout>
 
-    <div class="apt-wrap">
+    @php
+        $today = today();
 
-        <div class="apt-container">
+        // Presentation of the four stored statuses: a text label, a distinct
+        // icon, and a colour, so colour is never the only cue. Any other
+        // stored value is shown as-is with neutral styling (no new statuses).
+        $statusMeta = function (?string $status) {
+            return match ($status) {
+                'Scheduled' => ['class' => 'is-scheduled', 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z'],
+                'Completed' => ['class' => 'is-completed', 'icon' => 'M4.5 12.75l6 6 9-13.5'],
+                'Missed'    => ['class' => 'is-missed',    'icon' => 'M12 9v3.75m0 3.75h.008M21 12a9 9 0 11-18 0 9 9 0 0118 0Z'],
+                'Cancelled' => ['class' => 'is-cancelled', 'icon' => 'M6 18 18 6M6 6l12 12'],
+                default     => ['class' => 'is-other',     'icon' => 'M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0Z'],
+            };
+        };
 
-            {{-- =====================================================
-                 PAGE HEADER
-                 ===================================================== --}}
-            <div class="apt-page-head">
+        $countdown = function ($date) use ($today) {
+            $days = (int) $today->diffInDays(\Carbon\Carbon::parse($date)->startOfDay(), false);
 
-                <button
-                    type="button"
-                    onclick="window.history.back()"
-                    aria-label="Go back"
-                    class="apt-back-btn"
-                >
-                    <svg
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        aria-hidden="true"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M15 19l-7-7 7-7"
-                        />
-                    </svg>
-                </button>
+            return match (true) {
+                $days === 0 => 'Today',
+                $days === 1 => 'Tomorrow',
+                default => 'In ' . $days . ' days',
+            };
+        };
 
-                <div class="apt-page-copy">
+        $plural = fn (int $n, string $word) => $n . ' ' . $word . ($n === 1 ? '' : 's');
+        $monthOf = fn ($appointment) => \Carbon\Carbon::parse($appointment->appointment_date)->format('F Y');
+    @endphp
 
-                    <span>Visits & Care</span>
+    <div class="mdb apx apx-appointments">
 
-                    <h1>My Appointments</h1>
+        <div class="mdb-container">
 
-                    <p>
-                        Manage and track your scheduled visits
+            {{-- ================= PAGE HEADER ================= --}}
+            <header class="apx-head">
+                <a href="{{ route('mother.dashboard') }}" class="apx-back" aria-label="Back to dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+
+                <div class="apx-head-copy">
+                    <p class="apx-eyebrow">Visits &amp; care</p>
+                    <h1 class="apx-title">My Appointments</h1>
+                    <p class="apx-lead">
+                        Your clinic visits are scheduled by your midwife at the Irosin Rural Health Unit.
+                        <span class="apx-lead-count">{{ $plural($totalAppointments, 'appointment') }} recorded.</span>
                     </p>
-
-                    <small>
-                        {{ $appointments->total() }}
-                        {{ Str::plural('appointment', $appointments->total()) }}
-                        recorded
-                    </small>
-
                 </div>
-
-            </div>
-
-
-            @if($appointments->count())
-
-                @php
-
-                    /*
-                     * Presentation-only status styling.
-                     * Existing database values remain unchanged.
-                     */
-                    $appointmentStatus = function ($status) {
-
-                        return match ($status) {
-
-                            'Scheduled' => [
-                                'dot'  => 'apt-dot-blue',
-                                'bg'   => 'apt-status-blue',
-                                'text' => 'apt-text-blue',
-                            ],
-
-                            'Completed' => [
-                                'dot'  => 'apt-dot-green',
-                                'bg'   => 'apt-status-green',
-                                'text' => 'apt-text-green',
-                            ],
-
-                            'Cancelled' => [
-                                'dot'  => 'apt-dot-rose',
-                                'bg'   => 'apt-status-rose',
-                                'text' => 'apt-text-rose',
-                            ],
-
-                            default => [
-                                'dot'  => 'apt-dot-slate',
-                                'bg'   => 'apt-status-slate',
-                                'text' => 'apt-text-slate',
-                            ],
-
-                        };
-
-                    };
-
-
-                    /*
-                     * Keep the existing presentation-only split.
-                     * This operates on the paginator's current page,
-                     * just like the original version.
-                     */
-                    $upcoming = $appointments
-                        ->getCollection()
-                        ->filter(
-                            fn ($a) =>
-                                \Carbon\Carbon::parse($a->appointment_date)
-                                    ->startOfDay()
-                                    ->gte(now()->startOfDay())
-                        )
-                        ->sortBy(
-                            fn ($a) =>
-                                \Carbon\Carbon::parse(
-                                    $a->appointment_date . ' ' . $a->appointment_time
-                                )
-                        );
-
-
-                    $past = $appointments
-                        ->getCollection()
-                        ->filter(
-                            fn ($a) =>
-                                \Carbon\Carbon::parse($a->appointment_date)
-                                    ->startOfDay()
-                                    ->lt(now()->startOfDay())
-                        )
-                        ->sortByDesc(
-                            fn ($a) =>
-                                \Carbon\Carbon::parse(
-                                    $a->appointment_date . ' ' . $a->appointment_time
-                                )
-                        );
-
-
-                    /*
-                     * Soonest upcoming appointment on this page.
-                     */
-                    $nextAppointment = $upcoming->first();
-
-                @endphp
-
-
-                {{-- =====================================================
-                     NEXT APPOINTMENT
-                     ===================================================== --}}
-                @if($nextAppointment)
-
-                    @php
-                        $nextStatus = $appointmentStatus(
-                            $nextAppointment->status
-                        );
-
-                        $nextDate = \Carbon\Carbon::parse(
-                            $nextAppointment->appointment_date
-                        );
-
-                        $nextTime = \Carbon\Carbon::parse(
-                            $nextAppointment->appointment_time
-                        );
-
-                        $today = now()->startOfDay();
-
-                        $daysRemaining = $today->diffInDays(
-                            $nextDate->copy()->startOfDay(),
-                            false
-                        );
-
-                        $countdownLabel = match(true) {
-
-                            $daysRemaining === 0 => 'Today',
-
-                            $daysRemaining === 1 => 'Tomorrow',
-
-                            $daysRemaining > 1 =>
-                                $daysRemaining . ' days remaining',
-
-                            default =>
-                                $nextDate->diffForHumans(),
-
-                        };
-                    @endphp
-
-
-                    <section class="apt-hero">
-
-                        <div class="apt-hero-shape apt-hero-shape-a"></div>
-                        <div class="apt-hero-shape apt-hero-shape-b"></div>
-
-                        <div class="apt-hero-inner">
-
-                            <div class="apt-hero-top">
-
-                                <div class="apt-hero-label">
-
-                                    <svg
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
-                                        />
-                                    </svg>
-
-                                    Next Appointment
-
-                                </div>
-
-
-                                @if(strtolower(trim((string) $nextAppointment->status)) !== 'completed')
-
-                                    <span class="apt-countdown">
-                                        {{ $countdownLabel }}
-                                    </span>
-
-                                @else
-
-                                    <span class="apt-countdown apt-countdown-completed">
-                                        Completed
-                                    </span>
-
-                                @endif
-
-                            </div>
-
-
-                            <p class="apt-hero-type">
-                                {{ $nextAppointment->appointment_type }}
-                            </p>
-
-
-                            <h2 class="apt-hero-date">
-                                {{ $nextDate->format('l, F d, Y') }}
-                            </h2>
-
-
-                            <div class="apt-hero-details">
-
-                                <span class="apt-hero-time">
-
-                                    <svg
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        aria-hidden="true"
-                                    >
-                                        <circle
-                                            cx="12"
-                                            cy="12"
-                                            r="9"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M12 7v5l3 2"
-                                        />
-                                    </svg>
-
-                                    {{ $nextTime->format('g:i A') }}
-
-                                </span>
-
-
-                                <span class="apt-hero-status">
-
-                                    <span></span>
-
-                                    {{ $nextAppointment->status }}
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                @else
-
-                    <div class="apt-no-upcoming">
-
-                        <div class="apt-no-upcoming-icon">
-                            <svg
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"
-                                />
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h3>
-                                No upcoming appointments
-                            </h3>
-
-                            <p>
-                                You're all caught up for now.
-                            </p>
-                        </div>
-
-                    </div>
-
-                @endif
-
-
-                {{-- =====================================================
-                     UPCOMING
-                     ===================================================== --}}
-                @if($upcoming->count())
-
-                    <section class="apt-section">
-
-                        <div class="apt-section-head">
-
-                            <div>
-                                <span>Scheduled Visits</span>
-
-                                <h2>
-                                    Upcoming
-                                </h2>
-                            </div>
-
-                            <span class="apt-section-count">
-                                {{ $upcoming->count() }}
-                            </span>
-
-                        </div>
-
-
-                        <div class="apt-list">
-
-                            @foreach($upcoming as $appointment)
-
-                                @php
-                                    $status = $appointmentStatus(
-                                        $appointment->status
-                                    );
-
-                                    $appointmentDate = \Carbon\Carbon::parse(
-                                        $appointment->appointment_date
-                                    );
-
-                                    $appointmentTime = \Carbon\Carbon::parse(
-                                        $appointment->appointment_time
-                                    );
-                                @endphp
-
-
-                                <article class="apt-card">
-
-                                    <div class="apt-card-date">
-
-                                        <span>
-                                            {{ $appointmentDate->format('M') }}
-                                        </span>
-
-                                        <strong>
-                                            {{ $appointmentDate->format('d') }}
-                                        </strong>
-
-                                        <small>
-                                            {{ $appointmentDate->format('Y') }}
-                                        </small>
-
-                                    </div>
-
-
-                                    <div class="apt-card-main">
-
-                                        <div class="apt-card-top">
-
-                                            <h3>
-                                                {{ $appointment->appointment_type }}
-                                            </h3>
-
-                                            <span class="apt-status {{ $status['bg'] }} {{ $status['text'] }}">
-
-                                                <span class="apt-status-dot {{ $status['dot'] }}"></span>
-
-                                                {{ $appointment->status }}
-
-                                            </span>
-
-                                        </div>
-
-
-                                        <div class="apt-card-meta">
-
-                                            <span>
-
-                                                <svg
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    stroke-width="1.8"
-                                                    aria-hidden="true"
-                                                >
-                                                    <circle
-                                                        cx="12"
-                                                        cy="12"
-                                                        r="9"
-                                                    />
-
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M12 7v5l3 2"
-                                                    />
-                                                </svg>
-
-                                                {{ $appointmentTime->format('g:i A') }}
-
-                                            </span>
-
-                                            <span>
-                                                {{ $appointmentDate->format('l') }}
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </article>
-
-                            @endforeach
-
-                        </div>
-
-                    </section>
-
-                @endif
-
-
-                {{-- =====================================================
-                     PAST
-                     ===================================================== --}}
-                @if($past->count())
-
-                    <section class="apt-section">
-
-                        <div class="apt-section-head">
-
-                            <div>
-                                <span>Visit History</span>
-
-                                <h2>
-                                    Past Appointments
-                                </h2>
-                            </div>
-
-                            <span class="apt-section-count apt-section-count-muted">
-                                {{ $past->count() }}
-                            </span>
-
-                        </div>
-
-
-                        <div class="apt-list">
-
-                            @foreach($past as $appointment)
-
-                                @php
-                                    $status = $appointmentStatus(
-                                        $appointment->status
-                                    );
-
-                                    $appointmentDate = \Carbon\Carbon::parse(
-                                        $appointment->appointment_date
-                                    );
-
-                                    $appointmentTime = \Carbon\Carbon::parse(
-                                        $appointment->appointment_time
-                                    );
-                                @endphp
-
-
-                                <article class="apt-card apt-card-past">
-
-                                    <div class="apt-card-date apt-card-date-past">
-
-                                        <span>
-                                            {{ $appointmentDate->format('M') }}
-                                        </span>
-
-                                        <strong>
-                                            {{ $appointmentDate->format('d') }}
-                                        </strong>
-
-                                        <small>
-                                            {{ $appointmentDate->format('Y') }}
-                                        </small>
-
-                                    </div>
-
-
-                                    <div class="apt-card-main">
-
-                                        <div class="apt-card-top">
-
-                                            <h3>
-                                                {{ $appointment->appointment_type }}
-                                            </h3>
-
-                                            <span class="apt-status {{ $status['bg'] }} {{ $status['text'] }}">
-
-                                                <span class="apt-status-dot {{ $status['dot'] }}"></span>
-
-                                                {{ $appointment->status }}
-
-                                            </span>
-
-                                        </div>
-
-
-                                        <div class="apt-card-meta">
-
-                                            <span>
-
-                                                <svg
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    stroke-width="1.8"
-                                                    aria-hidden="true"
-                                                >
-                                                    <circle
-                                                        cx="12"
-                                                        cy="12"
-                                                        r="9"
-                                                    />
-
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M12 7v5l3 2"
-                                                    />
-                                                </svg>
-
-                                                {{ $appointmentTime->format('g:i A') }}
-
-                                            </span>
-
-                                            <span>
-                                                {{ $appointmentDate->format('l, F d, Y') }}
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </article>
-
-                            @endforeach
-
-                        </div>
-
-                    </section>
-
-                @endif
-
-
-                {{-- =====================================================
-                     PAGINATION
-                     ===================================================== --}}
-                @if($appointments->hasPages())
-
-                    <div class="apt-pagination">
-                        {{ $appointments->links() }}
-                    </div>
-
-                @endif
-
+            </header>
+
+            @if($totalAppointments === 0)
+
+                {{-- ================= NO APPOINTMENTS AT ALL ================= --}}
+                <section class="mdb-card apx-empty-page" aria-labelledby="apx-empty-title">
+                    <span class="mdb-card-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/></svg>
+                    </span>
+                    <h2 class="mdb-card-title" id="apx-empty-title">No appointments yet</h2>
+                    <p class="mdb-empty-text">When your midwife schedules a clinic visit for you or your baby, it will appear here.</p>
+                    <a href="{{ route('mother.dashboard') }}" class="mdb-btn mdb-btn-outline">
+                        Back to dashboard
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                </section>
 
             @else
 
-                {{-- =====================================================
-                     EMPTY STATE
-                     ===================================================== --}}
-                <section class="apt-empty">
+                {{-- ================= SUMMARY (links jump to the matching list) ================= --}}
+                <nav aria-label="Appointment summary" class="apx-summary">
+                    @foreach([
+                        ['label' => 'Upcoming', 'count' => $upcomingCount, 'status' => 'Scheduled', 'target' => '#appointment-upcoming'],
+                        ['label' => 'Completed', 'count' => $completedAppointments, 'status' => 'Completed', 'target' => '#appointment-history'],
+                        ['label' => 'Missed', 'count' => $missedAppointments, 'status' => 'Missed', 'target' => '#appointment-history'],
+                        ['label' => 'Cancelled', 'count' => $cancelledAppointments, 'status' => 'Cancelled', 'target' => '#appointment-history'],
+                    ] as $tile)
+                        @php $meta = $statusMeta($tile['status']); @endphp
+                        <a href="{{ $tile['target'] }}" class="apx-tile {{ $meta['class'] }}">
+                            <span class="apx-tile-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $meta['icon'] }}"/></svg>
+                            </span>
+                            <span class="apx-tile-value">{{ $tile['count'] }}</span>
+                            <span class="apx-tile-label">{{ $tile['label'] }}</span>
+                        </a>
+                    @endforeach
+                </nav>
 
-                    <div class="apt-empty-icon">
-                        📅
-                    </div>
 
-                    <h2>
-                        No appointments found
-                    </h2>
+                {{-- ================= NEXT APPOINTMENT ================= --}}
+                <section class="mdb-card apx-next" aria-labelledby="apx-next-title">
+                    <header class="mdb-card-head">
+                        <span class="mdb-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5Z"/></svg>
+                        </span>
+                        <h2 class="mdb-card-title" id="apx-next-title">Next appointment</h2>
+                        @if($nextAppointment)
+                            <span class="mdb-chip mdb-chip-rose mdb-card-chip">{{ $countdown($nextAppointment->appointment_date) }}</span>
+                        @endif
+                    </header>
 
-                    <p>
-                        You currently have no scheduled appointments.
-                    </p>
+                    @if($nextAppointment)
+                        @php
+                            $nextDate = \Carbon\Carbon::parse($nextAppointment->appointment_date);
+                            $nextMeta = $statusMeta($nextAppointment->status);
+                        @endphp
+                        <div class="mdb-appt">
+                            <div class="mdb-datetile" aria-hidden="true">
+                                <span class="mdb-datetile-month">{{ $nextDate->format('M') }}</span>
+                                <span class="mdb-datetile-day">{{ $nextDate->format('d') }}</span>
+                                <span class="mdb-datetile-dow">{{ $nextDate->format('D') }}</span>
+                            </div>
+                            <div class="mdb-appt-info">
+                                <p class="mdb-appt-type">{{ $nextAppointment->appointment_type }}</p>
+                                <p class="mdb-appt-date">{{ $nextDate->format('l, F d, Y') }}</p>
+                                <p class="mdb-appt-meta">
+                                    <span class="mdb-appt-time">
+                                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0Z"/></svg>
+                                        {{ \Carbon\Carbon::parse($nextAppointment->appointment_time)->format('g:i A') }}
+                                    </span>
+                                    <span class="apx-status {{ $nextMeta['class'] }}">
+                                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $nextMeta['icon'] }}"/></svg>
+                                        {{ $nextAppointment->status }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
 
+                        @if($upcomingCount > 1)
+                            <a href="#appointment-upcoming" class="mdb-btn mdb-btn-outline">
+                                See all {{ $upcomingCount }} upcoming visits
+                                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                            </a>
+                        @endif
+                    @else
+                        <div class="mdb-empty">
+                            <p class="mdb-empty-title">No upcoming appointments</p>
+                            <p class="mdb-empty-text">You have no scheduled visits right now. Your next clinic visit will appear here once your midwife schedules it.</p>
+                        </div>
+                    @endif
                 </section>
+
+
+                {{-- ================= UPCOMING VISITS + APPOINTMENT HISTORY ================= --}}
+                @php
+                    $lists = [
+                        [
+                            'id' => 'appointment-upcoming',
+                            'title' => 'Upcoming scheduled visits',
+                            'items' => $upcomingAppointments,
+                            'count' => $upcomingCount,
+                            'upcoming' => true,
+                            'paginator' => null,
+                            'emptyTitle' => 'No upcoming scheduled visits',
+                            'emptyText' => 'Scheduled visits from today onward will be listed here.',
+                        ],
+                        [
+                            'id' => 'appointment-history',
+                            'title' => 'Appointment history',
+                            'items' => $historyAppointments->getCollection(),
+                            'count' => $historyAppointments->total(),
+                            'upcoming' => false,
+                            'paginator' => $historyAppointments,
+                            'emptyTitle' => 'No appointment history yet',
+                            'emptyText' => 'Completed, missed, and cancelled visits will be listed here.',
+                        ],
+                    ];
+                @endphp
+
+                @foreach($lists as $list)
+                    <section class="mdb-card" id="{{ $list['id'] }}" aria-labelledby="{{ $list['id'] }}-title">
+                        <header class="mdb-card-head">
+                            <h2 class="mdb-card-title" id="{{ $list['id'] }}-title">{{ $list['title'] }}</h2>
+                            <span class="mdb-card-count">{{ $list['count'] }}</span>
+                        </header>
+
+                        @if($list['items']->isNotEmpty())
+                            {{-- Grouped by month for easier scanning (order is unchanged). --}}
+                            @foreach($list['items']->groupBy($monthOf) as $month => $monthItems)
+                                <div class="apx-month-group">
+                                    <h3 class="apx-month">{{ $month }}</h3>
+                                    <ul class="apx-list">
+                                        @foreach($monthItems as $appointment)
+                                            @php
+                                                $date = \Carbon\Carbon::parse($appointment->appointment_date)->startOfDay();
+                                                $time = \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A');
+                                                $meta = $statusMeta($appointment->status);
+                                                $isNext = $list['upcoming'] && $nextAppointment && $appointment->id === $nextAppointment->id;
+                                                // Date passed but staff have not updated the visit yet.
+                                                $awaitingUpdate = $appointment->status === 'Scheduled' && $date->lt($today);
+                                            @endphp
+                                            <li class="apx-item">
+                                                <details class="apx-details">
+                                                    <summary class="apx-row">
+                                                        <span class="apx-mini-date" aria-hidden="true">
+                                                            <span>{{ $date->format('M') }}</span>
+                                                            <strong>{{ $date->format('d') }}</strong>
+                                                        </span>
+                                                        <span class="apx-row-main">
+                                                            <span class="apx-row-type">
+                                                                {{ $appointment->appointment_type }}
+                                                                @if($isNext)
+                                                                    <span class="mdb-chip mdb-chip-rose apx-next-chip">Next</span>
+                                                                @endif
+                                                            </span>
+                                                            <span class="apx-row-sub">
+                                                                {{ $date->format('D, M d, Y') }} · {{ $time }}@if($list['upcoming']) · <span class="apx-row-countdown">{{ $countdown($appointment->appointment_date) }}</span>@endif
+                                                            </span>
+                                                            @if($awaitingUpdate)
+                                                                <span class="apx-awaiting">Date passed · awaiting update from your midwife</span>
+                                                            @endif
+                                                        </span>
+                                                        <span class="apx-status {{ $meta['class'] }}">
+                                                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $meta['icon'] }}"/></svg>
+                                                            {{ $appointment->status }}
+                                                        </span>
+                                                        <svg class="apx-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                                                    </summary>
+
+                                                    <dl class="apx-facts">
+                                                        <div><dt>Appointment type</dt><dd>{{ $appointment->appointment_type }}</dd></div>
+                                                        <div><dt>Date</dt><dd>{{ $date->format('l, F d, Y') }}</dd></div>
+                                                        <div><dt>Time</dt><dd>{{ $time }}</dd></div>
+                                                        <div><dt>Status</dt><dd>{{ $appointment->status }}</dd></div>
+                                                        @if($list['upcoming'])
+                                                            <div><dt>Countdown</dt><dd>{{ $countdown($appointment->appointment_date) }}</dd></div>
+                                                        @endif
+                                                    </dl>
+                                                </details>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endforeach
+
+                            @if($list['paginator'] && $list['paginator']->hasPages())
+                                <nav class="apx-pagination" aria-label="Appointment history pages">
+                                    {{ $list['paginator']->links() }}
+                                </nav>
+                            @endif
+                        @else
+                            <div class="mdb-empty">
+                                <p class="mdb-empty-title">{{ $list['emptyTitle'] }}</p>
+                                <p class="mdb-empty-text">{{ $list['emptyText'] }}</p>
+                            </div>
+                        @endif
+                    </section>
+                @endforeach
 
             @endif
 

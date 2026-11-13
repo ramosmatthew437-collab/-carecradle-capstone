@@ -1,5 +1,7 @@
 <x-app-layout>
 
+    @include('admin.mothers._edit-refinements')
+
     <x-slot name="header">
         <h2 class="font-semibold text-lg sm:text-xl text-gray-800 leading-tight">
             Edit Mother
@@ -78,12 +80,40 @@
                     <div class="me-identity-copy">
 
                         <span class="me-identity-label">
-                            Mother Code
+                            Mother Account Information
                         </span>
 
-                        <span class="me-identity-code">
-                            {{ $mother->mother_code }}
-                        </span>
+                        {{-- Read-only. The username is shown from the linked
+                             user account and cannot be changed here. --}}
+                        @php $meAccount = $mother->user; @endphp
+                        <dl class="me-account">
+                            <div class="me-account-item">
+                                <dt>Mother Code</dt>
+                                <dd class="me-identity-code">{{ $mother->mother_code }}</dd>
+                            </div>
+                            <div class="me-account-item">
+                                <dt>Username</dt>
+                                <dd class="me-account-username">
+                                    @if ($meAccount)
+                                        {{ $meAccount->username }}
+                                    @else
+                                        <span class="me-account-muted">No linked account</span>
+                                    @endif
+                                </dd>
+                            </div>
+                            <div class="me-account-item">
+                                <dt>Account Status</dt>
+                                <dd>
+                                    @if (! $meAccount)
+                                        <span class="me-account-status me-account-status-none">Not available</span>
+                                    @elseif ($meAccount->is_active)
+                                        <span class="me-account-status me-account-status-active">Active</span>
+                                    @else
+                                        <span class="me-account-status me-account-status-inactive">Inactive (cannot sign in)</span>
+                                    @endif
+                                </dd>
+                            </div>
+                        </dl>
 
                     </div>
 
@@ -102,7 +132,7 @@
                               d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
                     </svg>
 
-                    Locked
+                    Read-only
 
                 </span>
 
@@ -203,7 +233,7 @@
 
 
                         <a
-                            href="{{ route('mothers.index') }}"
+                            href="{{ route('mothers.show', $mother->id) }}"
                             class="me-cancel-btn">
 
                             Cancel

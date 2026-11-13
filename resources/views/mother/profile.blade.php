@@ -565,10 +565,20 @@
                                     </span>
                                 @endif
 
+                                {{-- Pregnancy status and referral are shown separately.
+                                     An older "Referred" record has no confirmed pregnancy
+                                     status: shown as "To be confirmed" (nothing is changed). --}}
                                 @if(isset($mother->status))
-                                    <span class="mthp-chip mthp-chip-status">
-                                        {{ $mother->status }}
+                                    <span class="mthp-chip mthp-chip-status" title="Pregnancy status">
+                                        {{ $mother->isLegacyReferred() ? 'To be confirmed' : $mother->status }}
                                     </span>
+
+                                    @if($mother->isReferred())
+                                        <a href="{{ route('mother.referrals') }}" class="mthp-chip" title="View my referrals"
+                                           style="color:#9d174d;background:#fdf2f7;border-color:#f8d3e2;text-decoration:none;">
+                                            Referred
+                                        </a>
+                                    @endif
                                 @endif
 
                             </div>
@@ -694,6 +704,11 @@
                             <p class="mthp-value">
                                 {{ $mother->contact_number ?? '—' }}
                             </p>
+                            {{-- The registered mobile number is changed in Account Settings (profile.edit). --}}
+                            <a href="{{ route('profile.edit') }}#personal-information"
+                               style="display: inline-block; margin-top: 0.25rem; color: #be185d; font-size: 0.75rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;">
+                                Update mobile number
+                            </a>
                         </div>
                     </div>
 

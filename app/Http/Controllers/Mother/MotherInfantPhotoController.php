@@ -100,15 +100,18 @@ public function show(Request $request, Infant $infant)
 
     $contents = $disk->get($infant->photo_path);
 
-    if (
-        strlen($contents) < 4 ||
-        substr($contents, 0, 3) !== "\xFF\xD8\xFF"
-    ) {
-        abort(415, 'The stored photo is not a valid JPEG image.');
-    }
+    // Uploads accept JPG, PNG, and WebP, so identify the stored image
+    // from its bytes (not its extension) and serve the matching type.
+    $contentType = match (true) {
+        str_starts_with($contents, "\xFF\xD8\xFF") => 'image/jpeg',
+        str_starts_with($contents, "\x89PNG\r\n\x1A\n") => 'image/png',
+        strlen($contents) >= 12
+            && substr($contents, 0, 4) === 'RIFF'
+            && substr($contents, 8, 4) === 'WEBP' => 'image/webp',
+        default => null,
+    };
 
-    $contentType = $disk->mimeType($infant->photo_path)
-        ?: 'application/octet-stream';
+    abort_unless($contentType, 415, 'The stored photo is not a supported image.');
 
     // Remove only the unwanted newline before the image response.
     $pendingOutput = ob_get_contents();

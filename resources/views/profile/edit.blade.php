@@ -1,288 +1,226 @@
-
 <x-app-layout>
-    <div class="min-h-[calc(100vh-5rem)] bg-[#fff8fb] py-7 sm:py-9">
-        <div class="mx-auto max-w-5xl space-y-5 px-4 sm:px-6 lg:px-8">
+    @include('profile._styles')
 
-            {{-- PAGE HEADER --}}
-            <header class="relative overflow-hidden rounded-2xl border border-pink-100
-                           bg-white shadow-[0_8px_28px_rgba(190,24,93,0.06)]">
-
-                <div class="absolute inset-y-0 left-0 w-1.5
-                            bg-gradient-to-b from-pink-400 via-pink-500 to-rose-400">
-                </div>
-
-                <div class="flex flex-col gap-4 px-5 py-5 sm:flex-row
-                            sm:items-center sm:justify-between sm:px-7 sm:py-6">
-
-                    <div class="flex min-w-0 items-center gap-4">
-                        <div class="flex h-12 w-12 shrink-0 items-center justify-center
-                                    rounded-2xl border border-pink-100 bg-pink-50
-                                    text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-6 w-6"
-                                 viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.7"
-                                 aria-hidden="true">
-                                <circle cx="12" cy="8" r="4"/>
-                                <path d="M4 21a8 8 0 0 1 16 0"/>
-                            </svg>
-                        </div>
-
-                        <div class="min-w-0">
-                            <p class="text-[0.68rem] font-bold uppercase
-          tracking-[0.18em] text-pink-600">
-    {{ auth()->user()->isMidwife() ? 'Midwife Portal' : (auth()->user()->isAdministrator() ? 'Administrator Portal' : 'Mother Portal') }}
-</p>
-
-                            <h1 class="mt-1 text-2xl font-normal leading-tight
-                                       text-slate-900 sm:text-3xl"
-                                style="font-family: 'DM Serif Display', Georgia, serif;">
-                                My Profile
-                            </h1>
-
-                            <p class="mt-1 max-w-xl text-sm leading-6 text-slate-500">
-                                Manage your personal information and keep your
-                                CareCradle account secure.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="inline-flex w-fit shrink-0 items-center gap-2
-                                rounded-full border border-pink-100 bg-pink-50/80
-                                px-3.5 py-2 text-xs font-semibold text-pink-700">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-4 w-4"
-                             viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="1.8"
-                             aria-hidden="true">
-                            <rect x="4" y="10" width="16" height="11" rx="2"/>
-                            <path d="M8 10V7a4 4 0 1 1 8 0v3"/>
-                        </svg>
-                        Account Settings
-                    </div>
-                </div>
-            </header>
-
-
-            
-{{-- MIDWIFE PROFILE PHOTO --}}
-@if (auth()->user()->isMidwife())
     @php
-        $midwife = auth()->user();
+        $prfUser = auth()->user();
+        $prfIsMother = $prfUser->isMother() && $prfUser->mother;
+        $prfPortal = $prfUser->isMidwife() ? 'Midwife Portal' : ($prfUser->isAdministrator() ? 'Administrator Portal' : 'Mother Portal');
 
-        $profilePhotoUrl = $midwife->profile_photo_path
-            ? \Illuminate\Support\Facades\Storage::disk('public')->url($midwife->profile_photo_path)
-            : null;
+        // Current photo: staff photos live on the user account, a mother's on her Mother record.
+        $prfPhotoUrl = null;
+        if ($prfIsMother && $prfUser->mother->profile_photo_path) {
+            $prfPhotoUrl = asset('storage/' . $prfUser->mother->profile_photo_path);
+        } elseif (! $prfIsMother && $prfUser->profile_photo_path) {
+            $prfPhotoUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($prfUser->profile_photo_path);
+        }
+
+        $prfInitials = $prfIsMother
+            ? strtoupper(substr($prfUser->mother->first_name ?? '', 0, 1) . substr($prfUser->mother->last_name ?? '', 0, 1))
+            : strtoupper(substr($prfUser->first_name ?: $prfUser->name, 0, 1) . substr($prfUser->last_name ?? '', 0, 1));
     @endphp
 
-    <section class="overflow-hidden rounded-2xl border border-pink-100
-                    bg-white shadow-[0_4px_20px_rgba(190,24,93,0.04)]">
+    <div class="prf">
+        <div class="prf-container">
 
-        <div class="border-b border-pink-50 px-5 py-4 sm:px-7">
-            <h2 class="text-base font-semibold text-slate-800">
-                Profile Photo
-            </h2>
-            <p class="mt-1 text-xs text-slate-500">
-                Upload a photo to personalize your Midwife Portal.
-            </p>
-        </div>
+            {{-- Header --}}
+            <header class="prf-head">
+                <div class="prf-identity">
+                    <div class="prf-avatar">
+                        @if ($prfPhotoUrl)
+                            <img src="{{ $prfPhotoUrl }}" alt="Profile photo of {{ $prfUser->name }}">
+                        @else
+                            <span aria-hidden="true">{{ $prfInitials }}</span>
+                        @endif
+                    </div>
+                    <div style="min-width: 0;">
+                        <p class="prf-kicker">{{ $prfPortal }} · Account</p>
+                        <h1 class="prf-title">My Profile</h1>
+                        <p class="prf-subtitle">Manage your personal information and keep your CareCradle account secure.</p>
+                    </div>
+                </div>
+                <nav class="prf-nav" aria-label="Account settings sections">
+                    <a href="#personal-information">Personal information</a>
+                    @if ($prfUser->isMidwife() || $prfIsMother)
+                        <a href="#profile-photo">Profile photo</a>
+                    @endif
+                    <a href="#account-security">Password</a>
+                    @if ($prfIsMother)
+                        <a href="#account-closure">Account closure</a>
+                    @else
+                        <a href="#delete-account">Delete account</a>
+                    @endif
+                </nav>
+            </header>
 
-        <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-7">
+            @if (session('status') === 'profile-updated')
+                <div class="prf-alert prf-alert-success" role="status">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                    Your profile information has been saved.
+                </div>
+            @elseif (session('status') === 'password-updated')
+                <div class="prf-alert prf-alert-success" role="status">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                    Your password has been changed.
+                </div>
+            @elseif (session('success'))
+                <div class="prf-alert prf-alert-success" role="status">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                    {{ session('success') }}
+                </div>
+            @endif
 
-            <div class="flex h-24 w-24 shrink-0 items-center justify-center
-                        overflow-hidden rounded-full border-4 border-pink-100
-                        bg-pink-50 text-3xl font-semibold text-pink-600">
+            {{-- Personal information --}}
+            <section class="prf-card" id="personal-information" aria-labelledby="prf-info-title">
+                <div class="prf-card-head">
+                    <span class="prf-card-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
+                    </span>
+                    <div>
+                        <h2 class="prf-card-title" id="prf-info-title">Personal Information</h2>
+                        <p class="prf-card-sub">
+                            {{ $prfIsMother ? 'Your account name, email address, and registered mobile number.' : 'Your name, email address, and contact number.' }}
+                        </p>
+                    </div>
+                </div>
+                @include('profile.partials.update-profile-information-form')
+            </section>
 
-                @if ($profilePhotoUrl)
-                    <img src="{{ $profilePhotoUrl }}"
-                         alt="Midwife profile photo"
-                         class="h-full w-full object-cover">
-                @else
-                    {{ strtoupper(substr($midwife->name ?? 'M', 0, 1)) }}
-                @endif
-            </div>
+            {{-- Profile photo --}}
+            @if ($prfUser->isMidwife())
+                <section class="prf-card" id="profile-photo" aria-labelledby="prf-photo-title">
+                    <div class="prf-card-head">
+                        <span class="prf-card-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/></svg>
+                        </span>
+                        <div>
+                            <h2 class="prf-card-title" id="prf-photo-title">Profile Photo</h2>
+                            <p class="prf-card-sub">Shown in the Midwife Portal sidebar.</p>
+                        </div>
+                    </div>
 
-            <div class="min-w-0 flex-1">
+                    <div class="prf-photo">
+                        <div class="prf-avatar prf-avatar-lg">
+                            @if ($prfPhotoUrl)
+                                <img src="{{ $prfPhotoUrl }}" alt="Current profile photo">
+                            @else
+                                <span aria-hidden="true">{{ $prfInitials }}</span>
+                            @endif
+                        </div>
+                        <div class="prf-photo-body">
+                            <form method="POST" action="{{ route('midwife.profile-photo.update') }}" enctype="multipart/form-data">
+                                @csrf
+                                <div class="prf-file">
+                                    <label class="prf-file-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>
+                                        Choose photo
+                                        <input type="file" name="profile_photo" accept="image/jpeg,image/png,image/webp" required data-prf-file aria-describedby="prf-photo-hint">
+                                    </label>
+                                    <span class="prf-file-name" data-prf-file-name>No file chosen</span>
+                                </div>
+                                <p class="prf-hint" id="prf-photo-hint">JPG, PNG, or WebP · up to 2 MB.</p>
+                                @error('profile_photo') <p class="prf-error">{{ $message }}</p> @enderror
+                                <div class="prf-actions-buttons" style="margin-top: 0.875rem;">
+                                    <button type="submit" class="prf-btn prf-btn-primary">Upload Photo</button>
+                                </div>
+                            </form>
+                            @if ($prfPhotoUrl)
+                                <form method="POST" action="{{ route('midwife.profile-photo.destroy') }}" style="margin-top: 0.5rem;"
+                                      onsubmit="return confirm('Remove your profile photo?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="prf-btn prf-btn-danger">Remove Photo</button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                </section>
+            @elseif ($prfIsMother)
+                <section class="prf-card" id="profile-photo" aria-labelledby="prf-photo-title">
+                    <div class="prf-card-head">
+                        <span class="prf-card-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 9.574c0-1.067.75-1.994 1.802-2.169l1.134-.175a2.31 2.31 0 0 0 1.64-1.055l.822-1.316a2.192 2.192 0 0 1 1.736-1.039 48.774 48.774 0 0 1 5.232 0 2.192 2.192 0 0 1 1.736 1.039l.821 1.316a2.31 2.31 0 0 0 1.64 1.055l1.135.175c1.052.175 1.802 1.102 1.802 2.169V18a2.25 2.25 0 0 1-2.25 2.25h-15A2.25 2.25 0 0 1 2.25 18V9.574Z"/></svg>
+                        </span>
+                        <div>
+                            <h2 class="prf-card-title" id="prf-photo-title">Profile Photo</h2>
+                            <p class="prf-card-sub">Your photo and your maternal record details are on My Profile.</p>
+                        </div>
+                    </div>
+                    <div class="prf-photo">
+                        <div class="prf-avatar prf-avatar-lg">
+                            @if ($prfPhotoUrl)
+                                <img src="{{ $prfPhotoUrl }}" alt="Current profile photo">
+                            @else
+                                <span aria-hidden="true">{{ $prfInitials }}</span>
+                            @endif
+                        </div>
+                        <div class="prf-photo-body">
+                            <p class="prf-hint" style="margin-top: 0;">Upload, replace, or remove your photo from your My Profile page (JPG, PNG, or WebP · up to 2 MB).</p>
+                            <div class="prf-actions-buttons" style="margin-top: 0.75rem;">
+                                <a href="{{ route('mother.profile') }}" class="prf-btn prf-btn-secondary">Go to My Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @endif
 
-                <form method="POST"
-                      action="{{ route('midwife.profile-photo.update') }}"
-                      enctype="multipart/form-data"
-                      class="space-y-3">
+            {{-- Password --}}
+            <section class="prf-card" id="account-security" aria-labelledby="prf-security-title">
+                <div class="prf-card-head">
+                    <span class="prf-card-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
+                    </span>
+                    <div>
+                        <h2 class="prf-card-title" id="prf-security-title">Password</h2>
+                        <p class="prf-card-sub">Use a strong password that you do not use anywhere else.</p>
+                    </div>
+                </div>
+                @include('profile.partials.update-password-form')
+            </section>
 
-                    @csrf
-
-                    <input type="file"
-                           name="profile_photo"
-                           accept="image/jpeg,image/png,image/webp"
-                           required
-                           class="block w-full text-sm text-slate-600
-                                  file:mr-3 file:rounded-lg file:border-0
-                                  file:bg-pink-50 file:px-4 file:py-2
-                                  file:font-semibold file:text-pink-700
-                                  hover:file:bg-pink-100">
-
-                    @error('profile_photo')
-                        <p class="text-sm text-rose-600">{{ $message }}</p>
-                    @enderror
-
-                    <p class="text-xs text-slate-400">
-                        JPG, PNG, or WEBP. Maximum file size: 2 MB.
+            @if ($prfIsMother)
+                {{-- Mothers cannot self-delete (it would remove maternal clinical history); enforced in ProfileController::destroy. --}}
+                <section class="prf-card" id="account-closure" aria-labelledby="prf-closure-title">
+                    <div class="prf-card-head">
+                        <span class="prf-card-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"/></svg>
+                        </span>
+                        <div>
+                            <h2 class="prf-card-title" id="prf-closure-title">Account Closure</h2>
+                            <p class="prf-card-sub">Your maternal health records are kept by the Rural Health Unit.</p>
+                        </div>
+                    </div>
+                    <p class="prf-hint" style="margin: 0; font-size: 0.8125rem;">
+                        Mother accounts cannot be deleted from the Mother Portal. To close or deactivate your account,
+                        please contact an authorized RHU administrator.
                     </p>
-
-                    <button type="submit"
-                            class="rounded-xl bg-pink-600 px-5 py-2.5
-                                   text-sm font-semibold text-white
-                                   transition hover:bg-pink-700">
-                        Upload Photo
-                    </button>
-                </form>
-
-                @if ($profilePhotoUrl)
-                    <form method="POST"
-                          action="{{ route('midwife.profile-photo.destroy') }}"
-                          class="mt-3"
-                          onsubmit="return confirm('Remove your profile photo?');">
-
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit"
-                                class="text-sm font-semibold text-rose-600
-                                       hover:text-rose-700">
-                            Remove Photo
-                        </button>
-                    </form>
-                @endif
-
-            </div>
-        </div>
-    </section>
-@endif
-
-
-            {{-- PROFILE INFORMATION --}}
-            <section class="overflow-hidden rounded-2xl border border-pink-100
-                            bg-white shadow-[0_4px_20px_rgba(190,24,93,0.04)]">
-
-                <div class="border-b border-pink-50 px-5 py-4 sm:px-7">
-                    <div class="flex items-center gap-3">
-                        <div class="flex h-9 w-9 shrink-0 items-center justify-center
-                                    rounded-xl bg-pink-50 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 aria-hidden="true">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h2 class="text-base font-semibold text-slate-800">
-                                Profile Information
-                            </h2>
-                            <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                                Update your personal details and account information.
-                            </p>
-                        </div>
+                </section>
+            @else
+            {{-- Delete account: existing behaviour preserved for Administrator and Midwife accounts --}}
+            <section class="prf-card prf-card-danger" id="delete-account" aria-labelledby="prf-delete-title">
+                <div class="prf-card-head">
+                    <span class="prf-card-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+                    </span>
+                    <div>
+                        <h2 class="prf-card-title" id="prf-delete-title">Delete Account</h2>
+                        <p class="prf-card-sub">Permanently remove this account. This cannot be undone.</p>
                     </div>
                 </div>
-
-                <div class="p-5 sm:p-7">
-                    <div class="max-w-2xl">
-                        @include('profile.partials.update-profile-information-form')
-                    </div>
-                </div>
+                @include('profile.partials.delete-user-form')
             </section>
+            @endif
 
-            {{-- ACCOUNT SECURITY --}}
-            <section class="overflow-hidden rounded-2xl border border-pink-100
-                            bg-white shadow-[0_4px_20px_rgba(190,24,93,0.04)]">
-
-                <div class="border-b border-pink-50 px-5 py-4 sm:px-7">
-                    <div class="flex items-center gap-3">
-                        <div class="flex h-9 w-9 shrink-0 items-center justify-center
-                                    rounded-xl bg-pink-50 text-pink-600">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 aria-hidden="true">
-                                <rect x="4" y="10" width="16" height="11" rx="2"/>
-                                <path d="M8 10V7a4 4 0 1 1 8 0v3"/>
-                                <path d="M12 14v3"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h2 class="text-base font-semibold text-slate-800">
-                                Account Security
-                            </h2>
-                            <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                                Change your password to help protect your account.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-5 sm:p-7">
-                    <div class="max-w-2xl">
-                        @include('profile.partials.update-password-form')
-                    </div>
-                </div>
-            </section>
-
-            {{-- DELETE ACCOUNT: EXISTING BEHAVIOR PRESERVED --}}
-            <section class="overflow-hidden rounded-2xl border border-rose-200
-                            bg-white shadow-sm">
-
-                <div class="border-b border-rose-100 bg-rose-50/50
-                            px-5 py-4 sm:px-7">
-                    <div class="flex items-center gap-3">
-                        <div class="flex h-9 w-9 shrink-0 items-center justify-center
-                                    rounded-xl bg-rose-100 text-rose-600">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 aria-hidden="true">
-                                <path d="M3 6h18"/>
-                                <path d="M8 6V4h8v2"/>
-                                <path d="m19 6-1 14H6L5 6"/>
-                                <path d="M10 11v5M14 11v5"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <h2 class="text-base font-semibold text-rose-700">
-                                Delete Account
-                            </h2>
-                            <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                                Review your account deletion options carefully.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-5 sm:p-7">
-                    <div class="max-w-2xl">
-                        @include('profile.partials.delete-user-form')
-                    </div>
-                </div>
-            </section>
-
-            {{-- END OF PROFILE PAGE --}}
         </div>
     </div>
+
+    <script>
+        (function () {
+            var input = document.querySelector('[data-prf-file]');
+            var label = document.querySelector('[data-prf-file-name]');
+            if (!input || !label) return;
+            input.addEventListener('change', function () {
+                label.textContent = input.files && input.files.length ? input.files[0].name : 'No file chosen';
+            });
+        })();
+    </script>
 </x-app-layout>

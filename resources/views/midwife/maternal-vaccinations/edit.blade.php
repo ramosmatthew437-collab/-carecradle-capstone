@@ -58,43 +58,7 @@
 
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
-                    <div>
-                        <label for="vaccine_name" class="mb-2 block text-sm font-semibold text-gray-700">
-                            Vaccine Name <span class="text-pink-600">*</span>
-                        </label>
-
-                        <input id="vaccine_name"
-                               name="vaccine_name"
-                               type="text"
-                               value="{{ old('vaccine_name', $vaccination->vaccine_name) }}"
-                               maxlength="255"
-                               required
-                               placeholder="Enter vaccine name"
-                               class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-100">
-
-                        @error('vaccine_name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="dose" class="mb-2 block text-sm font-semibold text-gray-700">
-                            Dose <span class="text-pink-600">*</span>
-                        </label>
-
-                        <input id="dose"
-                               name="dose"
-                               type="text"
-                               value="{{ old('dose', $vaccination->dose) }}"
-                               maxlength="255"
-                               required
-                               placeholder="e.g. Dose 1"
-                               class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-100">
-
-                        @error('dose')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    @include('midwife.maternal-vaccinations._vaccine-dose-fields', ['vaccination' => $vaccination])
 
                     <div>
                         <label for="date_given" class="mb-2 block text-sm font-semibold text-gray-700">

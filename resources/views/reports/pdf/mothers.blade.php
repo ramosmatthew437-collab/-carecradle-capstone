@@ -127,7 +127,7 @@
 
     <td>{{ $mother->contact_number }}</td>
 
-    <td>{{ $mother->status }}</td>
+    <td>{{ $mother->pregnancyStatusLabel() }}{{ $mother->isReferred() ? ' (Referred)' : '' }}</td>
 
 </tr>
 

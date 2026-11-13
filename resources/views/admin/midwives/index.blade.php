@@ -1,33 +1,15 @@
 <x-app-layout>
 
+    {{-- Shared Administrator styles (admin-only, scoped to .adm-page; no rebuild needed) --}}
+    @include('admin.partials.ui-styles')
 
+    <div class="adm-page">
 
-    {{-- CareCradle Fonts --}}
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-
-
-    {{-- Midwife Management Styles --}}
-
-    <link rel="stylesheet" href="{{ asset('css/midwife-management.css') }}">
-
-
-
-    <div class="mm-page">
-
-        <div class="mm-container">
-
-
+        <div class="adm-container">
 
             {{-- ========================================= --}}
-
-            {{-- SUCCESS ALERT --}}
-
+            {{-- ALERTS (unchanged markup: the page script
+                 dismisses them through the mm-alert classes) --}}
             {{-- ========================================= --}}
 
 
@@ -199,1475 +181,377 @@
             @endif
 
 
-
-
-
-{{-- ========================================= --}}
-{{-- PAGE HEADER --}}
-{{-- ========================================= --}}
-
-<section class="mm-page-header" aria-labelledby="mm-page-title">
-
-    <div class="mm-page-header-main">
-        <div class="mm-page-header-icon" aria-hidden="true">
-            <svg width="21" height="21" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="1.8"
-                 stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 10v6"/>
-                <path d="M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-            </svg>
-        </div>
-
-        <div class="mm-page-header-copy">
-            <h1 class="mm-page-header-title" id="mm-page-title">
-                Midwife Management
-            </h1>
-            <p class="mm-page-header-description">
-                Manage registered midwives and their access to the CareCradle system.
-            </p>
-        </div>
-    </div>
-
-    <div class="mm-page-header-actions">
-
-        <a href="{{ route('dashboard') }}" class="mm-back-button">
-            <svg width="17" height="17" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round"
-                 aria-hidden="true">
-                <path d="M19 12H5"/>
-                <path d="m12 19-7-7 7-7"/>
-            </svg>
-            <span>Back to Dashboard</span>
-        </a>
-
-        <a href="{{ route('midwives.create') }}" class="mm-page-header-button">
-            <svg width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round"
-                 aria-hidden="true">
-                <path d="M12 5v14M5 12h14"/>
-            </svg>
-            <span>Register Midwife</span>
-        </a>
-
-    </div>
-
-</section>
-
-
-
-
-
             {{-- ========================================= --}}
-
-            {{-- STATISTICS --}}
-
+            {{-- PAGE HEADER --}}
             {{-- ========================================= --}}
-
-
-
-            <section class="mm-stats">
-
-
-
-                {{-- Total --}}
-
-                <div class="mm-stat mm-stat-total">
-
-
-
-                    <div class="mm-stat-top">
-
-                        <div class="mm-stat-icon">
-
-                            <svg width="20" height="20" viewBox="0 0 24 24"
-
-                                 fill="none" stroke="currentColor" stroke-width="1.8"
-
-                                 stroke-linecap="round" stroke-linejoin="round"
-
-                                 aria-hidden="true">
-
-                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-
-                                <circle cx="9" cy="7" r="4"/>
-
-                                <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-
-                                <path d="M16 3.13a4 4 0 010 7.75"/>
-
-                            </svg>
-
-                        </div>
-
-
-
-                        <span class="mm-stat-badge">Total</span>
-
+            <section class="adm-page-header" aria-labelledby="mm-page-title">
+                <div class="adm-page-header-main">
+                    <div class="adm-page-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 19h6v-2a4 4 0 0 0-6.5-3.1M16 19H8m8 0v-2a4 4 0 0 0-8 0v2m0 0H2v-2a4 4 0 0 1 6.5-3.1M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                        </svg>
                     </div>
-
-
-
-                    <p class="mm-stat-value">
-
-                        {{ $totalMidwives }}
-
-                    </p>
-
-
-
-                    <p class="mm-stat-label">
-
-                        Registered healthcare staff
-
-                    </p>
-
-
-
-                </div>
-
-
-
-
-
-                {{-- Active --}}
-
-                <div class="mm-stat mm-stat-active">
-
-
-
-                    <div class="mm-stat-top">
-
-                        <div class="mm-stat-icon">
-
-                            <svg width="20" height="20" viewBox="0 0 24 24"
-
-                                 fill="none" stroke="currentColor" stroke-width="1.8"
-
-                                 stroke-linecap="round" stroke-linejoin="round"
-
-                                 aria-hidden="true">
-
-                                <path d="M9 12.75L11.25 15 15 9.75"/>
-
-                                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-
-                            </svg>
-
-                        </div>
-
-
-
-                        <span class="mm-stat-badge">Active</span>
-
-                    </div>
-
-
-
-                    <p class="mm-stat-value">
-
-                        {{ $activeMidwives }}
-
-                    </p>
-
-
-
-                    <p class="mm-stat-label">
-
-                        Currently providing services
-
-                    </p>
-
-
-
-                </div>
-
-
-
-
-
-                {{-- Inactive --}}
-
-                <div class="mm-stat mm-stat-inactive">
-
-
-
-                    <div class="mm-stat-top">
-
-                        <div class="mm-stat-icon">
-
-                            <svg width="20" height="20" viewBox="0 0 24 24"
-
-                                 fill="none" stroke="currentColor" stroke-width="1.8"
-
-                                 stroke-linecap="round" stroke-linejoin="round"
-
-                                 aria-hidden="true">
-
-                                <path d="M18.364 18.364A9 9 0 005.636 5.636"/>
-
-                                <path d="M5.636 18.364A9 9 0 0018.364 5.636"/>
-
-                                <path d="M18.364 18.364L5.636 5.636"/>
-
-                            </svg>
-
-                        </div>
-
-
-
-                        <span class="mm-stat-badge">Inactive</span>
-
-                    </div>
-
-
-
-                    <p class="mm-stat-value">
-
-                        {{ $inactiveMidwives }}
-
-                    </p>
-
-
-
-                    <p class="mm-stat-label">
-
-                        Accounts currently disabled
-
-                    </p>
-
-
-
-                </div>
-
-
-
-            </section>
-
-
-
-
-
-            {{-- ========================================= --}}
-
-            {{-- SEARCH --}}
-
-            {{-- ========================================= --}}
-
-
-
-            <section class="mm-search-card">
-
-
-
-                <form method="GET" action="{{ route('midwives.index') }}">
-
-
-
-                    <div class="mm-search-row">
-
-
-
-                        <div class="mm-search-wrap">
-
-
-
-                            <div class="mm-search-icon">
-
-                                <svg width="18" height="18" viewBox="0 0 24 24"
-
-                                     fill="none" stroke="currentColor" stroke-width="1.8"
-
-                                     stroke-linecap="round" stroke-linejoin="round"
-
-                                     aria-hidden="true">
-
-                                    <circle cx="11" cy="11" r="8"/>
-
-                                    <path d="M21 21l-4.35-4.35"/>
-
-                                </svg>
-
-                            </div>
-
-
-
-                            <input
-
-                                type="text"
-
-                                name="search"
-
-                                value="{{ request('search') }}"
-
-                                placeholder="Search username, name, contact number, email..."
-
-                                class="mm-search-input"
-
-                                aria-label="Search midwives"
-
-                            >
-
-
-
-                            <button type="submit" class="mm-search-button">
-
-                                Search
-
-                            </button>
-
-
-
-                        </div>
-
-
-
-
-
-@php
-
-    $currentStatus = request('status', 'all');
-
-    $currentSearch = request('search', '');
-
-@endphp
-
-
-
-<div class="mm-legend">
-
-    <a
-
-        href="{{ route('midwives.index', ['status' => 'all', 'search' => $currentSearch]) }}"
-
-        class="mm-legend-pill mm-legend-all {{ $currentStatus === 'all' ? 'is-selected' : '' }}"
-
-        aria-current="{{ $currentStatus === 'all' ? 'page' : 'false' }}"
-
-    >
-
-        <span class="mm-legend-dot"></span>
-
-        All Midwives
-
-    </a>
-
-
-
-    <a
-
-        href="{{ route('midwives.index', ['status' => 'active', 'search' => $currentSearch]) }}"
-
-        class="mm-legend-pill mm-legend-active {{ $currentStatus === 'active' ? 'is-selected' : '' }}"
-
-        aria-current="{{ $currentStatus === 'active' ? 'page' : 'false' }}"
-
-    >
-
-        <span class="mm-legend-dot"></span>
-
-        Active
-
-    </a>
-
-
-
-    <a
-
-        href="{{ route('midwives.index', ['status' => 'inactive', 'search' => $currentSearch]) }}"
-
-        class="mm-legend-pill mm-legend-inactive {{ $currentStatus === 'inactive' ? 'is-selected' : '' }}"
-
-        aria-current="{{ $currentStatus === 'inactive' ? 'page' : 'false' }}"
-
-    >
-
-        <span class="mm-legend-dot"></span>
-
-        Inactive
-
-    </a>
-
-</div>
-
-
-
-
-
-
-
-                    @if(request('search'))
-
-
-
-                        <div class="mm-reset-wrapper">
-
-
-
-                            <a href="{{ route('midwives.index') }}" class="mm-reset-button">
-
-
-
-                                <svg width="14" height="14" viewBox="0 0 24 24"
-
-                                     fill="none" stroke="currentColor" stroke-width="2"
-
-                                     stroke-linecap="round" stroke-linejoin="round"
-
-                                     aria-hidden="true">
-
-                                    <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/>
-
-                                    <path d="M3 3v5h5"/>
-
-                                </svg>
-
-
-
-                                Reset Search
-
-
-
-                            </a>
-
-
-
-                        </div>
-
-
-
-                    @endif
-
-
-
-                </form>
-
-
-
-            </section>
-
-
-
-
-
-            {{-- ========================================= --}}
-
-            {{-- MIDWIFE LIST --}}
-
-            {{-- ========================================= --}}
-
-
-
-            <section class="mm-table-shell">
-
-
-
-                <div class="mm-table-header">
-
-
 
                     <div>
-
-                        <h2 class="mm-table-title">
-
-                            Registered Midwives
-
-                        </h2>
-
-
-
-                        <p class="mm-table-subtitle">
-
-                            Manage healthcare professionals assigned to the Rural Health Unit.
-
-                        </p>
-
+                        <p class="adm-eyebrow">Healthcare Workforce</p>
+                        <h1 class="adm-page-title" id="mm-page-title">Midwife Management</h1>
+                        <p class="adm-page-desc">Manage registered midwives and their access to the CareCradle system.</p>
                     </div>
-
-
-
-                    <span class="mm-count-badge">
-
-
-
-                        @if(request('search'))
-
-                            {{ $midwives->count() }} of {{ $totalMidwives }} Records
-
-                        @else
-
-                            {{ $totalMidwives }} Records
-
-                        @endif
-
-
-
-                    </span>
-
-
-
                 </div>
 
+                <div class="adm-page-actions">
+                    <a href="{{ route('dashboard') }}" class="adm-btn adm-btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M19 12H5"/>
+                            <path d="m12 19-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Dashboard</span>
+                    </a>
 
+                    <a href="{{ route('midwives.create') }}" class="adm-btn adm-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        <span>Register Midwife</span>
+                    </a>
+                </div>
+            </section>
 
+            {{-- ========================================= --}}
+            {{-- STATISTICS --}}
+            {{-- ========================================= --}}
+            <section class="adm-stats" aria-label="Midwife account summary">
 
+                {{-- Total --}}
+                <div class="adm-stat adm-tone-1">
+                    <div class="adm-stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 19h6v-2a4 4 0 0 0-6.5-3.1M16 19H8m8 0v-2a4 4 0 0 0-8 0v2m0 0H2v-2a4 4 0 0 1 6.5-3.1M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="adm-stat-value">{{ $totalMidwives }}</p>
+                        <p class="adm-stat-label">Registered healthcare staff</p>
+                    </div>
+                </div>
 
-                {{-- ========================================= --}}
+                {{-- Active --}}
+                <div class="adm-stat adm-tone-3">
+                    <div class="adm-stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M8.5 12.5l2.5 2.5 4.5-5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="adm-stat-value">{{ $activeMidwives }}</p>
+                        <p class="adm-stat-label">Currently providing services</p>
+                    </div>
+                </div>
 
-                {{-- RECORDS --}}
+                {{-- Inactive --}}
+                <div class="adm-stat adm-tone-4">
+                    <div class="adm-stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M5.6 5.6l12.8 12.8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="adm-stat-value">{{ $inactiveMidwives }}</p>
+                        <p class="adm-stat-label">Accounts currently disabled</p>
+                    </div>
+                </div>
 
-                {{-- ========================================= --}}
+            </section>
 
+            {{-- ========================================= --}}
+            {{-- SEARCH AND STATUS FILTER --}}
+            {{-- ========================================= --}}
+            <section class="adm-card">
+                <form method="GET" action="{{ route('midwives.index') }}">
+                    <div class="adm-toolbar">
 
+                        <div class="adm-search">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7"/>
+                                <path d="m20 20-3.5-3.5"/>
+                            </svg>
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ request('search') }}"
+                                placeholder="Search username, name, contact number, email..."
+                                aria-label="Search midwives"
+                            >
+                            <button type="submit" class="adm-btn adm-btn-primary adm-btn-sm">
+                                Search
+                            </button>
+                        </div>
+
+                        @php
+                            $currentStatus = request('status', 'all');
+                            $currentSearch = request('search', '');
+                        @endphp
+
+                        <nav class="adm-segment" aria-label="Filter midwives by status">
+                            <a
+                                href="{{ route('midwives.index', ['status' => 'all', 'search' => $currentSearch]) }}"
+                                class="{{ $currentStatus === 'all' ? 'is-selected' : '' }}"
+                                aria-current="{{ $currentStatus === 'all' ? 'page' : 'false' }}"
+                            >
+                                <span class="adm-dot adm-dot-all"></span>
+                                All Midwives
+                            </a>
+                            <a
+                                href="{{ route('midwives.index', ['status' => 'active', 'search' => $currentSearch]) }}"
+                                class="{{ $currentStatus === 'active' ? 'is-selected' : '' }}"
+                                aria-current="{{ $currentStatus === 'active' ? 'page' : 'false' }}"
+                            >
+                                <span class="adm-dot adm-dot-active"></span>
+                                Active
+                            </a>
+                            <a
+                                href="{{ route('midwives.index', ['status' => 'inactive', 'search' => $currentSearch]) }}"
+                                class="{{ $currentStatus === 'inactive' ? 'is-selected' : '' }}"
+                                aria-current="{{ $currentStatus === 'inactive' ? 'page' : 'false' }}"
+                            >
+                                <span class="adm-dot adm-dot-inactive"></span>
+                                Inactive
+                            </a>
+                        </nav>
+
+                        @if(request('search'))
+                            <div class="adm-toolbar-foot">
+                                <a href="{{ route('midwives.index') }}" class="adm-link">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/>
+                                        <path d="M3 3v5h5"/>
+                                    </svg>
+                                    Reset Search
+                                </a>
+                            </div>
+                        @endif
+
+                    </div>
+                </form>
+            </section>
+
+            {{-- ========================================= --}}
+            {{-- MIDWIFE LIST --}}
+            {{-- ========================================= --}}
+            <section class="adm-card">
+
+                <div class="adm-card-head">
+                    <div class="adm-card-head-main">
+                        <div class="adm-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 19h6v-2a4 4 0 0 0-6.5-3.1M16 19H8m8 0v-2a4 4 0 0 0-8 0v2m0 0H2v-2a4 4 0 0 1 6.5-3.1M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="adm-card-title">Registered Midwives</h2>
+                            <p class="adm-card-sub">Manage healthcare professionals assigned to the Rural Health Unit.</p>
+                        </div>
+                    </div>
+
+                    <span class="adm-count">
+                        @if(request('search'))
+                            {{ $midwives->count() }} of {{ $totalMidwives }} Records
+                        @else
+                            {{ $totalMidwives }} Records
+                        @endif
+                    </span>
+                </div>
 
                 @if($midwives->count())
 
+                    {{-- One table for every screen size: rows become
+                         labelled cards on phones (see ui-styles). --}}
+                    <div class="adm-table-scroll">
+                        <table class="adm-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Full Name</th>
+                                    <th>Contact Number</th>
+                                    <th>Email Address</th>
+                                    <th class="adm-center">Status</th>
+                                    <th class="adm-center">Actions</th>
+                                </tr>
+                            </thead>
 
-
-                    {{-- DESKTOP TABLE --}}
-
-                    <div class="mm-desktop-table">
-
-
-
-                        <div class="mm-table-scroll">
-
-
-
-                            <table class="mm-table">
-
-
-
-                                <thead>
-
+                            <tbody>
+                                @foreach($midwives as $midwife)
                                     <tr>
-
-                                        <th>Username</th>
-
-                                        <th>Full Name</th>
-
-                                        <th>Contact Number</th>
-
-                                        <th>Email Address</th>
-
-                                        <th class="mm-center">Status</th>
-
-                                        <th class="mm-center">Actions</th>
-
-                                    </tr>
-
-                                </thead>
-
-
-
-                                <tbody>
-
-
-
-                                    @foreach($midwives as $midwife)
-
-
-
-                                        <tr>
-
-
-
-                                            <td>
-
-                                                <p class="mm-primary-text">
-
-                                                    {{ $midwife->username }}
-
-                                                </p>
-
-
-
-                                                <p class="mm-secondary-text">
-
-                                                    System Account
-
-                                                </p>
-
-                                            </td>
-
-
-
-
-
-                                            <td>
-
-
-
-                                                <div class="mm-person">
-
-
-
-                                                    <div class="mm-avatar">
-
-                                                        {{ strtoupper(
-
-                                                            substr($midwife->first_name, 0, 1) .
-
-                                                            substr($midwife->last_name, 0, 1)
-
-                                                        ) }}
-
-                                                    </div>
-
-
-
-                                                    <div class="mm-person-info">
-
-
-
-                                                        <p class="mm-primary-text mm-name-text">
-
-                                                            {{ trim(
-
-                                                                $midwife->first_name . ' ' .
-
-                                                                $midwife->middle_name . ' ' .
-
-                                                                $midwife->last_name
-
-                                                            ) }}
-
-                                                        </p>
-
-
-
-                                                        <p class="mm-secondary-text">
-
-                                                            Registered Midwife
-
-                                                        </p>
-
-
-
-                                                    </div>
-
-
-
+                                        <td data-label="Username">
+                                            <div>
+                                                <p class="adm-strong">{{ $midwife->username }}</p>
+                                                <p class="adm-subtext">System Account</p>
+                                            </div>
+                                        </td>
+
+                                        <td data-label="Full Name">
+                                            <div class="adm-person">
+                                                <div class="adm-avatar" aria-hidden="true">
+                                                    {{ strtoupper(
+                                                        substr($midwife->first_name, 0, 1) .
+                                                        substr($midwife->last_name, 0, 1)
+                                                    ) }}
                                                 </div>
+                                                <div>
+                                                    <p class="adm-strong">
+                                                        {{ trim(
+                                                            $midwife->first_name . ' ' .
+                                                            $midwife->middle_name . ' ' .
+                                                            $midwife->last_name
+                                                        ) }}
+                                                    </p>
+                                                    <p class="adm-subtext">Registered Midwife</p>
+                                                </div>
+                                            </div>
+                                        </td>
 
+                                        <td data-label="Contact Number" class="adm-muted">
+                                            {{ $midwife->contact_number ?: '—' }}
+                                        </td>
 
+                                        <td data-label="Email Address" class="adm-muted">
+                                            {{ $midwife->email ?: '—' }}
+                                        </td>
 
-                                            </td>
+                                        <td data-label="Status" class="adm-center">
+                                            @if($midwife->is_active)
+                                                <span class="adm-pill adm-pill-success">
+                                                    <span class="adm-pill-dot"></span>
+                                                    Active
+                                                </span>
+                                            @else
+                                                <span class="adm-pill adm-pill-muted">
+                                                    <span class="adm-pill-dot"></span>
+                                                    Inactive
+                                                </span>
+                                            @endif
+                                        </td>
 
+                                        <td data-label="Actions" class="adm-center">
+                                            <div class="adm-row-actions">
 
+                                                {{-- Edit --}}
+                                                <a
+                                                    href="{{ route('midwives.edit', $midwife->id) }}"
+                                                    aria-label="Edit {{ $midwife->username }}"
+                                                    class="adm-btn adm-btn-sm adm-btn-edit"
+                                                >
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                        <path d="m16.862 4.487 1.687-1.688a2.25 2.25 0 1 1 3.182 3.182L8.25 19.463 3.75 20.25l.787-4.5L16.862 4.487Z"/>
+                                                    </svg>
+                                                    Edit
+                                                </a>
 
-
-
-                                            <td class="mm-muted-text">
-
-                                                {{ $midwife->contact_number ?: '—' }}
-
-                                            </td>
-
-
-
-
-
-                                            <td class="mm-muted-text">
-
-                                                {{ $midwife->email ?: '—' }}
-
-                                            </td>
-
-
-
-
-
-                                            <td class="mm-center">
-
-
-
+                                                {{-- Deactivate / Activate (confirmed through the modal below) --}}
                                                 @if($midwife->is_active)
+                                                    <form
+                                                        action="{{ route('midwives.destroy', $midwife->id) }}"
+                                                        method="POST"
+                                                        class="mm-status-form"
+                                                        data-confirm-action="deactivate"
+                                                        data-midwife-name="{{ trim($midwife->first_name . ' ' . $midwife->last_name) }}"
+                                                    >
+                                                        @csrf
+                                                        @method('DELETE')
 
-
-
-                                                    <span class="mm-status mm-status-active">
-
-                                                        <span class="mm-status-dot"></span>
-
-                                                        Active
-
-                                                    </span>
-
-
-
+                                                        <button
+                                                            type="submit"
+                                                            aria-label="Deactivate {{ $midwife->username }}"
+                                                            class="adm-btn adm-btn-sm adm-btn-danger"
+                                                        >
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                                <circle cx="12" cy="12" r="9"/>
+                                                                <path d="M5.6 5.6l12.8 12.8"/>
+                                                            </svg>
+                                                            <span>Deactivate</span>
+                                                        </button>
+                                                    </form>
                                                 @else
+                                                    <form
+                                                        action="{{ route('midwives.activate', $midwife->id) }}"
+                                                        method="POST"
+                                                        class="mm-status-form"
+                                                        data-confirm-action="activate"
+                                                        data-midwife-name="{{ trim($midwife->first_name . ' ' . $midwife->last_name) }}"
+                                                    >
+                                                        @csrf
 
-
-
-                                                    <span class="mm-status mm-status-inactive">
-
-                                                        <span class="mm-status-dot"></span>
-
-                                                        Inactive
-
-                                                    </span>
-
-
-
+                                                        <button
+                                                            type="submit"
+                                                            aria-label="Activate {{ $midwife->username }}"
+                                                            class="adm-btn adm-btn-sm adm-btn-success"
+                                                        >
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                                <path d="M20 6L9 17l-5-5"/>
+                                                            </svg>
+                                                            <span>Activate</span>
+                                                        </button>
+                                                    </form>
                                                 @endif
 
-
-
-                                            </td>
-
-
-
-
-
-                                            <td class="mm-center">
-
-
-
-                                                <div class="mm-actions">
-
-
-
-                                                    {{-- Edit --}}
-
-                                                    <a
-
-                                                        href="{{ route('midwives.edit', $midwife->id) }}"
-
-                                                        aria-label="Edit {{ $midwife->username }}"
-
-                                                        class="mm-action-button mm-action-edit"
-
-                                                    >
-
-                                                        <svg width="14" height="14"
-
-                                                             viewBox="0 0 24 24"
-
-                                                             fill="none"
-
-                                                             stroke="currentColor"
-
-                                                             stroke-width="2"
-
-                                                             stroke-linecap="round"
-
-                                                             stroke-linejoin="round"
-
-                                                             aria-hidden="true">
-
-                                                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-
-                                                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-
-                                                        </svg>
-
-
-
-                                                        Edit
-
-                                                    </a>
-
-
-
-
-
-                                                    {{-- Deactivate / Activate --}}
-
-                                                    @if($midwife->is_active)
-
-
-
-                                                        <form
-
-                                                            action="{{ route('midwives.destroy', $midwife->id) }}"
-
-                                                            method="POST"
-
-                                                            class="mm-status-form"
-
-                                                            data-confirm-action="deactivate"
-
-                                                            data-midwife-name="{{ trim($midwife->first_name . ' ' . $midwife->last_name) }}"
-
-                                                        >
-
-                                                            @csrf
-
-                                                            @method('DELETE')
-
-
-
-                                                            <button
-
-                                                                type="submit"
-
-                                                                aria-label="Deactivate {{ $midwife->username }}"
-
-                                                                class="mm-action-button mm-action-deactivate"
-
-                                                            >
-
-                                                                <svg width="14" height="14"
-
-                                                                     viewBox="0 0 24 24"
-
-                                                                     fill="none"
-
-                                                                     stroke="currentColor"
-
-                                                                     stroke-width="2"
-
-                                                                     stroke-linecap="round"
-
-                                                                     stroke-linejoin="round"
-
-                                                                     aria-hidden="true">
-
-                                                                    <path d="M18.364 18.364A9 9 0 005.636 5.636"/>
-
-                                                                    <path d="M5.636 18.364A9 9 0 0018.364 5.636"/>
-
-                                                                    <path d="M18.364 18.364L5.636 5.636"/>
-
-                                                                </svg>
-
-
-
-                                                                <span class="mm-action-label">Deactivate</span>
-
-                                                            </button>
-
-
-
-                                                        </form>
-
-
-
-                                                    @else
-
-
-
-                                                        <form
-
-                                                            action="{{ route('midwives.activate', $midwife->id) }}"
-
-                                                            method="POST"
-
-                                                            class="mm-status-form"
-
-                                                            data-confirm-action="activate"
-
-                                                            data-midwife-name="{{ trim($midwife->first_name . ' ' . $midwife->last_name) }}"
-
-                                                        >
-
-                                                            @csrf
-
-
-
-                                                            <button
-
-                                                                type="submit"
-
-                                                                aria-label="Activate {{ $midwife->username }}"
-
-                                                                class="mm-action-button mm-action-activate"
-
-                                                            >
-
-                                                                <svg width="14" height="14"
-
-                                                                     viewBox="0 0 24 24"
-
-                                                                     fill="none"
-
-                                                                     stroke="currentColor"
-
-                                                                     stroke-width="2"
-
-                                                                     stroke-linecap="round"
-
-                                                                     stroke-linejoin="round"
-
-                                                                     aria-hidden="true">
-
-                                                                    <path d="M20 6L9 17l-5-5"/>
-
-                                                                </svg>
-
-
-
-                                                                <span class="mm-action-label">Activate</span>
-
-                                                            </button>
-
-
-
-                                                        </form>
-
-
-
-                                                    @endif
-
-
-
-                                                </div>
-
-
-
-                                            </td>
-
-
-
-                                        </tr>
-
-
-
-                                    @endforeach
-
-
-
-                                </tbody>
-
-
-
-                            </table>
-
-
-
-                        </div>
-
-
-
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-
-
-
-
-
-                    {{-- ========================================= --}}
-
-                    {{-- MOBILE CARDS --}}
-
-                    {{-- ========================================= --}}
-
-
-
-                    <div class="mm-mobile-cards">
-
-
-
-                        @foreach($midwives as $midwife)
-
-
-
-                            <article class="mm-mobile-card">
-
-
-
-                                <div class="mm-mobile-top">
-
-
-
-                                    <div class="mm-mobile-identity">
-
-
-
-                                        <div class="mm-mobile-avatar">
-
-                                            {{ strtoupper(
-
-                                                substr($midwife->first_name, 0, 1) .
-
-                                                substr($midwife->last_name, 0, 1)
-
-                                            ) }}
-
-                                        </div>
-
-
-
-                                        <div class="mm-mobile-person-info">
-
-
-
-                                            <p class="mm-primary-text mm-mobile-name">
-
-                                                {{ trim(
-
-                                                    $midwife->first_name . ' ' .
-
-                                                    $midwife->middle_name . ' ' .
-
-                                                    $midwife->last_name
-
-                                                ) }}
-
-                                            </p>
-
-
-
-                                            <p class="mm-secondary-text">
-
-                                                {{ $midwife->username }}
-
-                                            </p>
-
-
-
-                                        </div>
-
-
-
-                                    </div>
-
-
-
-
-
-                                    @if($midwife->is_active)
-
-
-
-                                        <span class="mm-status mm-status-active">
-
-                                            <span class="mm-status-dot"></span>
-
-                                            Active
-
-                                        </span>
-
-
-
-                                    @else
-
-
-
-                                        <span class="mm-status mm-status-inactive">
-
-                                            <span class="mm-status-dot"></span>
-
-                                            Inactive
-
-                                        </span>
-
-
-
-                                    @endif
-
-
-
-                                </div>
-
-
-
-
-
-                                <div class="mm-mobile-details">
-
-
-
-                                    <div>
-
-                                        <p class="mm-mobile-label">Contact Number</p>
-
-                                        <p class="mm-mobile-value">
-
-                                            {{ $midwife->contact_number ?: '—' }}
-
-                                        </p>
-
-                                    </div>
-
-
-
-                                    <div>
-
-                                        <p class="mm-mobile-label">Email</p>
-
-                                        <p class="mm-mobile-value">
-
-                                            {{ $midwife->email ?: '—' }}
-
-                                        </p>
-
-                                    </div>
-
-
-
-                                </div>
-
-
-
-
-
-                                <div class="mm-mobile-actions">
-
-
-
-                                    {{-- Edit --}}
-
-                                    <a
-
-                                        href="{{ route('midwives.edit', $midwife->id) }}"
-
-                                        class="mm-mobile-action mm-action-edit"
-
-                                    >
-
-                                        <svg width="14" height="14"
-
-                                             viewBox="0 0 24 24"
-
-                                             fill="none"
-
-                                             stroke="currentColor"
-
-                                             stroke-width="2"
-
-                                             stroke-linecap="round"
-
-                                             stroke-linejoin="round"
-
-                                             aria-hidden="true">
-
-                                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-
-                                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-
-                                        </svg>
-
-
-
-                                        Edit
-
-                                    </a>
-
-
-
-
-
-                                    @if($midwife->is_active)
-
-
-
-                                        <form
-
-                                            action="{{ route('midwives.destroy', $midwife->id) }}"
-
-                                            method="POST"
-
-                                            class="mm-status-form"
-
-                                            data-confirm-action="deactivate"
-
-                                            data-midwife-name="{{ trim($midwife->first_name . ' ' . $midwife->last_name) }}"
-
-                                        >
-
-                                            @csrf
-
-                                            @method('DELETE')
-
-
-
-                                            <button
-
-                                                type="submit"
-
-                                                class="mm-mobile-action mm-action-deactivate"
-
-                                            >
-
-                                                <svg width="14" height="14"
-
-                                                     viewBox="0 0 24 24"
-
-                                                     fill="none"
-
-                                                     stroke="currentColor"
-
-                                                     stroke-width="2"
-
-                                                     stroke-linecap="round"
-
-                                                     stroke-linejoin="round"
-
-                                                     aria-hidden="true">
-
-                                                    <path d="M18.364 18.364A9 9 0 005.636 5.636"/>
-
-                                                    <path d="M5.636 18.364A9 9 0 0018.364 5.636"/>
-
-                                                    <path d="M18.364 18.364L5.636 5.636"/>
-
-                                                </svg>
-
-
-
-                                                <span class="mm-action-label">Deactivate</span>
-
-                                            </button>
-
-
-
-                                        </form>
-
-
-
-                                    @else
-
-
-
-                                        <form
-
-                                            action="{{ route('midwives.activate', $midwife->id) }}"
-
-                                            method="POST"
-
-                                            class="mm-status-form"
-
-                                            data-confirm-action="activate"
-
-                                            data-midwife-name="{{ trim($midwife->first_name . ' ' . $midwife->last_name) }}"
-
-                                        >
-
-                                            @csrf
-
-
-
-                                            <button
-
-                                                type="submit"
-
-                                                class="mm-mobile-action mm-action-activate"
-
-                                            >
-
-                                                <svg width="14" height="14"
-
-                                                     viewBox="0 0 24 24"
-
-                                                     fill="none"
-
-                                                     stroke="currentColor"
-
-                                                     stroke-width="2"
-
-                                                     stroke-linecap="round"
-
-                                                     stroke-linejoin="round"
-
-                                                     aria-hidden="true">
-
-                                                    <path d="M20 6L9 17l-5-5"/>
-
-                                                </svg>
-
-
-
-                                                <span class="mm-action-label">Activate</span>
-
-                                            </button>
-
-
-
-                                        </form>
-
-
-
-                                    @endif
-
-
-
-                                </div>
-
-
-
-                            </article>
-
-
-
-                        @endforeach
-
-
-
-                    </div>
-
-
-
-
 
                 @else
 
-
-
                     {{-- ========================================= --}}
-
                     {{-- EMPTY STATE --}}
-
                     {{-- ========================================= --}}
-
-
-
-                    <div class="mm-empty">
-
-
-
-                        <div class="mm-empty-icon">
-
-
-
-                            <svg width="34" height="34"
-
-                                 viewBox="0 0 24 24"
-
-                                 fill="none"
-
-                                 stroke="currentColor"
-
-                                 stroke-width="1.5"
-
-                                 stroke-linecap="round"
-
-                                 stroke-linejoin="round"
-
-                                 aria-hidden="true">
-
-                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-
-                                <circle cx="9" cy="7" r="4"/>
-
-                                <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-
-                                <path d="M16 3.13a4 4 0 010 7.75"/>
-
+                    <div class="adm-empty">
+                        <div class="adm-empty-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 19h6v-2a4 4 0 0 0-6.5-3.1M16 19H8m8 0v-2a4 4 0 0 0-8 0v2m0 0H2v-2a4 4 0 0 1 6.5-3.1M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                             </svg>
-
-
-
                         </div>
 
-
-
-                        <p class="mm-empty-title">
-
+                        <p class="adm-empty-title">
                             @if(request('search'))
-
                                 No Midwives Found
-
                             @else
-
                                 No Registered Midwives
-
                             @endif
-
                         </p>
 
-
-
-                        <p class="mm-empty-description">
-
-
-
+                        <p class="adm-empty-desc">
                             @if(request('search'))
-
                                 No midwife accounts match your search.
-
                                 Try using a different name, username, contact number, or email.
-
                             @else
-
                                 There are currently no registered midwives in the CareCradle system.
-
                                 Add a healthcare provider to begin managing midwife accounts for the Rural Health Unit.
-
                             @endif
-
-
-
                         </p>
-
-
-
-
 
                         @if(request('search'))
-
-
-
-                            <a href="{{ route('midwives.index') }}" class="mm-empty-button">
-
+                            <a href="{{ route('midwives.index') }}" class="adm-btn adm-btn-secondary">
                                 Clear Search
-
                             </a>
-
-
-
                         @else
-
-
-
-                            <a href="{{ route('midwives.create') }}" class="mm-empty-button">
-
-
-
-                                <svg width="16" height="16"
-
-                                     viewBox="0 0 24 24"
-
-                                     fill="none"
-
-                                     stroke="currentColor"
-
-                                     stroke-width="2.5"
-
-                                     stroke-linecap="round"
-
-                                     stroke-linejoin="round"
-
-                                     aria-hidden="true">
-
-                                    <path d="M12 5v14M5 12h14"/>
-
-                                </svg>
-
-
-
+                            <a href="{{ route('midwives.create') }}" class="adm-btn adm-btn-primary">
                                 Register Midwife
-
-
-
                             </a>
-
-
-
                         @endif
-
-
-
                     </div>
-
-
 
                 @endif
 
-
-
             </section>
-
-
 
         </div>
 
     </div>
-
-
-
 
 
     {{-- ========================================= --}}
@@ -2333,7 +1217,6 @@
         });
 
     </script>
-
 
 
 </x-app-layout>

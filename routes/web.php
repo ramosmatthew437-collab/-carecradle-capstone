@@ -26,7 +26,6 @@ use App\Http\Controllers\PrivacyConsentController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\StaffConfidentialityController;
 use App\Http\Controllers\PrenatalCheckupAttachmentController;
-use App\Services\TextBeeService;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +33,8 @@ use App\Services\TextBeeService;
 |--------------------------------------------------------------------------
 */
 
-Route::redirect('/', '/login');
+// Public landing page (previously redirected straight to /login).
+Route::view('/', 'welcome')->name('home');
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -102,6 +102,23 @@ Route::get('/activity-logs', [
         Route::get('/reports/mothers/pdf', [ReportController::class, 'mothersPdf'])->name('reports.mothers.pdf');
         Route::get('/reports/infants/pdf', [ReportController::class, 'infantsPdf'])->name('reports.infants.pdf');
         Route::get('/reports/vaccinations/pdf', [ReportController::class, 'vaccinationsPdf'])->name('reports.vaccinations.pdf');
+
+        // RHU Patient Records Center (read-only, GET only).
+        // Administrators can search, view, print, and export; they cannot create, edit, or delete.
+        Route::get('/reports/patients', [\App\Http\Controllers\Admin\PatientRecordController::class, 'index'])
+            ->name('reports.patients.index');
+
+        Route::get('/reports/patients/{mother}', [\App\Http\Controllers\Admin\PatientRecordController::class, 'show'])
+            ->whereNumber('mother')
+            ->name('reports.patients.show');
+
+        Route::get('/reports/patients/{mother}/print', [\App\Http\Controllers\Admin\PatientRecordController::class, 'print'])
+            ->whereNumber('mother')
+            ->name('reports.patients.print');
+
+        Route::get('/reports/patients/{mother}/pdf', [\App\Http\Controllers\Admin\PatientRecordController::class, 'pdf'])
+            ->whereNumber('mother')
+            ->name('reports.patients.pdf');
 
     });
 
@@ -177,6 +194,26 @@ Route::delete(
         */
 
         Route::resource('mothers', MotherController::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mother Referrals (Midwife). Administrators see referrals read-only
+        | on the patient record. Referrals are never deleted.
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/mothers/{mother}/referrals/create', [\App\Http\Controllers\MotherReferralController::class, 'create'])
+            ->name('referrals.create');
+        Route::post('/mothers/{mother}/referrals', [\App\Http\Controllers\MotherReferralController::class, 'store'])
+            ->name('referrals.store');
+        Route::get('/referrals/{referral}/edit', [\App\Http\Controllers\MotherReferralController::class, 'edit'])
+            ->name('referrals.edit');
+        Route::put('/referrals/{referral}', [\App\Http\Controllers\MotherReferralController::class, 'update'])
+            ->name('referrals.update');
+        Route::post('/referrals/{referral}/close', [\App\Http\Controllers\MotherReferralController::class, 'close'])
+            ->name('referrals.close');
+        Route::post('/referrals/{referral}/void', [\App\Http\Controllers\MotherReferralController::class, 'void'])
+            ->name('referrals.void');
 
         /*
         |--------------------------------------------------------------------------
@@ -265,12 +302,25 @@ Route::delete(
             [\App\Http\Controllers\SmsNotificationController::class, 'index'])
             ->name('sms-notifications.index');
 
+        Route::get('/sms-notifications/scheduler-runs',
+            [\App\Http\Controllers\SmsNotificationController::class, 'schedulerRuns'])
+            ->name('sms-notifications.scheduler-runs');
+
         Route::get('/sms-notifications/{smsNotification}',
             [\App\Http\Controllers\SmsNotificationController::class, 'show'])
             ->name('sms-notifications.show');
 
         Route::post('/sms-notifications/{smsNotification}/send', [SmsNotificationController::class, 'send'])
             ->name('sms-notifications.send');
+
+        Route::post('/sms-notifications/{smsNotification}/retry', [SmsNotificationController::class, 'retry'])
+            ->name('sms-notifications.retry');
+
+        Route::post('/sms-notifications/{smsNotification}/review', [SmsNotificationController::class, 'review'])
+            ->name('sms-notifications.review');
+
+        Route::post('/sms-notifications/{smsNotification}/check-status', [SmsNotificationController::class, 'checkStatus'])
+            ->name('sms-notifications.check-status');
 
         /*
         |--------------------------------------------------------------------------
@@ -383,6 +433,9 @@ Route::delete(
 
         Route::get('/mother/sms-history', [MotherSmsController::class, 'index'])
             ->name('mother.sms-history');
+        // Read-only list of the signed-in mother's own referrals (no IDs in the URL).
+        Route::get('/mother/referrals', [\App\Http\Controllers\Mother\MotherReferralController::class, 'index'])
+            ->name('mother.referrals');
 
         Route::get('/mother/prenatal-records', [MotherPrenatalController::class, 'index'])
             ->name('mother.prenatal-records');
@@ -570,20 +623,3 @@ Route::middleware('guest')->group(function () {
 
 
 require __DIR__.'/auth.php';
-
-
-/*
-|--------------------------------------------------------------------------
-| Test Routes
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/test-sms', function (TextBeeService $textBee) {
-
-    $result = $textBee->send(
-        '+639925519539',
-        'Hello! This is a test SMS from CareCradle 🚀'
-    );
-
-    dd($result);
-});

@@ -55,6 +55,21 @@
 
             @endif
 
+            {{-- Not-done notice (e.g. a protected mother record that cannot be deleted). --}}
+            @if(session('error'))
+                <div class="mm-alert" role="alert" style="background:#fdf6e7;border-color:#f0dcae;">
+                    <div class="mm-alert-icon" style="color:#8a5a00;background:#fff3d6;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+                        </svg>
+                    </div>
+                    <div class="mm-alert-content">
+                        <h3 class="mm-alert-title" style="color:#8a5a00;">Not done</h3>
+                        <p class="mm-alert-message" style="color:#6b4a00;">{{ session('error') }}</p>
+                    </div>
+                </div>
+            @endif
+
 
 <a href="{{ route('dashboard') }}" class="mm-back-btn">
     <svg xmlns="http://www.w3.org/2000/svg"
@@ -119,11 +134,8 @@
 
                         <p class="mm-description">
 
-                            Manage registered mothers, maintain maternal records, update patient
-
-                            information, and monitor pregnancy status through a centralized
-
-                            electronic medical record system.
+                            Register mothers, keep maternal records up to date, and monitor
+                            pregnancy status in one place.
 
                         </p>
 
@@ -483,7 +495,9 @@
 
                                     value="{{ request('search') }}"
 
-                                    placeholder="Search by mother name, mother code, barangay, contact number, or status..."
+                                    placeholder="Name, mother code, barangay, contact number, or status"
+
+                                    aria-label="Search mother records"
 
                                     class="mm-search-input">
 
@@ -553,7 +567,9 @@
 
                     </form>
 
-                    <div class="mm-search-tags">
+                    <div class="mm-search-tags" aria-label="Searchable fields">
+
+                        <span class="mm-search-tags-label">Searches</span>
 
                         <span class="mm-search-tag mm-tag-pink">
 
@@ -611,7 +627,7 @@
 
                         <p class="mm-registry-description">
 
-                            View and manage all maternal patient records.
+                            View and manage all registered maternal records.
 
                         </p>
 
@@ -767,6 +783,8 @@
 
                                     @php
 
+                                        $fullName = trim(preg_replace('/\s+/', ' ', $mother->first_name . ' ' . $mother->middle_name . ' ' . $mother->last_name));
+
                                         $statusClass = match($mother->status) {
 
                                             'Pregnant' => 'mm-status-pregnant',
@@ -853,9 +871,10 @@
 
                                             <span class="mm-status {{ $statusClass }}">
 
-                                                {{ $mother->status }}
+                                                {{ $mother->pregnancyStatusLabel() }}
 
                                             </span>
+                                            @if ($mother->isReferred())<span style="display:inline-flex;align-items:center;margin-left:0.375rem;padding:0.0625rem 0.5rem;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:999px;font-size:0.6875rem;font-weight:700;white-space:nowrap;" title="Currently referred">Referred</span>@endif
 
                                         </td>
 
@@ -865,7 +884,8 @@
 
                                                 <a href="{{ route('mothers.show', $mother->id) }}"
 
-                                                   class="mm-action mm-action-view">
+                                                   class="mm-action mm-action-view"
+                                                   aria-label="View {{ $fullName }}">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg"
 
@@ -897,7 +917,8 @@
 
                                                 <a href="{{ route('mothers.edit', $mother->id) }}"
 
-                                                   class="mm-action mm-action-edit">
+                                                   class="mm-action mm-action-edit"
+                                                   aria-label="Edit {{ $fullName }}">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg"
 
@@ -952,6 +973,8 @@
                         @foreach($mothers as $mother)
 
                             @php
+
+                                $fullName = trim(preg_replace('/\s+/', ' ', $mother->first_name . ' ' . $mother->middle_name . ' ' . $mother->last_name));
 
                                 $statusClass = match($mother->status) {
 
@@ -1019,9 +1042,10 @@
 
                                     <span class="mm-status {{ $statusClass }}">
 
-                                        {{ $mother->status }}
+                                        {{ $mother->pregnancyStatusLabel() }}
 
                                     </span>
+                                    @if ($mother->isReferred())<span style="display:inline-flex;align-items:center;margin-left:0.375rem;padding:0.0625rem 0.5rem;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:999px;font-size:0.6875rem;font-weight:700;white-space:nowrap;" title="Currently referred">Referred</span>@endif
 
                                 </div>
 
@@ -1065,7 +1089,8 @@
 
                                     <a href="{{ route('mothers.show', $mother->id) }}"
 
-                                       class="mm-action mm-action-view">
+                                       class="mm-action mm-action-view"
+                                       aria-label="View {{ $fullName }}">
 
                                         <svg xmlns="http://www.w3.org/2000/svg"
 
@@ -1097,7 +1122,8 @@
 
                                     <a href="{{ route('mothers.edit', $mother->id) }}"
 
-                                       class="mm-action mm-action-edit">
+                                       class="mm-action mm-action-edit"
+                                       aria-label="Edit {{ $fullName }}">
 
                                         <svg xmlns="http://www.w3.org/2000/svg"
 

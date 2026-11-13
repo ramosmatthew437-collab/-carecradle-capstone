@@ -1,9 +1,36 @@
 
 <aside class="cc-mother-sidebar">
    
-<a href="{{ route('mother.dashboard') }}" class="cc-mother-brand">
+<a href="{{ route('mother.dashboard') }}" class="cc-mother-brand cc-mother-brand-portal">
     <x-application-logo size="sm" />
+    {{-- Portal subtitle, styled like ADMINISTRATOR PORTAL / MIDWIFE PORTAL. --}}
+    <small class="cc-mother-portal-label">Mother Portal</small>
 </a>
+
+{{-- Mother sidebar brand subtitle (scoped; no rebuild needed). The logo
+     component is unchanged; the subtitle sits under the CareCradle wordmark. --}}
+@once
+<style>
+    .cc-mother-sidebar .cc-mother-brand.cc-mother-brand-portal {
+        display: grid;
+        grid-template-columns: auto;
+        justify-content: start;
+        row-gap: 0;
+    }
+
+    .cc-mother-sidebar .cc-mother-portal-label {
+        /* Aligned with the wordmark: logo width (40px) + its gap (8px). */
+        margin: -0.45rem 0 0 48px;
+        color: #be185d;
+        font-size: 0.62rem;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+</style>
+@endonce
 
 
     <div class="cc-mother-sidebar-label">MATERNAL CARE</div>
@@ -27,6 +54,12 @@
                 'route' => 'mother.prenatal-records',
                 'pattern' => 'mother.prenatal-records',
                 'icon' => 'clipboard-list',
+            ],
+            [
+                'label' => 'My Referrals',
+                'route' => 'mother.referrals',
+                'pattern' => 'mother.referrals',
+                'icon' => 'arrow-right-left',
             ],
             [
                 'label' => 'Infant Records',
@@ -122,6 +155,12 @@
                         @case('syringe')
                             <svg viewBox="0 0 24 24">
                                 <path d="M4 20l9-9M7 17l-3-3M10 14l-3-3M14 10l-3-3M17 7l-3-3M14 4l6 6M3 21l3-3M15 9l-6 6"/>
+                            </svg>
+                            @break
+
+                        @case('arrow-right-left')
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
                             </svg>
                             @break
 

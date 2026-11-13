@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateMotherRequest;
 use App\Models\Appointment;
 use App\Models\Infant;
 use App\Models\Mother;
+use App\Models\SmsNotification;
 use App\Models\User;
 use App\Services\ActivityLogger;
 use Illuminate\Http\RedirectResponse;
@@ -34,7 +35,9 @@ class MotherController extends Controller
 
         $deliveredMothers = Mother::where('status', 'Delivered')->count();
 
-        $referredMothers = Mother::where('status', 'Referred')->count();
+        // Referred is derived (active referral, or an older Referred record);
+        // a referred mother is still counted under her pregnancy status.
+        $referredMothers = Mother::referred()->count();
 
         $totalInfants = Infant::count();
 
@@ -55,9 +58,11 @@ class MotherController extends Controller
                         ->orWhere('status', 'like', "%{$search}%");
                 });
             })
-            ->when($status && $status !== 'All', function ($query) use ($status) {
+            ->when($status === 'Referred', fn ($query) => $query->referred())
+            ->when($status && ! in_array($status, ['All', 'Referred'], true), function ($query) use ($status) {
                 $query->where('status', $status);
             })
+            ->withReferralFlag()
             ->latest()
             ->get();
 
@@ -130,7 +135,8 @@ class MotherController extends Controller
                 'barangay' => $request->barangay,
                 'blood_type' => $request->blood_type,
                 'civil_status' => $request->civil_status,
-                
+                'occupation' => $request->occupation,
+
                 'father_first_name' => $request->father_first_name,
 'father_middle_name' => $request->father_middle_name,
 'father_last_name' => $request->father_last_name,
@@ -141,7 +147,8 @@ class MotherController extends Controller
                 'height' => $request->height,
                 'weight' => $request->weight,
                 'last_menstrual_period' => $request->last_menstrual_period,
-                'expected_delivery_date' => $request->expected_delivery_date,
+                // Calculated on the server (LMP + 280 days), never taken from the browser.
+                'expected_delivery_date' => $request->expectedDeliveryDate(),
                 'pregnancy_number' => $request->pregnancy_number,
                 'status' => 'Pregnant',
             ]);
@@ -170,6 +177,7 @@ class MotherController extends Controller
         'appointments',
         'infants',
         'maternalVaccinations',
+        'referrals',
     ])->findOrFail($id);
 
     return view('admin.mothers.show', compact('mother'));
@@ -194,8 +202,11 @@ class MotherController extends Controller
         ActivityLogger $activityLogger
     ): RedirectResponse {
         $mother = Mother::findOrFail($id);
+        $oldStatus = $mother->status;
 
         DB::transaction(function () use ($mother, $request) {
+            $numberChanged = $mother->contact_number !== $request->contact_number;
+
             // Update the linked user account.
             $mother->user->update([
                 'first_name' => $request->first_name,
@@ -221,7 +232,8 @@ class MotherController extends Controller
                 'barangay' => $request->barangay,
                 'blood_type' => $request->blood_type,
                 'civil_status' => $request->civil_status,
-                
+                'occupation' => $request->occupation,
+
                 'father_first_name' => $request->father_first_name,
 'father_middle_name' => $request->father_middle_name,
 'father_last_name' => $request->father_last_name,
@@ -232,10 +244,21 @@ class MotherController extends Controller
                 'height' => $request->height,
                 'weight' => $request->weight,
                 'last_menstrual_period' => $request->last_menstrual_period,
-                'expected_delivery_date' => $request->expected_delivery_date,
+                // Existing EDD kept while the LMP is unchanged; recalculated
+                // (LMP + 280 days) only when the LMP changes.
+                'expected_delivery_date' => $request->expectedDeliveryDate(),
                 'pregnancy_number' => $request->pregnancy_number,
                 'status' => $request->status,
             ]);
+
+            // Same rule as the Mother Portal: this mother's reminders that are
+            // still Pending go to her new number. Sent and Failed notifications
+            // keep the number they were sent to. Nothing is sent here.
+            if ($numberChanged) {
+                SmsNotification::where('mother_id', $mother->id)
+                    ->where('status', 'Pending')
+                    ->update(['recipient_number' => $request->contact_number]);
+            }
         });
 
         $activityLogger->log(
@@ -244,6 +267,16 @@ class MotherController extends Controller
             "Updated a mother profile (code: {$mother->mother_code}).",
             $mother->id
         );
+
+        if ($oldStatus !== $mother->status) {
+            $label = fn (string $s) => $s === Mother::LEGACY_REFERRED ? 'Unknown (older Referred record)' : $s;
+            $activityLogger->log(
+                'status_changed',
+                'Mother Management',
+                "Pregnancy status changed from {$label($oldStatus)} to {$label($mother->status)} (code: {$mother->mother_code}).",
+                $mother->id
+            );
+        }
 
         return redirect()
             ->route('mothers.index')
@@ -258,6 +291,25 @@ class MotherController extends Controller
         ActivityLogger $activityLogger
     ): RedirectResponse {
         $mother = Mother::findOrFail($id);
+
+        // Protected history: a mother with appointment records or SMS
+        // notification history is never deleted, so that history (including
+        // SMS delivery attempts) stays available for auditing. Nothing is
+        // deleted or changed in that case.
+        $hasAppointments = $mother->appointments()->exists();
+        $hasSmsHistory = $mother->smsNotifications()->exists();
+
+        if ($hasAppointments || $hasSmsHistory) {
+            $kept = implode(' and ', array_filter([
+                $hasAppointments ? 'appointment records' : null,
+                $hasSmsHistory ? 'SMS notification history' : null,
+            ]));
+
+            return redirect()
+                ->route('mothers.index')
+                ->with('error', "This mother record (code: {$mother->mother_code}) cannot be permanently deleted because it has {$kept}. "
+                    . 'These records are kept for the RHU\'s audit history. Nothing was deleted.');
+        }
 
         // Keep the reference before deleting the profile.
         $motherCode = $mother->mother_code;
