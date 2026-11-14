@@ -60,7 +60,7 @@ class ReminderSchedulerMonitor
     private function evaluate(Carbon $now, Carbon $latestSlot, ?SmsSchedulerRun $last): array
     {
         if (! $last) {
-            return ['not_reporting', 'No run started by the scheduler has been recorded yet. Check that "php artisan schedule:run" is set to run every minute (cron or Windows Task Scheduler).'];
+            return ['not_reporting', 'The daily automatic reminder process is configured on the hosting server. Its first successful execution has not yet been recorded.'];
         }
 
         $started = $last->started_at->copy()->setTimezone(self::TIMEZONE);

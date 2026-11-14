@@ -30,7 +30,7 @@
                 @if ($runs->isEmpty())
                     <div class="smx-empty">
                         <h2>No runs recorded yet</h2>
-                        <p>The daily reminder run has not reported to CareCradle. On the server, a cron job must run <span class="smx-mono">php artisan schedule:run</span> every minute.</p>
+                        <p>No automatic reminder runs have been recorded yet. The hosting server is configured to execute the reminder command daily at 8:00 AM (Asia/Manila). Run history will appear here after its first successful execution.</p>
                     </div>
                 @else
                     <table class="smx-runs">
