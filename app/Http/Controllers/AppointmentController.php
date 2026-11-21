@@ -18,6 +18,44 @@ class AppointmentController extends Controller
     /** Values allowed by the appointments.status column. */
     private const STATUSES = ['Scheduled', 'Completed', 'Missed', 'Cancelled'];
 
+    /** Scheduling "now" is always the Irosin RHU's local time. */
+    private const TIMEZONE = 'Asia/Manila';
+
+    /**
+     * Validation closures that keep an appointment's date and time from being
+     * set in the past (Asia/Manila): a past date, or an earlier time today.
+     * New appointments are always checked. An existing appointment is checked
+     * only when its date or time is changed, so a past appointment can still
+     * be edited (e.g. its status or notes) while its date and time stay as they are.
+     *
+     * @return array{date: \Closure, time: \Closure}
+     */
+    private function notInPastRules(Request $request, ?Appointment $existing = null): array
+    {
+        $submittedDate = (string) $request->input('appointment_date');
+        $submittedTime = substr((string) $request->input('appointment_time'), 0, 5);
+
+        $changed = $existing === null
+            || $submittedDate !== \Illuminate\Support\Carbon::parse($existing->appointment_date)->toDateString()
+            || $submittedTime !== substr((string) $existing->appointment_time, 0, 5);
+
+        $now = now(self::TIMEZONE);
+
+        return [
+            'date' => function (string $attribute, mixed $value, \Closure $fail) use ($changed, $now) {
+                if ($changed && \Illuminate\Support\Carbon::parse($value, self::TIMEZONE)->toDateString() < $now->toDateString()) {
+                    $fail('The appointment date cannot be in the past. Choose today or a later date.');
+                }
+            },
+            'time' => function (string $attribute, mixed $value, \Closure $fail) use ($changed, $now, $submittedDate, $submittedTime) {
+                if ($changed && $submittedDate === $now->toDateString()
+                    && preg_match('/^\d{2}:\d{2}$/', $submittedTime) && $submittedTime < $now->format('H:i')) {
+                    $fail('The appointment time has already passed today. Choose a later time, or a later date.');
+                }
+            },
+        ];
+    }
+
     /**
      * The appointment reminder text stored with a Pending SMS notification
      * (unchanged wording; used when scheduling and when an appointment's
@@ -95,13 +133,15 @@ public function edit(Appointment $appointment)
  */
 public function update(Request $request, Appointment $appointment)
 {
+    $notInPast = $this->notInPastRules($request, $appointment);
+
     $request->validate([
 
         'appointment_type' => ['required', 'in:' . implode(',', self::TYPES)],
 
-        'appointment_date' => 'required|date',
+        'appointment_date' => ['bail', 'required', 'date', $notInPast['date']],
 
-        'appointment_time' => 'required',
+        'appointment_time' => ['bail', 'required', 'date_format:H:i,H:i:s', $notInPast['time']],
 
         'status' => ['required', 'in:' . implode(',', self::STATUSES)],
 
@@ -109,6 +149,7 @@ public function update(Request $request, Appointment $appointment)
 
     ], [
         'appointment_type.in' => 'Please choose a valid appointment type.',
+        'appointment_time.date_format' => 'Please enter a valid appointment time (HH:MM).',
         'status.in' => 'Please choose a valid appointment status.',
     ]);
 
@@ -156,13 +197,15 @@ public function update(Request $request, Appointment $appointment)
      */
     public function store(Request $request, Mother $mother)
     {
+        $notInPast = $this->notInPastRules($request);
+
         $request->validate([
 
             'appointment_type' => ['required', 'in:' . implode(',', self::TYPES)],
 
-            'appointment_date' => 'required|date',
+            'appointment_date' => ['bail', 'required', 'date', $notInPast['date']],
 
-            'appointment_time' => 'required',
+            'appointment_time' => ['bail', 'required', 'date_format:H:i,H:i:s', $notInPast['time']],
 
             'notes' => 'nullable|string',
 
@@ -170,6 +213,7 @@ public function update(Request $request, Appointment $appointment)
 
         ], [
             'appointment_type.in' => 'Please choose a valid appointment type.',
+            'appointment_time.date_format' => 'Please enter a valid appointment time (HH:MM).',
         ]);
 
         // Create Appointment

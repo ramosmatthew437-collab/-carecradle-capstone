@@ -421,6 +421,8 @@
 
                         </form>
 
+                        @include('appointments._schedule-limits', ['onlyWhenChanged' => true])
+
                     </div>
 
                 </section>

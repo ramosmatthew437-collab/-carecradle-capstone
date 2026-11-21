@@ -123,6 +123,7 @@
                             </svg>
                             <input id="appointment_date" type="date" name="appointment_date" value="{{ old('appointment_date') }}" class="apc-input" required {!! $apcInvalid('appointment_date') !!}>
                         </div>
+                        <p class="apc-hint">Today or a later date. A time that has already passed today cannot be chosen.</p>
                         @error('appointment_date') <p class="apc-error" id="appointment_date_error">{{ $message }}</p> @enderror
                     </div>
 
@@ -167,6 +168,8 @@
                     </div>
                 </div>
             </form>
+
+            @include('appointments._schedule-limits', ['onlyWhenChanged' => false])
 
         </div>
     </div>

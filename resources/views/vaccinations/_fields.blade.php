@@ -10,8 +10,11 @@
       schedule or dose meaning;
     - the stored text is submitted exactly (the server trims and validates).
     Without JavaScript the inputs still work, with browser suggestions.
-    Age guidance is informational only: dates are not restricted by it and
-    Next Due Date is never calculated.
+    Age guidance is informational only: dates are not restricted by it.
+    Standard doses this infant already received (saved records only; the
+    record being edited excluded) are not offered again, and the server
+    rejects them too. Next Due Date is entered manually until the RHU-approved
+    intervals in Vaccination::NEXT_DOSE_RULES are switched on.
 --}}
 @php
     $VX = \App\Models\Vaccination::class;
@@ -31,9 +34,23 @@
     $vxHas = fn (string $field) => $errors->has($field) ? ' has-error' : '';
     $vxBirth = $infant->birth_date ? \Carbon\Carbon::parse($infant->birth_date)->toDateString() : null;
 
+    // Standard doses already given to this infant (saved records only).
+    $vxGiven = collect($VX::administeredStandardDoses($infant->id, $vaccination?->id))
+        ->map(fn ($doses) => collect($doses)->map(fn ($date) => \Carbon\Carbon::parse($date)->format('M d, Y'))->all())
+        ->all();
+
+    // Automatic next-dose scheduling (inactive until the RHU confirms intervals).
+    $vxAuto = [
+        'active' => $VX::autoSchedulingActive(),
+        'rules' => $VX::NEXT_DOSE_RULES,
+        'birth' => $vxBirth,
+        'pendingNote' => $VX::AUTO_SCHEDULING_PENDING_NOTE,
+    ];
+
     // Initial status text (the script keeps it up to date while typing).
     $vxApproved = $VX::isApprovedVaccine($vxVaccine);
     $vxStandardDose = $VX::isStandardDose($vxVaccine, $vxDose);
+    $vxAlreadyGiven = $vxStandardDose ? ($vxGiven[$vxVaccine][$vxDose] ?? null) : null;
 @endphp
 
 @once
@@ -191,6 +208,30 @@
             font-size: 0.75rem;
         }
 
+        /* A standard dose already given to this infant (history stays on the profile). */
+        .vxc-given {
+            display: inline-block;
+            margin-left: 0.25rem;
+            padding: 0.0625rem 0.5rem;
+            color: #047857;
+            background: #ecfdf5;
+            border-radius: 999px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+        }
+
+        /* Next Due Date: automatic-scheduling status (pending RHU confirmation / calculated). */
+        .vxc-auto-note {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.375rem;
+            margin: 0.375rem 0 0;
+            color: #64748b;
+            font-size: 0.75rem;
+            line-height: 1.45;
+        }
+
         .vxc [hidden] {
             display: none !important;
         }
@@ -216,6 +257,8 @@
          data-schedule='@json($vxSchedule)'
          data-stored-vaccine="{{ $vxStoredVaccine }}"
          data-stored-dose="{{ $vxStoredDose }}"
+         data-given='@json((object) $vxGiven)'
+         data-auto='@json($vxAuto)'
          data-schedule-note="{{ $VX::SCHEDULE_NOTE }}">
 
         {{-- Vaccine --}}
@@ -275,6 +318,8 @@
             <p class="vxc-status" id="dose_status" aria-live="polite" data-vxc-dose-status>
                 @if ($vxDose === '')
                     {{ $vxApproved ? 'Choose a standard dose, or type a custom label.' : 'Type the dose label.' }}
+                @elseif ($vxAlreadyGiven)
+                    <span class="inf-badge inf-badge-red">Already recorded</span> {{ $vxVaccine }} {{ $vxDose }} was given {{ $vxAlreadyGiven }}. Choose the next dose.
                 @elseif ($vxStandardDose)
                     <span class="inf-badge inf-badge-green">Standard dose</span> Recommended {{ $VX::doseGuidance($vxVaccine)[$vxDose] }}.
                 @else
@@ -291,7 +336,7 @@
                     <p class="vxc-schedule-title">Recommended schedule: {{ $vxVaccine }}</p>
                     <ol>
                         @foreach ($VX::doseGuidance($vxVaccine) as $vxScheduleDose => $vxAge)
-                            <li><strong>{{ $vxScheduleDose }}</strong> {{ $vxAge }}</li>
+                            <li><strong>{{ $vxScheduleDose }}</strong> {{ $vxAge }}@isset($vxGiven[$vxVaccine][$vxScheduleDose]) <span class="vxc-given">Recorded {{ $vxGiven[$vxVaccine][$vxScheduleDose] }}</span>@endisset</li>
                         @endforeach
                     </ol>
                     <p class="vxc-schedule-note">
@@ -333,8 +378,16 @@
 
         <div class="inf-field{{ $vxHas('next_due_date') }}">
             <label for="next_due_date" class="inf-label">Next Due Date <span class="inf-optional">Optional</span></label>
-            <input id="next_due_date" type="date" name="next_due_date" value="{{ $vxDate('next_due_date') }}" class="inf-input">
-            <p class="inf-hint">Entered by the midwife; it is not calculated automatically. Leave blank if no further dose is scheduled.</p>
+            <input id="next_due_date" type="date" name="next_due_date" value="{{ $vxDate('next_due_date') }}" class="inf-input"
+                   aria-describedby="next_due_date_note">
+            <p class="inf-hint">Not earlier than the Date Given. Leave blank if no further dose is scheduled.</p>
+            <p class="vxc-auto-note" id="next_due_date_note" aria-live="polite" data-vxc-next-due-note>
+                @if ($vxAuto['active'])
+                    Leave blank to calculate it from the Date Given using the RHU-approved interval.
+                @else
+                    <span class="inf-badge inf-badge-amber">Awaiting RHU confirmation</span> {{ $VX::AUTO_SCHEDULING_PENDING_NOTE }}
+                @endif
+            </p>
             @error('next_due_date') <p class="inf-error">{{ $message }}</p> @enderror
         </div>
 
@@ -362,6 +415,8 @@
         if (!root) return;
 
         var schedule = JSON.parse(root.getAttribute('data-schedule') || '{}');
+        var given = JSON.parse(root.getAttribute('data-given') || '{}');   // {vaccine: {dose: 'M d, Y'}} saved records only
+        var auto = JSON.parse(root.getAttribute('data-auto') || '{}');     // automatic next-dose scheduling settings
         var scheduleNote = root.getAttribute('data-schedule-note') || '';
         var vaccineInput = root.querySelector('[data-vxc-vaccine]');
         var doseInput = root.querySelector('[data-vxc-dose]');
@@ -387,6 +442,14 @@
         };
         var standardDose = function (vaccine, dose) {
             return dosesOf(vaccine).filter(function (d) { return d.value === dose; })[0] || null;
+        };
+        // Date a standard dose was already given to this infant, or null.
+        var givenOn = function (vaccine, dose) {
+            return (given[vaccine] && Object.prototype.hasOwnProperty.call(given[vaccine], dose)) ? given[vaccine][dose] : null;
+        };
+        // Standard doses still to be given (in schedule order).
+        var availableDoses = function (vaccine) {
+            return dosesOf(vaccine).filter(function (d) { return !givenOn(vaccine, d.value); });
         };
 
         // ---- Generic searchable combobox on a text input (custom text allowed) ----
@@ -538,11 +601,14 @@
 
         var doseCombo = new Combo(doseInput, {
             noun: 'dose',
-            choices: function () { return dosesOf(vaccineInput.value.trim()); },
+            choices: function () { return availableDoses(vaccineInput.value.trim()); },
             allowCustom: function () { return customDoseAllowed(vaccineInput.value.trim()); },
             emptyText: function () {
                 var v = vaccineInput.value.trim();
                 if (!v) return 'Choose the vaccine first, or type a dose label.';
+                if (approvedVaccine(v) && dosesOf(v).length && !availableDoses(v).length) {
+                    return 'All standard doses of ' + v + ' are already recorded for this infant.';
+                }
                 return approvedVaccine(v) ? 'Only ' + dosesOf(v).map(function (d) { return d.value; }).join(', ') + ' can be recorded for ' + v + '.' : 'Type the dose label for this custom vaccine.';
             }
         });
@@ -561,10 +627,15 @@
             }
 
             var std = approved ? standardDose(v, d) : null;
+            var allGiven = approved && dosesOf(v).length > 0 && availableDoses(v).length === 0;
             if (!d) {
-                doseStatus.textContent = approved
-                    ? (customDoseAllowed(v) ? 'Choose a standard dose, or type a custom label.' : v + ' is recorded as a Birth Dose only.')
-                    : 'Type the dose label.';
+                doseStatus.textContent = allGiven
+                    ? 'All standard doses of ' + v + ' are already recorded for this infant.' + (customDoseAllowed(v) ? ' Type a custom label only if needed.' : '')
+                    : approved
+                        ? (customDoseAllowed(v) ? 'Choose a standard dose, or type a custom label.' : v + ' is recorded as a Birth Dose only.')
+                        : 'Type the dose label.';
+            } else if (std && givenOn(v, d)) {
+                doseStatus.innerHTML = badge('inf-badge-red', 'Already recorded') + esc(v + ' ' + d + ' was given ' + givenOn(v, d) + '. Choose the next dose.');
             } else if (std) {
                 doseStatus.innerHTML = badge('inf-badge-green', 'Standard dose') + 'Recommended ' + esc(std.note) + '.';
             } else if (approved && !customDoseAllowed(v)) {
@@ -575,18 +646,22 @@
 
             if (approved) {
                 schedulePanel.innerHTML = '<div class="vxc-schedule"><p class="vxc-schedule-title">Recommended schedule: ' + esc(v) + '</p><ol>'
-                    + dosesOf(v).map(function (x) { return '<li><strong>' + esc(x.value) + '</strong> ' + esc(x.note) + '</li>'; }).join('')
+                    + dosesOf(v).map(function (x) {
+                        var on = givenOn(v, x.value);
+                        return '<li><strong>' + esc(x.value) + '</strong> ' + esc(x.note) + (on ? ' <span class="vxc-given">Recorded ' + esc(on) + '</span>' : '') + '</li>';
+                    }).join('')
                     + '</ol><p class="vxc-schedule-note">' + esc(scheduleNote) + ' Guidance only: record the actual date given, including late or catch-up doses.'
                     + (customDoseAllowed(v) ? '' : ' ' + esc(v) + ' is recorded as a Birth Dose only.') + '</p></div>';
             } else {
                 schedulePanel.innerHTML = '';
             }
 
-            doseList.innerHTML = dosesOf(v).map(function (x) { return '<option value="' + esc(x.value) + '"></option>'; }).join('');
+            doseList.innerHTML = availableDoses(v).map(function (x) { return '<option value="' + esc(x.value) + '"></option>'; }).join('');
         }
 
         // When the vaccine changes, keep a dose that still fits; a standard
         // dose of the previous vaccine that the new one does not have is cleared.
+        // The next dose this infant has not yet received is suggested.
         var lastVaccine = vaccineInput.value.trim();
         vaccineInput.addEventListener('change', function () {
             var v = vaccineInput.value.trim();
@@ -594,18 +669,79 @@
                 var d = doseInput.value.trim();
                 var wasStandard = !!standardDose(lastVaccine, d);
                 if (approvedVaccine(v) && !customDoseAllowed(v)) {
-                    doseInput.value = dosesOf(v).length === 1 ? dosesOf(v)[0].value : '';
+                    doseInput.value = '';
                 } else if (wasStandard && !standardDose(v, d)) {
                     doseInput.value = '';
+                }
+                if (approvedVaccine(v) && (doseInput.value.trim() === '' || givenOn(v, doseInput.value.trim()))) {
+                    var next = availableDoses(v)[0];
+                    doseInput.value = next ? next.value : '';
                 }
                 lastVaccine = v;
             }
             renderStatus();
             doseCombo.refresh();
+            updateNextDue();
         });
         vaccineInput.addEventListener('input', renderStatus);
         doseInput.addEventListener('input', renderStatus);
-        doseInput.addEventListener('change', renderStatus);
+        doseInput.addEventListener('change', function () { renderStatus(); updateNextDue(); });
+
+        // ---- Next Due Date ----------------------------------------------------
+        // Mirrors Vaccination::calculateNextDueDate(). Inactive until the RHU
+        // confirms the intervals: the Midwife then enters the date manually.
+        var dateGiven = document.getElementById('date_given');
+        var nextDue = document.getElementById('next_due_date');
+        var nextDueNote = document.querySelector('[data-vxc-next-due-note]');
+        var lastAuto = null;
+
+        var addDays = function (ymd, days) {
+            var p = String(ymd).split('-').map(Number);
+            var t = new Date(Date.UTC(p[0], p[1] - 1, p[2] + days));
+            return t.toISOString().slice(0, 10);
+        };
+        var pretty = function (ymd) {
+            var p = String(ymd).split('-').map(Number);
+            return new Date(p[0], p[1] - 1, p[2]).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+        };
+        var nextDoseOf = function (v, d) {
+            var list = dosesOf(v).map(function (x) { return x.value; });
+            var i = list.indexOf(d);
+            return i === -1 ? null : (list[i + 1] || null);
+        };
+        var calculate = function (v, d, givenYmd) {
+            if (!auto.active || !givenYmd || !standardDose(v, d) || !nextDoseOf(v, d)) return null;
+            var rule = (auto.rules[v] || {})[d];
+            if (!rule) return null;
+            var c = [];
+            if (Number.isInteger(rule.min_days_after)) c.push(addDays(givenYmd, rule.min_days_after));
+            if (Number.isInteger(rule.min_age_days) && auto.birth) c.push(addDays(auto.birth, rule.min_age_days));
+            return c.length ? c.sort().pop() : null;
+        };
+
+        function updateNextDue() {
+            if (!nextDue || !nextDueNote || !auto.active) return; // pending RHU confirmation: note stays as rendered
+            var v = vaccineInput.value.trim();
+            var d = doseInput.value.trim();
+            var g = dateGiven ? dateGiven.value : '';
+            var due = calculate(v, d, g);
+
+            if (standardDose(v, d) && !nextDoseOf(v, d)) {
+                nextDueNote.textContent = d + ' is the final standard dose of ' + v + '; no further dose is scheduled.';
+            } else if (due) {
+                // Fill only an empty field or one this script filled before; a typed date is kept.
+                if (nextDue.value === '' || nextDue.value === lastAuto) {
+                    nextDue.value = due;
+                    lastAuto = due;
+                }
+                nextDueNote.textContent = nextDoseOf(v, d) + ' due ' + pretty(due) + ', calculated from the ' + d + ' given ' + pretty(g) + ' (RHU-approved interval).';
+            } else {
+                nextDueNote.textContent = 'No approved interval for this vaccine and dose; enter the next due date manually if needed.';
+            }
+        }
+
+        if (dateGiven) dateGiven.addEventListener('change', updateNextDue);
         renderStatus();
+        updateNextDue();
     })();
 </script>

@@ -36,6 +36,121 @@ class Vaccination extends Model
 
     public const SCHEDULE_NOTE = 'Proposed schedule, pending Irosin RHU confirmation.';
 
+    /*
+    |--------------------------------------------------------------------------
+    | Automatic next-dose scheduling (architecture only: DISABLED)
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, the Next Due Date of a standard dose is calculated from the
+    | ACTUAL date the dose was given, using the rule for that vaccine and dose:
+    |
+    |   NEXT_DOSE_RULES['Vaccine']['Dose just given'] = [
+    |       'min_days_after' => int|null,  // days after this dose's Date Given
+    |       'min_age_days'   => int|null,  // infant's minimum age for the next dose
+    |   ]
+    |
+    | Next due date = the later of (date given + min_days_after) and
+    | (birth date + min_age_days); missing parts are ignored. The final standard
+    | dose of a vaccine never gets a next due date. Custom vaccines and custom
+    | doses are never calculated. A Next Due Date typed by the Midwife is
+    | always kept.
+    |
+    | Intentionally EMPTY and switched OFF until the Irosin RHU confirms the
+    | official intervals. No clinical interval is assumed anywhere.
+    */
+    public const AUTO_SCHEDULING_ENABLED = false;
+
+    public const NEXT_DOSE_RULES = [];
+
+    public const AUTO_SCHEDULING_PENDING_NOTE = 'Automatic next-dose scheduling is awaiting Irosin RHU confirmation of the official vaccine intervals. Enter the next due date manually.';
+
+    /** True only when scheduling is switched on AND at least one approved rule exists. */
+    public static function autoSchedulingActive(): bool
+    {
+        return static::AUTO_SCHEDULING_ENABLED && static::NEXT_DOSE_RULES !== [];
+    }
+
+    /** The standard dose after $dose for an approved vaccine; null for the final or a non-standard dose. */
+    public static function nextStandardDose(?string $vaccine, ?string $dose): ?string
+    {
+        $doses = self::dosesFor($vaccine);
+        $index = array_search((string) $dose, $doses, true);
+
+        return $index === false ? null : ($doses[$index + 1] ?? null);
+    }
+
+    /**
+     * Next due date (Y-m-d) for a standard dose given on $dateGiven, or null when
+     * scheduling is not active, the vaccine/dose is custom, it is the final
+     * dose, or no approved rule exists for this vaccine and dose.
+     */
+    public static function calculateNextDueDate(?string $vaccine, ?string $dose, mixed $dateGiven, mixed $birthDate = null): ?string
+    {
+        if (! static::autoSchedulingActive() || blank($dateGiven)
+            || ! self::isStandardDose($vaccine, $dose) || self::nextStandardDose($vaccine, $dose) === null) {
+            return null;
+        }
+
+        $rule = static::NEXT_DOSE_RULES[(string) $vaccine][(string) $dose] ?? null;
+
+        if (! is_array($rule)) {
+            return null;
+        }
+
+        $candidates = [];
+
+        if (isset($rule['min_days_after']) && is_int($rule['min_days_after'])) {
+            $candidates[] = Carbon::parse($dateGiven)->startOfDay()->addDays($rule['min_days_after']);
+        }
+
+        if (isset($rule['min_age_days']) && is_int($rule['min_age_days']) && filled($birthDate)) {
+            $candidates[] = Carbon::parse($birthDate)->startOfDay()->addDays($rule['min_age_days']);
+        }
+
+        if ($candidates === []) {
+            return null;
+        }
+
+        return collect($candidates)->max()->toDateString();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Doses already given (from saved records only)
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Standard doses already recorded for an infant, as
+     * ['Approved vaccine' => ['Standard dose' => 'Y-m-d date given']].
+     * Stored text that differs from an approved vaccine or standard dose only
+     * in letter case or spacing counts as that vaccine/dose. Custom vaccines
+     * and custom doses are not included. $excludeId leaves out the record
+     * being edited, so its own dose stays selectable.
+     */
+    public static function administeredStandardDoses(int $infantId, ?int $excludeId = null): array
+    {
+        $given = [];
+
+        $records = self::query()
+            ->where('infant_id', $infantId)
+            ->when($excludeId, fn ($q) => $q->whereKeyNot($excludeId))
+            ->orderBy('date_given')
+            ->orderBy('id')
+            ->get(['id', 'vaccine_name', 'dose', 'date_given']);
+
+        foreach ($records as $record) {
+            $vaccine = self::approvedVaccineMatching($record->vaccine_name);
+            $dose = $vaccine ? self::standardDoseMatching($vaccine, $record->dose) : null;
+
+            if ($vaccine && $dose && ! isset($given[$vaccine][$dose])) {
+                $given[$vaccine][$dose] = Carbon::parse($record->date_given)->toDateString();
+            }
+        }
+
+        return $given;
+    }
+
     /** Maximum lengths for new or changed vaccine and dose text. */
     public const VACCINE_MAX = 100;
     public const DOSE_MAX = 50;

@@ -53,6 +53,56 @@
         box-shadow: 0 6px 16px rgba(190, 24, 93, 0.14);
     }
 
+    /* Official Irosin RHU logo on the right of the brand row (facility identity;
+       CareCradle stays the primary brand on the left). The logo sits on the
+       title line and the portal subtitle runs beneath on one line, so nothing
+       wraps in the 272px sidebar. Logo kept at its natural proportions. */
+    .cc-admin-sidebar .cc-admin-brand {
+        display: grid;
+        grid-template-columns: 52px minmax(0, 1fr) auto;
+        grid-template-areas: "logo title rhu" "logo sub sub";
+        align-items: center;
+        column-gap: 0.9rem;
+        row-gap: 0;
+    }
+
+    .cc-admin-sidebar .cc-admin-brand > span {
+        display: contents;
+    }
+
+    .cc-admin-sidebar .cc-admin-brand .cc-admin-logo {
+        grid-area: logo;
+    }
+
+    .cc-admin-sidebar .cc-admin-brand > span > strong {
+        grid-area: title;
+        display: block;
+        align-self: end;
+        white-space: nowrap;
+    }
+
+    .cc-admin-sidebar .cc-admin-brand > span > small {
+        grid-area: sub;
+        display: block;
+        align-self: start;
+        white-space: nowrap;
+    }
+
+    .cc-admin-sidebar .cc-admin-rhu-logo {
+        grid-area: rhu;
+        justify-self: end;
+        align-self: end;
+        width: auto;
+        height: 2rem;
+        max-width: 2.125rem;
+        padding: 0.125rem;
+        object-fit: contain;
+        background: #ffffff;
+        border: 1px solid #fbcfe8;
+        border-radius: 999px;
+        box-shadow: 0 2px 6px rgba(190, 24, 93, 0.10);
+    }
+
     .cc-admin-sidebar .cc-admin-brand strong {
         color: #4a0d2a;
         font-family: "DM Serif Display", Georgia, serif;
@@ -159,6 +209,15 @@
             <strong>CareCradle</strong>
             <small>Administrator Portal</small>
         </span>
+        <img
+            src="{{ asset('images/irosin-rhu-logo.jpg') }}"
+            alt="Irosin Rural Health Unit logo"
+            title="Irosin Rural Health Unit"
+            class="cc-admin-rhu-logo"
+            width="32"
+            height="32"
+            loading="eager"
+        >
     </a>
 
     <div class="cc-admin-menu-label">Main Menu</div>

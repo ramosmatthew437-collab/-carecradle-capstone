@@ -23,6 +23,14 @@ class VaccinationController extends Controller
         $this->messages($infant)
     );
 
+    // Automatic next due date (only when RHU-approved scheduling is active and
+    // the Midwife left the field blank; a typed date is always kept).
+    if (blank($validated['next_due_date'] ?? null)) {
+        $validated['next_due_date'] = Vaccination::calculateNextDueDate(
+            $validated['vaccine_name'], $validated['dose'], $validated['date_given'], $infant->birth_date
+        );
+    }
+
     $vaccination = $infant->vaccinations()->create($validated);
 
     $activityLogger->log(
@@ -68,6 +76,8 @@ class VaccinationController extends Controller
             $validated[$field] = $vaccination->{$field};
         }
     }
+
+    $validated['next_due_date'] = $this->scheduledNextDueDate($validated, $vaccination, $infant);
 
     $vaccination->update($validated);
 
@@ -175,8 +185,23 @@ class VaccinationController extends Controller
         }
 
         if (! ($vaccineUnchanged && $doseUnchanged)) {
-            $dose[] = function (string $attribute, mixed $value, \Closure $fail) use ($request) {
+            $dose[] = function (string $attribute, mixed $value, \Closure $fail) use ($request, $infant, $existing) {
                 $vaccine = (string) $request?->input('vaccine_name');
+
+                // A standard dose that this infant already received is not
+                // recorded twice (the record being edited is excluded, and
+                // stored history is never changed). Custom doses are exempt.
+                if ($infant && Vaccination::isApprovedVaccine($vaccine) && Vaccination::isStandardDose($vaccine, $value)) {
+                    $given = Vaccination::administeredStandardDoses($infant->id, $existing?->id)[$vaccine][$value] ?? null;
+
+                    if ($given !== null) {
+                        $fail("{$vaccine} {$value} is already recorded for this infant (given "
+                            . \Illuminate\Support\Carbon::parse($given)->format('M d, Y')
+                            . '). Open that record to correct it instead of adding it again.');
+                    }
+
+                    return;
+                }
 
                 if (! Vaccination::isApprovedVaccine($vaccine) || Vaccination::isStandardDose($vaccine, $value)) {
                     return;
@@ -205,6 +230,36 @@ class VaccinationController extends Controller
                 ? 'nullable|string'
                 : 'nullable|string|max:' . self::REMARKS_MAX,
         ];
+    }
+
+    /**
+     * Next due date to store when an existing record is saved.
+     * - Scheduling not active, custom or final dose: the submitted value, unchanged.
+     * - Field left blank: calculated from the (possibly corrected) Date Given.
+     * - Stored date was the automatic one and the Midwife did not change it,
+     *   but the Date Given, vaccine or dose was corrected: recalculated.
+     * - Otherwise (a date typed by the Midwife): kept exactly.
+     */
+    private function scheduledNextDueDate(array $validated, Vaccination $existing, ?Infant $infant): ?string
+    {
+        $submitted = $validated['next_due_date'] ?? null;
+
+        if (! Vaccination::autoSchedulingActive()) {
+            return $submitted;
+        }
+
+        $birth = $infant?->birth_date;
+        $calculated = Vaccination::calculateNextDueDate($validated['vaccine_name'], $validated['dose'], $validated['date_given'], $birth);
+
+        if (blank($submitted)) {
+            return $calculated;
+        }
+
+        $storedWasAutomatic = filled($existing->next_due_date)
+            && $this->sameDate($existing->next_due_date, Vaccination::calculateNextDueDate($existing->vaccine_name, $existing->dose, $existing->date_given, $birth));
+        $keptAsStored = $this->sameDate($submitted, $existing->next_due_date);
+
+        return $storedWasAutomatic && $keptAsStored && $calculated !== null ? $calculated : $submitted;
     }
 
     /** Activity-log reference without personal details. */
